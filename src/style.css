@@ -1224,7 +1224,7 @@ button:active {
 }
 
 .quote-icon {
-  color: var(--accent-color);
+  color: #111111;
 }
 
 .testimonial-text {
