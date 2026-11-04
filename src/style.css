@@ -1262,31 +1262,19 @@ button:active {
   padding: 0 24px;
 }
 
+.contact-split-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: center;
+  width: 100%;
+}
+
 .contact-simple-card {
-  max-width: 640px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-}
-
-.contact-pill-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--bg-section-alt);
-  color: var(--accent-color);
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.contact-pill-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-full);
-  background-color: var(--accent-color);
 }
 
 .contact-simple-title {
@@ -1301,7 +1289,7 @@ button:active {
 .contact-simple-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   width: 100%;
 }
 
@@ -1358,7 +1346,7 @@ a.contact-simple-val:hover {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 10px;
+  margin-top: 6px;
   flex-wrap: wrap;
 }
 
@@ -1399,6 +1387,32 @@ a.contact-simple-val:hover {
   background-color: var(--bg-dark);
   color: #ffffff;
   transform: translateY(-1px);
+}
+
+.contact-map-side {
+  width: 100%;
+}
+
+.contact-map-frame {
+  width: 100%;
+  height: 290px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--bg-section-alt);
+}
+
+.contact-map-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 880px) {
+  .contact-split-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
 }
 
 /* ==========================================================================
