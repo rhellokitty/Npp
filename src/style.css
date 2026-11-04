@@ -722,7 +722,7 @@ button:active {
 .hero-clients-track {
   display: flex;
   width: max-content;
-  animation: heroClientsMarquee 50s linear infinite;
+  animation: heroClientsMarquee 45s linear infinite;
   will-change: transform;
 }
 
@@ -742,8 +742,8 @@ button:active {
 .hero-clients-group {
   display: flex;
   align-items: center;
-  gap: 84px;
-  padding-right: 84px;
+  gap: 72px;
+  padding-right: 72px;
   flex-shrink: 0;
 }
 
@@ -751,18 +751,18 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 80px;
+  height: 64px;
   flex-shrink: 0;
   cursor: pointer;
 }
 
 .hero-client-logo {
-  height: 66px;
-  max-width: 210px;
+  height: 50px;
+  max-width: 170px;
   width: auto;
   object-fit: contain;
   filter: grayscale(100%);
-  opacity: 0.6;
+  opacity: 0.55;
   transition: filter 0.3s ease, opacity 0.3s ease;
   mix-blend-mode: multiply;
 }
@@ -775,7 +775,7 @@ button:active {
 html:not([data-theme="light"]) .hero-client-logo {
   mix-blend-mode: normal;
   background-color: rgba(255, 255, 255, 0.95);
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: var(--radius-sm);
 }
 
@@ -791,17 +791,17 @@ html:not([data-theme="light"]) .hero-client-logo {
   }
 
   .hero-clients-group {
-    gap: 56px;
-    padding-right: 56px;
+    gap: 48px;
+    padding-right: 48px;
   }
 
   .hero-client-item {
-    height: 64px;
+    height: 52px;
   }
 
   .hero-client-logo {
-    height: 48px;
-    max-width: 160px;
+    height: 38px;
+    max-width: 130px;
   }
 }
 
