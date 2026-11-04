@@ -687,12 +687,11 @@ button:active {
 }
 
 .hero-clients-label {
-  font-size: 0.82rem;
-  font-weight: 500;
+  font-size: 0.88rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-secondary);
-  opacity: 0.75;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
   text-align: center;
 }
 
