@@ -864,7 +864,7 @@ button:active {
    5. PRODUCT CATALOG SECTION (.catalog-*)
    ========================================================================== */
 .catalog-section {
-  background-color: var(--bg-section-alt);
+  background-color: var(--bg-page);
   padding: 72px 0;
   transition: background-color 0.3s ease;
 }
