@@ -14,7 +14,7 @@
 - **Zero Scrollbar:** `scrollbar-width: none`, `::-webkit-scrollbar { display: none }`. Scroll overflow horizontal menggunakan `overflow-x: clip`.
 
 ## 3. Warna & Multi-Theme
-- **Theme Default (`light` / Clean Corporate White/Charcoal):** Base `#ffffff` (`--bg-page`), Surface `#f4f4f5` (`--bg-section-alt`), Heading `#09090b` (`--text-primary`), Teks `#52525b` (`--text-secondary`).
+- **Theme Default (`light` / Corporate Navy & Industrial Gold):** Base `#ffffff` (`--bg-page`), Surface `#f4f6fa` (`--bg-section-alt`), Heading `#0a1b33` (`--text-primary`), Teks `#4b5d73` (`--text-secondary`), Aksen Utama `#0c4a96` (Corporate Navy Logo NPP), Aksen Sekunder `#c99d51` / `#d4a249` (Warm Industrial Gold Logo NPP).
 - **Tema Tersedia:** `light` (Default), `ohlins` (Gold/Carbon), `brembo` (Power Red/Carbon), `titanium` (Electric Cyan/Carbon).
 
 ## 4. Inverted Border Radius (Cutout)

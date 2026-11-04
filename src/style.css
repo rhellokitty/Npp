@@ -10,8 +10,29 @@
    GLOBAL RESET & AGENTS.MD INVARIANTS (ZERO BORDER, ZERO SHADOW, ZERO SCROLLBAR)
    ========================================================================== */
 :root,
-html[data-theme="ohlins"] {
+html[data-theme="light"] {
   --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --bg-page: #ffffff;
+  --bg-section-alt: #f4f6fa;
+  --bg-card: #ffffff;
+  --bg-card-muted: #e9eef6;
+  --bg-dark: #072a56;
+  --bg-dark-surface: #0a366f;
+  --text-primary: #0a1b33;
+  --text-secondary: #4b5d73;
+  --text-muted: #8292a4;
+  --text-inverse: #ffffff;
+  --accent-color: #0c4a96;
+  --accent-gold: #c99d51;
+  --accent-star: #d4a249;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 30px;
+  --radius-full: 9999px;
+}
+
+html[data-theme="ohlins"] {
   --bg-page: #09090b;
   --bg-section-alt: #18181b;
   --bg-card: #09090b;
@@ -24,26 +45,6 @@ html[data-theme="ohlins"] {
   --text-inverse: #09090b;
   --accent-color: #D4AF37;
   --accent-star: #D4AF37;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 30px;
-  --radius-full: 9999px;
-}
-
-html[data-theme="light"] {
-  --bg-page: #ffffff;
-  --bg-section-alt: #f5f5f7;
-  --bg-card: #ffffff;
-  --bg-card-muted: #f4f4f6;
-  --bg-dark: #111111;
-  --bg-dark-surface: #1e1e1e;
-  --text-primary: #111111;
-  --text-secondary: #555555;
-  --text-muted: #888888;
-  --text-inverse: #ffffff;
-  --accent-color: #111111;
-  --accent-star: #f59e0b;
 }
 
 html[data-theme="brembo"] {
