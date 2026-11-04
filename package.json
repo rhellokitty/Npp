@@ -1,0 +1,8 @@
+{
+  "name": "pt-nusantara-puncak-perkasa",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'No build required - Static HTML/CSS/JS site'"
+  }
+}
