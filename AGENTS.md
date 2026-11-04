@@ -2,6 +2,8 @@
 
 > **ATURAN OUTPUT MUTLAK:** Saat diminta revisi, refactor, atau fitur, HANYA BERIKAN OUTPUT KODE SAJA tanpa penjelasan, teori, atau basa-basi pengantar, kecuali ditanya secara eksplisit.
 > **ATURAN MUTLAK DESAIN:** DILARANG KERAS mengubah desain, layout, komponen, atau styling yang sudah ada KECUALI atas instruksi eksplisit dan spesifik dari user. Pertahankan 100% desain yang sudah ada dan hanya lakukan perubahan tepat pada bagian yang diminta.
+> **ATURAN MUTLAK PERUBAHAN MANUAL:** DILARANG KERAS menimpa, menghapus, atau mengembalikan (revert) bagian kode, teks, aset, atau styling yang sudah diubah secara manual oleh USER. Selalu periksa dan pertahankan perubahan manual user secara utuh.
+> **ATURAN MUTLAK MINIMALIS & CLEAN (NO CLUTTER):** DILARANG menambahkan elemen dekoratif/teks pengisi yang tidak diminta seperti `.section-tag` berulang, badge kecil berlebih, atau `.contact-desc`/paragraf basa-basi pada section kontak. Pertahankan layout tetap clean, to-the-point, dan berfokus pada elemen esensial (heading, kontak langsung, dan maps).
 
 ## 1. Lingkup Proyek & Stack
 - **Fokus Saat Ini:** Company Profile Publik PT Nusantara Puncak Perkasa (NPP) — Pengadaan & Solusi Industrial Power: **Battery, UPS, Stabilizer, Inverter, dan Solar Panel**, dengan integrasi pintu masuk ke Portal Internal.
@@ -12,11 +14,8 @@
 - **Zero Scrollbar:** `scrollbar-width: none`, `::-webkit-scrollbar { display: none }`. Scroll overflow horizontal menggunakan `overflow-x: clip`.
 
 ## 3. Warna & Multi-Theme
-- **Theme Default (`ohlins` / Industrial Gold):** Base `#09090b` (`--bg-page`), Surface `#18181b` (`--bg-section-alt`), Heading `#ffffff` (`--text-primary`), Teks `#e4e4e7` (`--text-secondary`).
-- **Aksen Gold/Industrial (`#D4AF37` - Max 15%):**
-  - **HANYA untuk:** CTA Utama, Badge spesifikasi/status, Ikon/Rating, Highlight metrik, dan efek Hover.
-  - **DILARANG:** Untuk background section atau kartu penuh.
-- **Tema Tersedia:** `ohlins` (Gold/Carbon), `light` (Clean Corporate White/Charcoal), `brembo` (Power Red/Carbon), `titanium` (Electric Cyan/Carbon).
+- **Theme Default (`light` / Clean Corporate White/Charcoal):** Base `#ffffff` (`--bg-page`), Surface `#f4f4f5` (`--bg-section-alt`), Heading `#09090b` (`--text-primary`), Teks `#52525b` (`--text-secondary`).
+- **Tema Tersedia:** `light` (Default), `ohlins` (Gold/Carbon), `brembo` (Power Red/Carbon), `titanium` (Electric Cyan/Carbon).
 
 ## 4. Inverted Border Radius (Cutout)
 - **Zero Overflow-Hidden:** Container luar Hero Cutout wajib `position: relative` TANPA `overflow: hidden` agar elemen (badge, status pill) tidak terpotong radius. `border-radius: 30px` diaplikasikan langsung ke elemen media/gambar.

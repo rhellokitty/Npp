@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="ohlins">
+<html lang="id" data-theme="light">
 
 <head>
   <meta charset="UTF-8" />
@@ -28,23 +28,12 @@
           <a href="#review" class="navbar-link" data-nav="Testimoni">Testimoni</a>
         </nav>
         <div class="navbar-actions">
-          <button class="navbar-icon-btn" aria-label="Search">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-          </button>
-          <button class="navbar-icon-btn" aria-label="Cart">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-              <path d="M3 6h18" />
-              <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-          </button>
-          <button class="navbar-icon-btn" aria-label="Account">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
+          <button type="button" class="navbar-login-btn" id="navbarLoginBtn" title="Login Portal Internal">
+            <span>Masuk</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" y1="12" x2="3" y2="12" />
             </svg>
           </button>
         </div>
@@ -198,7 +187,8 @@
             </div>
 
             <div class="detail-spec-tabs">
-              <button type="button" class="detail-spec-tab detail-spec-tab-active" data-spec-tab="engine">Spesifikasi Elektrikal</button>
+              <button type="button" class="detail-spec-tab detail-spec-tab-active" data-spec-tab="engine">Spesifikasi
+                Elektrikal</button>
               <button type="button" class="detail-spec-tab" data-spec-tab="chassis">Proteksi & Standar</button>
               <button type="button" class="detail-spec-tab" data-spec-tab="dimensions">Dimensi & Lingkungan</button>
             </div>
@@ -239,28 +229,40 @@
 
                 <div class="hero-avatar-list">
                   <span class="hero-avatar-item">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Lead Engineer" class="hero-avatar-img" />
+                    <img
+                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
+                      alt="Lead Engineer" class="hero-avatar-img" />
                   </span>
                   <span class="hero-avatar-item hero-avatar-overlap">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Technician PIC" class="hero-avatar-img" />
+                    <img
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+                      alt="Technician PIC" class="hero-avatar-img" />
                   </span>
                   <span class="hero-avatar-item hero-avatar-overlap">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80" alt="Project Manager" class="hero-avatar-img" />
+                    <img
+                      src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80"
+                      alt="Project Manager" class="hero-avatar-img" />
                   </span>
                   <span class="hero-avatar-item hero-avatar-overlap">
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Site Supervisor" class="hero-avatar-img" />
+                    <img
+                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
+                      alt="Site Supervisor" class="hero-avatar-img" />
                   </span>
                 </div>
                 <div class="hero-rating-badge">
-                  <span class="hero-rating-title">250+ Proyek Industri</span>
+                  <span class="hero-rating-title">250+ Proyek Industri Indonesia</span>
                   <span class="hero-rating-sub">
-                    <svg class="hero-star-icon" width="12" height="12" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg class="hero-star-icon" width="12" height="12" viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
                     99.98% Proteksi Uptime
                   </span>
                 </div>
               </div>
 
-              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80" alt="Sistem Daya Industri NPP" class="hero-main-img" />
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80"
+                alt="Sistem Daya Industri NPP" class="hero-main-img" />
 
               <div class="hero-cutout-br">
                 <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
@@ -287,25 +289,27 @@
 
             <div class="hero-side-col">
               <div class="hero-side-photo-card">
-                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80" alt="Battery Rack dan Power Conditioning" class="hero-side-photo-img" />
+                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80"
+                  alt="Battery Rack dan Power Conditioning" class="hero-side-photo-img" />
               </div>
 
               <div class="hero-highlights-list">
                 <div class="hero-highlight-card">
-                  <div class="hero-highlight-info">
-                    <span class="hero-highlight-title">Enterprise Modular UPS</span>
-                    <div class="hero-highlight-meta">
-                      <div class="hero-highlight-dots">
-                        <span class="hero-dot-item hero-dot-1"></span>
-                        <span class="hero-dot-item hero-dot-2"></span>
-                        <span class="hero-dot-item hero-dot-3"></span>
+                  <div class="hero-highlight-left">
+                    <div class="hero-highlight-thumb">
+                      <img
+                        src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=160&h=160&q=80"
+                        alt="Enterprise Modular UPS" class="hero-highlight-img" />
+                    </div>
+                    <div class="hero-highlight-info">
+                      <span class="hero-highlight-title">Enterprise Modular UPS</span>
+                      <div class="hero-highlight-meta">
+                        <span>10 kVA – 500 kVA</span>
                       </div>
-                      <span>10 kVA – 500 kVA</span>
                     </div>
                   </div>
                   <button class="hero-highlight-btn" aria-label="Open Enterprise Modular UPS">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="2">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M7 17 17 7" />
                       <path d="M7 7h10v10" />
                     </svg>
@@ -313,20 +317,21 @@
                 </div>
 
                 <div class="hero-highlight-card">
-                  <div class="hero-highlight-info">
-                    <span class="hero-highlight-title">Industrial Battery Rack</span>
-                    <div class="hero-highlight-meta">
-                      <div class="hero-highlight-dots">
-                        <span class="hero-dot-item hero-dot-1"></span>
-                        <span class="hero-dot-item hero-dot-2"></span>
-                        <span class="hero-dot-item hero-dot-3"></span>
+                  <div class="hero-highlight-left">
+                    <div class="hero-highlight-thumb">
+                      <img
+                        src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=160&h=160&q=80"
+                        alt="Industrial Battery Rack" class="hero-highlight-img" />
+                    </div>
+                    <div class="hero-highlight-info">
+                      <span class="hero-highlight-title">Industrial Battery Rack</span>
+                      <div class="hero-highlight-meta">
+                        <span>LiFePO4 & VRLA Deep Cycle</span>
                       </div>
-                      <span>LiFePO4 & VRLA Deep Cycle</span>
                     </div>
                   </div>
                   <button class="hero-highlight-btn" aria-label="Open Industrial Battery Rack">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="2">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M7 17 17 7" />
                       <path d="M7 7h10v10" />
                     </svg>
@@ -361,15 +366,15 @@
         <section class="about-section" id="about">
           <div class="about-top-grid">
             <div class="about-content">
-              <h2 class="section-heading">Arsitektur Daya Mandiri, Menjamin Kontinuitas Operasional Pabrik & Fasilitas Anda.</h2>
+              <h2 class="section-heading">Arsitektur Daya Mandiri, Menjamin Kontinuitas Operasional Pabrik.</h2>
               <p class="about-desc">
-                Di PT Nusantara Puncak Perkasa, kami mengintegrasikan rekayasa sistem daya dengan produk berstandar industri agar operasional fasilitas kritikal Anda terlindungi dari pemadaman dan fluktuasi listrik.
+                Di PT Nusantara Puncak Perkasa, kami mengintegrasikan rekayasa sistem daya dengan produk berstandar
+                industri agar operasional fasilitas kritikal Anda terlindungi dari pemadaman dan fluktuasi listrik.
               </p>
               <button class="btn-pill-dark">
                 <span>Pelajari Layanan</span>
                 <span class="btn-pill-icon">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2.2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <path d="M7 17 17 7" />
                     <path d="M7 7h10v10" />
                   </svg>
@@ -379,10 +384,25 @@
 
             <div class="about-media">
               <div class="about-main-photo">
-                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Fasilitas Sistem Penyimpanan dan Kelistrikan Daya" class="about-main-img" />
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
+                  alt="Fasilitas Sistem Penyimpanan dan Kelistrikan Daya" class="about-main-img" />
               </div>
-              <div class="about-overlap-photo">
-                <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=400&q=80" alt="Inspeksi Teknis Panel Daya NPP" class="about-overlap-img" />
+
+              <div class="about-cutout-br">
+                <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+
+                <div class="about-overlap-photo">
+                  <img
+                    src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=400&q=80"
+                    alt="Inspeksi Teknis Panel Daya NPP" class="about-overlap-img" />
+                </div>
               </div>
             </div>
           </div>
@@ -395,7 +415,8 @@
                 </svg>
               </div>
               <h3 class="about-feature-title">Standar Mutu Industri</h3>
-              <p class="about-feature-desc">Seluruh unit bersertifikasi resmi (SNI, IEC, UL) dengan garansi prinsipal langsung.</p>
+              <p class="about-feature-desc">Seluruh unit bersertifikasi resmi (SNI, IEC, UL) dengan garansi prinsipal
+                langsung.</p>
             </div>
 
             <div class="about-feature-card">
@@ -406,7 +427,8 @@
                 </svg>
               </div>
               <h3 class="about-feature-title">Efisiensi Energi Hijau</h3>
-              <p class="about-feature-desc">Solusi terintegrasi Solar PV dan inverter berkinerja tinggi guna menekan biaya daya.</p>
+              <p class="about-feature-desc">Solusi terintegrasi Solar PV dan inverter berkinerja tinggi guna menekan
+                biaya daya.</p>
             </div>
 
             <div class="about-feature-card">
@@ -419,7 +441,8 @@
                 </svg>
               </div>
               <h3 class="about-feature-title">Layanan & Komisioning</h3>
-              <p class="about-feature-desc">Logistik terintegrasi surat jalan resmi, instalasi teknis, dan kontrak servis berkala 24/7.</p>
+              <p class="about-feature-desc">Logistik terintegrasi surat jalan resmi, instalasi teknis, dan kontrak
+                servis berkala 24/7.</p>
             </div>
           </div>
         </section>
@@ -430,13 +453,12 @@
         <div class="container catalog-inner">
           <div class="catalog-header">
             <div>
-              <h2 class="section-heading">Katalog Pengadaan<br />Solusi Daya Industri<br />PT NPP</h2>
+              <h2 class="section-heading">Katalog Pengadaan<br />Solusi Daya Industri</h2>
             </div>
             <button class="btn-pill-dark">
               <span>Minta Penawaran</span>
               <span class="btn-pill-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <path d="M7 17 17 7" />
                   <path d="M7 7h10v10" />
                 </svg>
@@ -459,16 +481,19 @@
               <span class="catalog-badge">LiFePO4</span>
               <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                 </svg>
               </button>
-              <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80" alt="Lithium LiFePO4 Energy Rack 48V" class="catalog-card-img" />
+              <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80"
+                alt="Lithium LiFePO4 Energy Rack 48V" class="catalog-card-img" />
               <div class="catalog-card-overlay">
                 <div>
                   <h4 class="catalog-card-title">Lithium LiFePO4 Energy Rack 48V</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <button type="button" class="catalog-card-action" aria-label="View Lithium LiFePO4 Energy Rack 48V details">
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Lithium LiFePO4 Energy Rack 48V details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
                     <path d="M7 7h10v10" />
@@ -482,16 +507,19 @@
               <span class="catalog-badge">Online Double</span>
               <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                 </svg>
               </button>
-              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80" alt="Enterprise Modular UPS 100kVA" class="catalog-card-img" />
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80"
+                alt="Enterprise Modular UPS 100kVA" class="catalog-card-img" />
               <div class="catalog-card-overlay">
                 <div>
                   <h4 class="catalog-card-title">Enterprise Modular UPS 100kVA</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <button type="button" class="catalog-card-action" aria-label="View Enterprise Modular UPS 100kVA details">
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Enterprise Modular UPS 100kVA details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
                     <path d="M7 7h10v10" />
@@ -505,16 +533,19 @@
               <span class="catalog-badge">Servo 3P</span>
               <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                 </svg>
               </button>
-              <img src="https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1000&q=80" alt="Industrial Servo Stabilizer 150kVA" class="catalog-card-img" />
+              <img src="https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1000&q=80"
+                alt="Industrial Servo Stabilizer 150kVA" class="catalog-card-img" />
               <div class="catalog-card-overlay">
                 <div>
                   <h4 class="catalog-card-title">Industrial Servo Stabilizer 150kVA</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <button type="button" class="catalog-card-action" aria-label="View Industrial Servo Stabilizer 150kVA details">
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Industrial Servo Stabilizer 150kVA details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
                     <path d="M7 7h10v10" />
@@ -528,16 +559,19 @@
               <span class="catalog-badge">Hybrid</span>
               <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                 </svg>
               </button>
-              <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80" alt="Pure Sine Wave Inverter 15kW" class="catalog-card-img" />
+              <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80"
+                alt="Pure Sine Wave Inverter 15kW" class="catalog-card-img" />
               <div class="catalog-card-overlay">
                 <div>
                   <h4 class="catalog-card-title">Pure Sine Wave Inverter 15kW</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <button type="button" class="catalog-card-action" aria-label="View Pure Sine Wave Inverter 15kW details">
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Pure Sine Wave Inverter 15kW details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
                     <path d="M7 7h10v10" />
@@ -551,16 +585,19 @@
               <span class="catalog-badge">Tier-1 Mono</span>
               <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                 </svg>
               </button>
-              <img src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=1000&q=80" alt="Commercial Solar PV Module 550Wp" class="catalog-card-img" />
+              <img src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=1000&q=80"
+                alt="Commercial Solar PV Module 550Wp" class="catalog-card-img" />
               <div class="catalog-card-overlay">
                 <div>
                   <h4 class="catalog-card-title">Commercial Solar PV Module 550Wp</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <button type="button" class="catalog-card-action" aria-label="View Commercial Solar PV Module 550Wp details">
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Commercial Solar PV Module 550Wp details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
                     <path d="M7 7h10v10" />
@@ -574,16 +611,19 @@
               <span class="catalog-badge">Deep Cycle</span>
               <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                 </svg>
               </button>
-              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80" alt="VRLA Deep Cycle Gel Battery 12V 200Ah" class="catalog-card-img" />
+              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80"
+                alt="VRLA Deep Cycle Gel Battery 12V 200Ah" class="catalog-card-img" />
               <div class="catalog-card-overlay">
                 <div>
                   <h4 class="catalog-card-title">VRLA Deep Cycle Gel Battery 12V 200Ah</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <button type="button" class="catalog-card-action" aria-label="View VRLA Deep Cycle Gel Battery 12V 200Ah details">
+                <button type="button" class="catalog-card-action"
+                  aria-label="View VRLA Deep Cycle Gel Battery 12V 200Ah details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
                     <path d="M7 7h10v10" />
@@ -625,7 +665,8 @@
                 </button>
               </div>
               <div class="collection-thumb">
-                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=400&q=80" alt="Data Center Power Solutions" class="collection-thumb-img" />
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=400&q=80"
+                  alt="Data Center Power Solutions" class="collection-thumb-img" />
               </div>
             </div>
 
@@ -651,7 +692,8 @@
                 </button>
               </div>
               <div class="collection-thumb">
-                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80" alt="Industrial Manufacturing Power" class="collection-thumb-img" />
+                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80"
+                  alt="Industrial Manufacturing Power" class="collection-thumb-img" />
               </div>
             </div>
 
@@ -677,7 +719,8 @@
                 </button>
               </div>
               <div class="collection-thumb">
-                <img src="https://images.unsplash.com/photo-1508873535684-277a3cbcc4e8?auto=format&fit=crop&w=400&q=80" alt="Commercial Solar Energy" class="collection-thumb-img" />
+                <img src="https://images.unsplash.com/photo-1508873535684-277a3cbcc4e8?auto=format&fit=crop&w=400&q=80"
+                  alt="Commercial Solar Energy" class="collection-thumb-img" />
               </div>
             </div>
 
@@ -697,8 +740,7 @@
             <button class="btn-pill-dark">
               <span>Lihat Semua</span>
               <span class="btn-pill-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <path d="M7 17 17 7" />
                   <path d="M7 7h10v10" />
                 </svg>
@@ -717,13 +759,16 @@
                   shape-rendering="geometricPrecision">
                   <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
                 </svg>
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Ir. Budi Prasetyo" />
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
+                  alt="Ir. Budi Prasetyo" />
               </div>
               <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                 <path
                   d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
               </svg>
-              <p class="testimonial-text">Pengadaan unit UPS 120kVA modular dan stabilizer 3-fasa dari PT Nusantara Puncak Perkasa berjalan sangat transparan. Surat jalan, kartu stok, dan dokumen uji fungsi lengkap tanpa kendala.</p>
+              <p class="testimonial-text">Pengadaan unit UPS 120kVA modular dan stabilizer 3-fasa dari PT Nusantara
+                Puncak Perkasa berjalan sangat transparan. Surat jalan, kartu stok, dan dokumen uji fungsi lengkap tanpa
+                kendala.</p>
               <div class="testimonial-author">
                 <span class="author-name">Ir. Budi Prasetyo</span>
                 <span class="author-role">Head of Infrastructure, PT Data Mandiri Nusantara</span>
@@ -740,13 +785,15 @@
                   shape-rendering="geometricPrecision">
                   <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
                 </svg>
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Dewi Lestari, S.T." />
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                  alt="Dewi Lestari, S.T." />
               </div>
               <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                 <path
                   d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
               </svg>
-              <p class="testimonial-text">Kebutuhan otonomi baterai lithium untuk sistem telekomunikasi kami terpenuhi dengan presisi. Respon tim teknis sangat sigap saat komisioning di lokasi lapangan.</p>
+              <p class="testimonial-text">Kebutuhan otonomi baterai lithium untuk sistem telekomunikasi kami terpenuhi
+                dengan presisi. Respon tim teknis sangat sigap saat komisioning di lokasi lapangan.</p>
               <div class="testimonial-author">
                 <span class="author-name">Dewi Lestari, S.T.</span>
                 <span class="author-role">Procurement Manager, PT Sinergi Telekom</span>
@@ -763,13 +810,15 @@
                   shape-rendering="geometricPrecision">
                   <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
                 </svg>
-                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="Hendra Kusuma" />
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                  alt="Hendra Kusuma" />
               </div>
               <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                 <path
                   d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
               </svg>
-              <p class="testimonial-text">Integrasi sistem inverter hybrid dan panel surya komersial 200 kWp menghasilkan efisiensi biaya beban operasional yang nyata sejak bulan pertama operasional.</p>
+              <p class="testimonial-text">Integrasi sistem inverter hybrid dan panel surya komersial 200 kWp
+                menghasilkan efisiensi biaya beban operasional yang nyata sejak bulan pertama operasional.</p>
               <div class="testimonial-author">
                 <span class="author-name">Hendra Kusuma</span>
                 <span class="author-role">Plant Operations Director, PT Baja Nusantara Perkasa</span>
@@ -779,37 +828,120 @@
         </div>
       </section>
 
-      <!-- 8. NEWSLETTER -->
-      <section class="newsletter-section">
+      <!-- 8. CONTACT & LOCATION SECTION -->
+      <section class="newsletter-section" id="contact">
         <div class="newsletter-inner">
-          <svg class="newsletter-icon-side" width="84" height="84" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.5">
-            <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3" />
-            <path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z" />
-            <path d="M4 18v2" />
-            <path d="M20 18v2" />
-          </svg>
+          <div class="contact-bento">
+            <!-- Sisi Kiri: Bento Card Kontak dengan Inverted Border Radius Cutout -->
+            <div class="contact-info-col">
+              <h2 class="contact-heading">Hubungi Kami</h2>
 
-          <div class="newsletter-content">
-            <h2 class="newsletter-title">
-              Permohonan Penawaran &<br />
-              Spesifikasi <strong class="newsletter-highlight">Daya Industri</strong>
-            </h2>
-            <form class="newsletter-form" id="newsletterForm">
-              <input type="email" id="newsletterEmailInput" class="newsletter-input" placeholder="Masukkan Email Bisnis / PIC..." required />
-              <button type="submit" class="newsletter-submit-btn" id="newsletterSubmitBtn">
-                Minta Penawaran
-              </button>
-            </form>
+              <div class="contact-list">
+                <a href="https://wa.me/6281288880199?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20pengadaan%20solusi%20daya"
+                  target="_blank" rel="noopener noreferrer" class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.53 4.28c-.19 0-.41.07-.63.31-.22.24-.85.83-.85 2.02s.87 2.34.99 2.5c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28-.25-.13-1.48-.73-1.71-.81-.23-.09-.4-.13-.57.13-.17.25-.66.81-.81.98-.15.17-.3.19-.55.07-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.24.25-.4.08-.17.04-.31-.02-.44-.06-.12-.57-1.37-.78-1.88-.2-.49-.41-.43-.57-.44h-.49z" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">+62 812-8888-0199</span>
+                </a>
+
+                <a href="https://wa.me/6281197210888?text=Halo%20Tim%20Teknis%20PT%20NPP,%20saya%20ingin%20konsultasi%20spesifikasi%20teknis."
+                  target="_blank" rel="noopener noreferrer" class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.53 4.28c-.19 0-.41.07-.63.31-.22.24-.85.83-.85 2.02s.87 2.34.99 2.5c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28-.25-.13-1.48-.73-1.71-.81-.23-.09-.4-.13-.57.13-.17.25-.66.81-.81.98-.15.17-.3.19-.55.07-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.24.25-.4.08-.17.04-.31-.02-.44-.06-.12-.57-1.37-.78-1.88-.2-.49-.41-.43-.57-.44h-.49z" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">+62 811-9721-0888</span>
+                </a>
+
+                <a href="mailto:sales@nusantarapuncakperkasa.co.id?subject=Permohonan%20Penawaran%20Pengadaan%20PT%20NPP"
+                  class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">sales@nusantarapuncakperkasa.co.id</span>
+                </a>
+
+                <div class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">Kawasan Industri Pulogadung, Jakarta</span>
+                </div>
+              </div>
+
+              <div class="contact-cutout-br">
+                <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+
+                <a href="https://wa.me/6281288880199?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20pengadaan%20solusi%20daya"
+                  target="_blank" rel="noopener noreferrer" class="btn-pill-dark">
+                  <span>Chat WhatsApp</span>
+                  <span class="btn-pill-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Sisi Kanan: Google Maps dengan Inverted Border Radius Cutout -->
+            <div class="contact-map-col">
+              <div class="contact-map-card">
+                <div class="contact-map-frame">
+                  <iframe class="contact-map-iframe"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8990!3d-6.1947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f493132cf05d%3A0x6b6c4e09cb054be7!2sKawasan%20Industri%20Pulogadung!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                    title="Lokasi Fasilitas PT Nusantara Puncak Perkasa" aria-label="Google Maps Location"></iframe>
+                </div>
+
+                <div class="contact-cutout-br">
+                  <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                    shape-rendering="geometricPrecision">
+                    <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                  </svg>
+                  <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                    shape-rendering="geometricPrecision">
+                    <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                  </svg>
+
+                  <a href="https://maps.google.com/?q=Kawasan+Industri+Pulogadung+Jakarta" target="_blank"
+                    rel="noopener noreferrer" class="btn-pill-dark">
+                    <span>Buka Google Maps</span>
+                    <span class="btn-pill-icon">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M7 17 17 7" />
+                        <path d="M7 7h10v10" />
+                      </svg>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <svg class="newsletter-icon-side" width="84" height="84" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.5">
-            <path d="M3 7h18" />
-            <path d="M5 7v12" />
-            <path d="M19 7v12" />
-            <path d="M9 7v6a3 3 0 0 0 6 0V7" />
-          </svg>
         </div>
       </section>
     </div>
@@ -819,10 +951,14 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand-col">
-            <span class="footer-brand">
+            <div class="footer-brand">
               <img src="assets/logo-npp.jpg" alt="PT Nusantara Puncak Perkasa" class="footer-brand-logo" />
-            </span>
-            <p class="footer-desc">Solusi penyediaan infrastruktur kelistrikan dan proteksi daya industri nasional terpercaya.</p>
+              <div class="footer-brand-text">
+                <span class="footer-brand-sub">PT NUSANTARA PUNCAK PERKASA</span>
+              </div>
+            </div>
+            <p class="footer-desc">Solusi penyediaan infrastruktur kelistrikan dan proteksi daya industri nasional
+              terpercaya.</p>
             <div class="footer-socials">
               <a href="#" class="footer-social-link" aria-label="Instagram">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -845,7 +981,8 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="12" cy="12" r="10" />
                   <path d="M2 12h20" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                 </svg>
               </a>
             </div>

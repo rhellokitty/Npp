@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>PT Nusantara Puncak Perkasa — Industrial Power Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Global stylesheet (single source of CSS): src/style.css -->
+  <link rel="stylesheet" href="src/style.css">
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- 1. NAVBAR -->
+    <div class="container navbar-wrapper">
+      <header class="navbar-header">
+        <a href="#home" id="brandHomeLink" class="navbar-brand">
+          <img src="assets/logo-npp.jpg" alt="PT Nusantara Puncak Perkasa" class="navbar-brand-logo" />
+        </a>
+        <nav class="navbar-nav">
+          <a href="#home" class="navbar-link navbar-link-active" data-nav="Beranda">Beranda</a>
+          <a href="#services" class="navbar-link" data-nav="Layanan">Layanan</a>
+          <a href="#about" class="navbar-link" data-nav="Tentang Kami">Tentang Kami</a>
+          <a href="#review" class="navbar-link" data-nav="Testimoni">Testimoni</a>
+        </nav>
+        <div class="navbar-actions">
+          <button type="button" class="navbar-login-btn" id="navbarLoginBtn" title="Login Portal Internal">
+            <span>Masuk</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+          </button>
+        </div>
+      </header>
+    </div>
+
+    <!-- PRODUCT DETAIL VIEW (Vanilla JS Toggle) -->
+    <div id="productDetailView" class="detail-wrapper" style="display: none;">
+      <div class="container detail-topbar">
+        <button type="button" id="closeDetailBtn" class="detail-back-btn">
+          <span class="detail-back-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </span>
+          <span>Back to Showroom</span>
+        </button>
+
+        <div class="detail-breadcrumb">
+          <button type="button" id="breadcrumbCatalogBtn" class="detail-breadcrumb-link">Garage Catalog</button>
+          <span>/</span>
+          <span>For Sale (FS)</span>
+          <span>/</span>
+          <span class="detail-breadcrumb-current" id="detailBreadcrumbName">Nama Produk</span>
+        </div>
+      </div>
+
+      <section class="container detail-section">
+        <div class="detail-hero-grid">
+          <div class="detail-gallery-col">
+            <div class="detail-main-photo">
+              <div class="detail-cutout-tl">
+                <svg class="cutout-svg cutout-svg-tl-right" viewBox="-2 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-tl-bottom" viewBox="-2 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+                </svg>
+
+                <span class="detail-rarity-pill" id="detailDiscount">Discount</span>
+                <div class="detail-rating-pill">
+                  <svg class="hero-star-icon" width="12" height="12" viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <span id="detailRating">5.0</span>
+                  <span id="detailReviewsCount">(42)</span>
+                </div>
+              </div>
+
+              <img id="detailMainImg" src="" alt="" class="detail-main-img" />
+
+              <div class="detail-cutout-br">
+                <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+
+                <div class="detail-status-pill">
+                  <span class="detail-status-dot"></span>
+                  <span id="detailBadge">Ready Stock</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="detailGalleryGrid" class="detail-thumbs-grid"></div>
+          </div>
+
+          <div class="detail-summary-card">
+            <div class="detail-summary-header">
+              <span class="detail-subtitle" id="detailSubtitle">Subtitle</span>
+              <h1 class="detail-title" id="detailTitle">Title</h1>
+            </div>
+
+            <div class="detail-price-box">
+              <div>
+                <span class="detail-price-label">Offering Price</span>
+                <span class="detail-price-value" id="detailPrice">Price</span>
+              </div>
+              <span class="detail-price-note" id="detailPriceNote">
+                Negotiable
+              </span>
+            </div>
+
+            <div class="detail-checklist-box">
+              <span class="detail-checklist-heading">Unit & Document Status</span>
+              <ul class="detail-checklist" id="detailUnitOverview"></ul>
+            </div>
+
+            <div class="detail-metrics-grid" id="detailKeyMetrics"></div>
+
+            <div class="detail-contact-block">
+              <span class="detail-contact-caption">
+                Contact our marketing for more information & unit inspection:
+              </span>
+              <div class="detail-contact-grid">
+                <a href="https://wa.me/6281198765432" target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
+                  <div class="detail-wa-info">
+                    <span class="detail-wa-label">Sales & Project Inquiry (WhatsApp)</span>
+                    <span>+62 811-9876-5432</span>
+                  </div>
+                  <span class="btn-pill-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </a>
+                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
+                  <div class="detail-wa-info">
+                    <span class="detail-wa-label">Technical Helpdesk 24/7 (WhatsApp)</span>
+                    <span>+62 812-3456-7890</span>
+                  </div>
+                  <span class="btn-pill-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-mods-panel">
+          <div class="detail-mods-header">
+            <span class="detail-mods-tag">
+              #specs • Showroom Unit Description & Modification List
+            </span>
+            <h2 class="detail-panel-heading">Full Modification & Part Breakdown</h2>
+            <p class="detail-mods-desc" id="detailDescription">Description text</p>
+          </div>
+
+          <div class="detail-mods-grid" id="detailModCategories"></div>
+        </div>
+
+        <div class="detail-specs-panel">
+          <div class="detail-specs-header">
+            <div>
+              <span class="detail-mods-tag">Factory Data Sheet</span>
+              <h2 class="detail-panel-heading">Base Technical Specifications</h2>
+            </div>
+
+            <div class="detail-spec-tabs">
+              <button type="button" class="detail-spec-tab detail-spec-tab-active" data-spec-tab="engine">Spesifikasi
+                Elektrikal</button>
+              <button type="button" class="detail-spec-tab" data-spec-tab="chassis">Proteksi & Standar</button>
+              <button type="button" class="detail-spec-tab" data-spec-tab="dimensions">Dimensi & Lingkungan</button>
+            </div>
+          </div>
+
+          <div class="detail-specs-grid" id="detailSpecsGrid"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- MAIN LANDING VIEW -->
+    <div id="mainLandingContent">
+      <!-- 2. HERO SECTION -->
+      <div class="container hero-wrapper">
+        <section class="hero-section" id="home">
+          <div class="hero-top-grid">
+            <h1 class="hero-title">
+              Industrial <strong class="hero-title-strong">Power Solutions</strong><br />
+              for Critical Continuity
+            </h1>
+            <p class="hero-subtitle">
+              PT Nusantara Puncak Perkasa menyediakan rantai pasok pengadaan Battery, UPS, Stabilizer, Inverter, dan
+              Solar Panel berstandar industri dengan jaminan purna jual resmi.
+            </p>
+          </div>
+
+          <div class="hero-bento-grid">
+            <div class="hero-main-card">
+              <div class="hero-cutout-tl">
+                <svg class="cutout-svg cutout-svg-tl-right" viewBox="-2 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-tl-bottom" viewBox="-2 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+                </svg>
+
+                <div class="hero-avatar-list">
+                  <span class="hero-avatar-item">
+                    <img
+                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
+                      alt="Lead Engineer" class="hero-avatar-img" />
+                  </span>
+                  <span class="hero-avatar-item hero-avatar-overlap">
+                    <img
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+                      alt="Technician PIC" class="hero-avatar-img" />
+                  </span>
+                  <span class="hero-avatar-item hero-avatar-overlap">
+                    <img
+                      src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80"
+                      alt="Project Manager" class="hero-avatar-img" />
+                  </span>
+                  <span class="hero-avatar-item hero-avatar-overlap">
+                    <img
+                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
+                      alt="Site Supervisor" class="hero-avatar-img" />
+                  </span>
+                </div>
+                <div class="hero-rating-badge">
+                  <span class="hero-rating-title">250+ Proyek Industri Indonesia</span>
+                  <span class="hero-rating-sub">
+                    <svg class="hero-star-icon" width="12" height="12" viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    99.98% Proteksi Uptime
+                  </span>
+                </div>
+              </div>
+
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80"
+                alt="Sistem Daya Industri NPP" class="hero-main-img" />
+
+              <div class="hero-cutout-br">
+                <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+
+                <button type="button" class="btn-pill-dark" id="heroExploreBtn">
+                  <span>Jelajahi Solusi</span>
+                  <span class="btn-pill-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="hero-side-col">
+              <div class="hero-side-photo-card">
+                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80"
+                  alt="Battery Rack dan Power Conditioning" class="hero-side-photo-img" />
+              </div>
+
+              <div class="hero-highlights-list">
+                <div class="hero-highlight-card">
+                  <div class="hero-highlight-left">
+                    <div class="hero-highlight-thumb">
+                      <img
+                        src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=160&h=160&q=80"
+                        alt="Enterprise Modular UPS" class="hero-highlight-img" />
+                    </div>
+                    <div class="hero-highlight-info">
+                      <span class="hero-highlight-title">Enterprise Modular UPS</span>
+                      <div class="hero-highlight-meta">
+                        <span>10 kVA – 500 kVA</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="hero-highlight-btn" aria-label="Open Enterprise Modular UPS">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="hero-highlight-card">
+                  <div class="hero-highlight-left">
+                    <div class="hero-highlight-thumb">
+                      <img
+                        src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=160&h=160&q=80"
+                        alt="Industrial Battery Rack" class="hero-highlight-img" />
+                    </div>
+                    <div class="hero-highlight-info">
+                      <span class="hero-highlight-title">Industrial Battery Rack</span>
+                      <div class="hero-highlight-meta">
+                        <span>LiFePO4 & VRLA Deep Cycle</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="hero-highlight-btn" aria-label="Open Industrial Battery Rack">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 3. STATS STRIP -->
+      <section class="stats-section">
+        <div class="container stats-grid">
+          <div class="stats-item">
+            <span class="stats-number">10.000+</span>
+            <p class="stats-desc">SKU produk sistem daya dan suku cadang industri siap distribusi tepat waktu.</p>
+          </div>
+          <div class="stats-item">
+            <span class="stats-number">250+</span>
+            <p class="stats-desc">Proyek instalasi dan pengadaan fasilitas kritikal selesai dengan zero incident.</p>
+          </div>
+          <div class="stats-item">
+            <span class="stats-number">99.98%</span>
+            <p class="stats-desc">Tingkat keandalan daya dan proteksi downtime operasional bisnis mitra.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. ABOUT + FEATURES -->
+      <div class="container about-wrapper">
+        <section class="about-section" id="about">
+          <div class="about-top-grid">
+            <div class="about-content">
+              <h2 class="section-heading">Arsitektur Daya Mandiri, Menjamin Kontinuitas Operasional Pabrik.</h2>
+              <p class="about-desc">
+                Di PT Nusantara Puncak Perkasa, kami mengintegrasikan rekayasa sistem daya dengan produk berstandar
+                industri agar operasional fasilitas kritikal Anda terlindungi dari pemadaman dan fluktuasi listrik.
+              </p>
+              <button class="btn-pill-dark">
+                <span>Pelajari Layanan</span>
+                <span class="btn-pill-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M7 17 17 7" />
+                    <path d="M7 7h10v10" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+
+            <div class="about-media">
+              <div class="about-main-photo">
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
+                  alt="Fasilitas Sistem Penyimpanan dan Kelistrikan Daya" class="about-main-img" />
+              </div>
+
+              <div class="about-cutout-br">
+                <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+
+                <div class="about-overlap-photo">
+                  <img
+                    src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=400&q=80"
+                    alt="Inspeksi Teknis Panel Daya NPP" class="about-overlap-img" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-features-grid" id="services">
+            <div class="about-feature-card">
+              <div class="about-feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <h3 class="about-feature-title">Standar Mutu Industri</h3>
+              <p class="about-feature-desc">Seluruh unit bersertifikasi resmi (SNI, IEC, UL) dengan garansi prinsipal
+                langsung.</p>
+            </div>
+
+            <div class="about-feature-card">
+              <div class="about-feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                </svg>
+              </div>
+              <h3 class="about-feature-title">Efisiensi Energi Hijau</h3>
+              <p class="about-feature-desc">Solusi terintegrasi Solar PV dan inverter berkinerja tinggi guna menekan
+                biaya daya.</p>
+            </div>
+
+            <div class="about-feature-card">
+              <div class="about-feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3" />
+                  <path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z" />
+                  <path d="M4 18v2" />
+                  <path d="M20 18v2" />
+                </svg>
+              </div>
+              <h3 class="about-feature-title">Layanan & Komisioning</h3>
+              <p class="about-feature-desc">Logistik terintegrasi surat jalan resmi, instalasi teknis, dan kontrak
+                servis berkala 24/7.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 5. PRODUCT CATALOG -->
+      <section class="catalog-section" id="products">
+        <div class="container catalog-inner">
+          <div class="catalog-header">
+            <div>
+              <h2 class="section-heading">Katalog Pengadaan<br />Solusi Daya Industri</h2>
+            </div>
+            <button class="btn-pill-dark">
+              <span>Minta Penawaran</span>
+              <span class="btn-pill-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M7 17 17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="catalog-tabs">
+            <button type="button" class="catalog-tab-btn catalog-tab-active" data-cat="Semua">Semua</button>
+            <button type="button" class="catalog-tab-btn" data-cat="Battery">Battery</button>
+            <button type="button" class="catalog-tab-btn" data-cat="UPS">UPS</button>
+            <button type="button" class="catalog-tab-btn" data-cat="Stabilizer">Stabilizer</button>
+            <button type="button" class="catalog-tab-btn" data-cat="Inverter">Inverter</button>
+            <button type="button" class="catalog-tab-btn" data-cat="Solar Panel">Solar Panel</button>
+          </div>
+
+          <div class="catalog-grid" id="catalogGrid">
+            <!-- Product 1: Lithium LiFePO4 (Battery) -->
+            <article class="catalog-card" data-prod-id="1" data-prod-cat="Battery">
+              <span class="catalog-badge">LiFePO4</span>
+              <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+              </button>
+              <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80"
+                alt="Lithium LiFePO4 Energy Rack 48V" class="catalog-card-img" />
+              <div class="catalog-card-overlay">
+                <div>
+                  <h4 class="catalog-card-title">Lithium LiFePO4 Energy Rack 48V</h4>
+                  <span class="catalog-card-price">Hubungi Sales</span>
+                </div>
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Lithium LiFePO4 Energy Rack 48V details">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17 17 7" />
+                    <path d="M7 7h10v10" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+
+            <!-- Product 2: Enterprise Modular UPS (UPS) -->
+            <article class="catalog-card" data-prod-id="2" data-prod-cat="UPS">
+              <span class="catalog-badge">Online Double</span>
+              <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+              </button>
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80"
+                alt="Enterprise Modular UPS 100kVA" class="catalog-card-img" />
+              <div class="catalog-card-overlay">
+                <div>
+                  <h4 class="catalog-card-title">Enterprise Modular UPS 100kVA</h4>
+                  <span class="catalog-card-price">Hubungi Sales</span>
+                </div>
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Enterprise Modular UPS 100kVA details">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17 17 7" />
+                    <path d="M7 7h10v10" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+
+            <!-- Product 3: Industrial Servo Stabilizer (Stabilizer) -->
+            <article class="catalog-card" data-prod-id="3" data-prod-cat="Stabilizer">
+              <span class="catalog-badge">Servo 3P</span>
+              <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+              </button>
+              <img src="https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1000&q=80"
+                alt="Industrial Servo Stabilizer 150kVA" class="catalog-card-img" />
+              <div class="catalog-card-overlay">
+                <div>
+                  <h4 class="catalog-card-title">Industrial Servo Stabilizer 150kVA</h4>
+                  <span class="catalog-card-price">Hubungi Sales</span>
+                </div>
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Industrial Servo Stabilizer 150kVA details">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17 17 7" />
+                    <path d="M7 7h10v10" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+
+            <!-- Product 4: Pure Sine Wave Inverter (Inverter) -->
+            <article class="catalog-card" data-prod-id="4" data-prod-cat="Inverter">
+              <span class="catalog-badge">Hybrid</span>
+              <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+              </button>
+              <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80"
+                alt="Pure Sine Wave Inverter 15kW" class="catalog-card-img" />
+              <div class="catalog-card-overlay">
+                <div>
+                  <h4 class="catalog-card-title">Pure Sine Wave Inverter 15kW</h4>
+                  <span class="catalog-card-price">Hubungi Sales</span>
+                </div>
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Pure Sine Wave Inverter 15kW details">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17 17 7" />
+                    <path d="M7 7h10v10" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+
+            <!-- Product 5: Commercial Solar PV (Solar Panel) -->
+            <article class="catalog-card" data-prod-id="5" data-prod-cat="Solar Panel">
+              <span class="catalog-badge">Tier-1 Mono</span>
+              <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+              </button>
+              <img src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=1000&q=80"
+                alt="Commercial Solar PV Module 550Wp" class="catalog-card-img" />
+              <div class="catalog-card-overlay">
+                <div>
+                  <h4 class="catalog-card-title">Commercial Solar PV Module 550Wp</h4>
+                  <span class="catalog-card-price">Hubungi Sales</span>
+                </div>
+                <button type="button" class="catalog-card-action"
+                  aria-label="View Commercial Solar PV Module 550Wp details">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17 17 7" />
+                    <path d="M7 7h10v10" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+
+            <!-- Product 6: VRLA Deep Cycle Gel (Battery) -->
+            <article class="catalog-card" data-prod-id="6" data-prod-cat="Battery">
+              <span class="catalog-badge">Deep Cycle</span>
+              <button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+              </button>
+              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80"
+                alt="VRLA Deep Cycle Gel Battery 12V 200Ah" class="catalog-card-img" />
+              <div class="catalog-card-overlay">
+                <div>
+                  <h4 class="catalog-card-title">VRLA Deep Cycle Gel Battery 12V 200Ah</h4>
+                  <span class="catalog-card-price">Hubungi Sales</span>
+                </div>
+                <button type="button" class="catalog-card-action"
+                  aria-label="View VRLA Deep Cycle Gel Battery 12V 200Ah details">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17 17 7" />
+                    <path d="M7 7h10v10" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. CRAFTED NEW (2x2 BENTO) -->
+      <div class="container collection-wrapper">
+        <section class="collection-section">
+          <div class="collection-header">
+            <h2 class="section-heading">Solusi Terpadu.<br />Dirancang untuk Industri</h2>
+          </div>
+
+          <div class="collection-bento-grid">
+            <div class="collection-card">
+              <div class="collection-card-info">
+                <span class="collection-tag">Mission Critical</span>
+                <h3 class="collection-title">Data Center & Telekomunikasi</h3>
+                <ul class="collection-list">
+                  <li>Modular Online UPS 3-Phase</li>
+                  <li>Bank Battery Lithium LiFePO4</li>
+                  <li>Monitoring Modbus / SNMP</li>
+                  <li>SLA Dukungan Respon 24 Jam</li>
+                </ul>
+                <button class="btn-pill-dark">
+                  <span>View All</span>
+                  <span class="btn-pill-icon">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="collection-thumb">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=400&q=80"
+                  alt="Data Center Power Solutions" class="collection-thumb-img" />
+              </div>
+            </div>
+
+            <div class="collection-card">
+              <div class="collection-card-info">
+                <span class="collection-tag">Heavy Industry</span>
+                <h3 class="collection-title">Pabrik & Manufaktur</h3>
+                <ul class="collection-list">
+                  <li>Servo Stabilizer s/d 1000kVA</li>
+                  <li>Surge & Transient Suppressor</li>
+                  <li>Inverter Industri Mesin Presisi</li>
+                  <li>Pencegahan Rugi Downtime CNC</li>
+                </ul>
+                <button class="btn-pill-dark">
+                  <span>View All</span>
+                  <span class="btn-pill-icon">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="collection-thumb">
+                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80"
+                  alt="Industrial Manufacturing Power" class="collection-thumb-img" />
+              </div>
+            </div>
+
+            <div class="collection-card">
+              <div class="collection-card-info">
+                <span class="collection-tag">Renewable Energy</span>
+                <h3 class="collection-title">Commercial Solar & Storage</h3>
+                <ul class="collection-list">
+                  <li>Rooftop Solar PV Industri</li>
+                  <li>Hybrid Bidirectional Inverter</li>
+                  <li>Battery Energy Storage System</li>
+                  <li>Penghematan Tarif Beban Puncak</li>
+                </ul>
+                <button class="btn-pill-dark">
+                  <span>View All</span>
+                  <span class="btn-pill-icon">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="collection-thumb">
+                <img src="https://images.unsplash.com/photo-1508873535684-277a3cbcc4e8?auto=format&fit=crop&w=400&q=80"
+                  alt="Commercial Solar Energy" class="collection-thumb-img" />
+              </div>
+            </div>
+
+            <div class="collection-promo-card bg-carbon">
+              <span class="collection-promo-badge">Audit Daya</span>
+              <h3 class="collection-promo-title">Konsultasi Beban</h3>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 7. TESTIMONIALS -->
+      <section class="testimonial-section" id="review">
+        <div class="container testimonial-inner">
+          <div class="testimonial-header">
+            <h2 class="section-heading">Kepercayaan Klien &<br />Mitra Industri Kami</h2>
+            <button class="btn-pill-dark">
+              <span>Lihat Semua</span>
+              <span class="btn-pill-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M7 17 17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="testimonial-grid">
+            <article class="testimonial-card">
+              <div class="testimonial-avatar-cutout">
+                <svg class="cutout-alt-svg cutout-alt-tl" viewBox="0 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
+                </svg>
+                <svg class="cutout-alt-svg cutout-alt-br" viewBox="0 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
+                </svg>
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
+                  alt="Ir. Budi Prasetyo" />
+              </div>
+              <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+              <p class="testimonial-text">Pengadaan unit UPS 120kVA modular dan stabilizer 3-fasa dari PT Nusantara
+                Puncak Perkasa berjalan sangat transparan. Surat jalan, kartu stok, dan dokumen uji fungsi lengkap tanpa
+                kendala.</p>
+              <div class="testimonial-author">
+                <span class="author-name">Ir. Budi Prasetyo</span>
+                <span class="author-role">Head of Infrastructure, PT Data Mandiri Nusantara</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-avatar-cutout">
+                <svg class="cutout-alt-svg cutout-alt-tl" viewBox="0 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
+                </svg>
+                <svg class="cutout-alt-svg cutout-alt-br" viewBox="0 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
+                </svg>
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                  alt="Dewi Lestari, S.T." />
+              </div>
+              <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+              <p class="testimonial-text">Kebutuhan otonomi baterai lithium untuk sistem telekomunikasi kami terpenuhi
+                dengan presisi. Respon tim teknis sangat sigap saat komisioning di lokasi lapangan.</p>
+              <div class="testimonial-author">
+                <span class="author-name">Dewi Lestari, S.T.</span>
+                <span class="author-role">Procurement Manager, PT Sinergi Telekom</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-avatar-cutout">
+                <svg class="cutout-alt-svg cutout-alt-tl" viewBox="0 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
+                </svg>
+                <svg class="cutout-alt-svg cutout-alt-br" viewBox="0 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 -2 L0 -2 L0 0 A24 24 0 0 1 24 24 L26 24 Z" />
+                </svg>
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                  alt="Hendra Kusuma" />
+              </div>
+              <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+              <p class="testimonial-text">Integrasi sistem inverter hybrid dan panel surya komersial 200 kWp
+                menghasilkan efisiensi biaya beban operasional yang nyata sejak bulan pertama operasional.</p>
+              <div class="testimonial-author">
+                <span class="author-name">Hendra Kusuma</span>
+                <span class="author-role">Plant Operations Director, PT Baja Nusantara Perkasa</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. CONTACT & LOCATION SECTION -->
+      <section class="newsletter-section" id="contact">
+        <div class="newsletter-inner">
+          <div class="contact-bento">
+            <!-- Sisi Kiri: Bento Card Kontak dengan Inverted Border Radius Cutout -->
+            <div class="contact-info-col">
+              <h2 class="contact-heading">Hubungi Kami</h2>
+
+              <div class="contact-list">
+                <a href="https://wa.me/6281288880199?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20pengadaan%20solusi%20daya"
+                  target="_blank" rel="noopener noreferrer" class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.53 4.28c-.19 0-.41.07-.63.31-.22.24-.85.83-.85 2.02s.87 2.34.99 2.5c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28-.25-.13-1.48-.73-1.71-.81-.23-.09-.4-.13-.57.13-.17.25-.66.81-.81.98-.15.17-.3.19-.55.07-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.24.25-.4.08-.17.04-.31-.02-.44-.06-.12-.57-1.37-.78-1.88-.2-.49-.41-.43-.57-.44h-.49z" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">+62 812-8888-0199</span>
+                </a>
+
+                <a href="https://wa.me/6281197210888?text=Halo%20Tim%20Teknis%20PT%20NPP,%20saya%20ingin%20konsultasi%20spesifikasi%20teknis."
+                  target="_blank" rel="noopener noreferrer" class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.53 4.28c-.19 0-.41.07-.63.31-.22.24-.85.83-.85 2.02s.87 2.34.99 2.5c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28-.25-.13-1.48-.73-1.71-.81-.23-.09-.4-.13-.57.13-.17.25-.66.81-.81.98-.15.17-.3.19-.55.07-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.24.25-.4.08-.17.04-.31-.02-.44-.06-.12-.57-1.37-.78-1.88-.2-.49-.41-.43-.57-.44h-.49z" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">+62 811-9721-0888</span>
+                </a>
+
+                <a href="mailto:sales@nusantarapuncakperkasa.co.id?subject=Permohonan%20Penawaran%20Pengadaan%20PT%20NPP"
+                  class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">sales@nusantarapuncakperkasa.co.id</span>
+                </a>
+
+                <div class="contact-item">
+                  <div class="contact-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                  <span class="contact-item-value">Kawasan Industri Pulogadung, Jakarta</span>
+                </div>
+              </div>
+
+              <div class="contact-cutout-br">
+                <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+
+                <a href="https://wa.me/6281288880199?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20pengadaan%20solusi%20daya"
+                  target="_blank" rel="noopener noreferrer" class="btn-pill-dark">
+                  <span>Chat WhatsApp</span>
+                  <span class="btn-pill-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Sisi Kanan: Google Maps dengan Inverted Border Radius Cutout -->
+            <div class="contact-map-col">
+              <div class="contact-map-card">
+                <div class="contact-map-frame">
+                  <iframe class="contact-map-iframe"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8990!3d-6.1947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f493132cf05d%3A0x6b6c4e09cb054be7!2sKawasan%20Industri%20Pulogadung!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                    title="Lokasi Fasilitas PT Nusantara Puncak Perkasa" aria-label="Google Maps Location"></iframe>
+                </div>
+
+                <div class="contact-cutout-br">
+                  <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                    shape-rendering="geometricPrecision">
+                    <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                  </svg>
+                  <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                    shape-rendering="geometricPrecision">
+                    <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                  </svg>
+
+                  <a href="https://maps.google.com/?q=Kawasan+Industri+Pulogadung+Jakarta" target="_blank"
+                    rel="noopener noreferrer" class="btn-pill-dark">
+                    <span>Buka Google Maps</span>
+                    <span class="btn-pill-icon">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M7 17 17 7" />
+                        <path d="M7 7h10v10" />
+                      </svg>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 9. FOOTER -->
+    <footer class="footer-section">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <div class="footer-brand">
+              <img src="assets/logo-npp.jpg" alt="PT Nusantara Puncak Perkasa" class="footer-brand-logo" />
+              <div class="footer-brand-text">
+                <span class="footer-brand-sub">PT NUSANTARA PUNCAK PERKASA</span>
+              </div>
+            </div>
+            <p class="footer-desc">Solusi penyediaan infrastruktur kelistrikan dan proteksi daya industri nasional
+              terpercaya.</p>
+            <div class="footer-socials">
+              <a href="#" class="footer-social-link" aria-label="Instagram">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="Facebook">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="X">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="Website">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M2 12h20" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-links-col">
+            <span class="footer-col-heading">Katalog Produk</span>
+            <div class="footer-links-list">
+              <a href="#products" class="footer-link">Industrial Battery</a>
+              <a href="#products" class="footer-link">Enterprise UPS</a>
+              <a href="#products" class="footer-link">Servo Stabilizer</a>
+              <a href="#products" class="footer-link">Pure Sine Inverter</a>
+              <a href="#products" class="footer-link">Commercial Solar Panel</a>
+            </div>
+          </div>
+
+          <div class="footer-links-col">
+            <span class="footer-col-heading">Perusahaan</span>
+            <div class="footer-links-list">
+              <a href="#home" class="footer-link">Beranda</a>
+              <a href="#about" class="footer-link">Profil Korporat</a>
+              <a href="#services" class="footer-link">Layanan & Garansi</a>
+              <a href="#review" class="footer-link">Mitra & Proyek</a>
+              <a href="#contact" class="footer-link">Kontak B2B</a>
+            </div>
+          </div>
+
+          <div class="footer-links-col">
+            <span class="footer-col-heading">Buletin Industri</span>
+            <p class="footer-desc">Dapatkan pembaruan katalog teknis dan buletin efisiensi energi industri.</p>
+            <div class="footer-newsletter-box">
+              <input type="email" placeholder="Email Perusahaan..." class="footer-newsletter-input" />
+              <button type="button" class="footer-newsletter-btn">Kirim</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-copyright">
+          <span>© 2026 PT Nusantara Puncak Perkasa. Seluruh Hak Cipta Dilindungi.</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- FLOATING COLOR / THEME OPTION SWITCHER -->
+    <div class="theme-switcher">
+      <span class="theme-switcher-label">Tema Warna:</span>
+      <button type="button" class="theme-switcher-btn" data-theme-id="ohlins" title="Öhlins Gold">
+        <span class="theme-dot theme-dot-ohlins"></span>
+        <span>Öhlins Gold</span>
+      </button>
+      <button type="button" class="theme-switcher-btn theme-switcher-btn-active" data-theme-id="light" title="Light">
+        <span class="theme-dot theme-dot-light"></span>
+        <span>Light</span>
+      </button>
+      <button type="button" class="theme-switcher-btn" data-theme-id="brembo" title="Carbon Red">
+        <span class="theme-dot theme-dot-brembo"></span>
+        <span>Carbon Red</span>
+      </button>
+      <button type="button" class="theme-switcher-btn" data-theme-id="titanium" title="Titanium">
+        <span class="theme-dot theme-dot-titanium"></span>
+        <span>Titanium</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Vanilla JavaScript Logic (Pure JS, Zero Framework) -->
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. Data Store for Products
+      var products = {
+        1: {
+          id: 1,
+          name: 'Lithium LiFePO4 Energy Rack 48V',
+          subtitle: 'High Cycle Storage • Smart BMS RS485/CAN',
+          price: 'Hubungi Sales',
+          priceNote: 'Penawaran Formal B2B',
+          discount: 'LiFePO4',
+          rating: '4.9',
+          reviewsCount: 38,
+          badge: 'Ready Stock • Gudang Pusat',
+          image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80',
+          gallery: [
+            'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80'
+          ],
+          unitOverview: [
+            'Kapasitas 9.6 kWh per modul (48V / 200Ah)',
+            'Siklus hidup 6000+ cycles @ 80% DoD',
+            'Sertifikasi keselamatan IEC 62619, UL 1973, CE',
+            'Garansi resmi 5 tahun & ketersediaan sparepart'
+          ],
+          description: 'NPP Lithium LiFePO4 Energy Rack 48V 200Ah dirancang untuk penyimpanan energi andal pada pusat data, stasiun telekomunikasi, dan sistem off-grid komersial. Dilengkapi Smart BMS dengan proteksi overcharge, thermal runaway, dan cell balancing otomatis.',
+          keyMetrics: [
+            { label: 'Tegangan / Kapasitas', value: '48V / 200Ah', sub: '9.6 kWh Energi' },
+            { label: 'Siklus Hidup', value: '6000+ Cycles', sub: '@80% Depth of Discharge' },
+            { label: 'Garansi', value: '5 Tahun', sub: 'Garansi Prinsipal NPP' },
+            { label: 'Komunikasi', value: 'RS485 / CAN', sub: 'Modbus Protocol' }
+          ],
+          modCategories: [
+            { title: 'Sistem Sel & Elektrikal', items: ['Grade A Prismatic LiFePO4 Cells', 'Internal Fast Blown Fuse', 'DC Breaker Isolator 250A', 'Terminal Tembaga M8 Lapis Nikel'] },
+            { title: 'Smart Battery Management (BMS)', items: ['Active Cell Balancing Circuit', 'Over-Voltage & Under-Voltage Protection', 'Dual Probe Temperature Sensor', 'SOC LED & LCD Status Panel'] },
+            { title: 'Chassis & Pemasangan', items: ['Standard 19-inch Server Rack Mounting', 'Heavy Gauge Cold Rolled Steel Enclosure', 'IP21 Ingress Protection Rating'] }
+          ],
+          specs: {
+            engine: [
+              { label: 'Nominal Voltage', value: '48V DC (Operating: 42.0V - 54.0V)' },
+              { label: 'Rated Capacity', value: '200 Ah / 9,600 Wh' },
+              { label: 'Max Charge/Discharge Current', value: '100A Kontinu (150A Puncak 10s)' },
+              { label: 'Efisiensi Daya', value: '≥ 95% Round Trip' }
+            ],
+            chassis: [
+              { label: 'Proteksi Standar', value: 'IEC 62619, IEC 62040, UN38.3' },
+              { label: 'Interface Monitoring', value: 'RS485, CAN, Dry Contact Alarm' }
+            ],
+            dimensions: [
+              { label: 'Dimensi Unit (W x D x H)', value: '442 x 520 x 222 mm (5U)' },
+              { label: 'Berat Bersih', value: '78.5 kg' }
+            ]
+          }
+        },
+        2: {
+          id: 2,
+          name: 'Enterprise Modular UPS 100kVA',
+          subtitle: 'Online Double Conversion 3:3 • Hot Swappable',
+          price: 'Hubungi Sales',
+          priceNote: 'Termasuk Komisioning',
+          discount: 'Online Double',
+          rating: '5.0',
+          reviewsCount: 45,
+          badge: 'Tier III/IV Ready',
+          image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80',
+          gallery: [
+            'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80'
+          ],
+          unitOverview: [
+            'Kapasitas scalable modul 25kVA hingga total 100kVA',
+            'Power factor output 1.0 (kVA = kW)',
+            'Efisiensi tinggi hingga 96.5% pada mode double conversion',
+            'Maintenance bypass switch terintegrasi'
+          ],
+          description: 'UPS Modular Online Double Conversion NPP dirancang untuk perlindungan catu daya kritis fasilitas IT, perbankan, dan telekomunikasi. Arsitektur modular hot-swappable memungkinkan penambahan kapasitas tanpa memutus daya ke beban.',
+          keyMetrics: [
+            { label: 'Kapasitas', value: '100 kVA / 100 kW', sub: 'Power Factor 1.0' },
+            { label: 'Efisiensi', value: '96.5%', sub: 'Mode Double Conversion' },
+            { label: 'Redundansi', value: 'N+X Modular', sub: 'Hot Swappable Module' },
+            { label: 'Transfer Time', value: '0 ms', sub: 'Pure Online Sine Wave' }
+          ],
+          modCategories: [
+            { title: 'Modul Daya & Inverter', items: ['IGBT 3-Level Topologi Inverter', 'Hot-Swappable 25kVA Power Modules', 'Bypass Statis Sentral', 'Dynamic Voltage Regulation'] },
+            { title: 'Proteksi & Keandalan', items: ['Surge Protection Device Type II', 'Isolasi Galvanis Opsional', 'Perlindungan Korsleting Beban Penuh', 'Kepatuhan Standar IEC 62040-3'] },
+            { title: 'Antarmuka & Pengendalian', items: ['7-inch Color Touchscreen HMI', 'Dual Ethernet SNMP Card', 'Modbus RTU RS485 Interface', 'Dry Contact Relay Output'] }
+          ],
+          specs: {
+            engine: [
+              { label: 'Input Voltage', value: '380V/400V/415V AC 3-Phase + N (-40% s/d +25%)' },
+              { label: 'Output Voltage', value: '380V/400V/415V AC 3-Phase ±1%' },
+              { label: 'Output Power Factor', value: '1.0' },
+              { label: 'THDi / THDv', value: '< 3% Beban Linier' }
+            ],
+            chassis: [
+              { label: 'Standar Keamanan', value: 'IEC/EN 62040-1, IEC/EN 62040-2' },
+              { label: 'Proteksi Kabinet', value: 'IP20 dengan Filter Debu Modular' }
+            ],
+            dimensions: [
+              { label: 'Dimensi Kabinet (W x D x H)', value: '600 x 900 x 2000 mm' },
+              { label: 'Berat Kabinet Kosong', value: '190 kg (Modul: 28 kg/unit)' }
+            ]
+          }
+        },
+        3: {
+          id: 3,
+          name: 'Industrial Servo Stabilizer 150kVA',
+          subtitle: 'Heavy Duty 3-Phase • Motor Servo Jepang Presisi',
+          price: 'Hubungi Sales',
+          priceNote: 'Penawaran Formal B2B',
+          discount: 'Servo 3P',
+          rating: '4.8',
+          reviewsCount: 31,
+          badge: 'Industrial Grade',
+          image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1000&q=80',
+          gallery: [
+            'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1000&q=80'
+          ],
+          unitOverview: [
+            'Tegangan input lebar 280V – 430V 3-Fasa',
+            'Presisi regulasi tegangan output stabil 380V ±1%',
+            'Motor penggerak servo kecepatan tinggi buatan Jepang',
+            'Sistem bypass manual & otomatis untuk keandalan maksimal'
+          ],
+          description: 'Stabilizer tegangan industri NPP menjaga kestabilan voltase pada mesin pabrik, lini produksi CNC, robotik, dan mesin medis. Menghindarkan kerusakan akibat lonjakan (spike), penurunan voltase (sag), dan ketidakseimbangan fase kelistrikan.',
+          keyMetrics: [
+            { label: 'Kapasitas', value: '150 kVA', sub: '3-Fasa 380V Industri' },
+            { label: 'Akurasi', value: '± 1%', sub: 'High Precision Regulation' },
+            { label: 'Respon Kecepatan', value: '< 0.05 detik', sub: 'High-Torque Servo Motor' },
+            { label: 'Efisiensi', value: '> 98%', sub: 'Tembaga Murni 100%' }
+          ],
+          modCategories: [
+            { title: 'Komponen Transformator', items: ['Gulungan Tembaga Murni Kelas H', 'Inti Silikon Rendah Rugi Daya', 'Carbon Brush Tahan Aus Otomotif', 'Peredam Kebisingan Magnetik'] },
+            { title: 'Sistem Pengendali', items: ['Mikrokontroler Digital True RMS', 'Over-Voltage & Under-Voltage Cutoff', 'Auto-Phase Sequence Correction', 'Sistem Delay Proteksi Kompresor'] }
+          ],
+          specs: {
+            engine: [
+              { label: 'Rentang Input', value: '280V s/d 430V AC (3-Phase 4-Wire)' },
+              { label: 'Output Tegangan', value: '380V AC ± 1%' },
+              { label: 'Frekuensi', value: '50 Hz / 60 Hz ± 5%' },
+              { label: 'Distorsi Harmonik', value: 'Tidak menimbulkan distorsi gelombang tambahan' }
+            ],
+            chassis: [
+              { label: 'Sistem Pendinginan', value: 'Fan Pendingin Otomatis Berbasis Suhu' },
+              { label: 'Insulasi', value: 'Insulasi Kelas H (180°C)' }
+            ],
+            dimensions: [
+              { label: 'Dimensi Unit', value: '750 x 850 x 1450 mm' },
+              { label: 'Berat Bersih', value: '420 kg' }
+            ]
+          }
+        },
+        4: {
+          id: 4,
+          name: 'Pure Sine Wave Inverter 15kW',
+          subtitle: 'Bidirectional Hybrid Inverter • Built-in MPPT 120A',
+          price: 'Hubungi Sales',
+          priceNote: 'Penawaran Formal B2B',
+          discount: 'Hybrid',
+          rating: '4.9',
+          reviewsCount: 29,
+          badge: 'Smart Hybrid',
+          image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80',
+          gallery: [
+            'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80'
+          ],
+          unitOverview: [
+            'Output Pure Sine Wave sebersih daya jaringan PLN',
+            'Efisiensi konversi daya puncak mencapai 94.5%',
+            'Dual solar MPPT controller terintegrasi hingga 150V DC',
+            'Kompatibel penuh dengan bank baterai lithium & gel'
+          ],
+          description: 'Inverter pure sine wave industri NPP mengonversi arus DC menjadi AC berkualitas tinggi tanpa distorsi gelombang. Solusi ideal untuk penggerak motor industri, telekomunikasi, stasiun radio, dan sistem hibrida panel surya mandiri.',
+          keyMetrics: [
+            { label: 'Kapasitas Output', value: '15.000 Watt', sub: 'Kontinu 100% Beban' },
+            { label: 'Bentuk Gelombang', value: 'Pure Sine Wave', sub: 'THD < 2.5%' },
+            { label: 'Input DC', value: '48V / 96V DC', sub: 'Kompatibel Lithium/Gel' },
+            { label: 'Pengisi Daya', value: 'MPPT 120A', sub: 'Integrated Solar Controller' }
+          ],
+          modCategories: [
+            { title: 'Inverter & Sirkuit Daya', items: ['Toroidal Heavy Duty Transformer', 'Low Standby Self-Consumption Mode', 'Soft-Start Motor Protection', 'Surge Puncak 3x Daya Terpasang'] },
+            { title: 'Proteksi Lengkap', items: ['Reverse Polarity DC Protection', 'Short Circuit & Overload Auto Cutoff', 'Over Temperature Sensor Shutoff', 'Ground Fault Detection'] }
+          ],
+          specs: {
+            engine: [
+              { label: 'Tegangan Output', value: '220V/230V/240V AC Single Phase ±2%' },
+              { label: 'Lonjakan Daya Sesaat', value: '45,000 Watt (5 detik)' },
+              { label: 'Efisiensi Inversi', value: '94.5%' },
+              { label: 'Rentang MPPT PV', value: '60V - 145V DC' }
+            ],
+            chassis: [
+              { label: 'Proteksi Enclosure', value: 'Wall-Mount / Stand Heavy Steel Enclosure' },
+              { label: 'Suhu Operasional', value: '-10°C sampai +50°C' }
+            ],
+            dimensions: [
+              { label: 'Dimensi Unit', value: '550 x 380 x 240 mm' },
+              { label: 'Berat Unit', value: '48 kg' }
+            ]
+          }
+        },
+        5: {
+          id: 5,
+          name: 'Commercial Solar PV Module 550Wp',
+          subtitle: 'Tier-1 Monocrystalline Half-Cell PERC',
+          price: 'Hubungi Sales',
+          priceNote: 'Proyek EPC & Kontraktor',
+          discount: 'Tier-1 Mono',
+          rating: '5.0',
+          reviewsCount: 67,
+          badge: 'Tier-1 Certified',
+          image: 'https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=1000&q=80',
+          gallery: [
+            'https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=1000&q=80'
+          ],
+          unitOverview: [
+            'Efisiensi modul tinggi mencapai 21.5%',
+            'Teknologi 144 Half-Cell mengurangi kehilangan resistif',
+            'Ketahanan beban mekanis angin 2400Pa dan salju 5400Pa',
+            'Garansi performa linear 25 tahun & produk 12 tahun'
+          ],
+          description: 'Modul surya fotovoltaik monokristalin NPP menghadirkan pembangkitan listrik optimal untuk atap pabrik, pergudangan, dan PLTS komersial. Menggunakan teknologi sel PERC berefisiensi tinggi dengan ketahanan anti-PID (Potential Induced Degradation).',
+          keyMetrics: [
+            { label: 'Daya Puncak', value: '550 Wp', sub: 'Toleransi Positif 0~+5W' },
+            { label: 'Efisiensi Modul', value: '21.5%', sub: 'Monocrystalline PERC' },
+            { label: 'Jumlah Sel', value: '144 (6 x 24)', sub: 'Multi-Busbar Half-Cut' },
+            { label: 'Garansi Kinerja', value: '25 Tahun', sub: 'Linear Degradation Guarantee' }
+          ],
+          modCategories: [
+            { title: 'Konstruksi Modul', items: ['Kaca Tempered 3.2mm Anti-Reflektif', 'Bingkai Aluminium Anodized Tahan Korosi', 'Junction Box IP68 dengan Dioda Bypass', 'Kabel Surya 4mm² Konektor MC4 Kompatibel'] },
+            { title: 'Sertifikasi & Kepatuhan', items: ['IEC 61215, IEC 61730, UL 61730', 'Uji Korosi Garam & Amonia Lolos', 'Sertifikasi Kebakaran Kelas C'] }
+          ],
+          specs: {
+            engine: [
+              { label: 'Maximum Power (Pmax)', value: '550 Watt Peak' },
+              { label: 'Optimum Operating Voltage (Vmp)', value: '41.95 V' },
+              { label: 'Optimum Operating Current (Imp)', value: '13.12 A' },
+              { label: 'Open Circuit Voltage (Voc)', value: '49.80 V' }
+            ],
+            chassis: [
+              { label: 'Beban Mekanis', value: '5400 Pa Depan / 2400 Pa Belakang' },
+              { label: 'Junction Box', value: 'IP68 Rated, 3 Dioda Bypass' }
+            ],
+            dimensions: [
+              { label: 'Dimensi Panel', value: '2278 x 1134 x 35 mm' },
+              { label: 'Berat', value: '28.0 kg' }
+            ]
+          }
+        },
+        6: {
+          id: 6,
+          name: 'VRLA Deep Cycle Gel Battery 12V 200Ah',
+          subtitle: 'Maintenance Free • High Reliability Telecom & Solar',
+          price: 'Hubungi Sales',
+          priceNote: 'Penawaran Formal B2B',
+          discount: 'Deep Cycle',
+          rating: '4.8',
+          reviewsCount: 41,
+          badge: 'Industrial Gel',
+          image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80',
+          gallery: [
+            'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80'
+          ],
+          unitOverview: [
+            'Kapasitas 12V 200Ah (C10 rating)',
+            'Bebas perawatan (Maintenance Free) tanpa isi ulang cairan',
+            'Elektrolit silika gel Jerman berkualitas tinggi',
+            'Ketahanan suhu tinggi dan self-discharge sangat rendah'
+          ],
+          description: 'Baterai VRLA Deep Cycle Gel NPP menghadirkan performa stabil pada siklus pengisian berulang. Sangat cocok sebagai cadangan daya UPS kritis, telekomunikasi BTS, sistem sinyal navigasi, dan solar inverter.',
+          keyMetrics: [
+            { label: 'Tegangan / Kapasitas', value: '12V / 200Ah', sub: '10HR Rate @ 25°C' },
+            { label: 'Tipe Elektrolit', value: 'Silica Gel', sub: 'Non-Spillable Design' },
+            { label: 'Masa Desain', value: '10 - 12 Tahun', sub: 'Float Service Life' },
+            { label: 'Terminal', value: 'Tembaga M8', sub: 'Low Resistance' }
+          ],
+          modCategories: [
+            { title: 'Material & Konstruksi', items: ['Plat Timbal Kemurnian 99.99%', 'Pemisah Microporous Polymer AGM/Gel', 'Katup Pengaman Tekanan Satu Arah', 'Wadah Plastik ABS Tahan Api (UL94-V0)'] },
+            { title: 'Standar Pengujian', items: ['Standar IEC 60896-21/22', 'Kepatuhan Standar Baterai Telekomunikasi', 'Sertifikasi CE & ISO 9001/14001'] }
+          ],
+          specs: {
+            engine: [
+              { label: 'Tegangan Nominal', value: '12V' },
+              { label: 'Kapasitas (20Hr)', value: '200 Ah (10.0A ke 10.8V)' },
+              { label: 'Resistansi Internal', value: 'Sekitar 3.5 mΩ (Penuh Terisi)' },
+              { label: 'Tegangan Floating Charge', value: '13.5V - 13.8V @ 25°C' }
+            ],
+            chassis: [
+              { label: 'Bahan Wadah', value: 'ABS Tahan Benturan dan Api' },
+              { label: 'Koneksi Terminal', value: 'Baut Tembaga M8' }
+            ],
+            dimensions: [
+              { label: 'Dimensi Unit (L x W x H)', value: '522 x 240 x 218 mm (Total H: 224 mm)' },
+              { label: 'Berat Bersih', value: '60.5 kg' }
+            ]
+          }
+        }
+      };
+
+      // 2. Elements Cache
+      var mainLandingContent = document.getElementById('mainLandingContent');
+      var productDetailView = document.getElementById('productDetailView');
+      var closeDetailBtn = document.getElementById('closeDetailBtn');
+      var breadcrumbCatalogBtn = document.getElementById('breadcrumbCatalogBtn');
+      var brandHomeLink = document.getElementById('brandHomeLink');
+      var heroExploreBtn = document.getElementById('heroExploreBtn');
+
+      var detailBreadcrumbName = document.getElementById('detailBreadcrumbName');
+      var detailDiscount = document.getElementById('detailDiscount');
+      var detailRating = document.getElementById('detailRating');
+      var detailReviewsCount = document.getElementById('detailReviewsCount');
+      var detailMainImg = document.getElementById('detailMainImg');
+      var detailBadge = document.getElementById('detailBadge');
+      var detailGalleryGrid = document.getElementById('detailGalleryGrid');
+      var detailSubtitle = document.getElementById('detailSubtitle');
+      var detailTitle = document.getElementById('detailTitle');
+      var detailPrice = document.getElementById('detailPrice');
+      var detailPriceNote = document.getElementById('detailPriceNote');
+      var detailUnitOverview = document.getElementById('detailUnitOverview');
+      var detailKeyMetrics = document.getElementById('detailKeyMetrics');
+      var detailDescription = document.getElementById('detailDescription');
+      var detailModCategories = document.getElementById('detailModCategories');
+      var detailSpecsGrid = document.getElementById('detailSpecsGrid');
+
+      var currentProduct = null;
+      var activeSpecTab = 'engine';
+
+      // 3. Open & Close Product Detail
+      function openProductDetail(id) {
+        var p = products[id];
+        if (!p) return;
+        currentProduct = p;
+        activeSpecTab = 'engine';
+
+        detailBreadcrumbName.textContent = p.name;
+        detailDiscount.textContent = p.discount;
+        detailRating.textContent = p.rating;
+        detailReviewsCount.textContent = '(' + p.reviewsCount + ')';
+        detailMainImg.src = p.image;
+        detailMainImg.alt = p.name;
+        detailBadge.textContent = p.badge;
+        detailSubtitle.textContent = p.subtitle;
+        detailTitle.textContent = p.name;
+        detailPrice.textContent = p.price;
+        detailPriceNote.textContent = p.priceNote || 'Negotiable';
+        detailDescription.textContent = p.description;
+
+        // Thumbs
+        detailGalleryGrid.innerHTML = '';
+        if (p.gallery && p.gallery.length) {
+          p.gallery.forEach(function (url, idx) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'detail-thumb-btn' + (idx === 0 ? ' detail-thumb-active' : '');
+            btn.innerHTML = '<img src="' + url + '" alt="' + p.name + '" class="detail-thumb-img" />';
+            btn.addEventListener('click', function () {
+              detailMainImg.src = url;
+              document.querySelectorAll('.detail-thumb-btn').forEach(function (b) { b.classList.remove('detail-thumb-active'); });
+              btn.classList.add('detail-thumb-active');
+            });
+            detailGalleryGrid.appendChild(btn);
+          });
+        }
+
+        // Unit Overview
+        detailUnitOverview.innerHTML = '';
+        if (p.unitOverview) {
+          p.unitOverview.forEach(function (point) {
+            var li = document.createElement('li');
+            li.className = 'detail-checklist-item';
+            li.innerHTML = '<span class="detail-check-icon">✓</span><span>' + point + '</span>';
+            detailUnitOverview.appendChild(li);
+          });
+        }
+
+        // Key Metrics
+        detailKeyMetrics.innerHTML = '';
+        if (p.keyMetrics) {
+          p.keyMetrics.forEach(function (m) {
+            var div = document.createElement('div');
+            div.className = 'detail-metric-card';
+            div.innerHTML = '<span class="detail-metric-label">' + m.label + '</span><span class="detail-metric-value">' + m.value + '</span><span class="detail-metric-sub">' + m.sub + '</span>';
+            detailKeyMetrics.appendChild(div);
+          });
+        }
+
+        // Mod Categories
+        detailModCategories.innerHTML = '';
+        if (p.modCategories) {
+          p.modCategories.forEach(function (cat) {
+            var div = document.createElement('div');
+            div.className = 'detail-mod-card';
+            var itemsHtml = cat.items.map(function (it) {
+              return '<li class="detail-mod-item"><span class="detail-mod-bullet"></span><span>' + it + '</span></li>';
+            }).join('');
+            div.innerHTML = '<div class="detail-mod-card-head"><h3 class="detail-mod-title">' + cat.title + '</h3><span class="detail-mod-badge">' + cat.items.length + ' items</span></div><ul class="detail-mod-list">' + itemsHtml + '</ul>';
+            detailModCategories.appendChild(div);
+          });
+        }
+
+        // Render Specs
+        renderSpecs();
+
+        // Show detail view
+        mainLandingContent.style.display = 'none';
+        productDetailView.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function closeProductDetail() {
+        productDetailView.style.display = 'none';
+        mainLandingContent.style.display = 'block';
+        currentProduct = null;
+      }
+
+      function renderSpecs() {
+        if (!currentProduct || !currentProduct.specs) return;
+        var tabData = currentProduct.specs[activeSpecTab] || [];
+        detailSpecsGrid.innerHTML = '';
+        tabData.forEach(function (row) {
+          var div = document.createElement('div');
+          div.className = 'detail-spec-row';
+          div.innerHTML = '<span class="detail-spec-label">' + row.label + '</span><span class="detail-spec-val">' + row.value + '</span>';
+          detailSpecsGrid.appendChild(div);
+        });
+
+        document.querySelectorAll('.detail-spec-tab').forEach(function (t) {
+          if (t.getAttribute('data-spec-tab') === activeSpecTab) {
+            t.classList.add('detail-spec-tab-active');
+          } else {
+            t.classList.remove('detail-spec-tab-active');
+          }
+        });
+      }
+
+      // Spec Tab Click Handlers
+      document.querySelectorAll('.detail-spec-tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          activeSpecTab = btn.getAttribute('data-spec-tab');
+          renderSpecs();
+        });
+      });
+
+      // Close Detail Buttons
+      if (closeDetailBtn) closeDetailBtn.addEventListener('click', closeProductDetail);
+      if (breadcrumbCatalogBtn) breadcrumbCatalogBtn.addEventListener('click', closeProductDetail);
+      if (brandHomeLink) brandHomeLink.addEventListener('click', closeProductDetail);
+      if (heroExploreBtn) {
+        heroExploreBtn.addEventListener('click', function () {
+          var el = document.getElementById('products');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+
+      // 4. Catalog Card Click Handler
+      document.querySelectorAll('#catalogGrid .catalog-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          var prodId = card.getAttribute('data-prod-id');
+          openProductDetail(prodId);
+        });
+      });
+
+      // Wishlist toggle
+      document.querySelectorAll('.catalog-wishlist-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var svg = btn.querySelector('svg');
+          if (svg.getAttribute('fill') === 'currentColor') {
+            svg.setAttribute('fill', 'none');
+          } else {
+            svg.setAttribute('fill', 'currentColor');
+          }
+        });
+      });
+
+      // 5. Catalog Category Filter
+      var catButtons = document.querySelectorAll('.catalog-tab-btn');
+      var cards = document.querySelectorAll('#catalogGrid .catalog-card');
+
+      catButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var cat = btn.getAttribute('data-cat');
+          catButtons.forEach(function (b) { b.classList.remove('catalog-tab-active'); });
+          btn.classList.add('catalog-tab-active');
+
+          cards.forEach(function (card) {
+            var prodCat = card.getAttribute('data-prod-cat');
+            if (cat === 'Semua' || prodCat === cat) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // 6. Navigation Active Links
+      var navLinks = document.querySelectorAll('.navbar-link');
+      navLinks.forEach(function (lnk) {
+        lnk.addEventListener('click', function () {
+          closeProductDetail();
+          navLinks.forEach(function (l) { l.classList.remove('navbar-link-active'); });
+          lnk.classList.add('navbar-link-active');
+        });
+      });
+
+      // 7. Theme Switcher
+      var themeButtons = document.querySelectorAll('.theme-switcher-btn');
+      themeButtons.forEach(function (tBtn) {
+        tBtn.addEventListener('click', function () {
+          var themeId = tBtn.getAttribute('data-theme-id');
+          document.documentElement.setAttribute('data-theme', themeId);
+          themeButtons.forEach(function (b) { b.classList.remove('theme-switcher-btn-active'); });
+          tBtn.classList.add('theme-switcher-btn-active');
+        });
+      });
+
+      // 8. Newsletter Form
+      var newsletterForm = document.getElementById('newsletterForm');
+      var newsletterSubmitBtn = document.getElementById('newsletterSubmitBtn');
+      var newsletterEmailInput = document.getElementById('newsletterEmailInput');
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (newsletterEmailInput && newsletterEmailInput.value.trim()) {
+            newsletterSubmitBtn.textContent = 'Terkirim!';
+            newsletterEmailInput.value = '';
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
