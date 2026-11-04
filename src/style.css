@@ -1528,11 +1528,6 @@ a.contact-simple-val:hover {
 
 .footer-link {
   color: #e4e4e7;
-  transition: color 0.2s ease;
-}
-
-.footer-link:hover {
-  color: var(--accent-color);
 }
 
 .footer-newsletter-box {
