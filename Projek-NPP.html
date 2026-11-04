@@ -1026,27 +1026,6 @@
       </div>
     </footer>
 
-    <!-- FLOATING COLOR / THEME OPTION SWITCHER -->
-    <div class="theme-switcher">
-      <span class="theme-switcher-label">Tema Warna:</span>
-      <button type="button" class="theme-switcher-btn" data-theme-id="ohlins" title="Öhlins Gold">
-        <span class="theme-dot theme-dot-ohlins"></span>
-        <span>Öhlins Gold</span>
-      </button>
-      <button type="button" class="theme-switcher-btn theme-switcher-btn-active" data-theme-id="light" title="Light">
-        <span class="theme-dot theme-dot-light"></span>
-        <span>Light</span>
-      </button>
-      <button type="button" class="theme-switcher-btn" data-theme-id="brembo" title="Carbon Red">
-        <span class="theme-dot theme-dot-brembo"></span>
-        <span>Carbon Red</span>
-      </button>
-      <button type="button" class="theme-switcher-btn" data-theme-id="titanium" title="Titanium">
-        <span class="theme-dot theme-dot-titanium"></span>
-        <span>Titanium</span>
-      </button>
-    </div>
-
   </div>
 
   <!-- Vanilla JavaScript Logic (Pure JS, Zero Framework) -->
@@ -1554,17 +1533,6 @@
           closeProductDetail();
           navLinks.forEach(function (l) { l.classList.remove('navbar-link-active'); });
           lnk.classList.add('navbar-link-active');
-        });
-      });
-
-      // 7. Theme Switcher
-      var themeButtons = document.querySelectorAll('.theme-switcher-btn');
-      themeButtons.forEach(function (tBtn) {
-        tBtn.addEventListener('click', function () {
-          var themeId = tBtn.getAttribute('data-theme-id');
-          document.documentElement.setAttribute('data-theme', themeId);
-          themeButtons.forEach(function (b) { b.classList.remove('theme-switcher-btn-active'); });
-          tBtn.classList.add('theme-switcher-btn-active');
         });
       });
 
