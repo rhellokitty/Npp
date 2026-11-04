@@ -4,14 +4,16 @@
 > **ATURAN MUTLAK DESAIN:** DILARANG KERAS mengubah desain, layout, komponen, atau styling yang sudah ada KECUALI atas instruksi eksplisit dan spesifik dari user. Pertahankan 100% desain yang sudah ada dan hanya lakukan perubahan tepat pada bagian yang diminta.
 > **ATURAN MUTLAK PERUBAHAN MANUAL:** DILARANG KERAS menimpa, menghapus, atau mengembalikan (revert) bagian kode, teks, aset, atau styling yang sudah diubah secara manual oleh USER. Selalu periksa dan pertahankan perubahan manual user secara utuh.
 > **ATURAN MUTLAK MINIMALIS & CLEAN (NO CLUTTER):** DILARANG menambahkan elemen dekoratif/teks pengisi yang tidak diminta seperti `.section-tag` berulang, badge kecil berlebih, atau `.contact-desc`/paragraf basa-basi pada section kontak. Pertahankan layout tetap clean, to-the-point, dan berfokus pada elemen esensial (heading, kontak langsung, dan maps).
+> **ATURAN MUTLAK NO HOVER LIFT (ZERO TRANSLATE-Y):** DILARANG KERAS menambahkan efek gerak naik ke atas pada hover (`transform: translateY(-...)`) pada tombol, kartu, atau elemen apa pun di seluruh proyek. Pada `.btn-contact-primary`, DILARANG menambahkan efek hover apa pun (wajib static tanpa perubahan visual saat hover).
 
 ## 1. Lingkup Proyek & Stack
 - **Fokus Saat Ini:** Company Profile Publik PT Nusantara Puncak Perkasa (NPP) — Pengadaan & Solusi Industrial Power: **Battery, UPS, Stabilizer, Inverter, dan Solar Panel**, dengan integrasi pintu masuk ke Portal Internal.
 - **Pure Web Stack (Zero Vue/Framework):** WAJIB menggunakan pure **HTML5**, **CSS3**, dan **Vanilla JavaScript** murni. Dilarang menggunakan Vue, React, atau build tool runtime framework.
 
-## 2. Invarian Global (Zero Border & Scrollbar)
+## 2. Invarian Global (Zero Border, Scrollbar & No Hover Lift)
 - **Zero Border & Box-Shadow:** Dilarang menggunakan `border-*`, `ring-*`, atau `shadow-*`. Pemisah HANYA via kontras background (`var(--bg-page)` vs `var(--bg-section-alt)`) atau padding tipis (`2px`).
 - **Zero Scrollbar:** `scrollbar-width: none`, `::-webkit-scrollbar { display: none }`. Scroll overflow horizontal menggunakan `overflow-x: clip`.
+- **Zero Hover Lift:** Dilarang menggunakan `transform: translateY(-...)` pada hover state elemen apa pun di seluruh proyek. Semua tombol dan elemen harus stabil tanpa melompat/naik saat disentuh kursor.
 
 ## 3. Warna & Multi-Theme
 - **Theme Default (`light` / Corporate Navy & Industrial Gold):** Base `#ffffff` (`--bg-page`), Surface `#f4f6fa` (`--bg-section-alt`), Heading `#0a1b33` (`--text-primary`), Teks `#4b5d73` (`--text-secondary`), Aksen Utama `#0c4a96` (Corporate Navy Logo NPP), Aksen Sekunder `#c99d51` / `#d4a249` (Warm Industrial Gold Logo NPP).
