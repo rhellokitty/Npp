@@ -722,7 +722,7 @@ button:active {
 .hero-clients-track {
   display: flex;
   width: max-content;
-  animation: heroClientsMarquee 45s linear infinite;
+  animation: heroClientsMarquee 50s linear infinite;
   will-change: transform;
 }
 
@@ -742,8 +742,8 @@ button:active {
 .hero-clients-group {
   display: flex;
   align-items: center;
-  gap: 72px;
-  padding-right: 72px;
+  gap: 84px;
+  padding-right: 84px;
   flex-shrink: 0;
 }
 
@@ -751,18 +751,18 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 64px;
+  height: 80px;
   flex-shrink: 0;
   cursor: pointer;
 }
 
 .hero-client-logo {
-  height: 50px;
-  max-width: 170px;
+  height: 66px;
+  max-width: 210px;
   width: auto;
   object-fit: contain;
   filter: grayscale(100%);
-  opacity: 0.55;
+  opacity: 0.6;
   transition: filter 0.3s ease, opacity 0.3s ease;
   mix-blend-mode: multiply;
 }
@@ -775,28 +775,33 @@ button:active {
 html:not([data-theme="light"]) .hero-client-logo {
   mix-blend-mode: normal;
   background-color: rgba(255, 255, 255, 0.95);
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
 }
 
 @media (max-width: 768px) {
   .hero-clients-wrapper {
-    gap: 14px;
-    margin-top: 8px;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .hero-clients-title {
+    font-size: 1.05rem;
+    padding: 0 16px;
   }
 
   .hero-clients-group {
-    gap: 48px;
-    padding-right: 48px;
+    gap: 56px;
+    padding-right: 56px;
   }
 
   .hero-client-item {
-    height: 52px;
+    height: 64px;
   }
 
   .hero-client-logo {
-    height: 38px;
-    max-width: 130px;
+    height: 48px;
+    max-width: 160px;
   }
 }
 
