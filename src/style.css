@@ -1455,26 +1455,10 @@ a.contact-simple-val:hover {
 .footer-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-.footer-brand-logo {
-  height: 48px;
-  width: auto;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  background-color: #ffffff;
-  padding: 4px 8px;
-}
-
-.footer-brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
 }
 
 .footer-brand-sub {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: #d4d4d8;
