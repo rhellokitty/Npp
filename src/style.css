@@ -1102,20 +1102,6 @@ button:active {
   object-fit: cover;
 }
 
-.customer-avatar-badge {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-full);
-  background-color: var(--accent-color);
-  color: var(--text-inverse);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
-}
-
 .quote-icon {
   color: #111111;
 }
