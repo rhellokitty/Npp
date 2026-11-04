@@ -675,6 +675,112 @@ button:active {
   }
 }
 
+/* Hero Clients Marquee Slider */
+.hero-clients-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.hero-clients-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  opacity: 0.75;
+  text-align: center;
+}
+
+.hero-clients-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.hero-clients-track {
+  display: flex;
+  width: max-content;
+  animation: heroClientsMarquee 38s linear infinite;
+  will-change: transform;
+}
+
+.hero-clients-slider:hover .hero-clients-track {
+  animation-play-state: paused;
+}
+
+@keyframes heroClientsMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.hero-clients-group {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding-right: 60px;
+  flex-shrink: 0;
+}
+
+.hero-client-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.hero-client-logo {
+  height: 36px;
+  max-width: 130px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.55;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  mix-blend-mode: multiply;
+}
+
+.hero-client-item:hover .hero-client-logo {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+html:not([data-theme="light"]) .hero-client-logo {
+  mix-blend-mode: normal;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 768px) {
+  .hero-clients-wrapper {
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .hero-clients-group {
+    gap: 40px;
+    padding-right: 40px;
+  }
+
+  .hero-client-logo {
+    height: 28px;
+    max-width: 110px;
+  }
+}
+
 /* ==========================================================================
    3. STATS STRIP SECTION (.stats-*)
    ========================================================================== */
