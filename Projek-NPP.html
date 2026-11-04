@@ -1504,6 +1504,25 @@
         });
       });
 
+      // 7. Auto Hide / Reveal Navbar on Scroll
+      var navbarWrapper = document.querySelector('.navbar-wrapper');
+      var lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      window.addEventListener('scroll', function () {
+        var currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScrollY > 60 && currentScrollY > lastScrollY) {
+          // Scroll ke bawah: sembunyikan navbar
+          if (navbarWrapper) {
+            navbarWrapper.classList.add('navbar-hidden');
+          }
+        } else {
+          // Scroll ke atas atau kembali ke top: tampilkan navbar
+          if (navbarWrapper) {
+            navbarWrapper.classList.remove('navbar-hidden');
+          }
+        }
+        lastScrollY = Math.max(0, currentScrollY);
+      }, { passive: true });
+
       // 8. Newsletter Form
       var newsletterForm = document.getElementById('newsletterForm');
       var newsletterSubmitBtn = document.getElementById('newsletterSubmitBtn');

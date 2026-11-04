@@ -205,15 +205,24 @@ button:active {
    1. NAVBAR SECTION (.navbar-*)
    ========================================================================== */
 .navbar-wrapper {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
   background-color: var(--bg-page);
-  transition: background-color 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+}
+
+.navbar-wrapper.navbar-hidden {
+  transform: translateY(-100%);
 }
 
 .navbar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 0;
+  padding: 20px 0;
 }
 
 .navbar-brand {
@@ -639,10 +648,12 @@ button:active {
 }
 
 @media (max-width: 1024px) {
+
   .hero-top-grid,
   .hero-bento-grid {
     grid-template-columns: 1fr;
   }
+
   .hero-subtitle {
     justify-self: start;
   }
@@ -652,9 +663,11 @@ button:active {
   .hero-title {
     font-size: 2.25rem;
   }
+
   .hero-title-strong {
     font-size: 2.45rem;
   }
+
   .hero-main-card {
     height: 380px;
   }
@@ -839,6 +852,7 @@ button:active {
   .about-main-photo {
     height: 270px;
   }
+
   .about-overlap-photo {
     width: 150px;
     height: 100px;
@@ -1331,6 +1345,7 @@ button:active {
 }
 
 .contact-simple-val {
+  display: flex;
   color: var(--text-secondary);
   font-size: 0.95rem;
   font-weight: 500;
@@ -2177,6 +2192,7 @@ a.contact-simple-val:hover {
   .detail-hero-grid {
     grid-template-columns: 1fr;
   }
+
   .detail-mods-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2186,18 +2202,22 @@ a.contact-simple-val:hover {
   .detail-main-photo {
     height: 360px;
   }
+
   .detail-contact-grid,
   .detail-mods-grid,
   .detail-specs-grid {
     grid-template-columns: 1fr;
   }
+
   .detail-spec-row {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .detail-spec-val {
     text-align: left;
   }
+
   .detail-mods-panel,
   .detail-specs-panel {
     padding: 24px;
