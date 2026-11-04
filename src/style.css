@@ -167,7 +167,7 @@ button:active {
   border-radius: var(--radius-full);
   font-size: 0.78rem;
   font-weight: 600;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .btn-pill-dark:hover {
@@ -289,7 +289,7 @@ button:active {
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .navbar-login-btn:hover {
@@ -306,7 +306,7 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .navbar-icon-btn:hover {
@@ -1377,12 +1377,6 @@ a.contact-simple-val:hover {
   font-size: 0.88rem;
   font-weight: 600;
   text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.15s ease;
-}
-
-.btn-contact-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
 }
 
 .btn-contact-secondary {
@@ -1396,13 +1390,12 @@ a.contact-simple-val:hover {
   font-size: 0.88rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .btn-contact-secondary:hover {
   background-color: var(--bg-dark);
   color: #ffffff;
-  transform: translateY(-1px);
 }
 
 .contact-map-side {
@@ -1938,7 +1931,7 @@ a.contact-simple-val:hover {
   border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
-  transition: opacity 0.2s ease, transform 0.15s ease;
+  transition: opacity 0.2s ease;
 }
 
 .detail-wa-btn:hover {
