@@ -1195,7 +1195,7 @@ button:active {
 
 .contact-simple-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
 }
 
@@ -1214,15 +1214,16 @@ button:active {
 .contact-simple-texts {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 4px;
-  padding-top: 2px;
 }
 
 .contact-simple-line {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
   font-size: 0.95rem;
+  text-align: left;
 }
 
 .contact-simple-person {
@@ -1231,10 +1232,12 @@ button:active {
 }
 
 .contact-simple-val {
-  display: flex;
+  display: block;
   color: var(--text-secondary);
   font-size: 0.95rem;
   font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
   text-decoration: none;
   transition: color 0.2s ease;
 }
