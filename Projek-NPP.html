@@ -24,9 +24,10 @@
           </a>
           <nav class="navbar-nav">
             <a href="#home" class="navbar-link navbar-link-active" data-nav="Beranda">Beranda</a>
-            <a href="#services" class="navbar-link" data-nav="Layanan">Layanan</a>
             <a href="#about" class="navbar-link" data-nav="Tentang Kami">Tentang Kami</a>
+            <a href="#products" class="navbar-link" data-nav="Produk">Produk</a>
             <a href="#review" class="navbar-link" data-nav="Testimoni">Testimoni</a>
+            <a href="#contact" class="navbar-link" data-nav="Kontak">Kontak</a>
           </nav>
           <div class="navbar-actions">
             <button type="button" class="navbar-login-btn" id="navbarLoginBtn" title="Login Portal Internal">
@@ -1431,8 +1432,44 @@
         });
       });
 
-      // 6. Navigation Active Links
+      // 6. Navigation Active Links & ScrollSpy
       var navLinks = document.querySelectorAll('.navbar-link');
+      var sections = [
+        document.getElementById('home'),
+        document.getElementById('about'),
+        document.getElementById('products'),
+        document.getElementById('review'),
+        document.getElementById('contact')
+      ].filter(Boolean);
+
+      function updateActiveNavOnScroll() {
+        var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        var offset = 140;
+        var currentSectionId = 'home';
+
+        for (var i = 0; i < sections.length; i++) {
+          var sec = sections[i];
+          var top = sec.offsetTop - offset;
+          var bottom = top + sec.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < bottom) {
+            currentSectionId = sec.getAttribute('id');
+            break;
+          } else if (scrollPosition >= top) {
+            currentSectionId = sec.getAttribute('id');
+          }
+        }
+
+        navLinks.forEach(function (lnk) {
+          if (lnk.getAttribute('href') === '#' + currentSectionId) {
+            lnk.classList.add('navbar-link-active');
+          } else {
+            lnk.classList.remove('navbar-link-active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveNavOnScroll, { passive: true });
+
       navLinks.forEach(function (lnk) {
         lnk.addEventListener('click', function () {
           closeProductDetail();
