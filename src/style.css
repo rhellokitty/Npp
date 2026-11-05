@@ -1938,18 +1938,28 @@ a.contact-simple-val:hover {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
   background-color: var(--accent-color);
   color: var(--text-inverse);
-  padding: 8px 8px 8px 14px;
+  padding: 10px 10px 10px 16px;
   border-radius: var(--radius-full);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   transition: opacity 0.2s ease;
 }
 
 .detail-wa-btn:hover {
   opacity: 0.9;
+}
+
+.detail-wa-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.detail-wa-label {
+  font-size: 0.62rem;
+  opacity: 0.85;
 }
 
 .detail-mods-panel,
