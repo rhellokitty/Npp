@@ -10,6 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Global stylesheet (single source of CSS): src/style.css -->
   <link rel="stylesheet" href="src/style.css">
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id') || '1';
+      var isProjek = document.referrer && document.referrer.indexOf('Projek-NPP.html') !== -1;
+      var target = isProjek ? 'Projek-NPP.html' : 'index.html';
+      window.location.replace(target + '#detail-' + id);
+    })();
+  </script>
 </head>
 
 <body>

@@ -443,7 +443,7 @@
                   <h4 class="catalog-card-title">Baterai RITAR VRLA AGM & Deep Cycle</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <a href="product-detail.html?id=1" class="catalog-card-action"
+                <a href="#detail-1" class="catalog-card-action"
                   aria-label="View Baterai RITAR VRLA AGM & Deep Cycle details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
@@ -469,7 +469,7 @@
                   <h4 class="catalog-card-title">UPS Ablerex Enterprise Modular</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <a href="product-detail.html?id=2" class="catalog-card-action"
+                <a href="#detail-2" class="catalog-card-action"
                   aria-label="View UPS Ablerex Enterprise Modular details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
@@ -495,7 +495,7 @@
                   <h4 class="catalog-card-title">Baterai BSB Industrial Storage VRLA</h4>
                   <span class="catalog-card-price">Hubungi Sales</span>
                 </div>
-                <a href="product-detail.html?id=3" class="catalog-card-action"
+                <a href="#detail-3" class="catalog-card-action"
                   aria-label="View Baterai BSB Industrial Storage VRLA details">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17 17 7" />
@@ -776,6 +776,241 @@
       </div>
     </footer>
 
+    <!-- PRODUCT DETAIL OVERLAY VIEW (Zero Page Load / Instant Toggle) -->
+    <div id="productDetailView" class="detail-wrapper detail-overlay-view" style="display: none;" aria-modal="true" role="dialog">
+      <header class="navbar-wrapper">
+        <div class="container">
+          <div class="navbar-header">
+            <a href="#home" class="navbar-brand detail-nav-close" data-target="#home">
+              <img src="assets/logo-npp.webp" alt="PT Nusantara Puncak Perkasa" class="navbar-brand-logo" />
+            </a>
+            <nav class="navbar-nav">
+              <a href="#home" class="navbar-link detail-nav-close" data-target="#home">Beranda</a>
+              <a href="#about" class="navbar-link detail-nav-close" data-target="#about">Tentang Kami</a>
+              <a href="#products" class="navbar-link navbar-link-active detail-nav-close" data-target="#products">Produk</a>
+              <a href="#review" class="navbar-link detail-nav-close" data-target="#review">Testimoni</a>
+              <a href="#contact" class="navbar-link detail-nav-close" data-target="#contact">Kontak</a>
+            </nav>
+            <div class="navbar-actions">
+              <button type="button" class="navbar-login-btn" id="overlayNavbarLoginBtn" title="Login Portal Internal">
+                <span>Masuk</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="container detail-topbar">
+        <button type="button" id="closeDetailBtn" class="detail-back-btn">
+          <span class="detail-back-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </span>
+          <span>Kembali ke Katalog</span>
+        </button>
+
+        <div class="detail-breadcrumb">
+          <button type="button" id="breadcrumbCatalogBtn" class="detail-breadcrumb-link">Katalog Produk</button>
+          <span>/</span>
+          <span>Solusi Daya</span>
+          <span>/</span>
+          <span class="detail-breadcrumb-current" id="detailBreadcrumbName">Nama Produk</span>
+        </div>
+      </div>
+
+      <section class="container detail-section">
+        <div class="detail-hero-grid">
+          <!-- Sisi Kiri: Foto Utama Sticky & Multi-Gambar Galeri -->
+          <div class="detail-gallery-col">
+            <div class="detail-main-photo">
+              <div class="detail-cutout-tl">
+                <svg class="cutout-svg cutout-svg-tl-right" viewBox="-2 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-tl-bottom" viewBox="-2 -2 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+                </svg>
+
+                <span class="detail-rarity-pill" id="detailDiscount">Discount</span>
+                <div class="detail-rating-pill">
+                  <svg class="hero-star-icon" width="12" height="12" viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <span id="detailRating">5.0</span>
+                  <span id="detailReviewsCount">(42)</span>
+                </div>
+              </div>
+
+              <img id="detailMainImg" src="" alt="" class="detail-main-img" />
+
+              <div class="detail-cutout-br">
+                <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+                <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                  shape-rendering="geometricPrecision">
+                  <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+                </svg>
+
+                <div class="detail-status-pill">
+                  <span class="detail-status-dot"></span>
+                  <span id="detailBadge">Ready Stock</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Galeri Thumbnail (aktif jika ada > 1 gambar seperti UPS Ablerex) -->
+            <div id="detailGalleryGrid" class="detail-thumbs-grid"></div>
+          </div>
+
+          <!-- Sisi Kanan: Ikhtisar, Metrik & Kontak Langsung -->
+          <div class="detail-summary-card">
+            <div class="detail-summary-header">
+              <span class="detail-subtitle" id="detailSubtitle">Subtitle</span>
+              <h1 class="detail-title" id="detailTitle">Title</h1>
+            </div>
+
+            <div class="detail-price-box">
+              <div>
+                <span class="detail-price-label">Harga Penawaran</span>
+                <span class="detail-price-value" id="detailPrice">Price</span>
+              </div>
+              <span class="detail-price-note" id="detailPriceNote">Negotiable</span>
+            </div>
+
+            <div class="detail-checklist-box">
+              <span class="detail-checklist-heading">Spesifikasi & Keunggulan Resmi</span>
+              <ul class="detail-checklist" id="detailUnitOverview"></ul>
+            </div>
+
+            <div class="detail-metrics-grid" id="detailKeyMetrics"></div>
+
+            <div class="detail-contact-block">
+              <span class="detail-contact-caption">
+                Hubungi tim sales engineering kami untuk penawaran formal & spesifikasi teknis:
+              </span>
+              <div class="detail-contact-grid">
+                <a id="detailWaSalesBtn"
+                  href="https://wa.me/6287762994844?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20penawaran%20produk."
+                  target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
+                  <div class="detail-wa-info">
+                    <span class="detail-wa-label">Konsultasi Penawaran</span>
+                  </div>
+                  <span class="btn-pill-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </a>
+                <a id="detailWaTechBtn"
+                  href="https://wa.me/6287762994844?text=Halo%20Tim%20Teknis%20PT%20NPP,%20saya%20ingin%20konsultasi%20spesifikasi%20teknis."
+                  target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
+                  <div class="detail-wa-info">
+                    <span class="detail-wa-label">Technical Helpdesk</span>
+                  </div>
+                  <span class="btn-pill-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M7 17 17 7" />
+                      <path d="M7 7h10v10" />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel Spesifikasi & Modifikasi -->
+        <div class="detail-mods-panel">
+          <div class="detail-mods-header">
+            <span class="detail-mods-tag">
+              #spesifikasi • Ikhtisar & Fitur Komponen Sistem Daya
+            </span>
+            <h2 class="detail-panel-heading">Fitur Teknis & Keunggulan Komponen</h2>
+            <p class="detail-mods-desc" id="detailDescription">Description text</p>
+          </div>
+
+          <div class="detail-mods-grid" id="detailModCategories"></div>
+        </div>
+
+        <!-- Panel Datasheet Teknis -->
+        <div class="detail-specs-panel">
+          <div class="detail-specs-header">
+            <div>
+              <span class="detail-mods-tag">Datasheet Prinsipal Resmi</span>
+              <h2 class="detail-panel-heading">Spesifikasi Teknis Lengkap</h2>
+            </div>
+
+            <div class="detail-spec-tabs">
+              <button type="button" class="detail-spec-tab detail-spec-tab-active" data-spec-tab="engine">Spesifikasi
+                Elektrikal</button>
+              <button type="button" class="detail-spec-tab" data-spec-tab="chassis">Proteksi & Standar</button>
+              <button type="button" class="detail-spec-tab" data-spec-tab="dimensions">Dimensi & Lingkungan</button>
+            </div>
+          </div>
+
+          <div class="detail-specs-grid" id="detailSpecsGrid"></div>
+        </div>
+      </section>
+
+      <!-- Footer Overlay -->
+      <footer class="footer-section">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-brand-col">
+              <div class="footer-brand">
+                <span class="footer-brand-sub">PT NUSANTARA PUNCAK PERKASA</span>
+              </div>
+              <p class="footer-desc">Distributor produk kelistrikan: Uninterruptible Power Supply (UPS), Baterai,
+                Stabilizer, Genset, dan Solar Cell.</p>
+            </div>
+
+            <div class="footer-links-col">
+              <span class="footer-col-heading">Katalog Produk</span>
+              <div class="footer-links-list">
+                <a href="#products" class="footer-link detail-nav-close" data-target="#products">Industrial Battery</a>
+                <a href="#products" class="footer-link detail-nav-close" data-target="#products">Enterprise UPS</a>
+                <a href="#products" class="footer-link detail-nav-close" data-target="#products">Baterai BSB Storage</a>
+              </div>
+            </div>
+
+            <div class="footer-links-col">
+              <span class="footer-col-heading">Perusahaan</span>
+              <div class="footer-links-list">
+                <a href="#home" class="footer-link detail-nav-close" data-target="#home">Beranda</a>
+                <a href="#about" class="footer-link detail-nav-close" data-target="#about">Profil Korporat</a>
+                <a href="#services" class="footer-link detail-nav-close" data-target="#services">Layanan & Garansi</a>
+                <a href="#review" class="footer-link detail-nav-close" data-target="#review">Mitra & Proyek</a>
+                <a href="#contact" class="footer-link detail-nav-close" data-target="#contact">Kontak B2B</a>
+              </div>
+            </div>
+
+            <div class="footer-links-col">
+              <span class="footer-col-heading">Buletin Industri</span>
+              <p class="footer-desc">Dapatkan pembaruan katalog teknis dan buletin efisiensi energi industri.</p>
+              <form id="overlayNewsletterForm" class="footer-newsletter-box">
+                <input type="email" id="overlayNewsletterEmailInput" placeholder="Email Perusahaan..."
+                  class="footer-newsletter-input" required />
+                <button type="submit" id="overlayNewsletterSubmitBtn" class="footer-newsletter-btn">Kirim</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="footer-copyright">
+            <span>© 2026 PT Nusantara Puncak Perkasa. Seluruh Hak Cipta Dilindungi.</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
   </div>
 
   <!-- Master Data Produk (Ubah data produk langsung di file js ini) -->
@@ -814,7 +1049,7 @@
                   '<h4 class="catalog-card-title">' + p.name + '</h4>' +
                   '<span class="catalog-card-price">' + p.price + '</span>' +
                 '</div>' +
-                '<a href="product-detail.html?id=' + p.id + '" class="catalog-card-action" aria-label="Lihat detail ' + p.name + '">' +
+                '<a href="#detail-' + p.id + '" class="catalog-card-action" aria-label="Lihat detail ' + p.name + '">' +
                   '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
                     '<path d="M7 17 17 7" />' +
                     '<path d="M7 7h10v10" />' +
@@ -841,12 +1076,22 @@
         }
       }
 
-      // Event listener navigasi kartu & wishlist
+      // Event listener navigasi kartu & wishlist (In-Page Zero Reload)
       document.querySelectorAll('#catalogGrid .catalog-card').forEach(function (card) {
-        card.addEventListener('click', function () {
-          var prodId = card.getAttribute('data-prod-id');
-          window.location.href = 'product-detail.html?id=' + prodId;
+        var prodId = card.getAttribute('data-prod-id');
+        card.addEventListener('click', function (e) {
+          e.preventDefault();
+          openProductDetail(prodId);
         });
+
+        var actionBtn = card.querySelector('.catalog-card-action');
+        if (actionBtn) {
+          actionBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openProductDetail(prodId);
+          });
+        }
       });
 
       document.querySelectorAll('.catalog-wishlist-btn').forEach(function (btn) {
@@ -860,6 +1105,255 @@
           }
         });
       });
+
+      /* --------------------------------------------------------------------------
+         2. CONTROLLER: IN-PAGE PRODUCT DETAIL OVERLAY (Zero Page Load / Instant)
+         -------------------------------------------------------------------------- */
+      var productDetailView = document.getElementById('productDetailView');
+      var detailBreadcrumbName = document.getElementById('detailBreadcrumbName');
+      var detailDiscount = document.getElementById('detailDiscount');
+      var detailRating = document.getElementById('detailRating');
+      var detailReviewsCount = document.getElementById('detailReviewsCount');
+      var detailMainImg = document.getElementById('detailMainImg');
+      var detailBadge = document.getElementById('detailBadge');
+      var detailGalleryGrid = document.getElementById('detailGalleryGrid');
+      var detailSubtitle = document.getElementById('detailSubtitle');
+      var detailTitle = document.getElementById('detailTitle');
+      var detailPrice = document.getElementById('detailPrice');
+      var detailPriceNote = document.getElementById('detailPriceNote');
+      var detailUnitOverview = document.getElementById('detailUnitOverview');
+      var detailKeyMetrics = document.getElementById('detailKeyMetrics');
+      var detailDescription = document.getElementById('detailDescription');
+      var detailModCategories = document.getElementById('detailModCategories');
+      var detailSpecsGrid = document.getElementById('detailSpecsGrid');
+      var detailWaSalesBtn = document.getElementById('detailWaSalesBtn');
+      var detailWaTechBtn = document.getElementById('detailWaTechBtn');
+      var closeDetailBtn = document.getElementById('closeDetailBtn');
+      var breadcrumbCatalogBtn = document.getElementById('breadcrumbCatalogBtn');
+
+      var currentDetailProduct = null;
+      var activeDetailSpecTab = 'engine';
+      var originalPageTitle = document.title;
+
+      function renderDetailProduct(id) {
+        var products = window.NPP_PRODUCTS || {};
+        var p = products[id] || products[1];
+        if (!p) return;
+        currentDetailProduct = p;
+        activeDetailSpecTab = 'engine';
+
+        if (detailBreadcrumbName) detailBreadcrumbName.textContent = p.name;
+        if (detailDiscount) detailDiscount.textContent = p.discount || '';
+        if (detailRating) detailRating.textContent = p.rating || '5.0';
+        if (detailReviewsCount) detailReviewsCount.textContent = '(' + (p.reviewsCount || 42) + ')';
+        if (detailMainImg) {
+          detailMainImg.src = p.image;
+          detailMainImg.alt = p.name;
+        }
+        if (detailBadge) detailBadge.textContent = p.badge || 'Ready Stock';
+        if (detailSubtitle) detailSubtitle.textContent = p.subtitle || '';
+        if (detailTitle) detailTitle.textContent = p.name;
+        if (detailPrice) detailPrice.textContent = p.price;
+        if (detailPriceNote) detailPriceNote.textContent = p.priceNote || 'Negotiable';
+        if (detailDescription) detailDescription.textContent = p.description || '';
+
+        // Tautan WhatsApp Otomatis
+        if (detailWaSalesBtn) {
+          var salesMsg = encodeURIComponent('Halo PT Nusantara Puncak Perkasa, saya ingin konsultasi penawaran produk ' + p.name + '.');
+          detailWaSalesBtn.href = 'https://wa.me/6287762994844?text=' + salesMsg;
+        }
+        if (detailWaTechBtn) {
+          var techMsg = encodeURIComponent('Halo Tim Teknis PT NPP, saya ingin konsultasi spesifikasi teknis untuk ' + p.name + '.');
+          detailWaTechBtn.href = 'https://wa.me/6287762994844?text=' + techMsg;
+        }
+
+        // Galeri Thumbnail (aktif jika > 1 gambar seperti UPS Ablerex)
+        if (detailGalleryGrid) {
+          detailGalleryGrid.innerHTML = '';
+          if (p.gallery && p.gallery.length > 1) {
+            detailGalleryGrid.style.display = 'grid';
+            p.gallery.forEach(function (url, idx) {
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'detail-thumb-btn' + (idx === 0 ? ' detail-thumb-active' : '');
+              btn.innerHTML = '<img src="' + url + '" alt="' + p.name + '" class="detail-thumb-img" />';
+              btn.addEventListener('click', function () {
+                if (detailMainImg && detailMainImg.getAttribute('src') === url) return;
+                if (detailMainImg) {
+                  detailMainImg.classList.add('detail-main-img-fade');
+                  setTimeout(function () {
+                    detailMainImg.src = url;
+                    detailMainImg.classList.remove('detail-main-img-fade');
+                  }, 120);
+                }
+                detailGalleryGrid.querySelectorAll('.detail-thumb-btn').forEach(function (b) {
+                  b.classList.remove('detail-thumb-active');
+                });
+                btn.classList.add('detail-thumb-active');
+              });
+              detailGalleryGrid.appendChild(btn);
+            });
+          } else {
+            detailGalleryGrid.style.display = 'none';
+          }
+        }
+
+        // Checklist Overview
+        if (detailUnitOverview) {
+          detailUnitOverview.innerHTML = '';
+          if (p.unitOverview) {
+            p.unitOverview.forEach(function (point) {
+              var li = document.createElement('li');
+              li.className = 'detail-checklist-item';
+              li.innerHTML = '<span class="detail-check-icon">✓</span><span>' + point + '</span>';
+              detailUnitOverview.appendChild(li);
+            });
+          }
+        }
+
+        // Key Metrics
+        if (detailKeyMetrics) {
+          detailKeyMetrics.innerHTML = '';
+          if (p.keyMetrics) {
+            p.keyMetrics.forEach(function (m) {
+              var div = document.createElement('div');
+              div.className = 'detail-metric-card';
+              div.innerHTML = '<span class="detail-metric-label">' + m.label + '</span><span class="detail-metric-value">' + m.value + '</span><span class="detail-metric-sub">' + m.sub + '</span>';
+              detailKeyMetrics.appendChild(div);
+            });
+          }
+        }
+
+        // Mod Categories
+        if (detailModCategories) {
+          detailModCategories.innerHTML = '';
+          if (p.modCategories) {
+            p.modCategories.forEach(function (cat) {
+              var div = document.createElement('div');
+              div.className = 'detail-mod-card';
+              var itemsHtml = cat.items.map(function (it) {
+                return '<li class="detail-mod-item"><span class="detail-mod-bullet"></span><span>' + it + '</span></li>';
+              }).join('');
+              div.innerHTML = '<div class="detail-mod-card-head"><h3 class="detail-mod-title">' + cat.title + '</h3><span class="detail-mod-badge">' + cat.items.length + ' items</span></div><ul class="detail-mod-list">' + itemsHtml + '</ul>';
+              detailModCategories.appendChild(div);
+            });
+          }
+        }
+
+        renderDetailSpecs();
+      }
+
+      function renderDetailSpecs() {
+        if (!currentDetailProduct || !currentDetailProduct.specs || !detailSpecsGrid) return;
+        var tabData = currentDetailProduct.specs[activeDetailSpecTab] || [];
+        detailSpecsGrid.innerHTML = '';
+        tabData.forEach(function (row) {
+          var div = document.createElement('div');
+          div.className = 'detail-spec-row';
+          div.innerHTML = '<span class="detail-spec-label">' + row.label + '</span><span class="detail-spec-val">' + row.value + '</span>';
+          detailSpecsGrid.appendChild(div);
+        });
+
+        if (productDetailView) {
+          productDetailView.querySelectorAll('.detail-spec-tab').forEach(function (t) {
+            if (t.getAttribute('data-spec-tab') === activeDetailSpecTab) {
+              t.classList.add('detail-spec-tab-active');
+            } else {
+              t.classList.remove('detail-spec-tab-active');
+            }
+          });
+        }
+      }
+
+      if (productDetailView) {
+        productDetailView.querySelectorAll('.detail-spec-tab').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            activeDetailSpecTab = btn.getAttribute('data-spec-tab');
+            renderDetailSpecs();
+          });
+        });
+      }
+
+      function openProductDetail(id, pushHash) {
+        if (!productDetailView) return;
+        renderDetailProduct(id);
+        productDetailView.style.display = 'block';
+        productDetailView.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+
+        if (pushHash !== false && history.pushState) {
+          history.pushState({ detailId: id }, '', '#detail-' + id);
+        }
+        if (currentDetailProduct) {
+          document.title = currentDetailProduct.name + ' — PT Nusantara Puncak Perkasa';
+        }
+      }
+
+      function closeProductDetail(popHistory) {
+        if (!productDetailView || productDetailView.style.display === 'none') return;
+        productDetailView.style.display = 'none';
+        document.body.style.overflow = '';
+        document.title = originalPageTitle;
+
+        if (popHistory !== false && window.location.hash.indexOf('#detail') !== -1) {
+          if (history.replaceState) {
+            history.replaceState(null, '', '#products');
+          }
+        }
+      }
+
+      if (closeDetailBtn) {
+        closeDetailBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          closeProductDetail();
+        });
+      }
+
+      if (breadcrumbCatalogBtn) {
+        breadcrumbCatalogBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          closeProductDetail();
+        });
+      }
+
+      // Navigasi link navbar & footer di dalam overlay (tutup overlay lalu scroll ke section)
+      if (productDetailView) {
+        productDetailView.querySelectorAll('.detail-nav-close').forEach(function (link) {
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            var target = link.getAttribute('data-target');
+            closeProductDetail();
+            if (target && target !== '#products') {
+              var targetEl = document.querySelector(target);
+              if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth' });
+              }
+            }
+          });
+        });
+      }
+
+      // Dukungan tombol Back browser (popstate)
+      window.addEventListener('popstate', function () {
+        var hash = window.location.hash;
+        if (hash && hash.indexOf('#detail-') === 0) {
+          var id = hash.replace('#detail-', '');
+          openProductDetail(id, false);
+        } else if (productDetailView && productDetailView.style.display !== 'none') {
+          closeProductDetail(false);
+        }
+      });
+
+      // Deteksi direct URL hash (misal: index.html#detail-2)
+      var initialHash = window.location.hash;
+      if (initialHash && initialHash.indexOf('#detail-') === 0) {
+        var initId = initialHash.replace('#detail-', '');
+        var pSec = document.getElementById('products');
+        if (pSec) {
+          pSec.scrollIntoView({ behavior: 'auto' });
+        }
+        openProductDetail(initId, false);
+      }
 
       /* --------------------------------------------------------------------------
          2. CONTROLLER: CATALOG CATEGORY FILTER
