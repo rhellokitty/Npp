@@ -167,6 +167,7 @@ button:active {
   border-radius: var(--radius-full);
   font-size: 0.78rem;
   font-weight: 600;
+  white-space: nowrap;
   transition: opacity 0.2s ease;
 }
 
@@ -1179,6 +1180,7 @@ html:not([data-theme="light"]) .hero-client-logo {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .testimonial-grid {
@@ -2428,6 +2430,14 @@ a.contact-simple-val:hover {
     padding: 44px 0;
   }
 
+  .testimonial-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
   .testimonial-inner {
     gap: 28px;
   }
@@ -2678,6 +2688,13 @@ a.contact-simple-val:hover {
   .section-heading {
     font-size: 1.65rem;
     line-height: 1.25;
+  }
+
+  .catalog-header,
+  .testimonial-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 
   .hero-section {
