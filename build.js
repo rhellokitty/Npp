@@ -15,6 +15,11 @@ if (fs.existsSync('Projek-NPP.html')) {
   fs.copyFileSync('Projek-NPP.html', path.join(dist, 'Projek-NPP.html'));
 }
 
+// Copy product-detail.html
+if (fs.existsSync('product-detail.html')) {
+  fs.copyFileSync('product-detail.html', path.join(dist, 'product-detail.html'));
+}
+
 // Copy src
 if (fs.existsSync('src')) {
   fs.cpSync('src', path.join(dist, 'src'), { recursive: true });
