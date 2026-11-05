@@ -742,7 +742,7 @@ button:active {
   padding-right: 72px;
   flex-shrink: 0;
   min-width: max-content;
-  animation: heroClientsMarquee 28s linear infinite;
+  animation: heroClientsMarquee 55s linear infinite;
   will-change: transform;
 }
 
@@ -2369,7 +2369,7 @@ a.contact-simple-val:hover {
   .hero-clients-group {
     gap: 40px;
     padding-right: 40px;
-    animation-duration: 22s;
+    animation-duration: 42s;
   }
 
   .hero-client-item {
