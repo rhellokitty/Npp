@@ -426,6 +426,18 @@
       renderProduct(initialId);
       window.scrollTo(0, 0);
 
+      // Kembali ke Katalog: Gunakan history.back() jika berasal dari index agar instan (0ms, zero glitch)
+      function handleBackToCatalog(e) {
+        if (window.history.length > 1 && document.referrer && (document.referrer.indexOf('index.html') !== -1 || document.referrer.indexOf('Projek-NPP.html') !== -1)) {
+          e.preventDefault();
+          window.history.back();
+        }
+      }
+      var closeDetailBtn = document.getElementById('closeDetailBtn');
+      var breadcrumbCatalogBtn = document.getElementById('breadcrumbCatalogBtn');
+      if (closeDetailBtn) closeDetailBtn.addEventListener('click', handleBackToCatalog);
+      if (breadcrumbCatalogBtn) breadcrumbCatalogBtn.addEventListener('click', handleBackToCatalog);
+
       /* --------------------------------------------------------------------------
          4. NAVBAR SCROLL CONTROLLER
          -------------------------------------------------------------------------- */

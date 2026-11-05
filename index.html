@@ -792,54 +792,74 @@
          -------------------------------------------------------------------------- */
       var catalogGrid = document.getElementById('catalogGrid');
       if (catalogGrid && window.NPP_PRODUCTS) {
-        catalogGrid.innerHTML = '';
-        Object.keys(window.NPP_PRODUCTS).forEach(function (id) {
-          var p = window.NPP_PRODUCTS[id];
-          var card = document.createElement('article');
-          card.className = 'catalog-card';
-          card.setAttribute('data-prod-id', p.id);
-          card.setAttribute('data-prod-cat', p.category || 'Battery');
-          card.innerHTML =
-            '<span class="catalog-badge">' + (p.discount || p.badge || '') + '</span>' +
-            '<button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">' +
-              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-                '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />' +
-              '</svg>' +
-            '</button>' +
-            '<img src="' + p.image + '" alt="' + p.name + '" class="catalog-card-img" />' +
-            '<div class="catalog-card-overlay">' +
-              '<div>' +
-                '<h4 class="catalog-card-title">' + p.name + '</h4>' +
-                '<span class="catalog-card-price">' + p.price + '</span>' +
-              '</div>' +
-              '<a href="product-detail.html?id=' + p.id + '" class="catalog-card-action" aria-label="Lihat detail ' + p.name + '">' +
-                '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-                  '<path d="M7 17 17 7" />' +
-                  '<path d="M7 7h10v10" />' +
+        var existingCards = catalogGrid.querySelectorAll('.catalog-card');
+        if (existingCards.length === 0) {
+          // Render jika kontainer kosong
+          Object.keys(window.NPP_PRODUCTS).forEach(function (id) {
+            var p = window.NPP_PRODUCTS[id];
+            var card = document.createElement('article');
+            card.className = 'catalog-card';
+            card.setAttribute('data-prod-id', p.id);
+            card.setAttribute('data-prod-cat', p.category || 'Battery');
+            card.innerHTML =
+              '<span class="catalog-badge">' + (p.discount || p.badge || '') + '</span>' +
+              '<button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">' +
+                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                  '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />' +
                 '</svg>' +
-              '</a>' +
-            '</div>';
-
-          card.addEventListener('click', function () {
-            window.location.href = 'product-detail.html?id=' + p.id;
+              '</button>' +
+              '<img src="' + p.image + '" alt="' + p.name + '" class="catalog-card-img" />' +
+              '<div class="catalog-card-overlay">' +
+                '<div>' +
+                  '<h4 class="catalog-card-title">' + p.name + '</h4>' +
+                  '<span class="catalog-card-price">' + p.price + '</span>' +
+                '</div>' +
+                '<a href="product-detail.html?id=' + p.id + '" class="catalog-card-action" aria-label="Lihat detail ' + p.name + '">' +
+                  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                    '<path d="M7 17 17 7" />' +
+                    '<path d="M7 7h10v10" />' +
+                  '</svg>' +
+                '</a>' +
+              '</div>';
+            catalogGrid.appendChild(card);
           });
-
-          var wishlistBtn = card.querySelector('.catalog-wishlist-btn');
-          if (wishlistBtn) {
-            wishlistBtn.addEventListener('click', function (e) {
-              e.stopPropagation();
-              var svg = wishlistBtn.querySelector('svg');
-              if (svg.getAttribute('fill') === 'currentColor') {
-                svg.setAttribute('fill', 'none');
-              } else {
-                svg.setAttribute('fill', 'currentColor');
-              }
-            });
-          }
-
-          catalogGrid.appendChild(card);
-        });
+        } else {
+          // Sinkronisasi data in-place tanpa menghapus elemen DOM (mencegah layout shift / glitch)
+          existingCards.forEach(function (card) {
+            var prodId = card.getAttribute('data-prod-id');
+            var p = window.NPP_PRODUCTS[prodId];
+            if (p) {
+              card.setAttribute('data-prod-cat', p.category || 'Battery');
+              var titleEl = card.querySelector('.catalog-card-title');
+              if (titleEl && titleEl.textContent !== p.name) titleEl.textContent = p.name;
+              var priceEl = card.querySelector('.catalog-card-price');
+              if (priceEl && priceEl.textContent !== p.price) priceEl.textContent = p.price;
+              var badgeEl = card.querySelector('.catalog-badge');
+              if (badgeEl) badgeEl.textContent = p.discount || p.badge || '';
+            }
+          });
+        }
       }
+
+      // Event listener navigasi kartu & wishlist
+      document.querySelectorAll('#catalogGrid .catalog-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          var prodId = card.getAttribute('data-prod-id');
+          window.location.href = 'product-detail.html?id=' + prodId;
+        });
+      });
+
+      document.querySelectorAll('.catalog-wishlist-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var svg = btn.querySelector('svg');
+          if (svg.getAttribute('fill') === 'currentColor') {
+            svg.setAttribute('fill', 'none');
+          } else {
+            svg.setAttribute('fill', 'currentColor');
+          }
+        });
+      });
 
       /* --------------------------------------------------------------------------
          2. CONTROLLER: CATALOG CATEGORY FILTER
@@ -924,14 +944,6 @@
         });
       });
 
-      // Mendarat instan tanpa animasi scroll jika dibuka via hash URL (misal dari product-detail.html)
-      if (window.location.hash) {
-        var targetSection = document.querySelector(window.location.hash);
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'auto', block: 'start' });
-        }
-      }
-
       /* --------------------------------------------------------------------------
          7. CONTROLLER: NAVBAR SCROLL REVEAL / HIDE
          Auto hide dengan threshold akumulasi scroll (tidak mudah hide / butuh 2x scroll)
@@ -942,9 +954,23 @@
       var scrollUpBuffer = 0;
       var HIDE_THRESHOLD = 120; // Butuh scroll ke bawah akumulatif ~120px (~2x mouse wheel)
       var MIN_PAGE_OFFSET = 240; // Tetap tampil penuh di area hero (>= 240px baru aktif)
+      var isPageSettled = false;
+
+      // Jeda inisialisasi agar jump anchor #products pada load awal tidak memicu navbar-hidden
+      setTimeout(function () {
+        lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        isPageSettled = true;
+      }, 350);
 
       window.addEventListener('scroll', function () {
         var currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Abaikan perhitungan akumulasi scroll selama browser sedang menstabilkan posisi anchor
+        if (!isPageSettled) {
+          lastScrollY = Math.max(0, currentScrollY);
+          return;
+        }
+
         var diff = currentScrollY - lastScrollY;
 
         // Reset buffer jika masih berada di dekat bagian paling atas
