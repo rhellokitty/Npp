@@ -2546,7 +2546,44 @@ a.contact-simple-val:hover {
   }
 
   .detail-main-photo {
-    height: 320px;
+    height: 330px;
+  }
+
+  .detail-cutout-tl {
+    padding: 3px 8px 6px 3px;
+    gap: 6px;
+  }
+
+  .detail-rarity-pill {
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 2px 7px;
+  }
+
+  .detail-rating-pill {
+    font-size: 0.62rem;
+    padding: 2px 7px;
+    gap: 4px;
+  }
+
+  .detail-rating-pill svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .detail-cutout-br {
+    padding: 7px 3px 3px 8px;
+  }
+
+  .detail-status-pill {
+    padding: 3px 9px;
+    font-size: 0.65rem;
+    gap: 5px;
+  }
+
+  .detail-status-dot {
+    width: 6px;
+    height: 6px;
   }
 
   .detail-thumbs-grid {
@@ -2802,7 +2839,7 @@ a.contact-simple-val:hover {
   }
 
   .detail-main-photo {
-    height: 280px;
+    height: 300px;
   }
 
   .detail-title {
@@ -2915,7 +2952,7 @@ a.contact-simple-val:hover {
   }
 
   .detail-main-photo {
-    height: 240px;
+    height: 270px;
   }
 
   .detail-cutout-tl {
