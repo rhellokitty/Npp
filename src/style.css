@@ -1612,7 +1612,8 @@ a.contact-simple-val:hover {
 }
 
 .detail-topbar {
-  padding: 8px 0 24px;
+  padding-top: 8px;
+  padding-bottom: 24px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2523,7 +2524,7 @@ a.contact-simple-val:hover {
 
   /* Detail Page Refinements (Mobile <= 768px) */
   .detail-wrapper {
-    padding-top: 10px;
+    padding-top: 0;
     padding-bottom: 48px;
     gap: 20px;
   }
@@ -2533,16 +2534,32 @@ a.contact-simple-val:hover {
   }
 
   .detail-topbar {
-    padding: 6px 0 14px;
+    padding-top: 8px;
+    padding-bottom: 16px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 10px;
   }
 
   .detail-breadcrumb {
-    flex-wrap: wrap;
+    width: 100%;
+    flex-wrap: nowrap;
     font-size: 0.72rem;
     gap: 6px;
+    overflow: hidden;
+  }
+
+  .detail-breadcrumb-link,
+  .detail-breadcrumb span {
+    flex-shrink: 0;
+  }
+
+  .detail-breadcrumb-current {
+    flex-shrink: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .detail-main-photo {
@@ -2933,7 +2950,8 @@ a.contact-simple-val:hover {
 /* --- SMALL PHONE (<= 480px) --- */
 @media (max-width: 480px) {
   .container {
-    padding: 0 16px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
