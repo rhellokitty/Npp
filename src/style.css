@@ -2533,10 +2533,10 @@ a.contact-simple-val:hover {
   }
 
   .detail-topbar {
-    padding: 6px 0 16px;
+    padding: 6px 0 14px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
   }
 
   .detail-breadcrumb {
@@ -2546,44 +2546,47 @@ a.contact-simple-val:hover {
   }
 
   .detail-main-photo {
-    height: 330px;
+    height: 350px;
   }
 
   .detail-cutout-tl {
-    padding: 3px 8px 6px 3px;
-    gap: 6px;
-  }
-
-  .detail-rarity-pill {
-    font-size: 0.62rem;
-    font-weight: 600;
-    padding: 2px 7px;
-  }
-
-  .detail-rating-pill {
-    font-size: 0.62rem;
-    padding: 2px 7px;
-    gap: 4px;
-  }
-
-  .detail-rating-pill svg {
-    width: 10px;
-    height: 10px;
-  }
-
-  .detail-cutout-br {
-    padding: 7px 3px 3px 8px;
-  }
-
-  .detail-status-pill {
-    padding: 3px 9px;
-    font-size: 0.65rem;
+    padding: 2px 7px 4px 2px;
     gap: 5px;
   }
 
+  .detail-rarity-pill {
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    line-height: 1.2;
+  }
+
+  .detail-rating-pill {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    gap: 3px;
+    line-height: 1.2;
+  }
+
+  .detail-rating-pill svg {
+    width: 9px;
+    height: 9px;
+  }
+
+  .detail-cutout-br {
+    padding: 5px 2px 2px 7px;
+  }
+
+  .detail-status-pill {
+    padding: 2px 8px;
+    font-size: 0.62rem;
+    gap: 4px;
+    line-height: 1.2;
+  }
+
   .detail-status-dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
 
   .detail-thumbs-grid {
@@ -2839,7 +2842,7 @@ a.contact-simple-val:hover {
   }
 
   .detail-main-photo {
-    height: 300px;
+    height: 330px;
   }
 
   .detail-title {
@@ -2952,31 +2955,7 @@ a.contact-simple-val:hover {
   }
 
   .detail-main-photo {
-    height: 270px;
-  }
-
-  .detail-cutout-tl {
-    padding: 4px 10px 10px 4px;
-    gap: 6px;
-  }
-
-  .detail-rarity-pill {
-    font-size: 0.62rem;
-    padding: 2px 7px;
-  }
-
-  .detail-rating-pill {
-    font-size: 0.65rem;
-    padding: 2px 7px;
-  }
-
-  .detail-cutout-br {
-    padding: 10px 4px 4px 10px;
-  }
-
-  .detail-status-pill {
-    font-size: 0.65rem;
-    padding: 4px 10px;
+    height: 300px;
   }
 
   .detail-thumb-btn {
