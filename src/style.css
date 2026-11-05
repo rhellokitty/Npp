@@ -722,29 +722,28 @@ button:active {
 .hero-clients-track {
   display: flex;
   width: max-content;
-  animation: heroClientsMarquee 45s linear infinite;
-  will-change: transform;
-}
-
-.hero-clients-slider:hover .hero-clients-track {
-  animation-play-state: paused;
+  user-select: none;
 }
 
 @keyframes heroClientsMarquee {
-  from {
-    transform: translateX(0);
+  0% {
+    transform: translate3d(0, 0, 0);
   }
-  to {
-    transform: translateX(-50%);
+  100% {
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
 .hero-clients-group {
   display: flex;
   align-items: center;
+  justify-content: space-around;
   gap: 72px;
   padding-right: 72px;
   flex-shrink: 0;
+  min-width: max-content;
+  animation: heroClientsMarquee 28s linear infinite;
+  will-change: transform;
 }
 
 .hero-client-item {
@@ -760,6 +759,7 @@ button:active {
   height: 50px;
   max-width: 170px;
   width: auto;
+  flex-shrink: 0;
   object-fit: contain;
   filter: grayscale(100%);
   opacity: 0.55;
@@ -777,32 +777,6 @@ html:not([data-theme="light"]) .hero-client-logo {
   background-color: rgba(255, 255, 255, 0.95);
   padding: 6px 14px;
   border-radius: var(--radius-sm);
-}
-
-@media (max-width: 768px) {
-  .hero-clients-wrapper {
-    gap: 16px;
-    margin-top: 12px;
-  }
-
-  .hero-clients-title {
-    font-size: 1.05rem;
-    padding: 0 16px;
-  }
-
-  .hero-clients-group {
-    gap: 48px;
-    padding-right: 48px;
-  }
-
-  .hero-client-item {
-    height: 52px;
-  }
-
-  .hero-client-logo {
-    height: 38px;
-    max-width: 130px;
-  }
 }
 
 /* ==========================================================================
@@ -2395,6 +2369,7 @@ a.contact-simple-val:hover {
   .hero-clients-group {
     gap: 40px;
     padding-right: 40px;
+    animation-duration: 22s;
   }
 
   .hero-client-item {
