@@ -1218,10 +1218,19 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      function closeProductDetail() {
+      function closeProductDetail(targetSectionId) {
         productDetailView.style.display = 'none';
         mainLandingContent.style.display = 'block';
         currentProduct = null;
+
+        var targetId = typeof targetSectionId === 'string' ? targetSectionId : 'products';
+        var targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+        if (typeof updateActiveNavOnScroll === 'function') {
+          updateActiveNavOnScroll();
+        }
       }
 
       function renderSpecs() {
@@ -1252,10 +1261,22 @@
         });
       });
 
-      // Close Detail Buttons
-      if (closeDetailBtn) closeDetailBtn.addEventListener('click', closeProductDetail);
-      if (breadcrumbCatalogBtn) breadcrumbCatalogBtn.addEventListener('click', closeProductDetail);
-      if (brandHomeLink) brandHomeLink.addEventListener('click', closeProductDetail);
+      // Close Detail Buttons (Kembali langsung ke section #products)
+      if (closeDetailBtn) {
+        closeDetailBtn.addEventListener('click', function () {
+          closeProductDetail('products');
+        });
+      }
+      if (breadcrumbCatalogBtn) {
+        breadcrumbCatalogBtn.addEventListener('click', function () {
+          closeProductDetail('products');
+        });
+      }
+      if (brandHomeLink) {
+        brandHomeLink.addEventListener('click', function () {
+          closeProductDetail('home');
+        });
+      }
       if (heroExploreBtn) {
         heroExploreBtn.addEventListener('click', function () {
           var el = document.getElementById('products');
@@ -1352,7 +1373,9 @@
 
       navLinks.forEach(function (lnk) {
         lnk.addEventListener('click', function () {
-          closeProductDetail();
+          var href = lnk.getAttribute('href');
+          var targetId = href && href.startsWith('#') ? href.slice(1) : null;
+          closeProductDetail(targetId);
           navLinks.forEach(function (l) { l.classList.remove('navbar-link-active'); });
           lnk.classList.add('navbar-link-active');
         });
