@@ -20,8 +20,11 @@
 - **Theme:** `light`, `ohlins`, `brembo`, `titanium`.
 
 ## 4. Inverted Border Radius (Cutout)
-- **Zero Overflow-Hidden:** Container Hero Cutout wajib `position: relative` TANPA `overflow: hidden` (agar elemen tak terpotong). `border-radius: 30px` langsung ke gambar.
-- **Zero Seam:** Cutout offset `-1px`. SVG konektor `26x26px`, overlap 2px (`viewBox="-2 -2 26 26"`, `geometricPrecision`). Warna SVG wajib `fill="currentColor"`.
+- **Zero Overflow-Hidden:** Container Cutout (`.hero-main-card`, `.detail-main-photo`) wajib `position: relative` TANPA `overflow: hidden` (agar elemen tak terpotong). `border-radius` diterapkan langsung ke elemen `<img>`.
+- **Zero Seam (Desktop):** Cutout offset `-1px`. SVG konektor `26x26px`, overlap `-2px`, offset lengkung `-24px` (`viewBox="-2 -2 26 26"` untuk TL, `viewBox="0 0 26 26"` untuk BR, `geometricPrecision`). Warna SVG wajib `fill="currentColor"`.
+- **Invarian Geometri S-Curve (Anti-Patahan/Gigi di Mobile & Desktop):**
+  - Tinggi total kotak cutout ($H$) **WAJIB** memenuhi syarat matematis $H \ge R_{\text{box}} + R_{\text{svg}}$. **DILARANG KERAS** mengecilkan `padding` atau ukuran pill di mobile hingga $H < R_{\text{box}} + R_{\text{svg}}$ karena akan membuat kaki overlap SVG menonjol keluar menjadi patahan tajam ("gigi" putih).
+  - Saat di-scale dengan faktor $k$ di `@media (max-width: 768px)` (misal $k = 0.75$), ukuran wajib proporsional terhadap rasio `viewBox` (`2 unit overlap : 24 unit arc` = `26 unit`): ukuran `.cutout-svg` = $26k$ (`19.5px`), offset overlap = $-2k$ (`-1.5px`), offset posisi lengkung = $-24k$ (`-18px`), radius sudut kotak (`border-bottom-right-radius` / `border-top-left-radius`) = $24k$ (`18px`), dan `min-height` kotak cutout dikunci $\ge 48k$ (`38px` $\ge 18\text{px} + 18\text{px}$).
 
 ## 5. Struktur Section (10 Wajib)
 1. `navbar-section` 2. `hero-section` 3. `stats-section` 4. `about-section` 5. `catalog-section` 6. `solutions-section` 7. `portfolio-section`/`testimonial-section` 8. `inquiry-section` 9. `footer-section` 10. `theme-switcher`
