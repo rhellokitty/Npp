@@ -39,7 +39,7 @@
     </header>
 
     <!-- PRODUCT DETAIL VIEW (Vanilla JS Toggle) -->
-    <div id="productDetailView" class="detail-wrapper" style="display: none;">
+    <div id="productDetailView" class="detail-wrapper">
       <div class="container detail-topbar">
         <button type="button" id="closeDetailBtn" class="detail-back-btn">
           <span class="detail-back-icon">
@@ -47,13 +47,13 @@
               <path d="m15 18-6-6 6-6" />
             </svg>
           </span>
-          <span>Back to Showroom</span>
+          <span>Kembali ke Katalog</span>
         </button>
 
         <div class="detail-breadcrumb">
-          <button type="button" id="breadcrumbCatalogBtn" class="detail-breadcrumb-link">Garage Catalog</button>
+          <button type="button" id="breadcrumbCatalogBtn" class="detail-breadcrumb-link">Katalog Produk</button>
           <span>/</span>
-          <span>For Sale (FS)</span>
+          <span>Solusi Daya</span>
           <span>/</span>
           <span class="detail-breadcrumb-current" id="detailBreadcrumbName">Nama Produk</span>
         </div>
@@ -114,7 +114,7 @@
 
             <div class="detail-price-box">
               <div>
-                <span class="detail-price-label">Offering Price</span>
+                <span class="detail-price-label">Harga Penawaran</span>
                 <span class="detail-price-value" id="detailPrice">Price</span>
               </div>
               <span class="detail-price-note" id="detailPriceNote">
@@ -123,7 +123,7 @@
             </div>
 
             <div class="detail-checklist-box">
-              <span class="detail-checklist-heading">Unit & Document Status</span>
+              <span class="detail-checklist-heading">Spesifikasi & Keunggulan Resmi</span>
               <ul class="detail-checklist" id="detailUnitOverview"></ul>
             </div>
 
@@ -131,13 +131,13 @@
 
             <div class="detail-contact-block">
               <span class="detail-contact-caption">
-                Contact our marketing for more information & unit inspection:
+                Hubungi tim sales engineering kami untuk penawaran formal & spesifikasi teknis:
               </span>
               <div class="detail-contact-grid">
-                <a href="https://wa.me/6281198765432" target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
+                <a href="https://wa.me/6287762994844?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20penawaran%20produk." target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
                   <div class="detail-wa-info">
-                    <span class="detail-wa-label">Sales & Project Inquiry (WhatsApp)</span>
-                    <span>+62 811-9876-5432</span>
+                    <span class="detail-wa-label">Konsultasi Penawaran (WhatsApp)</span>
+                    <span>0877-6299-4844</span>
                   </div>
                   <span class="btn-pill-icon">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -147,10 +147,10 @@
                     </svg>
                   </span>
                 </a>
-                <a href="https://wa.me/6287762994844" target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
+                <a href="https://wa.me/6287762994844?text=Halo%20Tim%20Teknis%20PT%20NPP,%20saya%20ingin%20konsultasi%20spesifikasi%20teknis." target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
                   <div class="detail-wa-info">
-                    <span class="detail-wa-label">Technical Helpdesk 24/7 (WhatsApp)</span>
-                    <span>+62 812-3456-7890</span>
+                    <span class="detail-wa-label">Technical Helpdesk (WhatsApp)</span>
+                    <span>0877-6299-4844</span>
                   </div>
                   <span class="btn-pill-icon">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -168,9 +168,9 @@
         <div class="detail-mods-panel">
           <div class="detail-mods-header">
             <span class="detail-mods-tag">
-              #specs • Showroom Unit Description & Modification List
+              #spesifikasi • Ikhtisar & Fitur Komponen Sistem Daya
             </span>
-            <h2 class="detail-panel-heading">Full Modification & Part Breakdown</h2>
+            <h2 class="detail-panel-heading">Fitur Teknis & Keunggulan Komponen</h2>
             <p class="detail-mods-desc" id="detailDescription">Description text</p>
           </div>
 
@@ -180,8 +180,8 @@
         <div class="detail-specs-panel">
           <div class="detail-specs-header">
             <div>
-              <span class="detail-mods-tag">Factory Data Sheet</span>
-              <h2 class="detail-panel-heading">Base Technical Specifications</h2>
+              <span class="detail-mods-tag">Datasheet Prinsipal Resmi</span>
+              <h2 class="detail-panel-heading">Spesifikasi Teknis Lengkap</h2>
             </div>
 
             <div class="detail-spec-tabs">
@@ -569,7 +569,7 @@
             <div>
               <h2 class="section-heading">Katalog Pengadaan<br />Solusi Daya Industri</h2>
             </div>
-            <button class="btn-pill-dark">
+            <a href="#contact" class="btn-pill-dark">
               <span>Minta Penawaran</span>
               <span class="btn-pill-icon">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -577,7 +577,7 @@
                   <path d="M7 7h10v10" />
                 </svg>
               </span>
-            </button>
+            </a>
           </div>
 
           <div class="catalog-tabs">
@@ -673,15 +673,15 @@
         <div class="container testimonial-inner">
           <div class="testimonial-header">
             <h2 class="section-heading">Kepercayaan Klien &<br />Mitra Industri Kami</h2>
-            <button class="btn-pill-dark">
-              <span>Lihat Semua</span>
+            <a href="#contact" class="btn-pill-dark">
+              <span>Hubungi Kami</span>
               <span class="btn-pill-icon">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <path d="M7 17 17 7" />
                   <path d="M7 7h10v10" />
                 </svg>
               </span>
-            </button>
+            </a>
           </div>
 
           <div class="testimonial-grid">
@@ -924,10 +924,10 @@
           <div class="footer-links-col">
             <span class="footer-col-heading">Buletin Industri</span>
             <p class="footer-desc">Dapatkan pembaruan katalog teknis dan buletin efisiensi energi industri.</p>
-            <div class="footer-newsletter-box">
-              <input type="email" placeholder="Email Perusahaan..." class="footer-newsletter-input" />
-              <button type="button" class="footer-newsletter-btn">Kirim</button>
-            </div>
+            <form id="newsletterForm" class="footer-newsletter-box">
+              <input type="email" id="newsletterEmailInput" placeholder="Email Perusahaan..." class="footer-newsletter-input" required />
+              <button type="submit" id="newsletterSubmitBtn" class="footer-newsletter-btn">Kirim</button>
+            </form>
           </div>
         </div>
 
@@ -944,7 +944,10 @@
     (function () {
       'use strict';
 
-      // 1. Data Store for Products
+      /* --------------------------------------------------------------------------
+         1. DATA STORE: PRODUCTS
+         Definisi data produk katalog, spesifikasi teknis & galeri gambar
+         -------------------------------------------------------------------------- */
       var products = {
         1: {
           id: 1,
@@ -1096,7 +1099,10 @@
         }
       };
 
-      // 2. Elements Cache
+      /* --------------------------------------------------------------------------
+         2. DOM ELEMENTS CACHE
+         Penyimpanan referensi node DOM untuk optimasi performa rendering
+         -------------------------------------------------------------------------- */
       var mainLandingContent = document.getElementById('mainLandingContent');
       var productDetailView = document.getElementById('productDetailView');
       var closeDetailBtn = document.getElementById('closeDetailBtn');
@@ -1124,7 +1130,10 @@
       var currentProduct = null;
       var activeSpecTab = 'engine';
 
-      // 3. Open & Close Product Detail
+      /* --------------------------------------------------------------------------
+         3. CONTROLLER: PRODUCT DETAIL VIEW
+         Logika buka/tutup tampilan detail produk, galeri multi-gambar, dan spesifikasi
+         -------------------------------------------------------------------------- */
       function openProductDetail(id) {
         var p = products[id];
         if (!p) return;
@@ -1254,7 +1263,9 @@
         });
       }
 
-      // 4. Catalog Card Click Handler
+      /* --------------------------------------------------------------------------
+         4. CONTROLLER: CATALOG CARD CLICK & WISHLIST
+         -------------------------------------------------------------------------- */
       document.querySelectorAll('#catalogGrid .catalog-card').forEach(function (card) {
         card.addEventListener('click', function () {
           var prodId = card.getAttribute('data-prod-id');
@@ -1275,7 +1286,9 @@
         });
       });
 
-      // 5. Catalog Category Filter
+      /* --------------------------------------------------------------------------
+         5. CONTROLLER: CATALOG CATEGORY FILTER
+         -------------------------------------------------------------------------- */
       var catButtons = document.querySelectorAll('.catalog-tab-btn');
       var cards = document.querySelectorAll('#catalogGrid .catalog-card');
 
@@ -1296,7 +1309,10 @@
         });
       });
 
-      // 6. Navigation Active Links & ScrollSpy
+      /* --------------------------------------------------------------------------
+         6. CONTROLLER: NAVIGATION & SCROLLSPY
+         Sinkronisasi menu navbar aktif berdasarkan posisi scroll halaman
+         -------------------------------------------------------------------------- */
       var navLinks = document.querySelectorAll('.navbar-link');
       var sections = [
         document.getElementById('home'),
@@ -1342,7 +1358,10 @@
         });
       });
 
-      // 7. Auto Hide / Reveal Navbar on Scroll
+      /* --------------------------------------------------------------------------
+         7. CONTROLLER: NAVBAR SCROLL REVEAL / HIDE
+         Auto hide saat scroll ke bawah, auto reveal saat scroll ke atas
+         -------------------------------------------------------------------------- */
       var navbarWrapper = document.querySelector('.navbar-wrapper');
       var lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
       window.addEventListener('scroll', function () {
@@ -1361,7 +1380,9 @@
         lastScrollY = Math.max(0, currentScrollY);
       }, { passive: true });
 
-      // 8. Newsletter Form
+      /* --------------------------------------------------------------------------
+         8. CONTROLLER: NEWSLETTER FORM SUBMISSION
+         -------------------------------------------------------------------------- */
       var newsletterForm = document.getElementById('newsletterForm');
       var newsletterSubmitBtn = document.getElementById('newsletterSubmitBtn');
       var newsletterEmailInput = document.getElementById('newsletterEmailInput');

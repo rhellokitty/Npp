@@ -1583,6 +1583,7 @@ a.contact-simple-val:hover {
    11. PRODUCT DETAIL VIEW (.detail-*)
    ========================================================================== */
 .detail-wrapper {
+  display: none;
   background-color: var(--bg-page);
   padding-bottom: 80px;
   transition: background-color 0.3s ease;
