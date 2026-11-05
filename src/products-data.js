@@ -5,6 +5,7 @@
 window.NPP_PRODUCTS = {
   1: {
     id: 1,
+    category: 'Battery',
     name: 'Baterai RITAR VRLA AGM & Deep Cycle',
     subtitle: 'RITAR Power • Valve Regulated Lead Acid & High Rate Discharge',
     price: 'Hubungi Sales',
@@ -54,6 +55,7 @@ window.NPP_PRODUCTS = {
   },
   2: {
     id: 2,
+    category: 'UPS',
     name: 'UPS Ablerex Enterprise Modular',
     subtitle: 'Ablerex Power Solutions • Online Double Conversion 3:3',
     price: 'Hubungi Sales',
@@ -105,6 +107,7 @@ window.NPP_PRODUCTS = {
   },
   3: {
     id: 3,
+    category: 'Battery',
     name: 'Baterai BSB Industrial Storage VRLA',
     subtitle: 'BSB Battery • Standby & Cyclic Industrial Power Solution',
     price: 'Hubungi Sales',

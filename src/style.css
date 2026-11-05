@@ -1672,7 +1672,11 @@ a.contact-simple-val:hover {
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-xl);
-  transition: all 0.4s ease;
+  transition: opacity 0.12s ease-in-out;
+}
+
+.detail-main-img-fade {
+  opacity: 0.35;
 }
 
 .detail-cutout-tl {

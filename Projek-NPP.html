@@ -778,36 +778,71 @@
 
   </div>
 
+  <!-- Master Data Produk (Ubah data produk langsung di file js ini) -->
+  <script src="src/products-data.js"></script>
+
   <!-- Vanilla JavaScript Logic (Pure JS, Zero Framework) -->
   <script>
     (function () {
       'use strict';
 
       /* --------------------------------------------------------------------------
-         1. CONTROLLER: CATALOG CARD CLICK -> NAVIGATE TO PRODUCT DETAIL
+         1. CONTROLLER: CATALOG PRODUCT CARDS & DATA SYNC
+         Sinkronisasi kartu katalog langsung dari src/products-data.js
          -------------------------------------------------------------------------- */
-      document.querySelectorAll('#catalogGrid .catalog-card').forEach(function (card) {
-        card.addEventListener('click', function () {
-          var prodId = card.getAttribute('data-prod-id');
-          window.location.href = 'product-detail.html?id=' + prodId;
-        });
-      });
+      var catalogGrid = document.getElementById('catalogGrid');
+      if (catalogGrid && window.NPP_PRODUCTS) {
+        catalogGrid.innerHTML = '';
+        Object.keys(window.NPP_PRODUCTS).forEach(function (id) {
+          var p = window.NPP_PRODUCTS[id];
+          var card = document.createElement('article');
+          card.className = 'catalog-card';
+          card.setAttribute('data-prod-id', p.id);
+          card.setAttribute('data-prod-cat', p.category || 'Battery');
+          card.innerHTML =
+            '<span class="catalog-badge">' + (p.discount || p.badge || '') + '</span>' +
+            '<button type="button" class="catalog-wishlist-btn" aria-label="Wishlist">' +
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />' +
+              '</svg>' +
+            '</button>' +
+            '<img src="' + p.image + '" alt="' + p.name + '" class="catalog-card-img" />' +
+            '<div class="catalog-card-overlay">' +
+              '<div>' +
+                '<h4 class="catalog-card-title">' + p.name + '</h4>' +
+                '<span class="catalog-card-price">' + p.price + '</span>' +
+              '</div>' +
+              '<a href="product-detail.html?id=' + p.id + '" class="catalog-card-action" aria-label="Lihat detail ' + p.name + '">' +
+                '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                  '<path d="M7 17 17 7" />' +
+                  '<path d="M7 7h10v10" />' +
+                '</svg>' +
+              '</a>' +
+            '</div>';
 
-      // Wishlist toggle
-      document.querySelectorAll('.catalog-wishlist-btn').forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var svg = btn.querySelector('svg');
-          if (svg.getAttribute('fill') === 'currentColor') {
-            svg.setAttribute('fill', 'none');
-          } else {
-            svg.setAttribute('fill', 'currentColor');
+          card.addEventListener('click', function () {
+            window.location.href = 'product-detail.html?id=' + p.id;
+          });
+
+          var wishlistBtn = card.querySelector('.catalog-wishlist-btn');
+          if (wishlistBtn) {
+            wishlistBtn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              var svg = wishlistBtn.querySelector('svg');
+              if (svg.getAttribute('fill') === 'currentColor') {
+                svg.setAttribute('fill', 'none');
+              } else {
+                svg.setAttribute('fill', 'currentColor');
+              }
+            });
           }
+
+          catalogGrid.appendChild(card);
         });
-      });
+      }
 
       /* --------------------------------------------------------------------------
-         5. CONTROLLER: CATALOG CATEGORY FILTER
+         2. CONTROLLER: CATALOG CATEGORY FILTER
          -------------------------------------------------------------------------- */
       var catButtons = document.querySelectorAll('.catalog-tab-btn');
       var cards = document.querySelectorAll('#catalogGrid .catalog-card');

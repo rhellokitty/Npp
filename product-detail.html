@@ -137,7 +137,8 @@
                 Hubungi tim sales engineering kami untuk penawaran formal & spesifikasi teknis:
               </span>
               <div class="detail-contact-grid">
-                <a href="https://wa.me/6287762994844?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20penawaran%20produk."
+                <a id="detailWaSalesBtn"
+                  href="https://wa.me/6287762994844?text=Halo%20PT%20Nusantara%20Puncak%20Perkasa,%20saya%20ingin%20konsultasi%20penawaran%20produk."
                   target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
                   <div class="detail-wa-info">
                     <span class="detail-wa-label">Konsultasi Penawaran</span>
@@ -150,7 +151,8 @@
                     </svg>
                   </span>
                 </a>
-                <a href="https://wa.me/6287762994844?text=Halo%20Tim%20Teknis%20PT%20NPP,%20saya%20ingin%20konsultasi%20spesifikasi%20teknis."
+                <a id="detailWaTechBtn"
+                  href="https://wa.me/6287762994844?text=Halo%20Tim%20Teknis%20PT%20NPP,%20saya%20ingin%20konsultasi%20spesifikasi%20teknis."
                   target="_blank" rel="noopener noreferrer" class="detail-wa-btn">
                   <div class="detail-wa-info">
                     <span class="detail-wa-label">Technical Helpdesk</span>
@@ -286,6 +288,8 @@
       var detailDescription = document.getElementById('detailDescription');
       var detailModCategories = document.getElementById('detailModCategories');
       var detailSpecsGrid = document.getElementById('detailSpecsGrid');
+      var detailWaSalesBtn = document.getElementById('detailWaSalesBtn');
+      var detailWaTechBtn = document.getElementById('detailWaTechBtn');
 
       var currentProduct = null;
       var activeSpecTab = 'engine';
@@ -298,6 +302,7 @@
         currentProduct = p;
         activeSpecTab = 'engine';
 
+        // Update Document Title Dinamis Sesuai Produk
         document.title = p.name + ' — PT Nusantara Puncak Perkasa';
 
         detailBreadcrumbName.textContent = p.name;
@@ -313,7 +318,17 @@
         detailPriceNote.textContent = p.priceNote || 'Negotiable';
         detailDescription.textContent = p.description;
 
-        // Thumbs gallery (aktif bila > 1 gambar seperti UPS Ablerex)
+        // Tautan WhatsApp Otomatis Menyebutkan Nama Produk
+        if (detailWaSalesBtn) {
+          var salesMsg = encodeURIComponent('Halo PT Nusantara Puncak Perkasa, saya ingin konsultasi penawaran produk ' + p.name + '.');
+          detailWaSalesBtn.href = 'https://wa.me/6287762994844?text=' + salesMsg;
+        }
+        if (detailWaTechBtn) {
+          var techMsg = encodeURIComponent('Halo Tim Teknis PT NPP, saya ingin konsultasi spesifikasi teknis untuk ' + p.name + '.');
+          detailWaTechBtn.href = 'https://wa.me/6287762994844?text=' + techMsg;
+        }
+
+        // Thumbs gallery (aktif bila > 1 gambar seperti UPS Ablerex) dengan transisi halus
         detailGalleryGrid.innerHTML = '';
         if (p.gallery && p.gallery.length > 1) {
           detailGalleryGrid.style.display = 'grid';
@@ -323,7 +338,12 @@
             btn.className = 'detail-thumb-btn' + (idx === 0 ? ' detail-thumb-active' : '');
             btn.innerHTML = '<img src="' + url + '" alt="' + p.name + '" class="detail-thumb-img" />';
             btn.addEventListener('click', function () {
-              detailMainImg.src = url;
+              if (detailMainImg.getAttribute('src') === url) return;
+              detailMainImg.classList.add('detail-main-img-fade');
+              setTimeout(function () {
+                detailMainImg.src = url;
+                detailMainImg.classList.remove('detail-main-img-fade');
+              }, 120);
               document.querySelectorAll('.detail-thumb-btn').forEach(function (b) { b.classList.remove('detail-thumb-active'); });
               btn.classList.add('detail-thumb-active');
             });
@@ -404,6 +424,7 @@
       var params = new URLSearchParams(window.location.search);
       var initialId = params.get('id') || '1';
       renderProduct(initialId);
+      window.scrollTo(0, 0);
 
       /* --------------------------------------------------------------------------
          4. NAVBAR SCROLL CONTROLLER
