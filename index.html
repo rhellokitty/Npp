@@ -1381,23 +1381,44 @@
 
       /* --------------------------------------------------------------------------
          7. CONTROLLER: NAVBAR SCROLL REVEAL / HIDE
-         Auto hide saat scroll ke bawah, auto reveal saat scroll ke atas
+         Auto hide dengan threshold akumulasi scroll (tidak mudah hide / butuh 2x scroll)
          -------------------------------------------------------------------------- */
       var navbarWrapper = document.querySelector('.navbar-wrapper');
       var lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      var scrollDownBuffer = 0;
+      var scrollUpBuffer = 0;
+      var HIDE_THRESHOLD = 120; // Butuh scroll ke bawah akumulatif ~120px (~2x mouse wheel)
+      var MIN_PAGE_OFFSET = 240; // Tetap tampil penuh di area hero (>= 240px baru aktif)
+
       window.addEventListener('scroll', function () {
         var currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScrollY > 60 && currentScrollY > lastScrollY) {
-          // Scroll ke bawah: sembunyikan navbar
-          if (navbarWrapper) {
-            navbarWrapper.classList.add('navbar-hidden');
+        var diff = currentScrollY - lastScrollY;
+
+        // Reset buffer jika masih berada di dekat bagian paling atas
+        if (currentScrollY <= MIN_PAGE_OFFSET) {
+          if (navbarWrapper) navbarWrapper.classList.remove('navbar-hidden');
+          scrollDownBuffer = 0;
+          scrollUpBuffer = 0;
+          lastScrollY = Math.max(0, currentScrollY);
+          return;
+        }
+
+        if (diff > 0) {
+          // Sedang scroll ke bawah
+          scrollDownBuffer += diff;
+          scrollUpBuffer = 0;
+          if (scrollDownBuffer >= HIDE_THRESHOLD) {
+            if (navbarWrapper) navbarWrapper.classList.add('navbar-hidden');
           }
-        } else {
-          // Scroll ke atas atau kembali ke top: tampilkan navbar
-          if (navbarWrapper) {
-            navbarWrapper.classList.remove('navbar-hidden');
+        } else if (diff < 0) {
+          // Sedang scroll ke atas
+          scrollUpBuffer += Math.abs(diff);
+          scrollDownBuffer = 0;
+          if (scrollUpBuffer >= 20) {
+            if (navbarWrapper) navbarWrapper.classList.remove('navbar-hidden');
           }
         }
+
         lastScrollY = Math.max(0, currentScrollY);
       }, { passive: true });
 
