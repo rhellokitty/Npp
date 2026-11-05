@@ -777,8 +777,9 @@
     </footer>
 
     <!-- PRODUCT DETAIL OVERLAY VIEW (Zero Page Load / Instant Toggle) -->
-    <div id="productDetailView" class="detail-wrapper detail-overlay-view" style="display: none;" aria-modal="true" role="dialog">
-      <header class="navbar-wrapper">
+    <div id="productDetailView" class="detail-overlay-view" style="display: none;" aria-modal="true" role="dialog">
+      <div class="detail-wrapper">
+        <header class="navbar-wrapper">
         <div class="container">
           <div class="navbar-header">
             <a href="#home" class="navbar-brand detail-nav-close" data-target="#home">
@@ -960,56 +961,86 @@
           <div class="detail-specs-grid" id="detailSpecsGrid"></div>
         </div>
       </section>
+    </div>
 
-      <!-- Footer Overlay -->
-      <footer class="footer-section">
-        <div class="container">
-          <div class="footer-grid">
-            <div class="footer-brand-col">
-              <div class="footer-brand">
-                <span class="footer-brand-sub">PT NUSANTARA PUNCAK PERKASA</span>
-              </div>
-              <p class="footer-desc">Distributor produk kelistrikan: Uninterruptible Power Supply (UPS), Baterai,
-                Stabilizer, Genset, dan Solar Cell.</p>
+    <!-- Footer Overlay -->
+    <footer class="footer-section">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <div class="footer-brand">
+              <span class="footer-brand-sub">PT NUSANTARA PUNCAK PERKASA</span>
             </div>
-
-            <div class="footer-links-col">
-              <span class="footer-col-heading">Katalog Produk</span>
-              <div class="footer-links-list">
-                <a href="#products" class="footer-link detail-nav-close" data-target="#products">Industrial Battery</a>
-                <a href="#products" class="footer-link detail-nav-close" data-target="#products">Enterprise UPS</a>
-                <a href="#products" class="footer-link detail-nav-close" data-target="#products">Baterai BSB Storage</a>
-              </div>
-            </div>
-
-            <div class="footer-links-col">
-              <span class="footer-col-heading">Perusahaan</span>
-              <div class="footer-links-list">
-                <a href="#home" class="footer-link detail-nav-close" data-target="#home">Beranda</a>
-                <a href="#about" class="footer-link detail-nav-close" data-target="#about">Profil Korporat</a>
-                <a href="#services" class="footer-link detail-nav-close" data-target="#services">Layanan & Garansi</a>
-                <a href="#review" class="footer-link detail-nav-close" data-target="#review">Mitra & Proyek</a>
-                <a href="#contact" class="footer-link detail-nav-close" data-target="#contact">Kontak B2B</a>
-              </div>
-            </div>
-
-            <div class="footer-links-col">
-              <span class="footer-col-heading">Buletin Industri</span>
-              <p class="footer-desc">Dapatkan pembaruan katalog teknis dan buletin efisiensi energi industri.</p>
-              <form id="overlayNewsletterForm" class="footer-newsletter-box">
-                <input type="email" id="overlayNewsletterEmailInput" placeholder="Email Perusahaan..."
-                  class="footer-newsletter-input" required />
-                <button type="submit" id="overlayNewsletterSubmitBtn" class="footer-newsletter-btn">Kirim</button>
-              </form>
+            <p class="footer-desc">Distributor produk kelistrikan: Uninterruptible Power Supply (UPS), Baterai,
+              Stabilizer, Genset, dan Solar Cell.</p>
+            <div class="footer-socials">
+              <a href="#" class="footer-social-link" aria-label="Instagram">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="Facebook">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="X">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="Website">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M2 12h20" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </a>
             </div>
           </div>
 
-          <div class="footer-copyright">
-            <span>© 2026 PT Nusantara Puncak Perkasa. Seluruh Hak Cipta Dilindungi.</span>
+          <div class="footer-links-col">
+            <span class="footer-col-heading">Katalog Produk</span>
+            <div class="footer-links-list">
+              <a href="#products" class="footer-link detail-nav-close" data-target="#products">Industrial Battery</a>
+              <a href="#products" class="footer-link detail-nav-close" data-target="#products">Enterprise UPS</a>
+              <a href="#products" class="footer-link detail-nav-close" data-target="#products">Servo Stabilizer</a>
+              <a href="#products" class="footer-link detail-nav-close" data-target="#products">Pure Sine Inverter</a>
+              <a href="#products" class="footer-link detail-nav-close" data-target="#products">Commercial Solar Panel</a>
+            </div>
+          </div>
+
+          <div class="footer-links-col">
+            <span class="footer-col-heading">Perusahaan</span>
+            <div class="footer-links-list">
+              <a href="#home" class="footer-link detail-nav-close" data-target="#home">Beranda</a>
+              <a href="#about" class="footer-link detail-nav-close" data-target="#about">Profil Korporat</a>
+              <a href="#services" class="footer-link detail-nav-close" data-target="#services">Layanan & Garansi</a>
+              <a href="#review" class="footer-link detail-nav-close" data-target="#review">Mitra & Proyek</a>
+              <a href="#contact" class="footer-link detail-nav-close" data-target="#contact">Kontak B2B</a>
+            </div>
+          </div>
+
+          <div class="footer-links-col">
+            <span class="footer-col-heading">Buletin Industri</span>
+            <p class="footer-desc">Dapatkan pembaruan katalog teknis dan buletin efisiensi energi industri.</p>
+            <form id="overlayNewsletterForm" class="footer-newsletter-box">
+              <input type="email" id="overlayNewsletterEmailInput" placeholder="Email Perusahaan..."
+                class="footer-newsletter-input" required />
+              <button type="submit" id="overlayNewsletterSubmitBtn" class="footer-newsletter-btn">Kirim</button>
+            </form>
           </div>
         </div>
-      </footer>
-    </div>
+
+        <div class="footer-copyright">
+          <span>© 2026 PT Nusantara Puncak Perkasa. Seluruh Hak Cipta Dilindungi.</span>
+        </div>
+      </div>
+    </footer>
+  </div>
 
   </div>
 
@@ -1507,6 +1538,19 @@
           if (newsletterEmailInput && newsletterEmailInput.value.trim()) {
             newsletterSubmitBtn.textContent = 'Terkirim!';
             newsletterEmailInput.value = '';
+          }
+        });
+      }
+
+      var overlayNewsletterForm = document.getElementById('overlayNewsletterForm');
+      var overlayNewsletterSubmitBtn = document.getElementById('overlayNewsletterSubmitBtn');
+      var overlayNewsletterEmailInput = document.getElementById('overlayNewsletterEmailInput');
+      if (overlayNewsletterForm) {
+        overlayNewsletterForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (overlayNewsletterEmailInput && overlayNewsletterEmailInput.value.trim()) {
+            overlayNewsletterSubmitBtn.textContent = 'Terkirim!';
+            overlayNewsletterEmailInput.value = '';
           }
         });
       }
