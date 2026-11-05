@@ -2106,14 +2106,16 @@ a.contact-simple-val:hover {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.detail-spec-tab:hover {
+.detail-spec-tab:hover:not(.detail-spec-tab-active) {
   color: var(--text-primary);
 }
 
-.detail-spec-tab-active {
+.detail-spec-tab-active,
+.detail-spec-tab-active:hover {
   background-color: var(--accent-color);
   color: var(--text-inverse);
   font-weight: 600;
+  cursor: default;
 }
 
 .detail-specs-grid {
