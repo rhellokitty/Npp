@@ -1960,6 +1960,7 @@ a.contact-simple-val:hover {
 .detail-wa-label {
   font-size: 0.62rem;
   opacity: 0.85;
+  white-space: nowrap;
 }
 
 .detail-mods-panel,
