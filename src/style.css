@@ -2189,32 +2189,6 @@ a.contact-simple-val:hover {
   }
 }
 
-@media (max-width: 640px) {
-  .detail-main-photo {
-    height: 360px;
-  }
-
-  .detail-contact-grid,
-  .detail-mods-grid,
-  .detail-specs-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .detail-spec-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .detail-spec-val {
-    text-align: left;
-  }
-
-  .detail-mods-panel,
-  .detail-specs-panel {
-    padding: 24px;
-  }
-}
-
 
 /* ==========================================================================
    STRICT RESPONSIVE REFINEMENTS (TABLET <=1024px & MOBILE <=768px)
@@ -2497,6 +2471,201 @@ a.contact-simple-val:hover {
     gap: 28px;
     margin-bottom: 28px;
   }
+
+  /* Detail Page Refinements (Mobile <= 768px) */
+  .detail-wrapper {
+    padding-top: 84px;
+    padding-bottom: 48px;
+    gap: 24px;
+  }
+
+  .detail-section {
+    gap: 28px;
+  }
+
+  .detail-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .detail-breadcrumb {
+    flex-wrap: wrap;
+    font-size: 0.72rem;
+    gap: 6px;
+  }
+
+  .detail-main-photo {
+    height: 320px;
+  }
+
+  .detail-thumbs-grid {
+    gap: 8px;
+  }
+
+  .detail-thumb-btn {
+    height: 64px;
+    border-radius: 14px;
+  }
+
+  .detail-thumb-img {
+    border-radius: 12px;
+  }
+
+  /* .detail-summary-card: tanpa background & tanpa padding */
+  .detail-summary-card {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    gap: 16px;
+  }
+
+  .detail-summary-header {
+    gap: 4px;
+  }
+
+  .detail-subtitle {
+    font-size: 0.7rem;
+  }
+
+  .detail-title {
+    font-size: 1.55rem;
+    line-height: 1.2;
+  }
+
+  .detail-price-box {
+    background-color: var(--bg-section-alt);
+    border-radius: 16px;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .detail-price-value {
+    font-size: 1.45rem;
+  }
+
+  .detail-price-note {
+    font-size: 0.68rem;
+    padding: 4px 12px;
+  }
+
+  .detail-checklist-box {
+    background-color: var(--bg-section-alt);
+    border-radius: 16px;
+    padding: 14px 16px;
+    gap: 8px;
+  }
+
+  .detail-checklist-box .detail-check-icon {
+    background-color: var(--bg-page);
+  }
+
+  .detail-checklist-item {
+    font-size: 0.76rem;
+    gap: 8px;
+  }
+
+  .detail-metrics-grid {
+    gap: 10px;
+  }
+
+  .detail-metric-card {
+    background-color: var(--bg-section-alt);
+    border-radius: 14px;
+    padding: 12px 14px;
+    gap: 2px;
+  }
+
+  .detail-metric-label {
+    font-size: 0.65rem;
+  }
+
+  .detail-metric-value {
+    font-size: 0.95rem;
+  }
+
+  .detail-contact-caption {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .detail-contact-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .detail-wa-btn {
+    width: 100%;
+    padding: 12px 14px 12px 18px;
+  }
+
+  .detail-mods-panel,
+  .detail-specs-panel {
+    padding: 24px 18px;
+    border-radius: 20px;
+    gap: 20px;
+  }
+
+  .detail-panel-heading {
+    font-size: 1.4rem;
+    line-height: 1.25;
+  }
+
+  .detail-mods-desc {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .detail-mods-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .detail-mod-card {
+    border-radius: 16px;
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .detail-spec-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding: 4px;
+    border-radius: var(--radius-full);
+    width: 100%;
+  }
+
+  .detail-spec-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .detail-spec-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 8px 14px;
+    font-size: 0.72rem;
+  }
+
+  .detail-specs-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .detail-spec-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: 14px;
+    gap: 4px;
+  }
+
+  .detail-spec-val {
+    text-align: left;
+  }
 }
 
 /* --- STANDARD MOBILE (<= 640px) --- */
@@ -2575,17 +2744,6 @@ a.contact-simple-val:hover {
     padding-top: 20px;
   }
 
-  .detail-topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .detail-breadcrumb {
-    flex-wrap: wrap;
-    font-size: 0.72rem;
-  }
-
   .detail-main-photo {
     height: 280px;
   }
@@ -2594,14 +2752,14 @@ a.contact-simple-val:hover {
     font-size: 1.35rem;
   }
 
-  .detail-price-value {
-    font-size: 1.35rem;
-  }
-
   .detail-price-box {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+
+  .detail-price-value {
+    font-size: 1.35rem;
   }
 
   .detail-mods-panel,
@@ -2697,5 +2855,46 @@ a.contact-simple-val:hover {
   .btn-pill-icon {
     width: 22px;
     height: 22px;
+  }
+
+  .detail-main-photo {
+    height: 240px;
+  }
+
+  .detail-cutout-tl {
+    padding: 4px 10px 10px 4px;
+    gap: 6px;
+  }
+
+  .detail-rarity-pill {
+    font-size: 0.62rem;
+    padding: 2px 7px;
+  }
+
+  .detail-rating-pill {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+  }
+
+  .detail-cutout-br {
+    padding: 10px 4px 4px 10px;
+  }
+
+  .detail-status-pill {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+  }
+
+  .detail-thumb-btn {
+    height: 52px;
+    border-radius: 12px;
+  }
+
+  .detail-title {
+    font-size: 1.25rem;
+  }
+
+  .detail-price-value {
+    font-size: 1.25rem;
   }
 }
