@@ -870,15 +870,32 @@
 
       window.addEventListener('scroll', updateActiveNavOnScroll, { passive: true });
 
-      navLinks.forEach(function (lnk) {
-        lnk.addEventListener('click', function () {
-          var href = lnk.getAttribute('href');
-          var targetId = href && href.startsWith('#') ? href.slice(1) : null;
-          closeProductDetail(targetId);
-          navLinks.forEach(function (l) { l.classList.remove('navbar-link-active'); });
-          lnk.classList.add('navbar-link-active');
+      // In-page smooth scroll untuk link anchor internal (#)
+      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener('click', function (e) {
+          var href = anchor.getAttribute('href');
+          if (href && href.length > 1) {
+            var targetEl = document.querySelector(href);
+            if (targetEl) {
+              e.preventDefault();
+              targetEl.scrollIntoView({ behavior: 'smooth' });
+              if (history.pushState) history.pushState(null, '', href);
+              navLinks.forEach(function (l) { l.classList.remove('navbar-link-active'); });
+              if (anchor.classList.contains('navbar-link')) {
+                anchor.classList.add('navbar-link-active');
+              }
+            }
+          }
         });
       });
+
+      // Mendarat instan tanpa animasi scroll jika dibuka via hash URL (misal dari product-detail.html)
+      if (window.location.hash) {
+        var targetSection = document.querySelector(window.location.hash);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+      }
 
       /* --------------------------------------------------------------------------
          7. CONTROLLER: NAVBAR SCROLL REVEAL / HIDE

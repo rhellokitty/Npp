@@ -100,7 +100,6 @@ body::-webkit-scrollbar {
 html {
   min-height: 100%;
   overflow-x: clip;
-  scroll-behavior: smooth;
   scroll-padding-top: 80px;
   font-family: var(--font-family);
   color: var(--text-primary);
