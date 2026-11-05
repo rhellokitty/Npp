@@ -1308,15 +1308,6 @@ html:not([data-theme="light"]) .hero-client-logo {
   gap: 20px;
 }
 
-.contact-simple-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  text-align: left;
-  line-height: 1.15;
-}
-
 .contact-simple-list {
   display: flex;
   flex-direction: column;
@@ -2327,10 +2318,6 @@ a.contact-simple-val:hover {
     padding: 52px 0;
   }
 
-  .contact-simple-title {
-    font-size: 1.9rem;
-  }
-
   .footer-section {
     padding: 52px 0 28px;
   }
@@ -2475,11 +2462,6 @@ a.contact-simple-val:hover {
   .contact-split-layout {
     grid-template-columns: 1fr;
     gap: 28px;
-  }
-
-  .contact-simple-title {
-    font-size: 1.6rem;
-    line-height: 1.25;
   }
 
   .contact-simple-row {

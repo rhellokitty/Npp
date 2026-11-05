@@ -2,7 +2,7 @@
 
 > **ATURAN OUTPUT MUTLAK:** Saat diminta revisi, refactor, atau fitur, HANYA BERIKAN OUTPUT KODE SAJA tanpa penjelasan, teori, atau basa-basi pengantar, kecuali ditanya secara eksplisit.
 > **ATURAN MUTLAK DESAIN:** DILARANG KERAS mengubah desain, layout, komponen, atau styling yang sudah ada KECUALI atas instruksi eksplisit dan spesifik dari user. Pertahankan 100% desain yang sudah ada dan hanya lakukan perubahan tepat pada bagian yang diminta.
-> **ATURAN MUTLAK PERUBAHAN MANUAL:** DILARANG KERAS menimpa, menghapus, atau mengembalikan (revert) bagian kode, teks, aset, atau styling yang sudah diubah secara manual oleh USER. Selalu periksa dan pertahankan perubahan manual user secara utuh.
+> **ATURAN MUTLAK KONSISTENSI HEADING & PERUBAHAN MANUAL:** SEMUA judul section utama WAJIB 100% konsisten menggunakan class semantik `.section-heading` (termasuk pada section kontak `<h2>Hubungi Kami</h2>`). DILARANG membuat class heading ad-hoc baru seperti `.contact-simple-title`. DILARANG KERAS menimpa, menghapus, atau mengembalikan (revert) bagian kode, teks, aset, atau styling yang sudah diubah secara manual oleh USER. Selalu periksa dan pertahankan perubahan manual user secara utuh.
 > **ATURAN MUTLAK MINIMALIS & CLEAN (NO CLUTTER):** DILARANG menambahkan elemen dekoratif/teks pengisi yang tidak diminta seperti `.section-tag` berulang, badge kecil berlebih, atau `.contact-desc`/paragraf basa-basi pada section kontak. Pertahankan layout tetap clean, to-the-point, dan berfokus pada elemen esensial (heading, kontak langsung, dan maps).
 > **ATURAN MUTLAK NO HOVER LIFT (ZERO TRANSLATE-Y):** DILARANG KERAS menambahkan efek gerak naik ke atas pada hover (`transform: translateY(-...)`) pada tombol, kartu, atau elemen apa pun di seluruh proyek. Pada `.btn-contact-primary`, DILARANG menambahkan efek hover apa pun (wajib static tanpa perubahan visual saat hover).
 > **ATURAN MUTLAK ISOLASI DESKTOP (ZERO DESKTOP REGRESSION):** DILARANG KERAS mengubah, menghapus, atau memindahkan base styling/layout desktop (`> 1024px`) saat melakukan penyesuaian responsif. Seluruh penyesuaian tablet & mobile WAJIB diisolasi secara ketat hanya di dalam blok `@media` (Tablet: `@media (min-width: 769px) and (max-width: 1024px)`, Mobile: `@media (max-width: 768px)`). Tampilan desktop default wajib 100% identik dan terlindungi dari regresi visual apa pun.
@@ -40,6 +40,7 @@ Urutan section terstandar:
 
 ## 6. Semantic CSS Class Naming & Single Global Stylesheet (Wajib)
 - **Wajib Semantic Class:** Setiap elemen di dalam HTML WAJIB menggunakan nama class semantik yang deskriptif per-section (contoh: `.navbar-section`, `.hero-section`, `.stats-section`, `.about-section`, `.catalog-section`, `.inquiry-section`, `.footer-section`).
+- **Konsistensi Heading Section:** Seluruh section (About, Catalog, Testimonial, Contact, dll.) WAJIB konsisten menggunakan `<h2 class="section-heading">` untuk judul utama section. Dilarang membuat class heading varian ad-hoc baru.
 - **DILARANG Utility Class Panjang di Template:** Dilarang menumpuk deretan panjang class utility di dalam elemen HTML.
 - **Single Source of CSS:** SEMUA definisi class semantik dan CSS variables WAJIB terpusat di `src/style.css`.
 - **Zero Inline Style:** DILARANG menulis atribut inline `style="..."` atau block `<style>` di dalam berkas HTML.
