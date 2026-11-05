@@ -1938,12 +1938,12 @@ a.contact-simple-val:hover {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   background-color: var(--accent-color);
   color: var(--text-inverse);
-  padding: 8px 8px 8px 18px;
+  padding: 8px 8px 8px 14px;
   border-radius: var(--radius-full);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 600;
   transition: opacity 0.2s ease;
 }
