@@ -2474,9 +2474,9 @@ a.contact-simple-val:hover {
 
   /* Detail Page Refinements (Mobile <= 768px) */
   .detail-wrapper {
-    padding-top: 84px;
+    padding-top: 10px;
     padding-bottom: 48px;
-    gap: 24px;
+    gap: 20px;
   }
 
   .detail-section {
@@ -2484,6 +2484,7 @@ a.contact-simple-val:hover {
   }
 
   .detail-topbar {
+    padding: 6px 0 16px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
