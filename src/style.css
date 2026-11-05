@@ -1660,6 +1660,8 @@ a.contact-simple-val:hover {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  position: sticky;
+  top: 96px;
 }
 
 .detail-main-photo {
@@ -2175,6 +2177,10 @@ a.contact-simple-val:hover {
 @media (max-width: 1024px) {
   .detail-hero-grid {
     grid-template-columns: 1fr;
+  }
+
+  .detail-gallery-col {
+    position: static;
   }
 
   .detail-mods-grid {
