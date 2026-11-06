@@ -267,74 +267,57 @@
             </div>
           </div>
 
-          <!-- FILTER BAR LENGKAP 5 DIMENSI STATUS + LIVE SEARCH -->
+          <!-- TOOLBAR PENCARIAN & FILTER PO PELANGGAN -->
           <div class="erp-toolbar">
-            <div class="erp-search-box">
-              <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-              <input
-                type="search"
-                id="ordersSearchInput"
-                class="erp-search-input"
-                placeholder="Cari No. SO, No. PO Klien, Nama Pelanggan, PIC Sales, atau Kode SKU..." />
+            <div class="erp-toolbar-left">
+              <div class="erp-search-box">
+                <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  type="search"
+                  id="ordersSearchInput"
+                  class="erp-search-input"
+                  placeholder="Cari No. SO, No. PO Klien, atau Pelanggan..." />
+              </div>
+
+              <div class="erp-filter-group">
+                <!-- Status Persetujuan -->
+                <select id="filterDimApproval" class="erp-filter-select" aria-label="Filter Status Persetujuan">
+                  <option value="ALL">Semua Persetujuan</option>
+                  <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
+                  <option value="Disetujui">Disetujui</option>
+                  <option value="Ditolak">Ditolak</option>
+                </select>
+
+                <!-- Status Pengiriman -->
+                <select id="filterDimDelivery" class="erp-filter-select" aria-label="Filter Status Pengiriman">
+                  <option value="ALL">Semua Pengiriman</option>
+                  <option value="Belum Dikirim">Belum Dikirim</option>
+                  <option value="Siap Kirim Gudang">Siap Kirim Gudang</option>
+                  <option value="Terkirim Sebagian">Terkirim Sebagian</option>
+                  <option value="Terkirim Penuh">Terkirim Penuh</option>
+                </select>
+
+                <!-- Status Pembayaran -->
+                <select id="filterDimPayment" class="erp-filter-select col-financial" aria-label="Filter Status Pembayaran">
+                  <option value="ALL">Semua Pembayaran</option>
+                  <option value="Belum Dibayar">Belum Dibayar</option>
+                  <option value="DP 30% Diterima">DP 30% Diterima</option>
+                  <option value="Dibayar Sebagian">Dibayar Sebagian</option>
+                  <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
+                  <option value="Jatuh Tempo">Jatuh Tempo</option>
+                  <option value="Lunas">Lunas</option>
+                </select>
+              </div>
             </div>
 
-            <div class="erp-Filter-group">
-              <!-- Dimensi 1: Persetujuan -->
-              <select id="filterDimApproval" class="erp-filter-select" aria-label="Filter Dimensi 1 Persetujuan">
-                <option value="ALL">Semua Persetujuan</option>
-                <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
-                <option value="Disetujui">Disetujui</option>
-                <option value="Ditolak">Ditolak</option>
-              </select>
-
-              <!-- Dimensi 2: Pemenuhan -->
-              <select id="filterDimFulfillment" class="erp-filter-select" aria-label="Filter Dimensi 2 Pemenuhan">
-                <option value="ALL">Semua Pemenuhan</option>
-                <option value="Stok Direservasi">Stok Direservasi</option>
-                <option value="Menunggu Pengadaan">Menunggu Pengadaan</option>
-                <option value="Siap Kirim">Siap Kirim</option>
-                <option value="Terpenuhi Penuh">Terpenuhi Penuh</option>
-              </select>
-
-              <!-- Dimensi 3: Pengiriman -->
-              <select id="filterDimDelivery" class="erp-filter-select" aria-label="Filter Dimensi 3 Pengiriman">
-                <option value="ALL">Semua Pengiriman</option>
-                <option value="Belum Dikirim">Belum Dikirim</option>
-                <option value="Siap Kirim Gudang">Siap Kirim Gudang</option>
-                <option value="Terkirim Sebagian">Terkirim Sebagian</option>
-                <option value="Terkirim Penuh">Terkirim Penuh</option>
-              </select>
-
-              <!-- Dimensi 4: Penagihan -->
-              <select id="filterDimBilling" class="erp-filter-select col-financial" aria-label="Filter Dimensi 4 Penagihan">
-                <option value="ALL">Semua Penagihan</option>
-                <option value="Belum Ditagih">Belum Ditagih</option>
-                <option value="Tagihan DP Terbit">Tagihan DP Terbit</option>
-                <option value="Ditagih Sebagian">Ditagih Sebagian</option>
-                <option value="Invoice Terbit">Invoice Terbit</option>
-                <option value="Jatuh Tempo">Jatuh Tempo</option>
-                <option value="Lunas">Lunas</option>
-              </select>
-
-              <!-- Dimensi 5: Pembayaran -->
-              <select id="filterDimPayment" class="erp-filter-select col-financial" aria-label="Filter Dimensi 5 Pembayaran">
-                <option value="ALL">Semua Pembayaran</option>
-                <option value="Belum Dibayar">Belum Dibayar</option>
-                <option value="DP 30% Diterima">DP 30% Diterima</option>
-                <option value="Dibayar Sebagian">Dibayar Sebagian</option>
-                <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
-                <option value="Jatuh Tempo">Jatuh Tempo</option>
-                <option value="Lunas">Lunas</option>
-              </select>
-
-              <!-- Page Size -->
+            <div class="erp-toolbar-right">
               <select id="ordersPageSizeSelect" class="erp-filter-select" aria-label="Jumlah Baris per Halaman">
-                <option value="5">5 Baris / Hal</option>
-                <option value="10">10 Baris / Hal</option>
-                <option value="20">20 Baris / Hal</option>
+                <option value="5">5 baris</option>
+                <option value="10">10 baris</option>
+                <option value="20">20 baris</option>
               </select>
             </div>
           </div>

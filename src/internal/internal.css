@@ -858,12 +858,20 @@ img {
   padding: 0;
 }
 
-.erp-toolbar-left,
+.erp-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
 .erp-toolbar-right {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .erp-search-box,
