@@ -6069,6 +6069,130 @@ var OrderCreatePageController = {
       var addBtn = document.getElementById('btnPageAddOrderRow');
       var form = document.getElementById('formCreateOrderPage');
 
+      var fileInput = document.getElementById('orderPdfFile');
+      var fileCard = document.getElementById('orderFileCard');
+      var fileTitle = document.getElementById('orderFileTitle');
+      var fileMeta = document.getElementById('orderFileMeta');
+      var btnViewFile = document.getElementById('btnViewOrderFile');
+      var btnChangeFile = document.getElementById('btnChangeOrderFile');
+      var btnRemoveFile = document.getElementById('btnRemoveOrderFile');
+      var modal = document.getElementById('orderFileModal');
+      var modalTitle = document.getElementById('orderFileModalTitle');
+      var modalMeta = document.getElementById('orderFileModalMeta');
+      var previewContainer = document.getElementById('orderFilePreviewContainer');
+      var btnCloseModal = document.getElementById('btnCloseOrderFileModal');
+      var btnDismissModal = document.getElementById('btnDismissOrderFileModal');
+      var btnOpenNewTab = document.getElementById('btnOpenNewTabFile');
+
+      var currentFile = null;
+      var currentFileUrl = null;
+
+      var formatSize = function (bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        var k = 1024;
+        var sizes = ['B', 'KB', 'MB', 'GB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+      };
+
+      var closePreviewModal = function () {
+        if (modal) modal.classList.remove('modal-open');
+      };
+
+      var openPreviewModal = function () {
+        if (!currentFile || !modal || !previewContainer) return;
+        if (currentFileUrl) {
+          try { URL.revokeObjectURL(currentFileUrl); } catch (e) {}
+        }
+        currentFileUrl = URL.createObjectURL(currentFile);
+        if (modalTitle) modalTitle.textContent = 'Pratinjau Berkas PO — ' + currentFile.name;
+        if (modalMeta) modalMeta.textContent = (currentFile.type || 'Dokumen') + ' (' + formatSize(currentFile.size) + ')';
+
+        previewContainer.innerHTML = '';
+        var isImg = currentFile.type.indexOf('image/') === 0;
+        var isPdf = currentFile.type === 'application/pdf' || currentFile.name.toLowerCase().endsWith('.pdf');
+
+        if (isImg) {
+          var img = document.createElement('img');
+          img.src = currentFileUrl;
+          img.className = 'erp-preview-img';
+          img.alt = currentFile.name;
+          previewContainer.appendChild(img);
+        } else if (isPdf) {
+          var iframe = document.createElement('iframe');
+          iframe.src = currentFileUrl;
+          iframe.className = 'erp-preview-frame';
+          iframe.title = currentFile.name;
+          previewContainer.appendChild(iframe);
+        } else {
+          var fallback = document.createElement('div');
+          fallback.className = 'erp-empty-state';
+          fallback.textContent = 'Pratinjau langsung tidak tersedia untuk format berkas ini. Klik tombol "Buka di Tab Baru" di bawah.';
+          previewContainer.appendChild(fallback);
+        }
+        modal.classList.add('modal-open');
+      };
+
+      if (fileInput) {
+        fileInput.addEventListener('change', function () {
+          if (fileInput.files && fileInput.files[0]) {
+            currentFile = fileInput.files[0];
+            if (fileTitle) fileTitle.textContent = currentFile.name;
+            if (fileMeta) {
+              var typeStr = currentFile.type.indexOf('image/') === 0 ? 'Berkas Gambar' : (currentFile.name.toLowerCase().endsWith('.pdf') ? 'PDF Document' : 'Dokumen');
+              fileMeta.textContent = formatSize(currentFile.size) + ' • ' + typeStr;
+            }
+            fileInput.style.display = 'none';
+            if (fileCard) fileCard.style.display = 'flex';
+          }
+        });
+      }
+
+      if (btnViewFile) {
+        btnViewFile.addEventListener('click', openPreviewModal);
+      }
+
+      if (btnChangeFile) {
+        btnChangeFile.addEventListener('click', function () {
+          if (fileInput) fileInput.click();
+        });
+      }
+
+      if (btnRemoveFile) {
+        btnRemoveFile.addEventListener('click', function () {
+          if (fileInput) fileInput.value = '';
+          currentFile = null;
+          if (currentFileUrl) {
+            try { URL.revokeObjectURL(currentFileUrl); } catch (e) {}
+            currentFileUrl = null;
+          }
+          if (fileCard) fileCard.style.display = 'none';
+          if (fileInput) fileInput.style.display = 'block';
+          closePreviewModal();
+          showToast('Berkas scan PO telah dihapus.');
+        });
+      }
+
+      if (btnCloseModal) btnCloseModal.addEventListener('click', closePreviewModal);
+      if (btnDismissModal) btnDismissModal.addEventListener('click', closePreviewModal);
+      if (modal) {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) closePreviewModal();
+        });
+      }
+      if (btnOpenNewTab) {
+        btnOpenNewTab.addEventListener('click', function () {
+          if (currentFileUrl) {
+            window.open(currentFileUrl, '_blank');
+          }
+        });
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal && modal.classList.contains('modal-open')) {
+          closePreviewModal();
+        }
+      });
+
       if (custSel) {
         custSel.innerHTML = '<option value="">-- Pilih Pelanggan B2B --</option>' +
           (db.customers || []).map(function (c) {
@@ -6225,6 +6349,9 @@ var OrderCreatePageController = {
             statusPenagihan: 'Belum Ditagih',
             statusPembayaran: 'Belum Dibayar',
             notes: notesVal,
+            poFileName: currentFile ? currentFile.name : null,
+            poFileSize: currentFile ? currentFile.size : null,
+            hasPoFile: !!currentFile,
             dpp: dpp,
             ppn: ppn,
             total: grand,
@@ -6300,6 +6427,7 @@ var OrderCreatePageController = {
         '    <div class="erp-detail-item"><span class="erp-detail-label">Target Tanggal Kirim</span><span class="erp-detail-val">' + escapeHtml(order.deliveryTarget || '-') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Syarat Pembayaran</span><span class="erp-detail-val">' + escapeHtml(order.paymentTerm || 'Net 30') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">PIC Sales Penanggung Jawab</span><span class="erp-detail-val">' + escapeHtml(order.salesPic || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Berkas Scan PO</span><span class="erp-detail-val">' + (order.poFileName ? ('<span class="badge-status badge-info">' + escapeHtml(order.poFileName) + '</span>') : '<span class="badge-status badge-neutral">Belum Dilampirkan</span>') + '</span></div>' +
         '  </div>' +
         '  <div class="erp-form-group erp-form-group-full">' +
         '    <span class="erp-detail-label">Catatan Pengiriman / Instruksi Khusus:</span>' +

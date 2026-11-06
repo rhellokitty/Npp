@@ -209,6 +209,45 @@
               <div class="erp-form-group">
                 <label class="erp-label" for="orderPdfFile">Unggah Berkas Scan PO Asli</label>
                 <input type="file" id="orderPdfFile" class="erp-input" accept=".pdf,image/*" />
+                <div id="orderFileCard" class="erp-file-card" style="display: none;">
+                  <div class="erp-file-info">
+                    <div class="erp-file-icon-box">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
+                      </svg>
+                    </div>
+                    <div class="erp-file-meta">
+                      <span class="erp-file-title" id="orderFileTitle">berkas-scan-po.pdf</span>
+                      <span class="erp-file-sub" id="orderFileMeta">PDF Document</span>
+                    </div>
+                  </div>
+                  <div class="erp-file-actions">
+                    <button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" id="btnViewOrderFile" title="Lihat Pratinjau Berkas">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                      <span>Lihat</span>
+                    </button>
+                    <button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" id="btnChangeOrderFile" title="Ganti Berkas Lain">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                      </svg>
+                      <span>Ganti</span>
+                    </button>
+                    <button type="button" class="btn-erp btn-erp-danger btn-erp-sm" id="btnRemoveOrderFile" title="Hapus Berkas Ini">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                      <span>Hapus</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div class="erp-form-group erp-form-group-full">
@@ -274,6 +313,31 @@
           </div>
         </form>
       </main>
+    </div>
+  </div>
+
+  <!-- Modal Pratinjau Berkas PO -->
+  <div class="erp-modal-overlay" id="orderFileModal" aria-hidden="true">
+    <div class="erp-modal-card erp-modal-card-wide" role="dialog" aria-modal="true" aria-labelledby="orderFileModalTitle">
+      <div class="erp-modal-header">
+        <div>
+          <h2 class="erp-modal-title" id="orderFileModalTitle">Pratinjau Berkas PO</h2>
+          <span class="erp-modal-sub" id="orderFileModalMeta">Format Berkas</span>
+        </div>
+        <button type="button" class="erp-modal-close" id="btnCloseOrderFileModal" aria-label="Tutup Pratinjau">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="erp-modal-body">
+        <div id="orderFilePreviewContainer" class="erp-file-preview-viewer"></div>
+      </div>
+      <div class="erp-modal-footer">
+        <button type="button" class="btn-erp btn-erp-secondary" id="btnOpenNewTabFile">Buka di Tab Baru</button>
+        <button type="button" class="btn-erp btn-erp-primary" id="btnDismissOrderFileModal">Tutup</button>
+      </div>
     </div>
   </div>
 
