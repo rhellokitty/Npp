@@ -997,7 +997,25 @@
   /* ==========================================================================
      3. INISIALISASI & PERSISTENSI DATABASE DI LOCALSTORAGE
      ========================================================================== */
+  function isPageReload() {
+    try {
+      var navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+      if (navEntries && navEntries.length > 0) {
+        return navEntries[0].type === 'reload';
+      }
+      if (window.performance && window.performance.navigation) {
+        return window.performance.navigation.type === 1; // 1 = TYPE_RELOAD
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    return false;
+  }
+
   function loadDatabase() {
+    if (isPageReload()) {
+      return resetDatabase();
+    }
     try {
       var raw = localStorage.getItem(STORAGE_KEY_DB);
       if (raw) {
@@ -1180,6 +1198,21 @@
     listeners: [],
 
     getCurrentSession: function () {
+      if (isPageReload()) {
+        var def = ROLE_CONFIG['Administrator'];
+        var resetSession = {
+          role: def.code,
+          email: def.email,
+          userName: def.userName,
+          loginAt: new Date().toISOString()
+        };
+        try {
+          localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(resetSession));
+        } catch (e) {
+          /* ignore */
+        }
+        return resetSession;
+      }
       try {
         var raw = localStorage.getItem(STORAGE_KEY_SESSION);
         if (raw) {
