@@ -1461,13 +1461,18 @@
     var container = document.getElementById(this.paginationId);
     if (!container) return;
 
-    var fromNum = totalItems === 0 ? 0 : startIdx + 1;
-    var toNum = endIdx;
+    if (totalItems === 0) {
+      container.innerHTML = '';
+      return;
+    }
 
     var pageButtons = [];
+    var prevDisabled = this.currentPage <= 1 ? ' disabled' : '';
     pageButtons.push(
-      '<button type="button" class="erp-page-btn" data-page="' + (this.currentPage - 1) + '" ' +
-      (this.currentPage <= 1 ? 'disabled' : '') + '>Sebelumnya</button>'
+      '<button type="button" class="erp-page-btn erp-page-btn-nav" data-page="' + (this.currentPage - 1) + '"' + prevDisabled + ' aria-label="Halaman Sebelumnya">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>' +
+      '<span>Sebelumnya</span>' +
+      '</button>'
     );
 
     for (var p = 1; p <= totalPages; p++) {
@@ -1477,16 +1482,15 @@
       );
     }
 
+    var nextDisabled = this.currentPage >= totalPages ? ' disabled' : '';
     pageButtons.push(
-      '<button type="button" class="erp-page-btn" data-page="' + (this.currentPage + 1) + '" ' +
-      (this.currentPage >= totalPages ? 'disabled' : '') + '>Berikutnya</button>'
+      '<button type="button" class="erp-page-btn erp-page-btn-nav" data-page="' + (this.currentPage + 1) + '"' + nextDisabled + ' aria-label="Halaman Berikutnya">' +
+      '<span>Berikutnya</span>' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
+      '</button>'
     );
 
-    container.innerHTML =
-      '<div class="erp-pagination-info">' +
-      'Menampilkan <strong>' + fromNum + '–' + toNum + '</strong> dari <strong>' + totalItems + '</strong> data' +
-      '</div>' +
-      '<div class="erp-pagination-controls">' + pageButtons.join('') + '</div>';
+    container.innerHTML = '<div class="erp-pagination-controls">' + pageButtons.join('') + '</div>';
 
     var self = this;
     var btns = container.querySelectorAll('.erp-page-btn');

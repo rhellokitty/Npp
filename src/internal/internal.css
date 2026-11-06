@@ -1127,56 +1127,58 @@ img {
 .erp-pagination {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  background-color: var(--erp-bg-page);
-  padding: 10px 16px;
-  border-radius: 14px;
-}
-
-.erp-pagination-info {
-  font-size: 0.76rem;
-  color: var(--erp-text);
-}
-
-.erp-pagination-info strong {
-  color: var(--erp-heading);
+  justify-content: flex-end;
+  background-color: transparent;
+  padding: 14px 2px 2px;
 }
 
 .erp-pagination-controls {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  background-color: var(--erp-bg-page);
+  padding: 4px;
+  border-radius: 11px;
 }
 
 .erp-page-btn {
-  min-width: 34px;
-  height: 34px;
+  min-width: 32px;
+  height: 32px;
   padding: 0 10px;
-  border-radius: 9px;
-  background-color: var(--erp-bg-surface);
-  color: var(--erp-heading);
-  font-size: 0.76rem;
-  font-weight: 600;
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--erp-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.16s ease, color 0.16s ease;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.erp-page-btn:hover:not(:disabled) {
-  background-color: var(--erp-bg-subtle);
+.erp-page-btn-nav {
+  padding: 0 11px;
+  font-size: 0.75rem;
+}
+
+.erp-page-btn:hover:not(:disabled):not(.erp-page-btn-active) {
+  background-color: var(--erp-bg-surface);
+  color: var(--erp-heading);
 }
 
 .erp-page-btn-active {
   background-color: var(--erp-navy) !important;
   color: #ffffff !important;
+  font-weight: 600;
 }
 
 .erp-page-btn:disabled {
-  opacity: 0.45;
+  opacity: 0.35;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -1887,6 +1889,10 @@ img {
 
   .erp-cutout-overlay .section-heading {
     font-size: 1.2rem;
+  }
+
+  .erp-pagination {
+    justify-content: center;
   }
 }
 
