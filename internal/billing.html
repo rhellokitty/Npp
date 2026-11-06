@@ -125,7 +125,7 @@
 
       <div class="erp-sidebar-footer">
         <div class="erp-sidebar-user">
-          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa (SysAdmin)</span>
+          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa</span>
           <span class="erp-sidebar-user-email" id="erpActiveUserEmail">admin@nusantarapuncakperkasa.co.id</span>
         </div>
         <div class="erp-sidebar-actions">
@@ -155,16 +155,16 @@
         </div>
 
         <div class="erp-topbar-right">
-          <!-- Interactive Role Switcher (6 Peran HLD) -->
+          <!-- Interactive Role Switcher -->
           <div class="erp-role-switcher-wrap">
-            <span class="erp-role-switcher-label">Simulasi Peran (RBAC):</span>
+            <span class="erp-role-switcher-label">Simulasi Peran:</span>
             <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
-              <option value="Administrator">Administrator (Full Access)</option>
-              <option value="Sales / Operasional">Sales & PO (Operasional)</option>
-              <option value="Purchasing">Purchasing (PO Supplier)</option>
-              <option value="Gudang">Stok Gudang (Tanpa Harga/HPP)</option>
-              <option value="Finance">Finance & Invoice (Keuangan)</option>
-              <option value="Pimpinan / Approver">Approver (Direksi / Otorisasi)</option>
+              <option value="Administrator">Administrator</option>
+              <option value="Sales / Operasional">Sales & PO</option>
+              <option value="Purchasing">Purchasing</option>
+              <option value="Gudang">Stok Gudang</option>
+              <option value="Finance">Finance & Invoice</option>
+              <option value="Pimpinan / Approver">Approver</option>
             </select>
           </div>
         </div>
@@ -181,9 +181,9 @@
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
           </div>
-          <h2 class="erp-rbac-lock-title">Akses Finansial &amp; Penagihan Terproteksi (RBAC)</h2>
+          <h2 class="erp-rbac-lock-title">Akses Finansial &amp; Penagihan Terproteksi</h2>
           <p class="erp-rbac-lock-desc">
-            Sesuai Standar Operasional Prosedur (SOP) PT Nusantara Puncak Perkasa, akun dengan peran <strong>Stok Gudang</strong> tidak memiliki otorisasi melihat harga transaksi, nominal tagihan, faktur komersial, maupun mutasi perbankan perusahaan.
+            Sesuai Standar Operasional Prosedur PT Nusantara Puncak Perkasa, akun dengan peran <strong>Stok Gudang</strong> tidak memiliki otorisasi melihat harga transaksi, nominal tagihan, faktur komersial, maupun mutasi perbankan perusahaan.
           </p>
           <div class="erp-notice-box" style="max-width: 500px; text-align: left;">
             <strong>Instruksi Simulasi:</strong> Silakan beralih ke peran <strong>Finance &amp; Invoice</strong>, <strong>Administrator</strong>, atau <strong>Approver</strong> menggunakan dropdown di Topbar kanan atas untuk mengakses modul Penagihan ini.
@@ -201,12 +201,12 @@
             </div>
 
             <div class="erp-kpi-card col-financial">
-              <span class="erp-kpi-label">Tagihan Belum Lunas (Outstanding)</span>
+              <span class="erp-kpi-label">Tagihan Belum Lunas</span>
               <div class="erp-kpi-val text-warning" id="kpiPendingBilling">Rp 0</div>
             </div>
 
             <div class="erp-kpi-card col-financial">
-              <span class="erp-kpi-label">Piutang Jatuh Tempo (Overdue)</span>
+              <span class="erp-kpi-label">Piutang Jatuh Tempo</span>
               <div class="erp-kpi-val text-danger" id="kpiOverdueBilling">Rp 0</div>
             </div>
 
@@ -220,7 +220,7 @@
           <section class="erp-section-panel">
             <div class="erp-panel-header">
               <div>
-                <h2 class="section-heading">Daftar Faktur Penjualan (Commercial Invoice)</h2>
+                <h2 class="section-heading">Daftar Faktur Penjualan</h2>
               </div>
               <div class="erp-header-actions no-print">
                 <a href="billing-create.html" class="btn btn-primary" id="btnOpenCreateInvoice">
@@ -248,7 +248,7 @@
                   <select id="billingFilterStatus" class="erp-filter-select">
                     <option value="">Semua Status Pembayaran</option>
                     <option value="Belum Lunas">Belum Lunas</option>
-                    <option value="Jatuh Tempo">Jatuh Tempo (Overdue)</option>
+                    <option value="Jatuh Tempo">Jatuh Tempo</option>
                     <option value="Lunas">Lunas</option>
                   </select>
                 </div>
@@ -272,7 +272,7 @@
                     <th>No. Invoice &amp; Tipe</th>
                     <th>Tgl Terbit &amp; Tempo</th>
                     <th>Pelanggan &amp; Ref SO</th>
-                    <th class="col-financial">Nilai Tagihan (DPP + PPN)</th>
+                    <th class="col-financial">Nilai Tagihan</th>
                     <th>Rekening Pembayaran</th>
                     <th>Status Pembayaran</th>
                     <th style="min-width: 210px;">Aksi</th>

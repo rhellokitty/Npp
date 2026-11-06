@@ -26,7 +26,7 @@
       display: 'Administrator',
       shortLabel: 'Administrator',
       email: 'admin@nusantarapuncakperkasa.co.id',
-      userName: 'Raja Daffa (SysAdmin)',
+      userName: 'Raja Daffa',
       canViewPrice: true,
       canViewHPP: true,
       canApprove: true,
@@ -40,7 +40,7 @@
       display: 'Sales & PO',
       shortLabel: 'Sales & PO',
       email: 'sales@nusantarapuncakperkasa.co.id',
-      userName: 'Nadia Pramesti (Sales B2B)',
+      userName: 'Nadia Pramesti',
       canViewPrice: true,
       canViewHPP: false,
       canApprove: false,
@@ -54,7 +54,7 @@
       display: 'Purchasing',
       shortLabel: 'Purchasing',
       email: 'purchasing@nusantarapuncakperkasa.co.id',
-      userName: 'Hendra Gunawan (Procurement)',
+      userName: 'Hendra Gunawan',
       canViewPrice: true,
       canViewHPP: true,
       canApprove: false,
@@ -68,7 +68,7 @@
       display: 'Stok Gudang',
       shortLabel: 'Stok Gudang',
       email: 'gudang@nusantarapuncakperkasa.co.id',
-      userName: 'Budi Santoso (Kepala Gudang)',
+      userName: 'Budi Santoso',
       canViewPrice: false,
       canViewHPP: false,
       canApprove: false,
@@ -82,7 +82,7 @@
       display: 'Finance & Invoice',
       shortLabel: 'Finance & Invoice',
       email: 'finance@nusantarapuncakperkasa.co.id',
-      userName: 'Siti Rahmawati (Finance & AR)',
+      userName: 'Siti Rahmawati',
       canViewPrice: true,
       canViewHPP: true,
       canApprove: false,
@@ -96,7 +96,7 @@
       display: 'Approver',
       shortLabel: 'Approver',
       email: 'pimpinan@nusantarapuncakperkasa.co.id',
-      userName: 'Ir. Darmawan Putra (Direktur Operasional)',
+      userName: 'Ir. Darmawan Putra',
       canViewPrice: true,
       canViewHPP: true,
       canApprove: true,
@@ -616,7 +616,7 @@
           statusOrder: 'Diproses',
           statusApproval: 'Disetujui',
           statusPemenuhan: 'Terpenuhi Penuh',
-          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPengiriman: 'Terkirim Penuh',
           statusPenagihan: 'Invoice Terbit',
           notes: 'Fulfillment Hub Sunter & Cikarang. Barang sudah diterima (BAST lengkap), menunggu jatuh tempo invoice.'
         },
@@ -639,7 +639,7 @@
           statusOrder: 'Selesai',
           statusApproval: 'Disetujui',
           statusPemenuhan: 'Terpenuhi Penuh',
-          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPengiriman: 'Terkirim Penuh',
           statusPenagihan: 'Lunas',
           notes: 'Penggantian baterai shelter BTS Jabodetabek. Pembayaran lunas via Mandiri.'
         },
@@ -662,7 +662,7 @@
           statusOrder: 'Diproses',
           statusApproval: 'Disetujui',
           statusPemenuhan: 'Terpenuhi Penuh',
-          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPengiriman: 'Terkirim Penuh',
           statusPenagihan: 'Jatuh Tempo',
           notes: 'Pengiriman selesai 24 Okt 2026. Invoice INV-202610-0004 melewati batas termin, perlu follow-up Finance.'
         },
@@ -685,7 +685,7 @@
           statusOrder: 'Selesai',
           statusApproval: 'Disetujui',
           statusPemenuhan: 'Terpenuhi Penuh',
-          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPengiriman: 'Terkirim Penuh',
           statusPenagihan: 'Lunas',
           notes: 'Instalasi & komisioning selesai di pabrik Pulogadung. Pelunasan diterima via BCA.'
         },
@@ -708,7 +708,7 @@
           statusOrder: 'Diproses',
           statusApproval: 'Disetujui',
           statusPemenuhan: 'Terpenuhi Penuh',
-          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPengiriman: 'Terkirim Penuh',
           statusPenagihan: 'Jatuh Tempo',
           notes: 'BAST sudah ditandatangani. Tagihan INV-202610-0002 jatuh tempo 4 hari lalu.'
         },
@@ -731,7 +731,7 @@
           statusOrder: 'Selesai',
           statusApproval: 'Disetujui',
           statusPemenuhan: 'Terpenuhi Penuh',
-          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPengiriman: 'Terkirim Penuh',
           statusPenagihan: 'Lunas',
           notes: 'Penggantian bank baterai forklift elektrik & UPS ruang server Jatake. Lunas.'
         },
@@ -755,7 +755,7 @@
           statusOrder: 'Selesai',
           statusApproval: 'Disetujui',
           statusPemenuhan: 'Terpenuhi Penuh',
-          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPengiriman: 'Terkirim Penuh',
           statusPenagihan: 'Lunas',
           notes: 'Proyek backup power hub logistik Bizzy BSD. Lunas tepat waktu.'
         }
@@ -802,7 +802,7 @@
           orderDate: '2026-10-25',
           etaDate: '2026-11-02',
           statusApproval: 'Disetujui',
-          statusReceiving: 'Diterima Penuh (GR)',
+          statusReceiving: 'Diterima Penuh',
           items: [
             { sku: 'SKU-ABL-MS10K', name: 'UPS Ablerex Mars II MS10000RT (10 kVA Online Rack/Tower)', qty: 6, unit: 'Unit', hpp: 28500000 },
             { sku: 'SKU-ABL-ARS30K', name: 'UPS Ablerex Ares 30 kVA 3-Phase Online Transformerless', qty: 2, unit: 'Unit', hpp: 86000000 }
@@ -846,13 +846,13 @@
 
       /* --- BUKU BESAR MUTASI STOK (STOCK LEDGER) --- */
       stockLedger: [
-        { id: 'MUT-009', date: '2026-11-06 09:40', sku: 'SKU-BSB-FT150', skuName: 'Baterai BSB FT12-150', type: 'RESERVASI (+)', qty: 16, refDoc: 'SO-202611-0012', pic: 'Nadia Pramesti', note: 'Reservasi otomatis PO PT. Jasnita Telekomindo Tbk' },
-        { id: 'MUT-008', date: '2026-11-05 15:20', sku: 'SKU-ABL-ARS30K', skuName: 'UPS Ablerex Ares 30 kVA 3-Phase', type: 'RESERVASI (+)', qty: 2, refDoc: 'SO-202611-0011', pic: 'Nadia Pramesti', note: 'Reservasi proyek PT. The Master Steel Mfc' },
-        { id: 'MUT-007', date: '2026-11-05 11:10', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'KELUAR (SJ)', qty: -16, refDoc: 'SJ-202611-0008', pic: 'Budi Santoso', note: 'Pengiriman parsial Tahap 1 ke PT. Daya Pustaka Indonesia' },
-        { id: 'MUT-006', date: '2026-11-03 14:05', sku: 'SKU-AVR-30KVA', skuName: 'Servo Stabilizer 3-Phase 30 kVA', type: 'RESERVASI (+)', qty: 3, refDoc: 'SO-202611-0009', pic: 'Nadia Pramesti', note: 'Reservasi PO PT. Sumber Abadi Indonesia' },
-        { id: 'MUT-005', date: '2026-11-02 16:30', sku: 'SKU-ABL-MS10K', skuName: 'UPS Ablerex Mars II MS10000RT', type: 'MASUK (GR-QC)', qty: 6, refDoc: 'GR-202611-0004', pic: 'Budi Santoso', note: 'Penerimaan prinsipal Ablerex lolos QC 100%' },
-        { id: 'MUT-004', date: '2026-11-01 10:15', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'MASUK (GR-QC)', qty: 38, refDoc: 'GR-202611-0003', pic: 'Budi Santoso', note: 'Penerimaan layak pakai ke RAK-A01' },
-        { id: 'MUT-003', date: '2026-11-01 10:18', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'TERTAHAN (QC)', qty: 2, refDoc: 'GR-202611-0003', pic: 'Budi Santoso', note: 'Karantina 2 unit ke RAK-QC untuk klaim prinsipal' }
+        { id: 'MUT-009', date: '2026-11-06 09:40', sku: 'SKU-BSB-FT150', skuName: 'Baterai BSB FT12-150', type: 'RESERVASI', qty: 16, refDoc: 'SO-202611-0012', pic: 'Nadia Pramesti', note: 'Reservasi otomatis PO PT. Jasnita Telekomindo Tbk' },
+        { id: 'MUT-008', date: '2026-11-05 15:20', sku: 'SKU-ABL-ARS30K', skuName: 'UPS Ablerex Ares 30 kVA 3-Phase', type: 'RESERVASI', qty: 2, refDoc: 'SO-202611-0011', pic: 'Nadia Pramesti', note: 'Reservasi proyek PT. The Master Steel Mfc' },
+        { id: 'MUT-007', date: '2026-11-05 11:10', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'KELUAR', qty: -16, refDoc: 'SJ-202611-0008', pic: 'Budi Santoso', note: 'Pengiriman parsial Tahap 1 ke PT. Daya Pustaka Indonesia' },
+        { id: 'MUT-006', date: '2026-11-03 14:05', sku: 'SKU-AVR-30KVA', skuName: 'Servo Stabilizer 3-Phase 30 kVA', type: 'RESERVASI', qty: 3, refDoc: 'SO-202611-0009', pic: 'Nadia Pramesti', note: 'Reservasi PO PT. Sumber Abadi Indonesia' },
+        { id: 'MUT-005', date: '2026-11-02 16:30', sku: 'SKU-ABL-MS10K', skuName: 'UPS Ablerex Mars II MS10000RT', type: 'MASUK', qty: 6, refDoc: 'GR-202611-0004', pic: 'Budi Santoso', note: 'Penerimaan prinsipal Ablerex lolos QC 100%' },
+        { id: 'MUT-004', date: '2026-11-01 10:15', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'MASUK', qty: 38, refDoc: 'GR-202611-0003', pic: 'Budi Santoso', note: 'Penerimaan layak pakai ke RAK-A01' },
+        { id: 'MUT-003', date: '2026-11-01 10:18', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'TERTAHAN', qty: 2, refDoc: 'GR-202611-0003', pic: 'Budi Santoso', note: 'Karantina 2 unit ke RAK-QC untuk klaim prinsipal' }
       ],
 
       /* --- PENGIRIMAN & SURAT JALAN (SJ-YYYYMM-XXXX) --- */
@@ -1042,7 +1042,7 @@
   function formatMoneyRBAC(amount, isHpp) {
     var role = RoleManager.getCurrentRoleConfig();
     if (!role.canViewPrice) {
-      return '<span class="badge-status badge-neutral" title="Disembunyikan untuk peran Gudang">Terproteksi (RBAC)</span>';
+      return '<span class="badge-status badge-neutral" title="Disembunyikan untuk peran Gudang">Terproteksi</span>';
     }
     if (isHpp && !role.canViewHPP) {
       return '<span class="badge-status badge-neutral" title="HPP hanya untuk Purchasing, Finance, Approver & Admin">HPP Terproteksi</span>';
@@ -1967,8 +1967,8 @@
         '<div class="stock-formula-box"><div class="stock-formula-title">Status Order</div>' + renderStatusBadge(order.statusOrder) + '</div>' +
         '<div class="stock-formula-box"><div class="stock-formula-title">Status Approval</div>' + renderStatusBadge(order.statusApproval) + '</div>' +
         '<div class="stock-formula-box"><div class="stock-formula-title">Pemenuhan Stok</div>' + renderStatusBadge(order.statusPemenuhan) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">Pengiriman (SJ)</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">Penagihan (INV)</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Pengiriman</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Penagihan</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
         '</div>' +
         '<div class="erp-table-wrap modal-table-spaced">' +
         '<table class="erp-table">' +
@@ -1982,7 +1982,7 @@
         '<p class="modal-notes-text">' + escapeHtml(order.notes || '-') + '</p>' +
         '</div>' +
         '<div class="erp-kpi-card">' +
-        '<span class="erp-kpi-label">Ringkasan Nilai Transaksi (PPN 11%)</span>' +
+        '<span class="erp-kpi-label">Ringkasan Nilai Transaksi</span>' +
         '<div class="modal-summary-row"><span>DPP:</span><strong>' + formatMoneyRBAC(order.dpp, false) + '</strong></div>' +
         '<div class="modal-summary-row"><span>PPN 11%:</span><strong>' + formatMoneyRBAC(order.ppn, false) + '</strong></div>' +
         '<div class="modal-summary-total"><span>Total Tagihan:</span><strong>' + formatMoneyRBAC(order.total, false) + '</strong></div>' +
@@ -2737,7 +2737,7 @@
             date: '2026-11-06 15:00',
             sku: skuObj.sku,
             skuName: skuObj.name,
-            type: 'RESERVASI (+)',
+            type: 'RESERVASI',
             qty: qty,
             refDoc: newSoId,
             pic: roleCfg.userName,
@@ -2850,7 +2850,7 @@
 
       var roleCfg = RoleManager.getCurrentRoleConfig();
       var paymentStat = derivePaymentStatus(order);
-      if (title) title.textContent = 'Detail PO Pelanggan — ' + order.id + ' (' + order.clientPoNumber + ')';
+      if (title) title.textContent = 'Detail PO Pelanggan — ' + order.id + ' • ' + order.clientPoNumber;
 
       var rowsHtml = order.items.map(function (item, idx) {
         var subtotal = item.qty * item.price;
@@ -2879,7 +2879,7 @@
         '<span class="cell-subtext">Berkas PDF PO Asli: ' + escapeHtml(order.poFileName) + '</span>' +
         '</div>' +
         '<div class="erp-kpi-card">' +
-        '<span class="erp-kpi-label">Jadwal Pengiriman & Syarat Pembayaran (TOP)</span>' +
+        '<span class="erp-kpi-label">Jadwal Pengiriman & Syarat Pembayaran</span>' +
         '<div class="modal-card-title-strong">Target Kirim: ' + escapeHtml(order.deliveryTarget) + '</div>' +
         '<span class="cell-subtext">Tgl Input SO: ' + escapeHtml(order.orderDate) + ' • TOP: ' + escapeHtml(order.paymentTerm) + '</span>' +
         '<span class="cell-subtext">Sales PIC: ' + escapeHtml(order.salesPic) + '</span>' +
@@ -2888,8 +2888,8 @@
         '<div class="stock-formula-strip modal-five-dim-strip">' +
         '<div class="stock-formula-box"><div class="stock-formula-title">Persetujuan</div>' + renderStatusBadge(order.statusApproval) + '</div>' +
         '<div class="stock-formula-box"><div class="stock-formula-title">Pemenuhan Stok</div>' + renderStatusBadge(order.statusPemenuhan) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">Pengiriman (SJ)</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">Penagihan (INV)</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Pengiriman</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Penagihan</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
         '<div class="stock-formula-box"><div class="stock-formula-title">Pembayaran</div>' + renderStatusBadge(paymentStat) + '</div>' +
         '</div>' +
         '<div class="erp-table-wrap modal-table-spaced">' +
@@ -2904,8 +2904,8 @@
         '<p class="modal-notes-text">' + escapeHtml(order.notes || '-') + '</p>' +
         '</div>' +
         '<div class="erp-kpi-card col-financial">' +
-        '<span class="erp-kpi-label">Kalkulasi Nilai Transaksi B2B (PPN 11%)</span>' +
-        '<div class="modal-summary-row"><span>DPP (Dasar Pengenaan Pajak):</span><strong>' + formatMoneyRBAC(order.dpp, false) + '</strong></div>' +
+        '<span class="erp-kpi-label">Kalkulasi Nilai Transaksi B2B</span>' +
+        '<div class="modal-summary-row"><span>DPP:</span><strong>' + formatMoneyRBAC(order.dpp, false) + '</strong></div>' +
         '<div class="modal-summary-row"><span>PPN 11%:</span><strong>' + formatMoneyRBAC(order.ppn, false) + '</strong></div>' +
         '<div class="modal-summary-total"><span>Grand Total PO:</span><strong>' + formatMoneyRBAC(order.total, false) + '</strong></div>' +
         '</div>' +
@@ -3811,7 +3811,7 @@
           date: '2026-11-06 15:20',
           sku: skuObj.sku,
           skuName: skuObj.name,
-          type: 'MASUK (GR-QC)',
+          type: 'MASUK',
           qty: qtyPass,
           finalPhysical: skuObj.fisik,
           refDoc: newGrId,
@@ -3825,7 +3825,7 @@
           date: '2026-11-06 15:21',
           sku: skuObj.sku,
           skuName: skuObj.name,
-          type: 'TERTAHAN (QC)',
+          type: 'TERTAHAN',
           qty: qtyHold,
           finalPhysical: skuObj.fisik,
           refDoc: newGrId,
@@ -4596,7 +4596,7 @@
         '</div>' +
         '<div class="erp-kpi-card">' +
         '<span class="erp-kpi-label">Jadwal Pengadaan & Status Dokumen</span>' +
-        '<div class="modal-card-title-strong">Estimasi Tiba (ETA): ' + escapeHtml(po.etaDate) + '</div>' +
+        '<div class="modal-card-title-strong">Estimasi Tiba: ' + escapeHtml(po.etaDate) + '</div>' +
         '<span class="cell-subtext">Tanggal Terbit PO: ' + escapeHtml(po.orderDate) + '</span>' +
         '<div class="erp-Filter-group">' + renderStatusBadge(po.statusApproval) + renderStatusBadge(po.statusReceiving) + '</div>' +
         '</div>' +
@@ -4732,7 +4732,7 @@
         searchInputId: 'deliverySearchInput',
         pageSizeSelectId: 'deliveryPageSizeSelect',
         colSpan: 7,
-        emptyMessage: 'Tidak ada data pengiriman (Surat Jalan) yang sesuai.',
+        emptyMessage: 'Tidak ada data pengiriman yang sesuai.',
         filters: [
           {
             selectId: 'deliveryFilterStatus',
@@ -4911,7 +4911,7 @@
 
       // Filter: Hanya PO yang Disetujui dan pengiriman belum penuh
       var validOrders = (db.orders || []).filter(function (o) {
-        return o.statusApproval === 'Disetujui' && o.statusPengiriman !== 'Terkirim Penuh (BAST)';
+        return o.statusApproval === 'Disetujui' && o.statusPengiriman !== 'Terkirim Penuh';
       });
 
       select.innerHTML = '<option value="">-- Pilih PO Pelanggan Terverifikasi --</option>' +
@@ -5029,7 +5029,7 @@
           date: date + ' ' + (d.getHours() < 10 ? '0' + d.getHours() : d.getHours()) + ':' + (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()),
           sku: sku.sku,
           skuName: sku.name,
-          type: 'KELUAR (SJ)',
+          type: 'KELUAR',
           qty: -q,
           refDoc: newSjId,
           pic: roleCfg.userName,
@@ -5183,11 +5183,11 @@
         var allDeliveriesForOrder = db.deliveries.filter(function (d) { return d.orderId === order.id; });
         var allBast = allDeliveriesForOrder.every(function (d) { return d.status === 'Terkirim & BAST'; });
         if (allBast && order.statusPemenuhan === 'Terpenuhi Penuh') {
-          order.statusPengiriman = 'Terkirim Penuh (BAST)';
+          order.statusPengiriman = 'Terkirim Penuh';
         }
 
         // Cek apakah order sudah bisa diselesaikan penuh (BAST selesai + Pembayaran Lunas)
-        if (order.statusPengiriman === 'Terkirim Penuh (BAST)' && order.statusPenagihan === 'Lunas') {
+        if (order.statusPengiriman === 'Terkirim Penuh' && order.statusPenagihan === 'Lunas') {
           order.statusOrder = 'Selesai';
         }
       }
@@ -5774,7 +5774,7 @@
           order.statusPenagihan = 'Lunas';
           order.statusPembayaran = 'Lunas';
           // Jika pengiriman juga sudah selesai (BAST), tandai order selesai penuh!
-          if (order.statusPengiriman === 'Terkirim Penuh (BAST)') {
+          if (order.statusPengiriman === 'Terkirim Penuh') {
             order.statusOrder = 'Selesai';
           }
         } else {
@@ -5845,7 +5845,7 @@
         '      </div>' +
         '    </div>' +
         '    <div class="erp-doc-title-block">' +
-        '      <div class="erp-doc-title">FAKTUR PENJUALAN (INVOICE)</div>' +
+        '      <div class="erp-doc-title">FAKTUR PENJUALAN</div>' +
         '      <div class="erp-doc-number">' + escapeHtml(inv.id) + '</div>' +
         '      <div class="cell-subtext">Tanggal Terbit: ' + escapeHtml(inv.invoiceDate) + '</div>' +
         '    </div>' +
@@ -6162,7 +6162,7 @@ var OrderCreatePageController = {
         '    <div class="erp-detail-item"><span class="erp-detail-label">No. PO Klien Eksternal</span><span class="erp-detail-val cell-code">' + escapeHtml(order.clientPoNumber) + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Tanggal PO</span><span class="erp-detail-val">' + escapeHtml(order.poDate || '-') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Target Tanggal Kirim</span><span class="erp-detail-val">' + escapeHtml(order.deliveryTarget || '-') + '</span></div>' +
-        '    <div class="erp-detail-item"><span class="erp-detail-label">Syarat Pembayaran (TOP)</span><span class="erp-detail-val">' + escapeHtml(order.paymentTerm || 'Net 30') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Syarat Pembayaran</span><span class="erp-detail-val">' + escapeHtml(order.paymentTerm || 'Net 30') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">PIC Sales Penanggung Jawab</span><span class="erp-detail-val">' + escapeHtml(order.salesPic || '-') + '</span></div>' +
         '  </div>' +
         '  <div class="erp-form-group erp-form-group-full">' +
@@ -6770,7 +6770,7 @@ var OrderCreatePageController = {
               date: grDate,
               refDoc: grId,
               sku: sku,
-              type: 'MASUK (GR/QC)',
+              type: 'MASUK',
               qty: passed + hold,
               balanceAfter: inv ? inv.physical : (passed + hold),
               officer: inspector
@@ -6805,10 +6805,10 @@ var OrderCreatePageController = {
 
       if (ordSel) {
         var approvedOrders = (db.orders || []).filter(function (o) {
-          return o.statusApproval === 'Disetujui' && o.statusPengiriman !== 'Terkirim Penuh (BAST)';
+          return o.statusApproval === 'Disetujui' && o.statusPengiriman !== 'Terkirim Penuh';
         });
 
-        ordSel.innerHTML = '<option value="">-- Pilih Pesanan Pelanggan (SO Approved) --</option>' +
+        ordSel.innerHTML = '<option value="">-- Pilih Pesanan Pelanggan --</option>' +
           approvedOrders.map(function (o) {
             return '<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.id + ' — ' + o.customerName) + '</option>';
           }).join('');
@@ -6885,7 +6885,7 @@ var OrderCreatePageController = {
                 date: delivDate,
                 refDoc: sjId,
                 sku: sku,
-                type: 'KELUAR (SJ)',
+                type: 'KELUAR',
                 qty: qty,
                 balanceAfter: inv ? inv.physical : 0,
                 officer: driver + ' (' + plate + ')'
@@ -6974,7 +6974,7 @@ var OrderCreatePageController = {
 
           var ord = (db.orders || []).find(function (o) { return o.id === deliv.orderId; });
           if (ord) {
-            ord.statusPengiriman = 'Terkirim Penuh (BAST)';
+            ord.statusPengiriman = 'Terkirim Penuh';
             if (ord.statusPenagihan === 'Lunas') {
               ord.statusOrder = 'Selesai';
             }
@@ -7132,7 +7132,7 @@ var OrderCreatePageController = {
           return o.statusApproval === 'Disetujui' && o.statusPenagihan !== 'Lunas';
         });
 
-        ordSel.innerHTML = '<option value="">-- Pilih Pesanan Pelanggan (SO Approved) --</option>' +
+        ordSel.innerHTML = '<option value="">-- Pilih Pesanan Pelanggan --</option>' +
           unbilledOrders.map(function (o) {
             return '<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.id + ' — ' + o.customerName + ' (' + formatRupiah(o.total) + ')') + '</option>';
           }).join('');
@@ -7254,7 +7254,7 @@ var OrderCreatePageController = {
             if (inv.status === 'Lunas') {
               ord.statusPenagihan = 'Lunas';
               ord.statusPembayaran = 'Lunas';
-              if (ord.statusPengiriman === 'Terkirim Penuh (BAST)') {
+              if (ord.statusPengiriman === 'Terkirim Penuh') {
                 ord.statusOrder = 'Selesai';
               }
             } else {
@@ -7318,7 +7318,7 @@ var OrderCreatePageController = {
         '      </div>' +
         '    </div>' +
         '    <div class="erp-doc-title-block">' +
-        '      <div class="erp-doc-title">FAKTUR PENJUALAN (COMMERCIAL INVOICE)</div>' +
+        '      <div class="erp-doc-title">FAKTUR PENJUALAN</div>' +
         '      <div class="erp-doc-number">' + escapeHtml(inv.id) + '</div>' +
         '      <div class="cell-subtext">Tanggal Terbit: ' + escapeHtml(inv.invoiceDate) + '</div>' +
         '    </div>' +

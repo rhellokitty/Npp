@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Kontrol Stok Gudang (5 Saldo) & Kartu Mutasi — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
+  <title>Kontrol Stok Gudang & Kartu Mutasi — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
   <link rel="icon" type="image/png" href="../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -125,7 +125,7 @@
 
       <div class="erp-sidebar-footer">
         <div class="erp-sidebar-user">
-          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa (SysAdmin)</span>
+          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa</span>
           <span class="erp-sidebar-user-email" id="erpActiveUserEmail">admin@nusantarapuncakperkasa.co.id</span>
         </div>
         <div class="erp-sidebar-actions">
@@ -157,14 +157,14 @@
 
         <div class="erp-topbar-right">
           <div class="erp-role-switcher-wrap">
-            <span class="erp-role-switcher-label">Simulasi Peran (RBAC):</span>
+            <span class="erp-role-switcher-label">Simulasi Peran:</span>
             <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
-              <option value="Administrator">Administrator (Full Access)</option>
-              <option value="Sales / Operasional">Sales & PO (Operasional)</option>
-              <option value="Purchasing">Purchasing (PO Supplier)</option>
-              <option value="Gudang">Stok Gudang (Tanpa Harga/HPP)</option>
-              <option value="Finance">Finance & Invoice (Keuangan)</option>
-              <option value="Pimpinan / Approver">Approver (Direksi / Otorisasi)</option>
+              <option value="Administrator">Administrator</option>
+              <option value="Sales / Operasional">Sales & PO</option>
+              <option value="Purchasing">Purchasing</option>
+              <option value="Gudang">Stok Gudang</option>
+              <option value="Finance">Finance & Invoice</option>
+              <option value="Pimpinan / Approver">Approver</option>
             </select>
           </div>
         </div>
@@ -180,21 +180,21 @@
             <div class="erp-math-equation-code">
               <span class="erp-math-result">Stok Layak Pakai</span>
               <span class="erp-math-operator">=</span>
-              <span>Stok Fisik (On-Hand)</span>
+              <span>Stok Fisik</span>
               <span class="erp-math-operator">−</span>
-              <span>Stok Tertahan (Karantina / Reject QC)</span>
+              <span>Stok Tertahan</span>
             </div>
             <span class="cell-subtext">Memastikan barang cacat atau belum lulus uji beban tidak ikut terhitung sebagai barang siap jual.</span>
           </div>
 
           <div class="erp-math-equation-card">
-            <span class="erp-math-equation-title">Proteksi Anti Over-Selling (ATP)</span>
+            <span class="erp-math-equation-title">Proteksi Anti Over-Selling</span>
             <div class="erp-math-equation-code">
-              <span class="erp-math-result">Stok Tersedia (ATP)</span>
+              <span class="erp-math-result">Stok Tersedia</span>
               <span class="erp-math-operator">=</span>
               <span>Stok Layak Pakai</span>
               <span class="erp-math-operator">−</span>
-              <span>Reservasi Aktif (Terkunci PO Klien)</span>
+              <span>Reservasi Aktif</span>
             </div>
             <span class="cell-subtext">Kuota yang sudah direservasi oleh PO Pelanggan aktif tidak dapat dijual ganda ke pesanan lain.</span>
           </div>
@@ -203,13 +203,13 @@
         <!-- STRIP AGREGAT 5 SALDO STOK REAL-TIME -->
         <section class="stock-formula-strip" aria-label="Agregat 5 Indikator Saldo Stok">
           <article class="stock-formula-box">
-            <div class="stock-formula-title">Stok Fisik (On-Hand)</div>
+            <div class="stock-formula-title">Stok Fisik</div>
             <div class="stock-formula-val" id="invSumFisik">284 Unit</div>
             <div class="stock-formula-desc">Total seluruh fisik di rak gudang</div>
           </article>
 
           <article class="stock-formula-box">
-            <div class="stock-formula-title">Stok Tertahan (Karantina/Reject)</div>
+            <div class="stock-formula-title">Stok Tertahan</div>
             <div class="stock-formula-val" id="invSumTertahan">13 Unit</div>
             <div class="stock-formula-desc">Diisolasi di RAK-QC untuk klaim/uji</div>
           </article>
@@ -227,7 +227,7 @@
           </article>
 
           <article class="stock-formula-box stock-formula-box-highlight">
-            <div class="stock-formula-title">Stok Tersedia (ATP)</div>
+            <div class="stock-formula-title">Stok Tersedia</div>
             <div class="stock-formula-val" id="invSumTersedia">125 Unit</div>
             <div class="stock-formula-desc">Stok Layak Pakai − Reservasi Aktif</div>
           </article>
@@ -237,17 +237,17 @@
         <div class="erp-section-header">
           <nav class="erp-tabs-nav" aria-label="Navigasi Sub-Modul Gudang">
             <button type="button" class="erp-tab-btn erp-tab-btn-active" data-inv-tab="balances">
-              <span>Saldo Stok SKU (5 Indikator)</span>
+              <span>Saldo Stok SKU</span>
               <span class="erp-tab-count" id="countTabStockSku">10</span>
             </button>
 
             <button type="button" class="erp-tab-btn" data-inv-tab="ledger">
-              <span>Buku Besar Mutasi (Stock Ledger)</span>
+              <span>Buku Besar Mutasi</span>
               <span class="erp-tab-count" id="countTabStockLedger">7</span>
             </button>
 
             <button type="button" class="erp-tab-btn" data-inv-tab="receipts">
-              <span>Penerimaan Barang & QC (GR)</span>
+              <span>Penerimaan Barang & QC</span>
               <span class="erp-tab-count" id="countTabGoodsReceipt">2</span>
             </button>
           </nav>
@@ -259,7 +259,7 @@
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              <span>+ Penerimaan Barang & Uji QC (Goods Receipt)</span>
+              <span>+ Penerimaan Barang & Uji QC</span>
             </a>
           </div>
         </div>
@@ -270,7 +270,7 @@
         <section class="erp-section-panel erp-tab-pane tab-pane-active" data-inv-pane="balances" aria-label="Tabel Saldo Stok 5 Indikator">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <h1 class="section-heading">Tabel Saldo Stok SKU (5 Indikator)</h1>
+              <h1 class="section-heading">Tabel Saldo Stok SKU</h1>
             </div>
           </div>
 
@@ -284,7 +284,7 @@
                 type="search"
                 id="invStockSearch"
                 class="erp-search-input"
-                placeholder="Cari Kode SKU, Nama Produk (RITAR, BSB, Ablerex), atau Lokasi Rak..." />
+                placeholder="Cari Kode SKU, Nama Produk, atau Lokasi Rak..." />
             </div>
 
             <div class="erp-Filter-group">
@@ -299,9 +299,9 @@
 
               <select id="invFilterStatus" class="erp-filter-select" aria-label="Filter Status Kesehatan Stok">
                 <option value="ALL">Semua Status Stok</option>
-                <option value="Normal">Normal (Di Atas ROP)</option>
-                <option value="Kritis">Kritis (Di Bawah / Sama Dengan ROP)</option>
-                <option value="Habis">Habis (Stok Tersedia 0)</option>
+                <option value="Normal">Normal</option>
+                <option value="Kritis">Kritis</option>
+                <option value="Habis">Habis</option>
               </select>
 
               <select id="invStockPageSize" class="erp-filter-select" aria-label="Jumlah Baris SKU">
@@ -323,8 +323,8 @@
                   <th>Stok Tertahan</th>
                   <th>Stok Layak Pakai</th>
                   <th>Reservasi Aktif</th>
-                  <th>Stok Tersedia (ATP)</th>
-                  <th>Batas Min (ROP)</th>
+                  <th>Stok Tersedia</th>
+                  <th>Batas Minimum</th>
                   <th>Status Stok</th>
                 </tr>
               </thead>
@@ -341,7 +341,7 @@
         <section class="erp-section-panel erp-tab-pane" data-inv-pane="ledger" aria-label="Buku Besar Mutasi Stok">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <h2 class="section-heading">Buku Besar Mutasi Stok (Stock Ledger)</h2>
+              <h2 class="section-heading">Buku Besar Mutasi Stok</h2>
             </div>
           </div>
 
@@ -355,16 +355,16 @@
                 type="search"
                 id="invLedgerSearch"
                 class="erp-search-input"
-                placeholder="Cari No. Referensi (SO/GR/SJ), Kode SKU, Nama Produk, atau Nama Petugas..." />
+                placeholder="Cari No. Referensi, Kode SKU, Nama Produk, atau Nama Petugas..." />
             </div>
 
             <div class="erp-Filter-group">
               <select id="invFilterLedgerType" class="erp-filter-select" aria-label="Filter Tipe Mutasi">
                 <option value="ALL">Semua Tipe Mutasi</option>
-                <option value="MASUK">MASUK (Penerimaan GR-QC)</option>
-                <option value="TERTAHAN">TERTAHAN (Karantina QC)</option>
-                <option value="RESERVASI">RESERVASI (Kunci PO Pelanggan)</option>
-                <option value="KELUAR">KELUAR (Surat Jalan Pengiriman)</option>
+                <option value="MASUK">MASUK</option>
+                <option value="TERTAHAN">TERTAHAN</option>
+                <option value="RESERVASI">RESERVASI</option>
+                <option value="KELUAR">KELUAR</option>
               </select>
 
               <select id="invLedgerPageSize" class="erp-filter-select" aria-label="Jumlah Baris Mutasi">
@@ -380,7 +380,7 @@
               <thead>
                 <tr>
                   <th>Waktu Mutasi</th>
-                  <th>No. Referensi (SO/PO/GR/SJ)</th>
+                  <th>No. Referensi</th>
                   <th>Kode SKU & Produk</th>
                   <th>Tipe Mutasi</th>
                   <th>Qty Perubahan</th>
@@ -401,7 +401,7 @@
         <section class="erp-section-panel erp-tab-pane" data-inv-pane="receipts" aria-label="Riwayat Penerimaan Barang dan QC">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <h2 class="section-heading">Riwayat Penerimaan Barang & QC (GR)</h2>
+              <h2 class="section-heading">Riwayat Penerimaan Barang & QC</h2>
             </div>
           </div>
 

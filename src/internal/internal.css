@@ -927,15 +927,10 @@ img {
 
 .erp-table tbody tr {
   background-color: var(--erp-bg-surface);
-  transition: background-color 0.15s ease;
 }
 
 .erp-table tbody tr:nth-child(even) {
   background-color: var(--erp-bg-zebra);
-}
-
-.erp-table tbody tr:hover {
-  background-color: var(--erp-bg-subtle);
 }
 
 .erp-table tbody td {

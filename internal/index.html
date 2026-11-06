@@ -125,7 +125,7 @@
 
       <div class="erp-sidebar-footer">
         <div class="erp-sidebar-user">
-          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa (SysAdmin)</span>
+          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa</span>
           <span class="erp-sidebar-user-email" id="erpActiveUserEmail">admin@nusantarapuncakperkasa.co.id</span>
         </div>
         <div class="erp-sidebar-actions">
@@ -158,7 +158,7 @@
         <div class="erp-topbar-right">
           <!-- Interactive Role Switcher (6 Peran HLD) -->
           <div class="erp-role-switcher-wrap">
-            <span class="erp-role-switcher-label">Simulasi Peran (RBAC):</span>
+            <span class="erp-role-switcher-label">Simulasi Peran:</span>
             <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
               <option value="Administrator">Administrator</option>
               <option value="Sales / Operasional">Sales & PO</option>
@@ -318,7 +318,7 @@
         <section class="erp-section-panel" aria-label="Tabel Ringkasan PO Pelanggan Terbaru">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <h2 class="section-heading">Ringkasan PO Pelanggan (SO)</h2>
+              <h2 class="section-heading">Ringkasan PO Pelanggan</h2>
             </div>
             <div class="erp-Filter-group">
               <a href="orders.html" class="btn-erp btn-erp-primary">
@@ -358,7 +358,7 @@
                 <option value="Belum Dikirim">Belum Dikirim</option>
                 <option value="Siap Kirim Gudang">Siap Kirim Gudang</option>
                 <option value="Terkirim Sebagian">Terkirim Sebagian</option>
-                <option value="Terkirim Penuh (BAST)">Terkirim Penuh (BAST)</option>
+                <option value="Terkirim Penuh">Terkirim Penuh</option>
               </select>
 
               <select id="filterOrderBilling" class="erp-filter-select col-financial" aria-label="Filter Status Penagihan">
@@ -386,12 +386,12 @@
                 <tr>
                   <th>No. SO & Tanggal</th>
                   <th>Pelanggan B2B & Ref PO</th>
-                  <th class="col-financial">Total (+PPN 11%)</th>
+                  <th class="col-financial">Total Tagihan</th>
                   <th>Status Order</th>
                   <th>Approval</th>
                   <th>Pemenuhan Stok</th>
-                  <th>Pengiriman (SJ)</th>
-                  <th class="col-financial">Penagihan (INV)</th>
+                  <th>Pengiriman</th>
+                  <th class="col-financial">Penagihan</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -427,12 +427,12 @@
           <!-- Strip Rumus & Agregat 5 Saldo Gudang -->
           <div class="stock-formula-strip">
             <div class="stock-formula-box">
-              <div class="stock-formula-title">Stok Fisik (On-Hand)</div>
+              <div class="stock-formula-title">Stok Fisik</div>
               <div class="stock-formula-val" id="sumStokFisik">284 Unit</div>
               <div class="stock-formula-desc">Total seluruh barang di rak gudang</div>
             </div>
             <div class="stock-formula-box">
-              <div class="stock-formula-title">Stok Tertahan (QC Hold)</div>
+              <div class="stock-formula-title">Stok Tertahan</div>
               <div class="stock-formula-val" id="sumStokTertahan">13 Unit</div>
               <div class="stock-formula-desc">Karantina uji beban / klaim prinsipal</div>
             </div>
@@ -442,12 +442,12 @@
               <div class="stock-formula-desc">Rumus: Fisik dikurangi Tertahan</div>
             </div>
             <div class="stock-formula-box">
-              <div class="stock-formula-title">Stok Direservasi (SO)</div>
+              <div class="stock-formula-title">Stok Direservasi</div>
               <div class="stock-formula-val" id="sumStokReservasi">146 Unit</div>
               <div class="stock-formula-desc">Terkunci untuk PO Pelanggan aktif</div>
             </div>
             <div class="stock-formula-box stock-formula-box-highlight">
-              <div class="stock-formula-title">Stok Tersedia (ATP)</div>
+              <div class="stock-formula-title">Stok Tersedia</div>
               <div class="stock-formula-val" id="sumStokTersedia">125 Unit</div>
               <div class="stock-formula-desc">Rumus: Layak Pakai dikurangi Reservasi</div>
             </div>
@@ -479,7 +479,7 @@
 
               <select id="filterStockHealth" class="erp-filter-select" aria-label="Filter Kesehatan Stok">
                 <option value="ALL">Semua Status Stok</option>
-                <option value="KRITIS">Stok Kritis (Perlu Pengadaan)</option>
+                <option value="KRITIS">Stok Kritis</option>
                 <option value="AMAN">Stok Aman</option>
               </select>
 
@@ -501,7 +501,7 @@
                   <th>Tertahan</th>
                   <th>Layak Pakai</th>
                   <th>Reservasi</th>
-                  <th>Tersedia (ATP)</th>
+                  <th>Stok Tersedia</th>
                   <th class="col-financial">Harga Jual</th>
                   <th>Status Kesehatan</th>
                 </tr>
