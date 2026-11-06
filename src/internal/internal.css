@@ -462,7 +462,6 @@ img {
   padding: 24px 28px 48px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
 /* ==========================================================================
@@ -522,6 +521,7 @@ img {
   grid-template-columns: 1.35fr 1fr;
   gap: 22px;
   align-items: stretch;
+  margin-bottom: 24px;
 }
 
 /* Container Cutout WAJIB position: relative TANPA overflow: hidden (AGENTS.md Section 4) */
@@ -756,6 +756,7 @@ img {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
+  margin-bottom: 24px;
 }
 
 .erp-kpi-card {
@@ -833,6 +834,10 @@ img {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+}
+
+.erp-content > .erp-section-header {
+  margin-bottom: 18px;
 }
 
 .erp-section-title-group {
@@ -1041,6 +1046,7 @@ img {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
+  margin-bottom: 24px;
 }
 
 .stock-formula-box {
@@ -1986,6 +1992,7 @@ html[data-theme="dark"] .erp-file-icon-box {
   background-color: var(--erp-bg-surface);
   padding: 18px 22px;
   border-radius: var(--radius-panel);
+  margin-bottom: 24px;
 }
 
 .erp-math-equation-card {
@@ -2105,7 +2112,6 @@ html[data-theme="dark"] .erp-file-icon-box {
 
   .erp-content {
     padding: 16px 16px 36px;
-    gap: 18px;
   }
 
   .erp-kpi-grid,
