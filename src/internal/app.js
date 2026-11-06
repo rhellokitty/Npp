@@ -1801,18 +1801,9 @@
 
           return (
             '<tr>' +
-            '<td>' +
-            '<span class="cell-code">' + escapeHtml(order.id) + '</span>' +
-            '<span class="cell-subtext">' + escapeHtml(order.orderDate) + '</span>' +
-            '</td>' +
-            '<td>' +
-            '<span class="cell-client">' + escapeHtml(order.customerName) + '</span>' +
-            '<span class="cell-subtext">Ref PO: ' + escapeHtml(order.clientPoNumber) + '</span>' +
-            '</td>' +
-            '<td class="col-financial">' +
-            '<span class="cell-money">' + formatMoneyRBAC(order.total, false) + '</span>' +
-            '<span class="cell-subtext">Termin: ' + escapeHtml(order.paymentTerm) + '</span>' +
-            '</td>' +
+            '<td><span class="cell-code">' + escapeHtml(order.id) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(order.customerName) + '</span></td>' +
+            '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(order.total, false) + '</span></td>' +
             '<td>' + renderStatusBadge(order.statusOrder) + '</td>' +
             '<td>' + renderStatusBadge(order.statusApproval) + '</td>' +
             '<td>' + renderStatusBadge(order.statusPemenuhan) + '</td>' +
@@ -1886,22 +1877,16 @@
 
           return (
             '<tr>' +
-            '<td>' +
-            '<span class="cell-code">' + escapeHtml(item.sku) + '</span>' +
-            '<span class="cell-subtext">Rak: ' + escapeHtml(item.rack) + '</span>' +
-            '</td>' +
-            '<td>' +
-            '<span class="cell-client">' + escapeHtml(item.name) + '</span>' +
-            '<span class="cell-subtext">' + escapeHtml(item.category) + ' • Satuan: ' + escapeHtml(item.unit) + '</span>' +
-            '</td>' +
+            '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(item.name) + '</span></td>' +
             '<td><strong>' + item.fisik + '</strong> ' + escapeHtml(item.unit) + '</td>' +
             '<td>' +
             (item.tertahan > 0
               ? '<span class="badge-status badge-danger">' + item.tertahan + ' Hold</span>'
-              : '<span class="cell-subtext">0</span>') +
+              : '0') +
             '</td>' +
             '<td><strong>' + item.layak + '</strong> ' + escapeHtml(item.unit) + '</td>' +
-            '<td><span class="badge-status badge-info">' + item.reservasi + ' Direservasi</span></td>' +
+            '<td><span class="badge-status badge-info">' + item.reservasi + ' Unit</span></td>' +
             '<td><strong class="cell-stock-available">' + item.tersedia + ' ' + escapeHtml(item.unit) + '</strong></td>' +
             '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(item.sellPrice, false) + '</span></td>' +
             '<td>' + statusBadge + '</td>' +
@@ -2360,18 +2345,9 @@
 
           return (
             '<tr>' +
-            '<td>' +
-            '<span class="cell-code">' + escapeHtml(order.id) + '</span>' +
-            '<span class="cell-subtext">Tgl: ' + escapeHtml(order.orderDate) + ' • Target: ' + escapeHtml(order.deliveryTarget) + '</span>' +
-            '</td>' +
-            '<td>' +
-            '<span class="cell-client">' + escapeHtml(order.customerName) + '</span>' +
-            '<span class="cell-subtext">PO Klien: ' + escapeHtml(order.clientPoNumber) + ' (' + totalQty + ' Unit)</span>' +
-            '</td>' +
-            '<td class="col-financial">' +
-            '<span class="cell-money">' + formatMoneyRBAC(order.total, false) + '</span>' +
-            '<span class="cell-subtext">TOP: ' + escapeHtml(order.paymentTerm) + '</span>' +
-            '</td>' +
+            '<td><span class="cell-code">' + escapeHtml(order.id) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(order.customerName) + '</span></td>' +
+            '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(order.total, false) + '</span></td>' +
             '<td>' + renderStatusBadge(order.statusApproval) + '</td>' +
             '<td>' + renderStatusBadge(order.statusPemenuhan) + '</td>' +
             '<td>' + renderStatusBadge(order.statusPengiriman) + '</td>' +
@@ -3043,10 +3019,10 @@
         renderRow: function (c) {
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(c.id) + '</span><span class="cell-subtext">' + escapeHtml(c.sector || 'Industri B2B') + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(c.id) + '</span></td>' +
             '<td><span class="cell-client">' + escapeHtml(c.name) + '</span></td>' +
-            '<td><strong>' + escapeHtml(c.pic) + '</strong><span class="cell-subtext">' + escapeHtml(c.rolePic || 'Procurement PIC') + '</span></td>' +
-            '<td><span>' + escapeHtml(c.phone) + '</span><span class="cell-subtext">' + escapeHtml(c.email) + '</span></td>' +
+            '<td><strong>' + escapeHtml(c.pic) + '</strong></td>' +
+            '<td><span>' + escapeHtml(c.phone) + '</span></td>' +
             '<td>' + escapeHtml(c.address) + '</td>' +
             '<td><span class="cell-code">' + escapeHtml(c.npwp) + '</span></td>' +
             '<td><span class="badge-status badge-info"><span class="badge-dot"></span>' + escapeHtml(c.paymentTerm) + '</span></td>' +
@@ -3080,11 +3056,11 @@
         renderRow: function (s) {
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(s.id) + '</span><span class="cell-subtext">' + escapeHtml(s.status || 'Prinsipal Resmi') + '</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(s.name) + '</span><span class="cell-subtext">' + escapeHtml(s.category) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(s.id) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(s.name) + '</span></td>' +
             '<td>' + escapeHtml(s.origin) + '</td>' +
-            '<td><strong>' + escapeHtml(s.pic) + '</strong><span class="cell-subtext">' + escapeHtml(s.phone) + ' • ' + escapeHtml(s.email) + '</span></td>' +
-            '<td><span class="cell-code">' + escapeHtml(s.bankAccount || '-') + '</span><span class="cell-subtext">TOP: ' + escapeHtml(s.paymentTerm) + '</span></td>' +
+            '<td><strong>' + escapeHtml(s.pic) + '</strong></td>' +
+            '<td><span class="cell-code">' + escapeHtml(s.bankAccount || '-') + '</span></td>' +
             '<td><span class="badge-status badge-warning"><span class="badge-dot"></span>' + s.leadTimeDays + ' Hari Kalender</span></td>' +
             '</tr>'
           );
@@ -3122,12 +3098,12 @@
           var pubStat = p.webPublished || 'Tayang di Katalog';
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(p.sku) + '</span><span class="cell-subtext">Rak: ' + escapeHtml(p.rack) + '</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(p.name) + '</span><span class="cell-subtext">Brand: ' + escapeHtml(p.brand || 'NPP Industrial') + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(p.sku) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(p.name) + '</span></td>' +
             '<td>' + escapeHtml(p.category) + '</td>' +
             '<td><strong>' + escapeHtml(p.unit) + '</strong></td>' +
             '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(p.sellPrice, false) + '</span></td>' +
-            '<td><strong>' + p.minStok + ' ' + escapeHtml(p.unit) + '</strong><span class="cell-subtext">Stok ATP: ' + p.tersedia + ' ' + escapeHtml(p.unit) + '</span></td>' +
+            '<td><strong>' + p.minStok + ' ' + escapeHtml(p.unit) + '</strong></td>' +
             '<td>' + renderStatusBadge(pubStat) + '</td>' +
             '</tr>'
           );
@@ -3158,7 +3134,7 @@
         renderRow: function (r) {
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(r.code) + '</span><span class="cell-subtext">PIC: ' + escapeHtml(r.pic || 'Gudang NPP') + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(r.code) + '</span></td>' +
             '<td><span class="cell-client">' + escapeHtml(r.zone) + '</span></td>' +
             '<td><span class="badge-status badge-info"><span class="badge-dot"></span>' + escapeHtml(r.capacity) + '</span></td>' +
             '<td>' + escapeHtml(r.description || (r.category + ' • ' + (r.tempSpec || '22°C'))) + '</td>' +
@@ -3484,14 +3460,14 @@
           var stockStat = self.getSkuStockStatus(item);
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span><span class="cell-subtext">Audit: ' + escapeHtml(item.lastAudit || '2026-11-06') + '</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(item.name) + '</span><span class="cell-subtext">' + escapeHtml(item.category) + ' (' + escapeHtml(item.unit) + ')</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(item.name) + '</span></td>' +
             '<td><span class="badge-status badge-neutral">' + escapeHtml(item.rack) + '</span></td>' +
             '<td><strong>' + item.fisik + '</strong> ' + escapeHtml(item.unit) + '</td>' +
             '<td>' +
             (item.tertahan > 0
               ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>' + item.tertahan + ' Karantina</span>'
-              : '<span class="cell-subtext">0 ' + escapeHtml(item.unit) + '</span>') +
+              : '0 ' + escapeHtml(item.unit)) +
             '</td>' +
             '<td><strong>' + item.layak + '</strong> ' + escapeHtml(item.unit) + '</td>' +
             '<td><span class="badge-status badge-info">' + item.reservasi + ' ' + escapeHtml(item.unit) + '</span></td>' +
@@ -3542,13 +3518,13 @@
 
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(row.date) + '</span><span class="cell-subtext">ID: ' + escapeHtml(row.id) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(row.date) + '</span></td>' +
             '<td><span class="cell-code">' + escapeHtml(row.refDoc) + '</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(row.sku) + '</span><span class="cell-subtext">' + escapeHtml(row.skuName) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(row.sku) + '</span></td>' +
             '<td>' + renderStatusBadge(row.type) + '</td>' +
             '<td><span class="' + qtyCls + '">' + escapeHtml(qtyFormatted) + ' Unit</span></td>' +
             '<td><strong>' + (row.finalPhysical != null ? row.finalPhysical : '-') + ' Unit</strong></td>' +
-            '<td><strong>' + escapeHtml(row.pic) + '</strong><span class="cell-subtext">' + escapeHtml(row.note || '-') + '</span></td>' +
+            '<td><strong>' + escapeHtml(row.pic) + '</strong></td>' +
             '</tr>'
           );
         }
@@ -3580,18 +3556,18 @@
         renderRow: function (gr) {
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(gr.id) + '</span><span class="cell-subtext">Tgl: ' + escapeHtml(gr.date) + '</span></td>' +
-            '<td><span class="cell-code">' + escapeHtml(gr.poSupplierId) + '</span><span class="cell-subtext">' + escapeHtml(gr.supplierName) + '</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(gr.sku) + '</span><span class="cell-subtext">' + escapeHtml(gr.skuName) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(gr.id) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(gr.poSupplierId) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(gr.sku) + '</span></td>' +
             '<td><strong>' + gr.qtyReceived + ' Unit</strong></td>' +
             '<td><span class="badge-status badge-success"><span class="badge-dot"></span>' + gr.qtyPassed + ' Lolos QC</span></td>' +
             '<td>' +
             (gr.qtyHold > 0
               ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>' + gr.qtyHold + ' Karantina</span>'
-              : '<span class="cell-subtext">0 Hold</span>') +
+              : '0 Hold') +
             '</td>' +
             '<td><span class="badge-status badge-neutral">' + escapeHtml(gr.rackTarget) + '</span></td>' +
-            '<td><strong>' + escapeHtml(gr.inspector) + '</strong><span class="cell-subtext">' + escapeHtml(gr.notes || '-') + '</span></td>' +
+            '<td><strong>' + escapeHtml(gr.inspector) + '</strong></td>' +
             '</tr>'
           );
         }
@@ -4091,16 +4067,16 @@
 
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span><span class="cell-subtext">Rak: ' + escapeHtml(item.rack) + '</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(item.name) + '</span><span class="cell-subtext">Prinsipal: ' + escapeHtml(item.supplierName) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(item.name) + '</span></td>' +
             '<td><span class="cell-stock-available">' + item.tersedia + ' ' + escapeHtml(item.unit) + '</span></td>' +
             '<td><strong>' + item.minStok + ' ' + escapeHtml(item.unit) + '</strong></td>' +
             '<td>' +
             (item.backorderQty > 0
-              ? '<span class="badge-status badge-danger">' + item.backorderQty + ' ' + escapeHtml(item.unit) + ' (' + escapeHtml(item.refOrderId) + ')</span>'
-              : '<span class="cell-subtext">0 (Restock Buffer)</span>') +
+              ? '<span class="badge-status badge-danger">' + item.backorderQty + ' ' + escapeHtml(item.unit) + '</span>'
+              : '0 (Buffer)') +
             '</td>' +
-            '<td><strong class="qty-change-plus">+' + item.recommendedQty + ' ' + escapeHtml(item.unit) + '</strong><span class="cell-subtext">Lead Time: ' + item.leadTimeDays + ' Hari</span></td>' +
+            '<td><strong class="qty-change-plus">+' + item.recommendedQty + ' ' + escapeHtml(item.unit) + '</strong></td>' +
             '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(item.hpp, true) + '</span></td>' +
             '<td>' + renderStatusBadge(item.priority) + '</td>' +
             '<td>' +
@@ -4177,11 +4153,11 @@
 
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(po.id) + '</span><span class="cell-subtext">' + totalUnits + ' Unit Dipesan</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(po.supplierName) + '</span><span class="cell-subtext">ID: ' + escapeHtml(po.supplierId) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(po.id) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(po.supplierName) + '</span></td>' +
             '<td><span class="cell-code">' + escapeHtml(po.refOrderId || 'Restock Gudang') + '</span></td>' +
-            '<td><strong>Tgl: ' + escapeHtml(po.orderDate) + '</strong><span class="cell-subtext">ETA Tiba: ' + escapeHtml(po.etaDate) + '</span></td>' +
-            '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(po.total || po.totalHpp, true) + '</span><span class="cell-subtext">Termasuk PPN 11%</span></td>' +
+            '<td>' + escapeHtml(po.orderDate) + '</td>' +
+            '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(po.total || po.totalHpp, true) + '</span></td>' +
             '<td>' + renderStatusBadge(po.statusApproval) + '</td>' +
             '<td>' + renderStatusBadge(po.statusReceiving) + '</td>' +
             '<td>' + actionBtns + '</td>' +
@@ -4789,11 +4765,11 @@
 
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(d.id) + '</span><div class="cell-subtext">' + escapeHtml(d.deliveryType || 'Standar') + '</div></td>' +
-            '<td><strong>' + escapeHtml(d.deliveryDate) + '</strong></td>' +
-            '<td><strong>' + escapeHtml(d.customerName) + '</strong><div class="cell-subtext">Ref: <span class="cell-code">' + escapeHtml(d.orderId) + '</span> (' + escapeHtml(d.clientPoNumber) + ')</div></td>' +
-            '<td><strong>' + escapeHtml(d.driverName) + '</strong><div class="cell-subtext">' + escapeHtml(d.vehiclePlate) + '</div></td>' +
-            '<td><div class="cell-subtext-sm">' + itemsSummary + '</div><div class="cell-subtext" style="font-weight:600; color:var(--erp-navy); margin-top:2px;">Total: ' + totalItemsQty + ' Unit</div></td>' +
+            '<td><span class="cell-code">' + escapeHtml(d.id) + '</span></td>' +
+            '<td>' + escapeHtml(d.deliveryDate) + '</td>' +
+            '<td><span class="cell-client">' + escapeHtml(d.customerName) + '</span></td>' +
+            '<td>' + escapeHtml(d.driverName) + ' (' + escapeHtml(d.vehiclePlate) + ')</td>' +
+            '<td>Total: ' + totalItemsQty + ' Unit</td>' +
             '<td>' + renderStatusBadge(d.status) + '</td>' +
             '<td>' +
             '<div class="erp-action-btns">' +
@@ -5458,14 +5434,11 @@
 
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(inv.id) + '</span><div class="cell-subtext">' + escapeHtml(inv.billingType) + '</div></td>' +
-            '<td><strong>' + escapeHtml(inv.invoiceDate) + '</strong><div class="cell-subtext">Tempo: ' + escapeHtml(inv.dueDate) + '</div></td>' +
-            '<td><strong>' + escapeHtml(inv.customerName) + '</strong><div class="cell-subtext">Ref: <span class="cell-code">' + escapeHtml(inv.orderId) + '</span> (' + escapeHtml(inv.clientPoNumber) + ')</div></td>' +
-            '<td class="col-financial">' +
-            '  <div><strong>' + formatMoneyRBAC(inv.total) + '</strong></div>' +
-            '  <div class="cell-subtext-sm">DPP: ' + formatMoneyRBAC(inv.dpp) + ' • PPN: ' + formatMoneyRBAC(inv.ppn) + '</div>' +
-            '</td>' +
-            '<td><span class="cell-subtext-sm" style="font-weight:600;">' + escapeHtml(inv.bankRef || 'BCA 521-098-7741') + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(inv.id) + '</span></td>' +
+            '<td>' + escapeHtml(inv.invoiceDate) + '</td>' +
+            '<td><span class="cell-client">' + escapeHtml(inv.customerName) + '</span></td>' +
+            '<td class="col-financial"><strong>' + formatMoneyRBAC(inv.total) + '</strong></td>' +
+            '<td>' + escapeHtml(inv.bankRef || 'BCA 521-098-7741') + '</td>' +
             '<td>' + renderStatusBadge(inv.status) + '</td>' +
             '<td>' +
             '<div class="erp-action-btns">' +
