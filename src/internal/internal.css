@@ -822,23 +822,39 @@ img {
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  background-color: var(--erp-bg-page);
-  padding: 12px 14px;
-  border-radius: 16px;
+  background: transparent;
+  padding: 0;
 }
 
-.erp-search-box {
+.erp-toolbar-left,
+.erp-toolbar-right {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: var(--erp-bg-surface);
+  flex-wrap: wrap;
+}
+
+.erp-search-box,
+.erp-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--erp-bg-page);
   padding: 9px 14px;
   border-radius: 12px;
   min-width: 260px;
   flex: 1;
+  transition: background-color 0.18s ease;
+}
+
+.erp-search-box:focus-within,
+.erp-search-wrap:focus-within {
+  background-color: var(--erp-bg-subtle);
 }
 
 .erp-search-icon {
+  width: 16px;
+  height: 16px;
   color: var(--erp-text-muted);
   flex-shrink: 0;
 }
@@ -847,13 +863,15 @@ img {
   width: 100%;
   font-size: 0.82rem;
   color: var(--erp-heading);
+  background: transparent;
 }
 
 .erp-search-input::placeholder {
   color: var(--erp-text-muted);
 }
 
-.erp-Filter-group {
+.erp-Filter-group,
+.erp-filter-group {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -864,7 +882,7 @@ img {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-color: var(--erp-bg-surface);
+  background-color: var(--erp-bg-page);
   color: var(--erp-heading);
   font-size: 0.78rem;
   font-weight: 600;
