@@ -218,12 +218,19 @@ img {
   display: flex;
   align-items: center;
   gap: 11px;
-  padding: 11px 14px;
+  padding: 10px 14px;
   border-radius: 13px;
   font-size: 0.83rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.76);
+  white-space: nowrap;
   transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.erp-nav-link span:not(.erp-nav-badge) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .erp-nav-link:hover {

@@ -1975,11 +1975,11 @@
         '</div>' +
         '</div>' +
         '<div class="stock-formula-strip modal-five-dim-strip">' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">1. Status Order</div>' + renderStatusBadge(order.statusOrder) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">2. Status Approval</div>' + renderStatusBadge(order.statusApproval) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">3. Pemenuhan Stok</div>' + renderStatusBadge(order.statusPemenuhan) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">4. Pengiriman (SJ)</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">5. Penagihan (INV)</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Status Order</div>' + renderStatusBadge(order.statusOrder) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Status Approval</div>' + renderStatusBadge(order.statusApproval) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Pemenuhan Stok</div>' + renderStatusBadge(order.statusPemenuhan) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Pengiriman (SJ)</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Penagihan (INV)</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
         '</div>' +
         '<div class="erp-table-wrap modal-table-spaced">' +
         '<table class="erp-table">' +
@@ -2272,11 +2272,11 @@
       var elTotalSub = document.getElementById('ordersKpiTotalSub');
 
       if (roleCfg.code === 'Gudang') {
-        if (elTotalLabel) elTotalLabel.textContent = '1. Total Volume Pesanan';
+        if (elTotalLabel) elTotalLabel.textContent = 'Total Volume Pesanan';
         if (elTotalVal) elTotalVal.textContent = totalUnitsOrdered + ' Unit / Cell';
         if (elTotalSub) elTotalSub.textContent = 'Dari ' + totalOrders + ' dokumen PO Pelanggan (Harga Terproteksi)';
       } else {
-        if (elTotalLabel) elTotalLabel.textContent = '1. Total Nilai PO Pelanggan';
+        if (elTotalLabel) elTotalLabel.textContent = 'Total Nilai PO Pelanggan';
         if (elTotalVal) elTotalVal.textContent = formatRupiah(totalValue);
         if (elTotalSub) elTotalSub.textContent = 'Akumulasi ' + totalOrders + ' PO Pelanggan B2B (+PPN 11%)';
       }
@@ -2902,11 +2902,11 @@
         '</div>' +
         '</div>' +
         '<div class="stock-formula-strip modal-five-dim-strip">' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">1. Persetujuan</div>' + renderStatusBadge(order.statusApproval) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">2. Pemenuhan Stok</div>' + renderStatusBadge(order.statusPemenuhan) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">3. Pengiriman (SJ)</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">4. Penagihan (INV)</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
-        '<div class="stock-formula-box"><div class="stock-formula-title">5. Pembayaran</div>' + renderStatusBadge(paymentStat) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Persetujuan</div>' + renderStatusBadge(order.statusApproval) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Pemenuhan Stok</div>' + renderStatusBadge(order.statusPemenuhan) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Pengiriman (SJ)</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Penagihan (INV)</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">Pembayaran</div>' + renderStatusBadge(paymentStat) + '</div>' +
         '</div>' +
         '<div class="erp-table-wrap modal-table-spaced">' +
         '<table class="erp-table">' +
@@ -4008,11 +4008,11 @@
       var elValSub = document.getElementById('procKpiValueSub');
 
       if (roleCfg.code === 'Gudang' || !roleCfg.canViewHPP) {
-        if (elValLabel) elValLabel.textContent = '4. Total Kuantitas Pengadaan';
+        if (elValLabel) elValLabel.textContent = 'Total Kuantitas Pengadaan';
         if (elValAmount) elValAmount.textContent = totalPoUnits + ' Unit / Cell';
         if (elValSub) elValSub.textContent = 'Mode RBAC: Nilai HPP Pembelian disembunyikan';
       } else {
-        if (elValLabel) elValLabel.textContent = '4. Total Nilai PO Supplier';
+        if (elValLabel) elValLabel.textContent = 'Total Nilai PO Supplier';
         if (elValAmount) elValAmount.textContent = formatRupiah(totalPoValue);
         if (elValSub) elValSub.textContent = 'Akumulasi pengadaan ke prinsipal (+PPN 11%)';
       }
