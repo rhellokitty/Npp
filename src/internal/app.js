@@ -1060,33 +1060,40 @@
       s.indexOf('terkirim penuh') !== -1 ||
       s.indexOf('siap kirim') !== -1 ||
       s.indexOf('diterima penuh') !== -1 ||
-      s.indexOf('aktif') !== -1
+      s.indexOf('aktif') !== -1 ||
+      s.indexOf('normal') !== -1 ||
+      s.indexOf('aman') !== -1 ||
+      s.indexOf('tayang') !== -1 ||
+      s.indexOf('masuk') !== -1
     ) {
       return 'badge-success';
     }
     if (
       s.indexOf('menunggu') !== -1 ||
+      s.indexOf('diajukan') !== -1 ||
       s.indexOf('sebagian') !== -1 ||
       s.indexOf('perjalanan') !== -1 ||
       s.indexOf('tagihan dp') !== -1 ||
       s.indexOf('invoice terbit') !== -1 ||
-      s.indexOf('belum lunas') !== -1
+      s.indexOf('belum lunas') !== -1 ||
+      s.indexOf('kritis') !== -1
     ) {
       return 'badge-warning';
     }
     if (
       s.indexOf('jatuh tempo') !== -1 ||
       s.indexOf('ditolak') !== -1 ||
-      s.indexOf('kritis') !== -1 ||
       s.indexOf('tertahan') !== -1 ||
-      s.indexOf('habis') !== -1
+      s.indexOf('habis') !== -1 ||
+      s.indexOf('keluar') !== -1
     ) {
       return 'badge-danger';
     }
     if (
       s.indexOf('diproses') !== -1 ||
       s.indexOf('dikonfirmasi') !== -1 ||
-      s.indexOf('direservasi') !== -1
+      s.indexOf('direservasi') !== -1 ||
+      s.indexOf('reservasi') !== -1
     ) {
       return 'badge-info';
     }
@@ -1540,7 +1547,9 @@
 
       // 3. Antrean Approval
       var pendingSO = db.orders.filter(function (o) { return o.statusApproval === 'Menunggu Persetujuan'; }).length;
-      var pendingPO = db.procurements.filter(function (p) { return p.statusApproval === 'Menunggu Persetujuan'; }).length;
+      var pendingPO = db.procurements.filter(function (p) {
+        return p.statusApproval === 'Menunggu Persetujuan' || p.statusApproval === 'Diajukan';
+      }).length;
       var totalPendingApproval = pendingSO + pendingPO;
 
       var kpiApprovalVal = document.getElementById('kpiApprovalVal');
@@ -2044,6 +2053,73 @@
         if (!r.description) {
           r.description = r.category + ' • Standar Suhu: ' + (r.tempSpec || '22°C Terkendali');
         }
+      });
+    }
+
+    // 5. Pastikan setiap baris Stock Ledger memiliki Saldo Akhir Fisik (finalPhysical)
+    if (Array.isArray(db.stockLedger)) {
+      db.stockLedger.forEach(function (entry) {
+        if (entry.finalPhysical == null) {
+          var skuMatch = (db.inventory || []).find(function (i) { return i.sku === entry.sku; });
+          entry.finalPhysical = skuMatch ? skuMatch.fisik : 25;
+        }
+      });
+    }
+
+    // 6. Normalisasi & Pengayaan Data Pengadaan Supplier (PO-YYYYMM-XXXX)
+    if (Array.isArray(db.procurements)) {
+      var hasPo0002 = db.procurements.some(function (p) { return p.id === 'PO-202610-0002'; });
+      if (!hasPo0002) {
+        db.procurements.push({
+          id: 'PO-202610-0002',
+          supplierId: 'SUP-001',
+          supplierName: 'Ritar Power International Ltd',
+          refOrderId: 'SO-202611-0010',
+          orderDate: '2026-10-20',
+          etaDate: '2026-11-01',
+          statusApproval: 'Disetujui',
+          statusReceiving: 'Diterima Sebagian',
+          items: [
+            { sku: 'SKU-RTR-12100', name: 'Baterai RITAR RA12-100 (12V 100Ah VRLA AGM)', qty: 50, unit: 'Unit', hpp: 2450000 }
+          ],
+          totalHpp: 122500000,
+          notes: '40 unit telah diterima via GR-202611-0003 (38 lolos QC, 2 karantina). Sisa 10 unit menyusul.'
+        });
+      }
+
+      var hasPo0006 = db.procurements.some(function (p) { return p.id === 'PO-202611-0006'; });
+      if (!hasPo0006) {
+        db.procurements.unshift({
+          id: 'PO-202611-0006',
+          supplierId: 'SUP-003',
+          supplierName: 'Ablerex Electronics Co., Ltd',
+          refOrderId: 'SO-202611-0011',
+          orderDate: '2026-11-06',
+          etaDate: '2026-11-16',
+          statusApproval: 'Draft',
+          statusReceiving: 'Menunggu',
+          items: [
+            { sku: 'SKU-ABL-ARS30K', name: 'UPS Ablerex Ares 30 kVA 3-Phase Online Transformerless', qty: 3, unit: 'Unit', hpp: 86000000 }
+          ],
+          totalHpp: 258000000,
+          notes: 'Draft pengadaan stok proyek baja berat & buffer gudang.'
+        });
+      }
+
+      db.procurements.forEach(function (po) {
+        if (po.statusApproval === 'Menunggu Persetujuan') {
+          po.statusApproval = 'Diajukan';
+        }
+        if (po.statusReceiving === 'Belum Diterima' || po.statusReceiving === 'Dalam Perjalanan') {
+          po.statusReceiving = 'Menunggu';
+        } else if (po.statusReceiving === 'Diterima Penuh (GR)') {
+          po.statusReceiving = 'Diterima Penuh';
+        }
+        var dpp = Number(po.dpp || po.totalHpp) || 0;
+        var ppn = po.ppn != null ? Number(po.ppn) : Math.round(dpp * 0.11);
+        po.dpp = dpp;
+        po.ppn = ppn;
+        po.total = po.total != null ? Number(po.total) : (dpp + ppn);
       });
     }
   }
@@ -3204,7 +3280,1314 @@
   };
 
   /* ==========================================================================
-     11. EKSPOR API GLOBAL & AUTO-INIT SAAT DOM READY
+     11. INVENTORY CONTROLLER (KHUSUS HALAMAN internal/inventory.html — TUGAS 3.1)
+     ========================================================================== */
+  var InventoryController = {
+    balancesTable: null,
+    ledgerTable: null,
+    receiptsTable: null,
+
+    init: function () {
+      if (!document.getElementById('erpInventoryPage')) return;
+
+      var self = this;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      this.renderFormulaAggregates();
+      this.syncGrButtonRBAC();
+      this.bindTabSwitching();
+      this.initBalancesTable();
+      this.initLedgerTable();
+      this.initReceiptsTable();
+      this.bindCreateGrModal();
+
+      RoleManager.onChange(function () {
+        self.syncGrButtonRBAC();
+        self.renderFormulaAggregates();
+        if (self.balancesTable) self.balancesTable.render();
+        if (self.ledgerTable) self.ledgerTable.render();
+        if (self.receiptsTable) self.receiptsTable.render();
+      });
+    },
+
+    getSkuStockStatus: function (item) {
+      if (item.tersedia <= 0) return 'Habis';
+      if (item.tersedia <= item.minStok) return 'Kritis';
+      return 'Normal';
+    },
+
+    renderFormulaAggregates: function () {
+      var db = window.NPP_ERP_DATA;
+      var totals = db.inventory.reduce(function (acc, item) {
+        acc.fisik += Number(item.fisik) || 0;
+        acc.tertahan += Number(item.tertahan) || 0;
+        acc.layak += Number(item.layak) || 0;
+        acc.reservasi += Number(item.reservasi) || 0;
+        acc.tersedia += Number(item.tersedia) || 0;
+        return acc;
+      }, { fisik: 0, tertahan: 0, layak: 0, reservasi: 0, tersedia: 0 });
+
+      var elFisik = document.getElementById('invSumFisik');
+      var elTertahan = document.getElementById('invSumTertahan');
+      var elLayak = document.getElementById('invSumLayak');
+      var elReservasi = document.getElementById('invSumReservasi');
+      var elTersedia = document.getElementById('invSumTersedia');
+
+      if (elFisik) elFisik.textContent = totals.fisik + ' Unit';
+      if (elTertahan) elTertahan.textContent = totals.tertahan + ' Unit';
+      if (elLayak) elLayak.textContent = totals.layak + ' Unit';
+      if (elReservasi) elReservasi.textContent = totals.reservasi + ' Unit';
+      if (elTersedia) elTersedia.textContent = totals.tersedia + ' Unit';
+
+      var cSku = document.getElementById('countTabStockSku');
+      var cLedger = document.getElementById('countTabStockLedger');
+      var cGr = document.getElementById('countTabGoodsReceipt');
+      if (cSku) cSku.textContent = db.inventory.length;
+      if (cLedger) cLedger.textContent = db.stockLedger.length;
+      if (cGr) cGr.textContent = db.goodsReceipts.length;
+    },
+
+    syncGrButtonRBAC: function () {
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      var canReceiveGr = roleCfg.code === 'Gudang' || roleCfg.code === 'Administrator';
+      var btnGr = document.getElementById('btnOpenCreateGrModal');
+      var hintEl = document.getElementById('invGrRbacHint');
+
+      if (btnGr) {
+        btnGr.disabled = !canReceiveGr;
+        btnGr.title = canReceiveGr
+          ? 'Catat Penerimaan Barang Fisik & Inspeksi QC Gudang'
+          : 'Hanya peran Stok Gudang atau Administrator yang dapat mencatat Penerimaan Barang & QC';
+      }
+      if (hintEl) {
+        hintEl.textContent = canReceiveGr
+          ? 'Otorisasi Gudang & QC Aktif (' + roleCfg.display + ') • Bebas Informasi Harga/HPP'
+          : 'Mode Pantau (' + roleCfg.display + ') • Input GR & QC khusus Stok Gudang & Admin';
+      }
+    },
+
+    bindTabSwitching: function () {
+      var tabBtns = document.querySelectorAll('[data-inv-tab]');
+      var tabPanes = document.querySelectorAll('[data-inv-pane]');
+
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-inv-tab');
+          tabBtns.forEach(function (b) {
+            b.classList.toggle('erp-tab-btn-active', b.getAttribute('data-inv-tab') === target);
+          });
+          tabPanes.forEach(function (p) {
+            p.classList.toggle('tab-pane-active', p.getAttribute('data-inv-pane') === target);
+          });
+        });
+      });
+    },
+
+    initBalancesTable: function () {
+      var self = this;
+      this.balancesTable = new TableEngine({
+        tbodyId: 'invBalancesTbody',
+        paginationId: 'invBalancesPagination',
+        searchInputId: 'invStockSearch',
+        pageSizeSelectId: 'invStockPageSize',
+        defaultPageSize: 5,
+        colSpan: 10,
+        getData: function () {
+          return window.NPP_ERP_DATA.inventory;
+        },
+        searchFn: function (item, q) {
+          return (
+            item.sku.toLowerCase().indexOf(q) !== -1 ||
+            item.name.toLowerCase().indexOf(q) !== -1 ||
+            item.category.toLowerCase().indexOf(q) !== -1 ||
+            item.rack.toLowerCase().indexOf(q) !== -1
+          );
+        },
+        filters: [
+          {
+            selectId: 'invFilterCategory',
+            match: function (item, val) { return item.category === val; }
+          },
+          {
+            selectId: 'invFilterStatus',
+            match: function (item, val) { return self.getSkuStockStatus(item) === val; }
+          }
+        ],
+        renderRow: function (item) {
+          var stockStat = self.getSkuStockStatus(item);
+          return (
+            '<tr>' +
+            '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span><span class="cell-subtext">Audit: ' + escapeHtml(item.lastAudit || '2026-11-06') + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(item.name) + '</span><span class="cell-subtext">' + escapeHtml(item.category) + ' (' + escapeHtml(item.unit) + ')</span></td>' +
+            '<td><span class="badge-status badge-neutral">' + escapeHtml(item.rack) + '</span></td>' +
+            '<td><strong>' + item.fisik + '</strong> ' + escapeHtml(item.unit) + '</td>' +
+            '<td>' +
+            (item.tertahan > 0
+              ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>' + item.tertahan + ' Karantina</span>'
+              : '<span class="cell-subtext">0 ' + escapeHtml(item.unit) + '</span>') +
+            '</td>' +
+            '<td><strong>' + item.layak + '</strong> ' + escapeHtml(item.unit) + '</td>' +
+            '<td><span class="badge-status badge-info">' + item.reservasi + ' ' + escapeHtml(item.unit) + '</span></td>' +
+            '<td><span class="cell-stock-available">' + item.tersedia + ' ' + escapeHtml(item.unit) + '</span></td>' +
+            '<td><strong>' + item.minStok + '</strong> ' + escapeHtml(item.unit) + '</td>' +
+            '<td>' + renderStatusBadge(stockStat) + '</td>' +
+            '</tr>'
+          );
+        }
+      });
+      this.balancesTable.render();
+    },
+
+    initLedgerTable: function () {
+      this.ledgerTable = new TableEngine({
+        tbodyId: 'invLedgerTbody',
+        paginationId: 'invLedgerPagination',
+        searchInputId: 'invLedgerSearch',
+        pageSizeSelectId: 'invLedgerPageSize',
+        defaultPageSize: 5,
+        colSpan: 7,
+        getData: function () {
+          return window.NPP_ERP_DATA.stockLedger;
+        },
+        searchFn: function (row, q) {
+          return (
+            row.id.toLowerCase().indexOf(q) !== -1 ||
+            row.refDoc.toLowerCase().indexOf(q) !== -1 ||
+            row.sku.toLowerCase().indexOf(q) !== -1 ||
+            row.skuName.toLowerCase().indexOf(q) !== -1 ||
+            row.type.toLowerCase().indexOf(q) !== -1 ||
+            row.pic.toLowerCase().indexOf(q) !== -1 ||
+            (row.note || '').toLowerCase().indexOf(q) !== -1
+          );
+        },
+        filters: [
+          {
+            selectId: 'invFilterLedgerType',
+            match: function (row, val) { return row.type.indexOf(val) !== -1; }
+          }
+        ],
+        renderRow: function (row) {
+          var qtyNum = Number(row.qty) || 0;
+          var qtyFormatted = qtyNum > 0 ? '+' + qtyNum : '' + qtyNum;
+          var qtyCls = 'qty-change-lock';
+          if (row.type.indexOf('MASUK') !== -1) qtyCls = 'qty-change-plus';
+          if (row.type.indexOf('KELUAR') !== -1 || row.type.indexOf('TERTAHAN') !== -1) qtyCls = 'qty-change-minus';
+
+          return (
+            '<tr>' +
+            '<td><span class="cell-code">' + escapeHtml(row.date) + '</span><span class="cell-subtext">ID: ' + escapeHtml(row.id) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(row.refDoc) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(row.sku) + '</span><span class="cell-subtext">' + escapeHtml(row.skuName) + '</span></td>' +
+            '<td>' + renderStatusBadge(row.type) + '</td>' +
+            '<td><span class="' + qtyCls + '">' + escapeHtml(qtyFormatted) + ' Unit</span></td>' +
+            '<td><strong>' + (row.finalPhysical != null ? row.finalPhysical : '-') + ' Unit</strong></td>' +
+            '<td><strong>' + escapeHtml(row.pic) + '</strong><span class="cell-subtext">' + escapeHtml(row.note || '-') + '</span></td>' +
+            '</tr>'
+          );
+        }
+      });
+      this.ledgerTable.render();
+    },
+
+    initReceiptsTable: function () {
+      this.receiptsTable = new TableEngine({
+        tbodyId: 'invGrTbody',
+        paginationId: 'invGrPagination',
+        searchInputId: 'invGrSearch',
+        pageSizeSelectId: 'invGrPageSize',
+        defaultPageSize: 5,
+        colSpan: 8,
+        getData: function () {
+          return window.NPP_ERP_DATA.goodsReceipts;
+        },
+        searchFn: function (gr, q) {
+          return (
+            gr.id.toLowerCase().indexOf(q) !== -1 ||
+            gr.poSupplierId.toLowerCase().indexOf(q) !== -1 ||
+            gr.supplierName.toLowerCase().indexOf(q) !== -1 ||
+            gr.sku.toLowerCase().indexOf(q) !== -1 ||
+            gr.skuName.toLowerCase().indexOf(q) !== -1 ||
+            gr.rackTarget.toLowerCase().indexOf(q) !== -1
+          );
+        },
+        renderRow: function (gr) {
+          return (
+            '<tr>' +
+            '<td><span class="cell-code">' + escapeHtml(gr.id) + '</span><span class="cell-subtext">Tgl: ' + escapeHtml(gr.date) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(gr.poSupplierId) + '</span><span class="cell-subtext">' + escapeHtml(gr.supplierName) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(gr.sku) + '</span><span class="cell-subtext">' + escapeHtml(gr.skuName) + '</span></td>' +
+            '<td><strong>' + gr.qtyReceived + ' Unit</strong></td>' +
+            '<td><span class="badge-status badge-success"><span class="badge-dot"></span>' + gr.qtyPassed + ' Lolos QC</span></td>' +
+            '<td>' +
+            (gr.qtyHold > 0
+              ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>' + gr.qtyHold + ' Karantina</span>'
+              : '<span class="cell-subtext">0 Hold</span>') +
+            '</td>' +
+            '<td><span class="badge-status badge-neutral">' + escapeHtml(gr.rackTarget) + '</span></td>' +
+            '<td><strong>' + escapeHtml(gr.inspector) + '</strong><span class="cell-subtext">' + escapeHtml(gr.notes || '-') + '</span></td>' +
+            '</tr>'
+          );
+        }
+      });
+      this.receiptsTable.render();
+    },
+
+    bindCreateGrModal: function () {
+      var self = this;
+      var modal = document.getElementById('createGrModal');
+      var openBtn = document.getElementById('btnOpenCreateGrModal');
+      var closeBtn = document.getElementById('closeCreateGrModal');
+      var cancelBtn = document.getElementById('cancelCreateGrBtn');
+      var poSelect = document.getElementById('grPoSelect');
+      var skuSelect = document.getElementById('grSkuSelect');
+      var passedInput = document.getElementById('grQtyPassed');
+      var holdInput = document.getElementById('grQtyHold');
+      var form = document.getElementById('createGrForm');
+
+      if (!modal) return;
+      var closeModal = function () { modal.classList.remove('modal-open'); };
+
+      if (openBtn) {
+        openBtn.addEventListener('click', function () {
+          var roleCfg = RoleManager.getCurrentRoleConfig();
+          if (roleCfg.code !== 'Gudang' && roleCfg.code !== 'Administrator') {
+            showToast('Akses ditolak: Hanya peran Stok Gudang atau Administrator yang dapat mencatat Penerimaan Barang & QC.');
+            return;
+          }
+          self.prepareCreateGrForm();
+          modal.classList.add('modal-open');
+        });
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      if (poSelect) {
+        poSelect.addEventListener('change', function () {
+          self.populateGrSkuOptions(poSelect.value);
+        });
+      }
+      if (skuSelect) {
+        skuSelect.addEventListener('change', function () {
+          self.updateGrLivePreview();
+        });
+      }
+      if (passedInput) {
+        passedInput.addEventListener('input', function () {
+          self.updateGrLivePreview();
+        });
+      }
+      if (holdInput) {
+        holdInput.addEventListener('input', function () {
+          self.updateGrLivePreview();
+        });
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          self.submitCreateGrForm();
+        });
+      }
+    },
+
+    prepareCreateGrForm: function () {
+      var db = window.NPP_ERP_DATA;
+      var poSelect = document.getElementById('grPoSelect');
+      var rackSelect = document.getElementById('grRackSelect');
+
+      // Ambil daftar PO Supplier yang relevan untuk diterima
+      var activePos = db.procurements.filter(function (p) {
+        return p.statusReceiving !== 'Diterima Penuh';
+      });
+      if (activePos.length === 0) {
+        activePos = db.procurements;
+      }
+
+      if (poSelect) {
+        poSelect.innerHTML = activePos.map(function (p) {
+          return (
+            '<option value="' + escapeHtml(p.id) + '">' +
+            escapeHtml(p.id) + ' — ' + escapeHtml(p.supplierName) + ' (' + escapeHtml(p.statusReceiving) + ')' +
+            '</option>'
+          );
+        }).join('');
+      }
+
+      if (rackSelect) {
+        rackSelect.innerHTML = db.racks.map(function (r) {
+          return '<option value="' + escapeHtml(r.code) + '">' + escapeHtml(r.code) + ' — ' + escapeHtml(r.zone) + '</option>';
+        }).join('');
+      }
+
+      var firstPoId = activePos[0] ? activePos[0].id : '';
+      this.populateGrSkuOptions(firstPoId);
+    },
+
+    populateGrSkuOptions: function (poId) {
+      var db = window.NPP_ERP_DATA;
+      var po = db.procurements.find(function (p) { return p.id === poId; });
+      var skuSelect = document.getElementById('grSkuSelect');
+      var passedInput = document.getElementById('grQtyPassed');
+      var holdInput = document.getElementById('grQtyHold');
+      var rackSelect = document.getElementById('grRackSelect');
+
+      if (!skuSelect) return;
+
+      var skuList = [];
+      if (po && Array.isArray(po.items) && po.items.length > 0) {
+        skuList = po.items.map(function (it) {
+          var invObj = db.inventory.find(function (s) { return s.sku === it.sku; });
+          return {
+            sku: it.sku,
+            name: it.name,
+            orderedQty: it.qty,
+            rack: invObj ? invObj.rack : 'RAK-A01'
+          };
+        });
+      } else {
+        skuList = db.inventory.map(function (inv) {
+          return { sku: inv.sku, name: inv.name, orderedQty: 10, rack: inv.rack };
+        });
+      }
+
+      skuSelect.innerHTML = skuList.map(function (s) {
+        return (
+          '<option value="' + escapeHtml(s.sku) + '" data-ordered-qty="' + s.orderedQty + '" data-default-rack="' + escapeHtml(s.rack) + '">' +
+          escapeHtml(s.sku) + ' — ' + escapeHtml(s.name) + ' (Order PO: ' + s.orderedQty + ' Unit)' +
+          '</option>'
+        );
+      }).join('');
+
+      var firstItem = skuList[0];
+      if (firstItem) {
+        if (passedInput) passedInput.value = firstItem.orderedQty;
+        if (holdInput) holdInput.value = 0;
+        if (rackSelect) rackSelect.value = firstItem.rack;
+      }
+
+      this.updateGrLivePreview();
+    },
+
+    updateGrLivePreview: function () {
+      var db = window.NPP_ERP_DATA;
+      var skuSelect = document.getElementById('grSkuSelect');
+      var passedInput = document.getElementById('grQtyPassed');
+      var holdInput = document.getElementById('grQtyHold');
+      var previewEl = document.getElementById('grLiveBalancePreview');
+
+      if (!skuSelect || !previewEl) return;
+      var skuCode = skuSelect.value;
+      var skuObj = db.inventory.find(function (i) { return i.sku === skuCode; });
+      if (!skuObj) return;
+
+      var qtyPass = Math.max(0, parseInt(passedInput ? passedInput.value : 0, 10) || 0);
+      var qtyHold = Math.max(0, parseInt(holdInput ? holdInput.value : 0, 10) || 0);
+
+      var newFisik = skuObj.fisik + qtyPass + qtyHold;
+      var newTertahan = skuObj.tertahan + qtyHold;
+      var newLayak = newFisik - newTertahan;
+      var newTersedia = newLayak - skuObj.reservasi;
+
+      previewEl.textContent =
+        'Simulasi Saldo Baru ' + skuObj.sku + ' -> Fisik: ' + newFisik +
+        ' | Tertahan: ' + newTertahan +
+        ' | Layak Pakai: ' + newLayak +
+        ' | Reservasi: ' + skuObj.reservasi +
+        ' | Stok Tersedia (ATP): ' + newTersedia + ' ' + skuObj.unit;
+    },
+
+    submitCreateGrForm: function () {
+      var db = window.NPP_ERP_DATA;
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+
+      var poId = document.getElementById('grPoSelect').value;
+      var skuCode = document.getElementById('grSkuSelect').value;
+      var qtyPass = Math.max(0, parseInt(document.getElementById('grQtyPassed').value, 10) || 0);
+      var qtyHold = Math.max(0, parseInt(document.getElementById('grQtyHold').value, 10) || 0);
+      var totalReceived = qtyPass + qtyHold;
+      var rackTarget = document.getElementById('grRackSelect').value || 'RAK-A01';
+      var receivingType = document.getElementById('grReceivingStatusSelect').value || 'Diterima Penuh';
+      var notes = document.getElementById('grNotesInput').value.trim();
+
+      if (totalReceived <= 0) {
+        showToast('Jumlah total fisik diterima (Lolos QC + Karantina) harus lebih dari 0.');
+        return;
+      }
+
+      var po = db.procurements.find(function (p) { return p.id === poId; });
+      var skuObj = db.inventory.find(function (i) { return i.sku === skuCode; });
+      if (!skuObj) return;
+
+      // 1. Update 5 Saldo Stok di Master Inventory sesuai rumus matematis HLD
+      skuObj.fisik += totalReceived;
+      skuObj.tertahan += qtyHold;
+      skuObj.layak = skuObj.fisik - skuObj.tertahan;
+      skuObj.tersedia = skuObj.layak - skuObj.reservasi;
+      skuObj.rack = rackTarget;
+      skuObj.lastAudit = '2026-11-06';
+
+      var pad4 = function (n) {
+        var s = String(n);
+        while (s.length < 4) s = '0' + s;
+        return s;
+      };
+      var newGrId = 'GR-202611-' + pad4(db.goodsReceipts.length + 1);
+
+      // 2. Simpan dokumen Goods Receipt (GR-YYYYMM-XXXX)
+      db.goodsReceipts.unshift({
+        id: newGrId,
+        poSupplierId: po ? po.id : poId,
+        supplierName: po ? po.supplierName : 'Prinsipal Resmi NPP',
+        date: '2026-11-06',
+        inspector: roleCfg.userName,
+        sku: skuObj.sku,
+        skuName: skuObj.name,
+        qtyReceived: totalReceived,
+        qtyPassed: qtyPass,
+        qtyHold: qtyHold,
+        rackTarget: rackTarget,
+        notes: notes || ('Lolos QC: ' + qtyPass + ' ' + skuObj.unit + ', Karantina: ' + qtyHold + ' ' + skuObj.unit)
+      });
+
+      // 3. Catat ke Buku Besar Mutasi (Stock Ledger)
+      if (qtyPass > 0) {
+        db.stockLedger.unshift({
+          id: 'MUT-' + (100 + db.stockLedger.length + 1),
+          date: '2026-11-06 15:20',
+          sku: skuObj.sku,
+          skuName: skuObj.name,
+          type: 'MASUK (GR-QC)',
+          qty: qtyPass,
+          finalPhysical: skuObj.fisik,
+          refDoc: newGrId,
+          pic: roleCfg.userName,
+          note: 'Penerimaan layak pakai dari ' + (po ? po.id : poId) + ' ke ' + rackTarget
+        });
+      }
+      if (qtyHold > 0) {
+        db.stockLedger.unshift({
+          id: 'MUT-' + (100 + db.stockLedger.length + 1),
+          date: '2026-11-06 15:21',
+          sku: skuObj.sku,
+          skuName: skuObj.name,
+          type: 'TERTAHAN (QC)',
+          qty: qtyHold,
+          finalPhysical: skuObj.fisik,
+          refDoc: newGrId,
+          pic: roleCfg.userName,
+          note: 'Unit karantina/belum lolos QC diisolasi ke RAK-QC (' + (notes || 'Klaim Prinsipal') + ')'
+        });
+      }
+
+      // 4. Perbarui status penerimaan pada PO Supplier terkait
+      if (po) {
+        po.statusReceiving = receivingType;
+      }
+
+      // 5. Cek otomatis apakah ada PO Pelanggan berstatus 'Menunggu Pengadaan' yang kini bisa dipenuhi
+      db.orders.forEach(function (order) {
+        if (order.statusPemenuhan === 'Menunggu Pengadaan') {
+          var needsThisSku = (order.items || []).find(function (it) { return it.sku === skuObj.sku; });
+          if (needsThisSku && skuObj.tersedia >= needsThisSku.qty) {
+            skuObj.reservasi += needsThisSku.qty;
+            skuObj.tersedia = skuObj.layak - skuObj.reservasi;
+            order.statusPemenuhan = 'Stok Direservasi';
+            if (order.statusApproval === 'Disetujui') {
+              order.statusPengiriman = 'Siap Kirim Gudang';
+            }
+          }
+        }
+      });
+
+      saveDatabase(db);
+      addAuditLog(
+        'QC_GOODS_RECEIPT',
+        newGrId,
+        'Mencatat GR & QC ' + skuObj.sku + ' sebanyak ' + totalReceived + ' ' + skuObj.unit +
+          ' (Lolos: ' + qtyPass + ', Karantina: ' + qtyHold + ') dari ' + (po ? po.id : poId)
+      );
+
+      RoleManager.updateSidebarCounters();
+      this.renderFormulaAggregates();
+      if (this.balancesTable) this.balancesTable.render();
+      if (this.ledgerTable) this.ledgerTable.render();
+      if (this.receiptsTable) this.receiptsTable.render();
+
+      var modal = document.getElementById('createGrModal');
+      if (modal) modal.classList.remove('modal-open');
+
+      showToast('Penerimaan Barang ' + newGrId + ' berhasil disimpan & 5 Saldo Stok diperbarui!');
+    }
+  };
+
+  /* ==========================================================================
+     12. PROCUREMENT CONTROLLER (KHUSUS HALAMAN internal/procurement.html — TUGAS 3.2)
+     ========================================================================== */
+  var ProcurementController = {
+    shortageTable: null,
+    poTable: null,
+    poLineCounter: 0,
+
+    init: function () {
+      if (!document.getElementById('erpProcurementPage')) return;
+
+      var self = this;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      this.renderProcurementKPIs();
+      this.syncProcurementRBAC();
+      this.bindTabSwitching();
+      this.initShortageTable();
+      this.initPoSupplierTable();
+      this.bindCreatePoModal();
+      this.bindPoDetailModal();
+
+      RoleManager.onChange(function () {
+        self.renderProcurementKPIs();
+        self.syncProcurementRBAC();
+        if (self.shortageTable) self.shortageTable.render();
+        if (self.poTable) self.poTable.render();
+      });
+    },
+
+    computeShortageItems: function () {
+      var db = window.NPP_ERP_DATA;
+      var results = [];
+
+      db.inventory.forEach(function (skuObj) {
+        // Hitung total kebutuhan dari PO Pelanggan yang masih Menunggu Pengadaan
+        var backorderOrders = db.orders.filter(function (o) {
+          return o.statusPemenuhan === 'Menunggu Pengadaan' &&
+            (o.items || []).some(function (it) { return it.sku === skuObj.sku; });
+        });
+
+        var backorderQty = 0;
+        var refOrderIds = [];
+        backorderOrders.forEach(function (o) {
+          refOrderIds.push(o.id);
+          (o.items || []).forEach(function (it) {
+            if (it.sku === skuObj.sku) backorderQty += Number(it.qty) || 0;
+          });
+        });
+
+        var isBelowRop = skuObj.tersedia <= skuObj.minStok;
+        if (isBelowRop || backorderQty > 0) {
+          var deficitRop = Math.max(0, (skuObj.minStok * 2) - skuObj.tersedia);
+          var recommendedQty = Math.max(deficitRop, backorderQty + skuObj.minStok - skuObj.tersedia, 10);
+          var sup = db.suppliers.find(function (s) { return s.id === skuObj.supplierId; }) || db.suppliers[0];
+
+          results.push({
+            sku: skuObj.sku,
+            name: skuObj.name,
+            category: skuObj.category,
+            unit: skuObj.unit,
+            rack: skuObj.rack,
+            tersedia: skuObj.tersedia,
+            minStok: skuObj.minStok,
+            backorderQty: backorderQty,
+            refOrderId: refOrderIds[0] || 'SO-202611-0011',
+            recommendedQty: recommendedQty,
+            hpp: skuObj.hpp,
+            supplierId: sup ? sup.id : 'SUP-001',
+            supplierName: sup ? sup.name : 'Ritar Power International Ltd',
+            leadTimeDays: sup ? sup.leadTimeDays : 14,
+            priority: skuObj.tersedia <= 0 || backorderQty > 0 ? 'Kritis (Backorder SO)' : 'Segera Restock (ROP)'
+          });
+        }
+      });
+
+      return results;
+    },
+
+    renderProcurementKPIs: function () {
+      var db = window.NPP_ERP_DATA;
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      var shortages = this.computeShortageItems();
+
+      var activePos = db.procurements.filter(function (p) {
+        return p.statusReceiving !== 'Diterima Penuh' && p.statusApproval !== 'Ditolak';
+      }).length;
+
+      var pendingApprovePos = db.procurements.filter(function (p) {
+        return p.statusApproval === 'Diajukan' || p.statusApproval === 'Menunggu Persetujuan';
+      }).length;
+
+      var totalPoValue = db.procurements.reduce(function (acc, p) { return acc + (p.total || p.totalHpp || 0); }, 0);
+      var totalPoUnits = db.procurements.reduce(function (acc, p) {
+        var q = (p.items || []).reduce(function (s, i) { return s + (Number(i.qty) || 0); }, 0);
+        return acc + q;
+      }, 0);
+
+      var elShortVal = document.getElementById('procKpiShortageVal');
+      var elShortSub = document.getElementById('procKpiShortageSub');
+      if (elShortVal) elShortVal.textContent = shortages.length + ' SKU Perlu Beli';
+      if (elShortSub) elShortSub.textContent = 'Stok di bawah ROP / Backorder PO Klien';
+
+      var elActVal = document.getElementById('procKpiActiveVal');
+      var elActSub = document.getElementById('procKpiActiveSub');
+      if (elActVal) elActVal.textContent = activePos + ' PO Berjalan';
+      if (elActSub) elActSub.textContent = 'Dari total ' + db.procurements.length + ' dokumen PO Prinsipal';
+
+      var elAppVal = document.getElementById('procKpiPendingVal');
+      var elAppSub = document.getElementById('procKpiPendingSub');
+      if (elAppVal) elAppVal.textContent = pendingApprovePos + ' Menunggu Otorisasi';
+      if (elAppSub) elAppSub.textContent = 'Perlu persetujuan Direktur / Approver';
+
+      var elValLabel = document.getElementById('procKpiValueLabel');
+      var elValAmount = document.getElementById('procKpiValueAmount');
+      var elValSub = document.getElementById('procKpiValueSub');
+
+      if (roleCfg.code === 'Gudang' || !roleCfg.canViewHPP) {
+        if (elValLabel) elValLabel.textContent = '4. Total Kuantitas Pengadaan';
+        if (elValAmount) elValAmount.textContent = totalPoUnits + ' Unit / Cell';
+        if (elValSub) elValSub.textContent = 'Mode RBAC: Nilai HPP Pembelian disembunyikan';
+      } else {
+        if (elValLabel) elValLabel.textContent = '4. Total Nilai PO Supplier';
+        if (elValAmount) elValAmount.textContent = formatRupiah(totalPoValue);
+        if (elValSub) elValSub.textContent = 'Akumulasi pengadaan ke prinsipal (+PPN 11%)';
+      }
+
+      var cShort = document.getElementById('countTabShortage');
+      var cPo = document.getElementById('countTabPoList');
+      if (cShort) cShort.textContent = shortages.length;
+      if (cPo) cPo.textContent = db.procurements.length;
+    },
+
+    syncProcurementRBAC: function () {
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      var canCreatePo = roleCfg.code === 'Purchasing' || roleCfg.code === 'Administrator';
+      var btnCreate = document.getElementById('btnOpenCreatePoModal');
+      var hintEl = document.getElementById('procRbacActionHint');
+
+      if (btnCreate) {
+        btnCreate.disabled = !canCreatePo;
+        btnCreate.title = canCreatePo
+          ? 'Terbitkan PO Baru ke Prinsipal / Pabrikan'
+          : 'Hanya peran Purchasing atau Administrator yang dapat menerbitkan PO Supplier baru';
+      }
+      if (hintEl) {
+        hintEl.textContent = canCreatePo
+          ? 'Otorisasi Penerbitan PO Supplier Aktif (' + roleCfg.display + ')'
+          : 'Mode Pantau (' + roleCfg.display + ') — Penerbitan PO khusus Purchasing & Admin';
+      }
+    },
+
+    bindTabSwitching: function () {
+      var tabBtns = document.querySelectorAll('[data-proc-tab]');
+      var tabPanes = document.querySelectorAll('[data-proc-pane]');
+
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-proc-tab');
+          tabBtns.forEach(function (b) {
+            b.classList.toggle('erp-tab-btn-active', b.getAttribute('data-proc-tab') === target);
+          });
+          tabPanes.forEach(function (p) {
+            p.classList.toggle('tab-pane-active', p.getAttribute('data-proc-pane') === target);
+          });
+        });
+      });
+    },
+
+    initShortageTable: function () {
+      var self = this;
+      this.shortageTable = new TableEngine({
+        tbodyId: 'procShortageTbody',
+        paginationId: 'procShortagePagination',
+        searchInputId: 'procShortageSearch',
+        pageSizeSelectId: 'procShortagePageSize',
+        defaultPageSize: 5,
+        colSpan: 9,
+        getData: function () {
+          return self.computeShortageItems();
+        },
+        searchFn: function (item, q) {
+          return (
+            item.sku.toLowerCase().indexOf(q) !== -1 ||
+            item.name.toLowerCase().indexOf(q) !== -1 ||
+            item.supplierName.toLowerCase().indexOf(q) !== -1 ||
+            item.refOrderId.toLowerCase().indexOf(q) !== -1
+          );
+        },
+        filters: [
+          {
+            selectId: 'procShortageCategory',
+            match: function (item, val) { return item.category === val; }
+          }
+        ],
+        renderRow: function (item) {
+          var roleCfg = RoleManager.getCurrentRoleConfig();
+          var canCreatePo = roleCfg.code === 'Purchasing' || roleCfg.code === 'Administrator';
+
+          return (
+            '<tr>' +
+            '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span><span class="cell-subtext">Rak: ' + escapeHtml(item.rack) + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(item.name) + '</span><span class="cell-subtext">Prinsipal: ' + escapeHtml(item.supplierName) + '</span></td>' +
+            '<td><span class="cell-stock-available">' + item.tersedia + ' ' + escapeHtml(item.unit) + '</span></td>' +
+            '<td><strong>' + item.minStok + ' ' + escapeHtml(item.unit) + '</strong></td>' +
+            '<td>' +
+            (item.backorderQty > 0
+              ? '<span class="badge-status badge-danger">' + item.backorderQty + ' ' + escapeHtml(item.unit) + ' (' + escapeHtml(item.refOrderId) + ')</span>'
+              : '<span class="cell-subtext">0 (Restock Buffer)</span>') +
+            '</td>' +
+            '<td><strong class="qty-change-plus">+' + item.recommendedQty + ' ' + escapeHtml(item.unit) + '</strong><span class="cell-subtext">Lead Time: ' + item.leadTimeDays + ' Hari</span></td>' +
+            '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(item.hpp, true) + '</span></td>' +
+            '<td>' + renderStatusBadge(item.priority) + '</td>' +
+            '<td>' +
+            '<button type="button" class="btn-erp btn-erp-primary btn-erp-sm" data-quick-po-sku="' + escapeHtml(item.sku) + '" ' +
+            (canCreatePo ? '' : 'disabled title="Khusus Purchasing & Administrator"') + '>' +
+            'Buat PO Supplier' +
+            '</button>' +
+            '</td>' +
+            '</tr>'
+          );
+        },
+        onAfterRender: function () {
+          var tbody = document.getElementById('procShortageTbody');
+          if (!tbody) return;
+
+          tbody.querySelectorAll('[data-quick-po-sku]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              if (btn.disabled) return;
+              var skuCode = btn.getAttribute('data-quick-po-sku');
+              self.openCreatePoModalWithPreselect(skuCode);
+            });
+          });
+        }
+      });
+      this.shortageTable.render();
+    },
+
+    initPoSupplierTable: function () {
+      var self = this;
+      this.poTable = new TableEngine({
+        tbodyId: 'procPoTbody',
+        paginationId: 'procPoPagination',
+        searchInputId: 'procPoSearch',
+        pageSizeSelectId: 'procPoPageSize',
+        defaultPageSize: 5,
+        colSpan: 8,
+        getData: function () {
+          return window.NPP_ERP_DATA.procurements;
+        },
+        searchFn: function (po, q) {
+          var itemMatch = (po.items || []).some(function (it) {
+            return it.sku.toLowerCase().indexOf(q) !== -1 || it.name.toLowerCase().indexOf(q) !== -1;
+          });
+          return (
+            po.id.toLowerCase().indexOf(q) !== -1 ||
+            po.supplierName.toLowerCase().indexOf(q) !== -1 ||
+            (po.refOrderId || '').toLowerCase().indexOf(q) !== -1 ||
+            itemMatch
+          );
+        },
+        filters: [
+          {
+            selectId: 'procFilterApproval',
+            match: function (po, val) { return po.statusApproval === val; }
+          },
+          {
+            selectId: 'procFilterReceiving',
+            match: function (po, val) { return po.statusReceiving === val; }
+          }
+        ],
+        renderRow: function (po) {
+          var roleCfg = RoleManager.getCurrentRoleConfig();
+          var canApprove = roleCfg.canApprove && (po.statusApproval === 'Diajukan' || po.statusApproval === 'Draft');
+          var totalUnits = (po.items || []).reduce(function (s, i) { return s + (Number(i.qty) || 0); }, 0);
+
+          var actionBtns =
+            '<div class="erp-Filter-group">' +
+            '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-view-po="' + po.id + '">Detail PO</button>' +
+            (canApprove
+              ? '<button type="button" class="btn-erp btn-erp-success btn-erp-sm" data-approve-po="' + po.id + '">Setujui</button>' +
+                '<button type="button" class="btn-erp btn-erp-danger btn-erp-sm" data-reject-po="' + po.id + '">Tolak</button>'
+              : '') +
+            '</div>';
+
+          return (
+            '<tr>' +
+            '<td><span class="cell-code">' + escapeHtml(po.id) + '</span><span class="cell-subtext">' + totalUnits + ' Unit Dipesan</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(po.supplierName) + '</span><span class="cell-subtext">ID: ' + escapeHtml(po.supplierId) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(po.refOrderId || 'Restock Gudang') + '</span></td>' +
+            '<td><strong>Tgl: ' + escapeHtml(po.orderDate) + '</strong><span class="cell-subtext">ETA Tiba: ' + escapeHtml(po.etaDate) + '</span></td>' +
+            '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(po.total || po.totalHpp, true) + '</span><span class="cell-subtext">Termasuk PPN 11%</span></td>' +
+            '<td>' + renderStatusBadge(po.statusApproval) + '</td>' +
+            '<td>' + renderStatusBadge(po.statusReceiving) + '</td>' +
+            '<td>' + actionBtns + '</td>' +
+            '</tr>'
+          );
+        },
+        onAfterRender: function () {
+          var tbody = document.getElementById('procPoTbody');
+          if (!tbody) return;
+
+          tbody.querySelectorAll('[data-view-po]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              self.openPoDetailModal(btn.getAttribute('data-view-po'));
+            });
+          });
+
+          tbody.querySelectorAll('[data-approve-po]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              self.handlePoApproval(btn.getAttribute('data-approve-po'), 'Disetujui');
+            });
+          });
+
+          tbody.querySelectorAll('[data-reject-po]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              self.handlePoApproval(btn.getAttribute('data-reject-po'), 'Ditolak');
+            });
+          });
+        }
+      });
+      this.poTable.render();
+    },
+
+    handlePoApproval: function (poId, decision) {
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      if (!roleCfg.canApprove) {
+        showToast('Akses ditolak: Hanya Approver atau Administrator yang dapat mengotorisasi PO Supplier.');
+        return;
+      }
+
+      var db = window.NPP_ERP_DATA;
+      var po = db.procurements.find(function (p) { return p.id === poId; });
+      if (!po) return;
+
+      po.statusApproval = decision;
+      saveDatabase(db);
+      addAuditLog(
+        decision === 'Disetujui' ? 'APPROVE_PO_SUPPLIER' : 'REJECT_PO_SUPPLIER',
+        po.id,
+        'Mengubah status otorisasi PO Supplier ' + po.id + ' (' + po.supplierName + ') menjadi: ' + decision
+      );
+
+      this.renderProcurementKPIs();
+      if (this.poTable) this.poTable.render();
+      showToast('Status PO Supplier ' + po.id + ' berhasil diperbarui menjadi: ' + decision);
+    },
+
+    bindCreatePoModal: function () {
+      var self = this;
+      var modal = document.getElementById('createPoSupplierModal');
+      var openBtn = document.getElementById('btnOpenCreatePoModal');
+      var closeBtn = document.getElementById('closeCreatePoModal');
+      var cancelBtn = document.getElementById('cancelCreatePoBtn');
+      var supSelect = document.getElementById('poSupplierSelect');
+      var addRowBtn = document.getElementById('btnAddPoLineItem');
+      var form = document.getElementById('createPoSupplierForm');
+
+      if (!modal) return;
+      var closeModal = function () { modal.classList.remove('modal-open'); };
+
+      if (openBtn) {
+        openBtn.addEventListener('click', function () {
+          var roleCfg = RoleManager.getCurrentRoleConfig();
+          if (roleCfg.code !== 'Purchasing' && roleCfg.code !== 'Administrator') {
+            showToast('Akses ditolak: Hanya peran Purchasing atau Administrator yang dapat menerbitkan PO Supplier.');
+            return;
+          }
+          self.openCreatePoModalWithPreselect(null);
+        });
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      if (supSelect) {
+        supSelect.addEventListener('change', function () {
+          self.syncSupplierEtaHint();
+        });
+      }
+
+      if (addRowBtn) {
+        addRowBtn.addEventListener('click', function () {
+          self.addPoLineItemRow(null);
+        });
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          self.submitCreatePoForm();
+        });
+      }
+    },
+
+    syncSupplierEtaHint: function () {
+      var db = window.NPP_ERP_DATA;
+      var supSelect = document.getElementById('poSupplierSelect');
+      var etaInput = document.getElementById('poEtaDateInput');
+      var hintEl = document.getElementById('poSupplierLeadTimeHint');
+      if (!supSelect) return;
+
+      var sup = db.suppliers.find(function (s) { return s.id === supSelect.value; });
+      if (sup) {
+        if (hintEl) {
+          hintEl.textContent = 'Asal: ' + sup.origin + ' • Lead Time: ' + sup.leadTimeDays + ' Hari • Rekening: ' + (sup.bankAccount || sup.paymentTerm);
+        }
+        if (etaInput) {
+          var d = new Date('2026-11-06T12:00:00');
+          d.setDate(d.getDate() + (Number(sup.leadTimeDays) || 14));
+          var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+          etaInput.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+        }
+      }
+    },
+
+    openCreatePoModalWithPreselect: function (skuCode) {
+      var db = window.NPP_ERP_DATA;
+      var modal = document.getElementById('createPoSupplierModal');
+      var supSelect = document.getElementById('poSupplierSelect');
+      var refSelect = document.getElementById('poRefOrderSelect');
+      var container = document.getElementById('poLineItemsContainer');
+      var notesInput = document.getElementById('poNotesInput');
+
+      if (!modal) return;
+
+      if (supSelect) {
+        supSelect.innerHTML = db.suppliers.map(function (s) {
+          return '<option value="' + escapeHtml(s.id) + '">' + escapeHtml(s.name) + ' (Lead Time ' + s.leadTimeDays + ' Hari)</option>';
+        }).join('');
+      }
+
+      if (refSelect) {
+        var soOpts = ['<option value="Restock Safety Stock">Tanpa Ref SO (Restock Safety Stock Gudang)</option>'];
+        db.orders.forEach(function (o) {
+          soOpts.push('<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.id) + ' — ' + escapeHtml(o.customerName) + ' (' + escapeHtml(o.statusPemenuhan) + ')</option>');
+        });
+        refSelect.innerHTML = soOpts.join('');
+      }
+
+      var shortageItem = null;
+      if (skuCode) {
+        var shortages = this.computeShortageItems();
+        shortageItem = shortages.find(function (sh) { return sh.sku === skuCode; });
+      }
+
+      if (shortageItem && supSelect) {
+        supSelect.value = shortageItem.supplierId;
+      }
+      if (shortageItem && refSelect && shortageItem.refOrderId) {
+        refSelect.value = shortageItem.refOrderId;
+      }
+      if (notesInput) {
+        notesInput.value = shortageItem
+          ? 'Pemenuhan cepat antrean shortage ' + shortageItem.sku + ' (' + shortageItem.priority + ').'
+          : '';
+      }
+
+      this.syncSupplierEtaHint();
+
+      if (container) {
+        container.innerHTML = '';
+        this.poLineCounter = 0;
+        this.addPoLineItemRow(shortageItem);
+      }
+
+      modal.classList.add('modal-open');
+    },
+
+    addPoLineItemRow: function (presetItem) {
+      var self = this;
+      var db = window.NPP_ERP_DATA;
+      var container = document.getElementById('poLineItemsContainer');
+      if (!container) return;
+
+      this.poLineCounter += 1;
+      var defaultSku = presetItem
+        ? db.inventory.find(function (i) { return i.sku === presetItem.sku; })
+        : db.inventory[0];
+
+      var skuOpts = db.inventory.map(function (item) {
+        var selectedAttr = (defaultSku && item.sku === defaultSku.sku) ? ' selected' : '';
+        return (
+          '<option value="' + escapeHtml(item.sku) + '"' + selectedAttr + '>' +
+          escapeHtml(item.sku) + ' — ' + escapeHtml(item.name) + ' (Stok ATP: ' + item.tersedia + ' ' + escapeHtml(item.unit) + ')' +
+          '</option>'
+        );
+      }).join('');
+
+      var initQty = presetItem ? presetItem.recommendedQty : 12;
+      var initHpp = defaultSku ? defaultSku.hpp : 2500000;
+
+      var rowEl = document.createElement('div');
+      rowEl.className = 'erp-line-item-row';
+      rowEl.innerHTML =
+        '<div class="erp-line-item-col">' +
+        '<span class="erp-line-item-sublabel">Pilih SKU Produk Industri</span>' +
+        '<select class="erp-select po-row-sku" aria-label="Pilih SKU PO Supplier">' + skuOpts + '</select>' +
+        '</div>' +
+        '<div class="erp-line-item-col">' +
+        '<span class="erp-line-item-sublabel">Qty Beli</span>' +
+        '<input type="number" class="erp-input po-row-qty" min="1" value="' + initQty + '" required />' +
+        '</div>' +
+        '<div class="erp-line-item-col">' +
+        '<span class="erp-line-item-sublabel">Harga Beli / HPP (Rp)</span>' +
+        '<input type="number" class="erp-input po-row-hpp" min="0" step="1000" value="' + initHpp + '" required />' +
+        '</div>' +
+        '<div class="erp-line-item-col">' +
+        '<span class="erp-line-item-sublabel">Subtotal HPP</span>' +
+        '<div class="erp-line-item-subtotal po-row-subtotal">Rp 0</div>' +
+        '</div>' +
+        '<div class="erp-line-item-col">' +
+        '<span class="erp-line-item-sublabel">Hapus</span>' +
+        '<button type="button" class="btn-erp btn-erp-danger btn-erp-sm po-row-remove">Hapus</button>' +
+        '</div>';
+
+      container.appendChild(rowEl);
+
+      var skuSel = rowEl.querySelector('.po-row-sku');
+      var qtyInp = rowEl.querySelector('.po-row-qty');
+      var hppInp = rowEl.querySelector('.po-row-hpp');
+      var remBtn = rowEl.querySelector('.po-row-remove');
+
+      skuSel.addEventListener('change', function () {
+        var found = db.inventory.find(function (i) { return i.sku === skuSel.value; });
+        if (found) hppInp.value = found.hpp;
+        self.recalculatePoTotals();
+      });
+
+      qtyInp.addEventListener('input', function () { self.recalculatePoTotals(); });
+      hppInp.addEventListener('input', function () { self.recalculatePoTotals(); });
+
+      remBtn.addEventListener('click', function () {
+        var all = container.querySelectorAll('.erp-line-item-row');
+        if (all.length <= 1) {
+          showToast('Minimal harus terdapat 1 baris SKU dalam PO Supplier.');
+          return;
+        }
+        rowEl.remove();
+        self.recalculatePoTotals();
+      });
+
+      this.recalculatePoTotals();
+    },
+
+    recalculatePoTotals: function () {
+      var container = document.getElementById('poLineItemsContainer');
+      if (!container) return;
+
+      var dpp = 0;
+      var rows = container.querySelectorAll('.erp-line-item-row');
+      rows.forEach(function (row) {
+        var qty = Math.max(1, parseInt(row.querySelector('.po-row-qty').value, 10) || 0);
+        var hpp = Math.max(0, parseFloat(row.querySelector('.po-row-hpp').value) || 0);
+        var sub = qty * hpp;
+        dpp += sub;
+
+        var subEl = row.querySelector('.po-row-subtotal');
+        if (subEl) subEl.textContent = formatRupiah(sub);
+      });
+
+      var ppn = Math.round(dpp * 0.11);
+      var total = dpp + ppn;
+
+      var elDpp = document.getElementById('poCalcDpp');
+      var elPpn = document.getElementById('poCalcPpn');
+      var elGrand = document.getElementById('poCalcGrandTotal');
+
+      if (elDpp) elDpp.textContent = formatRupiah(dpp);
+      if (elPpn) elPpn.textContent = formatRupiah(ppn);
+      if (elGrand) elGrand.textContent = formatRupiah(total);
+    },
+
+    submitCreatePoForm: function () {
+      var db = window.NPP_ERP_DATA;
+      var supId = document.getElementById('poSupplierSelect').value;
+      var sup = db.suppliers.find(function (s) { return s.id === supId; }) || db.suppliers[0];
+      var refOrderId = document.getElementById('poRefOrderSelect').value || 'Restock Safety Stock';
+      var etaDate = document.getElementById('poEtaDateInput').value || '2026-11-20';
+      var approvalMode = document.getElementById('poInitialStatusSelect').value || 'Diajukan';
+      var notes = document.getElementById('poNotesInput').value.trim();
+
+      var container = document.getElementById('poLineItemsContainer');
+      var rows = container ? container.querySelectorAll('.erp-line-item-row') : [];
+      if (!rows || rows.length === 0) return;
+
+      var items = [];
+      var dpp = 0;
+
+      rows.forEach(function (row) {
+        var skuCode = row.querySelector('.po-row-sku').value;
+        var qty = Math.max(1, parseInt(row.querySelector('.po-row-qty').value, 10) || 1);
+        var hpp = Math.max(0, parseFloat(row.querySelector('.po-row-hpp').value) || 0);
+        var skuObj = db.inventory.find(function (i) { return i.sku === skuCode; });
+
+        if (skuObj) {
+          items.push({
+            sku: skuObj.sku,
+            name: skuObj.name,
+            qty: qty,
+            unit: skuObj.unit,
+            hpp: hpp
+          });
+          dpp += qty * hpp;
+        }
+      });
+
+      var ppn = Math.round(dpp * 0.11);
+      var total = dpp + ppn;
+
+      var pad4 = function (n) {
+        var s = String(n);
+        while (s.length < 4) s = '0' + s;
+        return s;
+      };
+      var newPoId = 'PO-202611-' + pad4(db.procurements.length + 2);
+
+      var newPo = {
+        id: newPoId,
+        supplierId: sup.id,
+        supplierName: sup.name,
+        refOrderId: refOrderId,
+        orderDate: '2026-11-06',
+        etaDate: etaDate,
+        statusApproval: approvalMode,
+        statusReceiving: 'Menunggu',
+        items: items,
+        totalHpp: dpp,
+        dpp: dpp,
+        ppn: ppn,
+        total: total,
+        notes: notes || ('Pengadaan resmi ke ' + sup.name + ' (' + refOrderId + ').')
+      };
+
+      db.procurements.unshift(newPo);
+      saveDatabase(db);
+      addAuditLog(
+        'CREATE_PO_SUPPLIER',
+        newPoId,
+        'Menerbitkan PO Supplier ' + newPoId + ' ke ' + sup.name + ' senilai ' + formatRupiah(total) + ' (' + approvalMode + ')'
+      );
+
+      this.renderProcurementKPIs();
+      if (this.shortageTable) this.shortageTable.render();
+      if (this.poTable) {
+        this.poTable.currentPage = 1;
+        this.poTable.render();
+      }
+
+      var modal = document.getElementById('createPoSupplierModal');
+      if (modal) modal.classList.remove('modal-open');
+
+      // Pindah otomatis ke Tab Daftar PO Supplier agar user langsung melihat PO yang baru dibuat
+      var poTabBtn = document.querySelector('[data-proc-tab="po-list"]');
+      if (poTabBtn) poTabBtn.click();
+
+      showToast('PO Supplier ' + newPoId + ' (' + sup.name + ') berhasil diterbitkan!');
+    },
+
+    bindPoDetailModal: function () {
+      var modal = document.getElementById('poSupplierDetailModal');
+      var closeBtn = document.getElementById('closePoDetailModal');
+      var closeFooterBtn = document.getElementById('closePoDetailFooterBtn');
+
+      var closeModal = function () {
+        if (modal) modal.classList.remove('modal-open');
+      };
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) closeModal();
+        });
+      }
+    },
+
+    openPoDetailModal: function (poId) {
+      var modal = document.getElementById('poSupplierDetailModal');
+      var body = document.getElementById('poSupplierDetailBody');
+      var title = document.getElementById('poSupplierDetailTitle');
+      var approveBtn = document.getElementById('modalApprovePoBtn');
+      var rejectBtn = document.getElementById('modalRejectPoBtn');
+      if (!modal || !body) return;
+
+      var db = window.NPP_ERP_DATA;
+      var po = db.procurements.find(function (p) { return p.id === poId; });
+      if (!po) return;
+
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      if (title) title.textContent = 'Detail PO Supplier — ' + po.id;
+
+      var rowsHtml = (po.items || []).map(function (it, idx) {
+        var sub = (Number(it.qty) || 0) * (Number(it.hpp) || 0);
+        return (
+          '<tr>' +
+          '<td>' + (idx + 1) + '</td>' +
+          '<td><span class="cell-code">' + escapeHtml(it.sku) + '</span></td>' +
+          '<td><strong>' + escapeHtml(it.name) + '</strong></td>' +
+          '<td><strong>' + it.qty + '</strong> ' + escapeHtml(it.unit) + '</td>' +
+          '<td class="col-financial">' + formatMoneyRBAC(it.hpp, true) + '</td>' +
+          '<td class="col-financial"><strong>' + formatMoneyRBAC(sub, true) + '</strong></td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      body.innerHTML =
+        '<div class="erp-form-grid modal-grid-spaced">' +
+        '<div class="erp-kpi-card">' +
+        '<span class="erp-kpi-label">Prinsipal / Vendor Pabrikan</span>' +
+        '<div class="modal-card-title-strong">' + escapeHtml(po.supplierName) + '</div>' +
+        '<span class="cell-subtext">ID Supplier: ' + escapeHtml(po.supplierId) + ' • Ref SO: ' + escapeHtml(po.refOrderId || '-') + '</span>' +
+        '</div>' +
+        '<div class="erp-kpi-card">' +
+        '<span class="erp-kpi-label">Jadwal Pengadaan & Status Dokumen</span>' +
+        '<div class="modal-card-title-strong">Estimasi Tiba (ETA): ' + escapeHtml(po.etaDate) + '</div>' +
+        '<span class="cell-subtext">Tanggal Terbit PO: ' + escapeHtml(po.orderDate) + '</span>' +
+        '<div class="erp-Filter-group">' + renderStatusBadge(po.statusApproval) + renderStatusBadge(po.statusReceiving) + '</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="erp-table-wrap modal-table-spaced">' +
+        '<table class="erp-table">' +
+        '<thead><tr><th>No</th><th>Kode SKU</th><th>Spesifikasi Unit Industri</th><th>Qty Pembelian</th><th class="col-financial">HPP Satuan</th><th class="col-financial">Subtotal HPP</th></tr></thead>' +
+        '<tbody>' + rowsHtml + '</tbody>' +
+        '</table>' +
+        '</div>' +
+        '<div class="erp-form-grid">' +
+        '<div class="erp-kpi-card">' +
+        '<span class="erp-kpi-label">Catatan Pengadaan & Alokasi Gudang</span>' +
+        '<p class="modal-notes-text">' + escapeHtml(po.notes || '-') + '</p>' +
+        '</div>' +
+        '<div class="erp-kpi-card col-financial">' +
+        '<span class="erp-kpi-label">Ringkasan Nilai Pembelian Prinsipal (PPN 11%)</span>' +
+        '<div class="modal-summary-row"><span>DPP Pembelian:</span><strong>' + formatMoneyRBAC(po.dpp || po.totalHpp, true) + '</strong></div>' +
+        '<div class="modal-summary-row"><span>PPN 11%:</span><strong>' + formatMoneyRBAC(po.ppn || 0, true) + '</strong></div>' +
+        '<div class="modal-summary-total"><span>Total PO Supplier:</span><strong>' + formatMoneyRBAC(po.total || po.totalHpp, true) + '</strong></div>' +
+        '</div>' +
+        '</div>';
+
+      var self = this;
+      var canDecide = roleCfg.canApprove && (po.statusApproval === 'Diajukan' || po.statusApproval === 'Draft');
+
+      if (approveBtn) {
+        approveBtn.classList.toggle('erp-hidden', !canDecide);
+        approveBtn.onclick = function () {
+          self.handlePoApproval(po.id, 'Disetujui');
+          modal.classList.remove('modal-open');
+        };
+      }
+      if (rejectBtn) {
+        rejectBtn.classList.toggle('erp-hidden', !canDecide);
+        rejectBtn.onclick = function () {
+          self.handlePoApproval(po.id, 'Ditolak');
+          modal.classList.remove('modal-open');
+        };
+      }
+
+      modal.classList.add('modal-open');
+    }
+  };
+
+  /* ==========================================================================
+     13. EKSPOR API GLOBAL & AUTO-INIT SAAT DOM READY
      ========================================================================== */
   window.NPP_ERP = {
     ROLE_CONFIG: ROLE_CONFIG,
@@ -3213,6 +4596,8 @@
     DashboardController: DashboardController,
     OrdersController: OrdersController,
     MasterDataController: MasterDataController,
+    InventoryController: InventoryController,
+    ProcurementController: ProcurementController,
     saveDatabase: saveDatabase,
     resetDatabase: resetDatabase,
     formatRupiah: formatRupiah,
@@ -3228,5 +4613,7 @@
     DashboardController.init();
     OrdersController.init();
     MasterDataController.init();
+    InventoryController.init();
+    ProcurementController.init();
   });
 })();

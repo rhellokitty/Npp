@@ -1514,6 +1514,74 @@ img {
   gap: 18px;
 }
 
+/* --- BANNER RUMUS MATEMATIS 5 INDIKATOR SALDO STOK (INVENTORY) --- */
+.erp-math-banner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  background-color: var(--erp-bg-surface);
+  padding: 18px 22px;
+  border-radius: var(--radius-panel);
+}
+
+.erp-math-equation-card {
+  background-color: var(--erp-bg-page);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.erp-math-equation-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--erp-navy);
+}
+
+.erp-math-equation-code {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.erp-math-operator {
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: var(--erp-gold-soft);
+  color: var(--status-warning-text);
+  font-weight: 700;
+}
+
+.erp-math-result {
+  padding: 3px 10px;
+  border-radius: 8px;
+  background-color: var(--status-info-bg);
+  color: var(--erp-navy);
+  font-weight: 700;
+}
+
+.qty-change-plus {
+  color: var(--status-success-text);
+  font-weight: 700;
+}
+
+.qty-change-minus {
+  color: var(--status-danger-text);
+  font-weight: 700;
+}
+
+.qty-change-lock {
+  color: var(--erp-navy);
+  font-weight: 700;
+}
+
 /* ==========================================================================
    7. RESPONSIVE ISOLATION (TABLET <= 1024px & MOBILE <= 768px)
    ========================================================================== */
@@ -1547,7 +1615,8 @@ img {
     display: inline-flex;
   }
 
-  .erp-highlight-grid {
+  .erp-highlight-grid,
+  .erp-math-banner {
     grid-template-columns: 1fr;
   }
 
