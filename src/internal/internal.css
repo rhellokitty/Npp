@@ -1017,6 +1017,25 @@ img {
   font-weight: 700;
 }
 
+.erp-table .erp-input,
+.erp-table .erp-select {
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  border-radius: 10px;
+}
+
+.erp-table td .btn-del-row {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
 /* --- 5 FORMULA BAR SALDO STOK GUDANG --- */
 .stock-formula-strip {
   display: grid;
@@ -1131,12 +1150,14 @@ img {
   background-color: var(--erp-gold-bright);
 }
 
-.btn-erp-secondary {
+.btn-erp-secondary,
+.btn-erp-ghost {
   background-color: var(--erp-bg-subtle);
   color: var(--erp-heading);
 }
 
-.btn-erp-secondary:hover {
+.btn-erp-secondary:hover,
+.btn-erp-ghost:hover {
   background-color: #dce4f0;
 }
 
@@ -1167,7 +1188,8 @@ img {
 }
 
 /* --- DARK MODE REFINEMENTS (BUTTONS, HIGHLIGHTS, OVERLAY) --- */
-html[data-theme="dark"] .btn-erp-secondary:hover {
+html[data-theme="dark"] .btn-erp-secondary:hover,
+html[data-theme="dark"] .btn-erp-ghost:hover {
   background-color: #2b323c;
 }
 
@@ -1408,6 +1430,24 @@ html[data-theme="dark"] .erp-theme-icon-moon {
   width: 100%;
 }
 
+input[type="file"].erp-input {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+input[type="file"].erp-input::file-selector-button {
+  background-color: var(--erp-bg-subtle);
+  color: var(--erp-heading);
+  border: none;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 12px;
+  font-family: inherit;
+}
+
 .erp-select {
   appearance: none;
   -webkit-appearance: none;
@@ -1494,17 +1534,17 @@ html[data-theme="dark"] .erp-theme-icon-moon {
   gap: 8px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--erp-text-muted);
-  background-color: var(--erp-bg-page);
-  padding: 8px 14px;
+  color: var(--erp-heading);
+  background-color: var(--erp-bg-subtle);
+  padding: 8px 16px;
   border-radius: 12px;
   text-decoration: none;
-  transition: background-color 0.18s ease, color 0.18s ease;
+  transition: none;
 }
 
 .erp-back-btn:hover {
   background-color: var(--erp-bg-subtle);
-  color: var(--erp-primary);
+  color: var(--erp-heading);
 }
 
 .erp-back-btn svg {
@@ -1517,6 +1557,19 @@ html[data-theme="dark"] .erp-theme-icon-moon {
   border-radius: var(--radius-card);
   padding: 24px;
   margin-bottom: 20px;
+}
+
+.erp-form-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.erp-form-card-header .erp-form-card-title {
+  margin-bottom: 0;
 }
 
 .erp-form-card-title {
@@ -1534,8 +1587,8 @@ html[data-theme="dark"] .erp-theme-icon-moon {
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 24px;
-  padding-top: 16px;
+  margin-top: 20px;
+  padding-top: 0;
   background-color: transparent;
 }
 
