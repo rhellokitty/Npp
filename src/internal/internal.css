@@ -14,8 +14,8 @@
   --erp-bg-surface: #ffffff;
   --erp-bg-subtle: #e9eef6;
   --erp-bg-zebra: #f8fafd;
-  --erp-sidebar-bg: #0a1b33;
-  --erp-sidebar-surface: #112849;
+  --erp-sidebar-bg: #ffffff;
+  --erp-sidebar-surface: #f4f6fa;
   --erp-heading: #0a1b33;
   --erp-text: #4b5d73;
   --erp-text-muted: #76879d;
@@ -139,7 +139,7 @@ img {
   bottom: 0;
   width: var(--sidebar-width);
   background-color: var(--erp-sidebar-bg);
-  color: #ffffff;
+  color: var(--erp-text);
   display: flex;
   flex-direction: column;
   z-index: 120;
@@ -152,9 +152,8 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
-  background-color: var(--erp-sidebar-surface);
-  border-radius: 16px;
+  padding: 4px 6px;
+  background: transparent;
 }
 
 .erp-brand-link {
@@ -164,12 +163,12 @@ img {
 }
 
 .erp-brand-logo {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   object-fit: contain;
-  background-color: #ffffff;
-  padding: 4px;
+  background: transparent;
+  padding: 0;
 }
 
 .erp-brand-meta {
@@ -178,18 +177,15 @@ img {
 }
 
 .erp-brand-title {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--erp-heading);
   line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
 .erp-brand-subtitle {
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--erp-gold);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  display: none !important;
 }
 
 .erp-sidebar-nav {
@@ -202,27 +198,27 @@ img {
 .erp-nav-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
 }
 
 .erp-nav-group-label {
-  font-size: 0.66rem;
+  font-size: 0.68rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.46);
-  padding: 0 12px 4px;
+  letter-spacing: 0.06em;
+  color: var(--erp-text-muted);
+  padding: 0 10px 4px;
 }
 
 .erp-nav-link {
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 10px 14px;
-  border-radius: 13px;
-  font-size: 0.83rem;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 0.82rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.76);
+  color: var(--erp-text);
   white-space: nowrap;
   transition: background-color 0.18s ease, color 0.18s ease;
 }
@@ -234,8 +230,8 @@ img {
 }
 
 .erp-nav-link:hover {
-  background-color: var(--erp-sidebar-surface);
-  color: #ffffff;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-heading);
 }
 
 .erp-nav-link-active {
@@ -248,11 +244,16 @@ img {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: currentColor;
+  color: var(--erp-text-muted);
+  transition: color 0.18s ease;
+}
+
+.erp-nav-link:hover .erp-nav-icon {
+  color: var(--erp-heading);
 }
 
 .erp-nav-link-active .erp-nav-icon {
-  color: var(--erp-gold-bright);
+  color: #ffffff;
 }
 
 .erp-nav-badge {
@@ -260,19 +261,20 @@ img {
   padding: 2px 8px;
   border-radius: var(--radius-pill);
   font-size: 0.68rem;
-  font-weight: 700;
-  background-color: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  font-weight: 600;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-navy);
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
 .erp-nav-link-active .erp-nav-badge {
-  background-color: var(--erp-gold);
-  color: var(--erp-heading);
+  background-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
 }
 
 .erp-sidebar-footer {
-  padding: 14px;
-  background-color: var(--erp-sidebar-surface);
+  padding: 12px 14px;
+  background-color: var(--erp-bg-page);
   border-radius: 16px;
   display: flex;
   flex-direction: column;
@@ -288,12 +290,12 @@ img {
 .erp-sidebar-user-name {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--erp-heading);
 }
 
 .erp-sidebar-user-email {
   font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--erp-text-muted);
   word-break: break-all;
 }
 
@@ -308,17 +310,18 @@ img {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 10px;
+  padding: 7px 10px;
   border-radius: 10px;
   font-size: 0.74rem;
   font-weight: 600;
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background-color: var(--erp-bg-surface);
+  color: var(--erp-heading);
   transition: background-color 0.18s ease;
 }
 
 .erp-sidebar-btn:hover {
-  background-color: rgba(255, 255, 255, 0.16);
+  background-color: var(--erp-bg-subtle);
+  color: var(--erp-navy);
 }
 
 /* --- MAIN WORKSPACE & STICKY TOPBAR --- */
