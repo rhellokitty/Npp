@@ -1139,7 +1139,7 @@
 
   function renderStatusBadge(label) {
     var cls = getStatusBadgeClass(label);
-    return '<span class="badge-status ' + cls + '"><span class="badge-dot"></span>' + escapeHtml(label) + '</span>';
+    return '<span class="badge-status ' + cls + '">' + escapeHtml(label) + '</span>';
   }
 
   function escapeHtml(str) {
@@ -1665,7 +1665,7 @@
           '<div class="approval-item">' +
           '<div class="approval-item-top">' +
           '<span class="approval-item-id">Semua Dokumen Terotorisasi</span>' +
-          '<span class="badge-status badge-success"><span class="badge-dot"></span>Zero Backlog</span>' +
+          '<span class="badge-status badge-success">Zero Backlog</span>' +
           '</div>' +
           '<div class="approval-item-meta">Tidak ada antrean PO Pelanggan yang menunggu persetujuan saat ini.</div>' +
           '</div>';
@@ -1682,7 +1682,7 @@
             '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-detail-so="' + o.id + '">Detail</button>' +
             '</div>'
           : '<div class="approval-item-actions">' +
-            '<span class="badge-status badge-warning"><span class="badge-dot"></span>Menunggu Otorisasi Pimpinan</span>' +
+            '<span class="badge-status badge-warning">Menunggu Otorisasi Pimpinan</span>' +
             '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-detail-so="' + o.id + '">Lihat Rincian</button>' +
             '</div>';
 
@@ -1909,8 +1909,8 @@
         renderRow: function (item) {
           var isCritical = item.tersedia <= item.minStok;
           var statusBadge = isCritical
-            ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>Stok Kritis (Min ' + item.minStok + ')</span>'
-            : '<span class="badge-status badge-success"><span class="badge-dot"></span>Stok Aman</span>';
+            ? '<span class="badge-status badge-danger">Stok Kritis (Min ' + item.minStok + ')</span>'
+            : '<span class="badge-status badge-success">Stok Aman</span>';
 
           return (
             '<tr>' +
@@ -3070,7 +3070,7 @@
             '<td><span>' + escapeHtml(c.phone) + '</span></td>' +
             '<td>' + escapeHtml(c.address) + '</td>' +
             '<td><span class="cell-code">' + escapeHtml(c.npwp) + '</span></td>' +
-            '<td><span class="badge-status badge-info"><span class="badge-dot"></span>' + escapeHtml(c.paymentTerm) + '</span></td>' +
+            '<td><span class="badge-status badge-info">' + escapeHtml(c.paymentTerm) + '</span></td>' +
             '</tr>'
           );
         }
@@ -3106,7 +3106,7 @@
             '<td>' + escapeHtml(s.origin) + '</td>' +
             '<td><strong>' + escapeHtml(s.pic) + '</strong></td>' +
             '<td><span class="cell-code">' + escapeHtml(s.bankAccount || '-') + '</span></td>' +
-            '<td><span class="badge-status badge-warning"><span class="badge-dot"></span>' + s.leadTimeDays + ' Hari Kalender</span></td>' +
+            '<td><span class="badge-status badge-warning">' + s.leadTimeDays + ' Hari Kalender</span></td>' +
             '</tr>'
           );
         }
@@ -3181,7 +3181,7 @@
             '<tr>' +
             '<td><span class="cell-code">' + escapeHtml(r.code) + '</span></td>' +
             '<td><span class="cell-client">' + escapeHtml(r.zone) + '</span></td>' +
-            '<td><span class="badge-status badge-info"><span class="badge-dot"></span>' + escapeHtml(r.capacity) + '</span></td>' +
+            '<td><span class="badge-status badge-info">' + escapeHtml(r.capacity) + '</span></td>' +
             '<td>' + escapeHtml(r.description || (r.category + ' • ' + (r.tempSpec || '22°C'))) + '</td>' +
             '</tr>'
           );
@@ -3511,7 +3511,7 @@
             '<td><strong>' + item.fisik + '</strong> ' + escapeHtml(item.unit) + '</td>' +
             '<td>' +
             (item.tertahan > 0
-              ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>' + item.tertahan + ' Karantina</span>'
+              ? '<span class="badge-status badge-danger">' + item.tertahan + ' Karantina</span>'
               : '0 ' + escapeHtml(item.unit)) +
             '</td>' +
             '<td><strong>' + item.layak + '</strong> ' + escapeHtml(item.unit) + '</td>' +
@@ -3605,10 +3605,10 @@
             '<td><span class="cell-code">' + escapeHtml(gr.poSupplierId) + '</span></td>' +
             '<td><span class="cell-client">' + escapeHtml(gr.sku) + '</span></td>' +
             '<td><strong>' + gr.qtyReceived + ' Unit</strong></td>' +
-            '<td><span class="badge-status badge-success"><span class="badge-dot"></span>' + gr.qtyPassed + ' Lolos QC</span></td>' +
+            '<td><span class="badge-status badge-success">' + gr.qtyPassed + ' Lolos QC</span></td>' +
             '<td>' +
             (gr.qtyHold > 0
-              ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>' + gr.qtyHold + ' Karantina</span>'
+              ? '<span class="badge-status badge-danger">' + gr.qtyHold + ' Karantina</span>'
               : '0 Hold') +
             '</td>' +
             '<td><span class="badge-status badge-neutral">' + escapeHtml(gr.rackTarget) + '</span></td>' +

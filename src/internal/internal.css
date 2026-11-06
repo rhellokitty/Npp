@@ -1018,7 +1018,7 @@ img {
 .badge-status {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
   font-size: 0.71rem;
@@ -1027,10 +1027,7 @@ img {
 }
 
 .badge-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: currentColor;
+  display: none;
 }
 
 .badge-success {
@@ -1100,13 +1097,14 @@ img {
 }
 
 .btn-erp-success {
-  background-color: #16a34a;
-  color: #ffffff;
+  background-color: #dcfce7;
+  color: #15803d;
   font-weight: 600;
 }
 
 .btn-erp-success:hover {
-  background-color: #15803d;
+  background-color: #bbf7d0;
+  color: #14532d;
 }
 
 .btn-erp-danger {
