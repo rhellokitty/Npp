@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Pengiriman (Surat Jalan & BAST) — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet Portal Operasional Internal -->
+  <link rel="stylesheet" href="../src/internal/internal.css" />
+</head>
+
+<body id="erpDeliveryPage">
+  <div class="erp-shell">
+
+    <!-- BACKDROP MOBILE SIDEBAR -->
+    <div class="erp-sidebar-backdrop" id="erpSidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         1. SIDEBAR NAVIGASI (8 MODUL OPERASIONAL NPP HLD 001)
+         ==================================================================== -->
+    <aside class="erp-sidebar" id="erpSidebar" aria-label="Navigasi Modul Operasional">
+      <div class="erp-sidebar-brand">
+        <a href="../index.html" class="erp-brand-link" title="Ke Beranda Publik PT NPP">
+          <img src="../assets/logo-npp.webp" alt="PT Nusantara Puncak Perkasa" class="erp-brand-logo" />
+          <div class="erp-brand-meta">
+            <span class="erp-brand-title">NPP ERP Portal</span>
+            <span class="erp-brand-subtitle">Sistem Pengadaan HLD 001</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="erp-sidebar-nav">
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Utama & Eksekutif</span>
+          <a href="index.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9" rx="1.5" />
+              <rect x="14" y="3" width="7" height="5" rx="1.5" />
+              <rect x="14" y="12" width="7" height="9" rx="1.5" />
+              <rect x="3" y="16" width="7" height="5" rx="1.5" />
+            </svg>
+            <span>1. Dashboard & KPI</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Siklus Pengadaan & Stok</span>
+          <a href="orders.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+              <path d="M16 13H8" />
+              <path d="M16 17H8" />
+              <path d="M10 9H8" />
+            </svg>
+            <span>2. PO Pelanggan (SO)</span>
+            <span class="erp-nav-badge" id="navBadgeOrders">3 Pending</span>
+          </a>
+
+          <a href="procurement.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            <span>3. Pengadaan Supplier</span>
+          </a>
+
+          <a href="inventory.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m7.5 4.27 9 5.15" />
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            <span>4. Stok Gudang (5 Saldo)</span>
+            <span class="erp-nav-badge" id="navBadgeInventory">5 Kritis</span>
+          </a>
+
+          <a href="delivery.html" class="erp-nav-link erp-nav-link-active">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13" />
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+            <span>5. Pengiriman (Surat Jalan)</span>
+          </a>
+
+          <a href="billing.html" class="erp-nav-link" data-nav-module="billing">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <line x1="2" y1="10" x2="22" y2="10" />
+            </svg>
+            <span>6. Penagihan & Invoice</span>
+            <span class="erp-nav-badge" id="navBadgeBilling">2 Overdue</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Tata Kelola & Referensi</span>
+          <a href="archive.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="21 8 21 21 3 21 3 8" />
+              <rect x="1" y="3" width="22" height="5" />
+              <line x1="10" y1="12" x2="14" y2="12" />
+            </svg>
+            <span>7. Arsip & Audit Trail</span>
+          </a>
+
+          <a href="master-data.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+            </svg>
+            <span>8. Master Data Terpadu</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="erp-sidebar-footer">
+        <div class="erp-sidebar-user">
+          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa (SysAdmin)</span>
+          <span class="erp-sidebar-user-email" id="erpActiveUserEmail">admin@nusantarapuncakperkasa.co.id</span>
+        </div>
+        <div class="erp-sidebar-actions">
+          <a href="../login.html" class="erp-sidebar-btn">Ganti Akun</a>
+          <a href="../index.html" class="erp-sidebar-btn">Web Publik</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         2. MAIN WORKSPACE (TOPBAR + PENGIRIMAN & SURAT JALAN)
+         ==================================================================== -->
+    <main class="erp-main">
+      <!-- TOPBAR DENGAN INTERACTIVE ROLE SWITCHER -->
+      <header class="erp-topbar">
+        <div class="erp-topbar-left">
+          <button type="button" class="erp-mobile-toggle" id="erpMobileMenuBtn" aria-label="Buka Menu Navigasi">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="erp-page-title">5. Pengiriman & Surat Jalan (BAST)</h1>
+            <p class="erp-page-desc">Penerbitan Surat Jalan resmi, alokasi armada ekspedisi, pemotongan stok fisik secara atomik, dan verifikasi Berita Acara Serah Terima</p>
+          </div>
+        </div>
+
+        <div class="erp-topbar-right">
+          <!-- Live Status Jam & Tanggal -->
+          <div class="erp-topbar-pill no-print">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span id="erpCurrentTimeText">Logistik Aktif</span>
+          </div>
+
+          <!-- Interactive Role Switcher (RBAC) -->
+          <div class="erp-role-box no-print">
+            <label for="erpRoleSwitcher" class="erp-role-label">Simulasi Peran:</label>
+            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Peran Pengguna">
+              <option value="Administrator">Administrator (Akses Penuh)</option>
+              <option value="Sales / Operasional">Sales & PO</option>
+              <option value="Purchasing">Purchasing</option>
+              <option value="Gudang">Stok Gudang (PIC Surat Jalan)</option>
+              <option value="Finance">Finance & Invoice</option>
+              <option value="Pimpinan / Approver">Approver</option>
+            </select>
+          </div>
+
+          <!-- Active User Badge -->
+          <div class="erp-user-badge no-print">
+            <span class="erp-user-avatar">NP</span>
+            <div class="erp-user-info">
+              <span class="erp-user-role-tag" id="erpActiveRoleTag">Administrator</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ROLE BANNER DENGAN KETERANGAN HAK AKSES -->
+      <section class="erp-role-banner no-print">
+        <div class="erp-role-banner-content">
+          <div class="erp-role-banner-text">
+            <strong id="erpRoleBannerTitle">Peran Aktif: Kontrol Gudang & Logistik Pengiriman</strong>
+            <p id="erpRoleBannerDesc">Fokus kerja: Memilih PO Pelanggan yang telah disetujui, mencetak Surat Jalan resmi 4 kolom tanda tangan (tanpa harga), memotong stok fisik secara atomik, dan mengarsipkan berkas BAST.</p>
+          </div>
+          <span class="erp-role-chip" id="erpRoleRestrictionChip">Gudang & Administrator Berhak Terbitkan Surat Jalan</span>
+        </div>
+      </section>
+
+      <!-- KONTEN UTAMA MODUL PENGIRIMAN -->
+      <div class="erp-content">
+
+        <!-- NOTICE BOX RBAC JIKA BUKAN GUDANG/ADMIN -->
+        <div id="deliveryRbacNotice" class="erp-hidden"></div>
+
+        <!-- 4 KPI CARDS PENGIRIMAN -->
+        <section class="erp-kpi-grid">
+          <div class="erp-kpi-card">
+            <span class="erp-kpi-label">Total Surat Jalan Diterbitkan</span>
+            <div class="erp-kpi-val" id="kpiTotalDeliveries">0 Dokumen</div>
+            <div class="erp-kpi-meta">Nomor seri resmi format SJ-YYYYMM-XXXX</div>
+          </div>
+
+          <div class="erp-kpi-card">
+            <span class="erp-kpi-label">Pengiriman Dalam Perjalanan</span>
+            <div class="erp-kpi-val text-warning" id="kpiInTransitDeliveries">0 Pengiriman</div>
+            <div class="erp-kpi-meta">Armada sedang menuju lokasi bongkar klien</div>
+          </div>
+
+          <div class="erp-kpi-card">
+            <span class="erp-kpi-label">BAST Selesai & Terverifikasi</span>
+            <div class="erp-kpi-val text-success" id="kpiCompletedBast">0 Selesai</div>
+            <div class="erp-kpi-meta">Tanda tangan & cap basah klien telah diarsip</div>
+          </div>
+
+          <div class="erp-kpi-card">
+            <span class="erp-kpi-label">Total Unit Fisik Diserahkan</span>
+            <div class="erp-kpi-val" id="kpiTotalDeliveredUnits">0 Unit</div>
+            <div class="erp-kpi-meta">Baterai, UPS, Stabilizer & Inverter Solar</div>
+          </div>
+        </section>
+
+        <!-- PANEL TABEL RIWAYAT PENGIRIMAN -->
+        <section class="erp-section-panel">
+          <div class="erp-panel-header">
+            <div>
+              <h2 class="section-heading">Daftar Pengiriman Fisik & Berita Acara Serah Terima (BAST)</h2>
+              <p class="erp-panel-subtitle">Monitoring status logistik B2B, armada kurir, dan berkas fisik bukti penerimaan barang</p>
+            </div>
+            <div class="erp-header-actions no-print">
+              <button type="button" class="btn btn-primary" id="btnOpenCreateDelivery">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                + Buat Pengiriman (Surat Jalan)
+              </button>
+            </div>
+          </div>
+
+          <!-- TOOLBAR PENCARIAN & FILTER -->
+          <div class="erp-toolbar no-print">
+            <div class="erp-toolbar-left">
+              <div class="erp-search-wrap">
+                <svg class="erp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="deliverySearchInput" class="erp-search-input" placeholder="Cari No. SJ, Pelanggan, Ref SO, Ekspedisi, atau SKU..." />
+              </div>
+
+              <div class="erp-filter-group">
+                <select id="deliveryFilterStatus" class="erp-select">
+                  <option value="">Semua Status Pengiriman</option>
+                  <option value="Sedang Dikirim">Sedang Dikirim</option>
+                  <option value="Terkirim & BAST">Terkirim & BAST</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="erp-toolbar-right">
+              <label for="deliveryPageSizeSelect" class="erp-label-sm">Tampilkan:</label>
+              <select id="deliveryPageSizeSelect" class="erp-select erp-select-sm">
+                <option value="5">5 baris</option>
+                <option value="10">10 baris</option>
+                <option value="20">20 baris</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TABEL PENGIRIMAN -->
+          <div class="erp-table-wrap">
+            <table class="erp-table">
+              <thead>
+                <tr>
+                  <th>No. Surat Jalan</th>
+                  <th>Tanggal Kirim</th>
+                  <th>Pelanggan & Ref SO</th>
+                  <th>Ekspedisi & Driver</th>
+                  <th>Rincian Barang & Kuantitas</th>
+                  <th>Status Pengiriman</th>
+                  <th style="min-width: 220px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="deliveryTableBody">
+                <!-- Diisi dinamis oleh TableEngine via DeliveryController -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PAGINATION -->
+          <div class="erp-pagination no-print" id="deliveryPagination"></div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 1: BUAT PENGIRIMAN & SURAT JALAN BARU
+       ==================================================================== -->
+  <div class="erp-modal-overlay" id="createDeliveryModal" role="dialog" aria-modal="true" aria-labelledby="createDeliveryModalTitle">
+    <div class="erp-modal-card erp-modal-large">
+      <div class="erp-modal-header">
+        <div>
+          <h3 class="erp-modal-title" id="createDeliveryModalTitle">+ Penerbitan Surat Jalan Pengiriman Baru</h3>
+          <p class="erp-modal-subtitle">Pilih pesanan pelanggan (SO) yang telah disetujui, tentukan armada, dan kurangi stok fisik secara atomik</p>
+        </div>
+        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Modal">&times;</button>
+      </div>
+
+      <form id="createDeliveryForm">
+        <div class="erp-modal-body">
+          <div class="erp-form-grid">
+            <div class="erp-form-group">
+              <label for="deliveryOrderSelect" class="erp-label">Referensi PO Pelanggan (SO Approved) *</label>
+              <select id="deliveryOrderSelect" class="erp-select" required>
+                <!-- Populated via JavaScript -->
+              </select>
+              <span class="cell-subtext-sm">Hanya menampilkan PO Pelanggan yang telah Disetujui & belum selesai terkirim</span>
+            </div>
+
+            <div class="erp-form-group">
+              <label for="deliveryDateInput" class="erp-label">Tanggal Rencana Kirim *</label>
+              <input type="date" id="deliveryDateInput" class="erp-input" required />
+            </div>
+
+            <div class="erp-form-group">
+              <label for="deliveryTypeSelect" class="erp-label">Jenis Pemenuhan Pengiriman</label>
+              <select id="deliveryTypeSelect" class="erp-select">
+                <option value="Pengiriman Penuh">Pengiriman Penuh (Full Shipment)</option>
+                <option value="Parsial (Tahap 1)">Parsial (Tahap 1)</option>
+                <option value="Parsial (Tahap 2)">Parsial (Tahap 2)</option>
+                <option value="Penggantian Retur QC">Penggantian Retur QC</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Info Box Pelanggan Terpilih -->
+          <div id="deliveryCustomerInfoBox" style="margin-bottom: 16px;"></div>
+
+          <div class="erp-form-grid">
+            <div class="erp-form-group">
+              <label for="deliveryDriverInput" class="erp-label">Nama Kurir / Pengemudi / Ekspedisi *</label>
+              <input type="text" id="deliveryDriverInput" class="erp-input" placeholder="Contoh: Pak Slamet Riyadi / Lalamove B2B" required />
+            </div>
+
+            <div class="erp-form-group">
+              <label for="deliveryPlateInput" class="erp-label">Nomor Polisi / Identitas Kendaraan *</label>
+              <input type="text" id="deliveryPlateInput" class="erp-input" placeholder="Contoh: B 9482 KXT (Blindvan Box NPP-02)" required />
+            </div>
+
+            <div class="erp-form-group">
+              <label for="deliveryRecipientPic" class="erp-label">PIC Penerima di Lokasi Bongkar *</label>
+              <input type="text" id="deliveryRecipientPic" class="erp-input" placeholder="Contoh: Bpk. Hendra Wijaya" required />
+            </div>
+          </div>
+
+          <div class="erp-form-group">
+            <label for="deliveryDestAddress" class="erp-label">Alamat Lengkap Pengiriman / Lokasi Proyek *</label>
+            <input type="text" id="deliveryDestAddress" class="erp-input" placeholder="Alamat pengantaran fisik unit industri" required />
+          </div>
+
+          <!-- Checklist Item yang Dikirim & Alokasi Reservasi -->
+          <div class="erp-form-group">
+            <label class="erp-label">Pilih Item Barang & Kuantitas Fisik yang Dikirim *</label>
+            <div id="deliveryItemsContainer" class="erp-delivery-items-list">
+              <!-- Rendered dynamically -->
+            </div>
+            <div class="erp-notice-box" style="margin-top: 10px;">
+              <strong>Invarian Logika Bisnis:</strong> Saat Surat Jalan disimpan, <code>Stok Fisik</code> dan <code>Reservasi Aktif</code> pada SKU di atas akan berkurang secara <strong>bersamaan (atomik)</strong>, sehingga <code>Stok Tersedia</code> tetap stabil dan kartu mutasi (Stock Ledger) otomatis tercatat dengan kode <code>KELUAR (SJ)</code>.
+            </div>
+          </div>
+
+          <div class="erp-form-group">
+            <label for="deliveryNotesInput" class="erp-label">Catatan Pengiriman / Instruksi Khusus Lapangan</label>
+            <textarea id="deliveryNotesInput" class="erp-textarea" rows="2" placeholder="Catatan untuk pengemudi atau tim teknis instalasi..."></textarea>
+          </div>
+        </div>
+
+        <div class="erp-modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitCreateDelivery">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Terbitkan Surat Jalan & Potong Stok Atomik
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: UPLOAD BAST / BUKTI TERIMA FISIK
+       ==================================================================== -->
+  <div class="erp-modal-overlay" id="uploadBastModal" role="dialog" aria-modal="true" aria-labelledby="uploadBastModalTitle">
+    <div class="erp-modal-card">
+      <div class="erp-modal-header">
+        <div>
+          <h3 class="erp-modal-title" id="uploadBastModalTitle">Upload BAST / Bukti Terima Fisik</h3>
+          <p class="erp-modal-subtitle">Unggah salinan Berita Acara Serah Terima yang telah ditandatangani dan dicap oleh pelanggan</p>
+        </div>
+        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Modal">&times;</button>
+      </div>
+
+      <form id="uploadBastForm">
+        <input type="hidden" id="bastDeliveryIdHidden" />
+        <div class="erp-modal-body">
+          <div class="erp-form-group">
+            <label for="bastSignerInput" class="erp-label">Nama PIC / Pejabat Penandatangan BAST *</label>
+            <input type="text" id="bastSignerInput" class="erp-input" placeholder="Nama jelas pejabat penerima barang" required />
+          </div>
+
+          <div class="erp-form-group">
+            <label for="bastDateInput" class="erp-label">Tanggal Serah Terima Fisik di Lokasi *</label>
+            <input type="date" id="bastDateInput" class="erp-input" required />
+          </div>
+
+          <div class="erp-form-group">
+            <label for="bastFileInput" class="erp-label">Berkas Pindaian (Scan PDF / Foto BAST & Stempel) *</label>
+            <input type="file" id="bastFileInput" class="erp-input" accept=".pdf,.jpg,.jpeg,.png" />
+            <span class="cell-subtext-sm">Simulasi upload file format PDF, JPG, atau PNG (maks 10 MB)</span>
+          </div>
+
+          <div class="erp-notice-box">
+            <strong>Dampak Otomatis:</strong> Setelah BAST diverifikasi, status pengiriman berubah menjadi <code>Terkirim & BAST</code>. Jika seluruh kuota pesanan terpenuhi dan tagihan telah lunas, PO Pelanggan otomatis berpindah ke status <code>Selesai</code>.
+          </div>
+        </div>
+
+        <div class="erp-modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Verifikasi & Simpan BAST ke Arsip
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: PREVIEW & CETAK SURAT JALAN RESMI (PDF PREVIEW / PRINT READY)
+       ==================================================================== -->
+  <div class="erp-modal-overlay" id="modalPreviewSuratJalan" role="dialog" aria-modal="true" aria-labelledby="modalPreviewSjTitle">
+    <div class="erp-modal-card erp-modal-large">
+      <div class="erp-modal-header no-print">
+        <div>
+          <h3 class="erp-modal-title" id="modalPreviewSjTitle">Cetak &amp; Preview Dokumen Resmi Surat Jalan</h3>
+          <p class="erp-modal-subtitle">Format resmi standar logistik industri PT NPP — 4 kolom tanda tangan, zero border luar, zero commercial prices</p>
+        </div>
+        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Preview">&times;</button>
+      </div>
+
+      <div class="erp-modal-body" id="previewSuratJalanBody">
+        <!-- Rendered dynamically by DeliveryController.openDeliveryPrintPreview -->
+      </div>
+
+      <div class="erp-modal-footer no-print">
+        <div style="font-size:0.75rem; color:var(--erp-text); margin-right:auto;">
+          Tip: Gunakan pengaturan cetak landscape/portrait A4 pada jendela browser
+        </div>
+        <button type="button" class="btn btn-secondary" data-modal-close>Tutup</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect x="6" y="14" width="12" height="8" />
+          </svg>
+          Cetak Dokumen / Unduh PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFIKASI GLOBAL -->
+  <div id="erpGlobalToast" class="erp-toast"></div>
+
+  <!-- Script Core ERP Terpusat -->
+  <script src="../src/internal/app.js"></script>
+</body>
+
+</html>

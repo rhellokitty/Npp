@@ -1719,32 +1719,440 @@ img {
 }
 
 /* ==========================================================================
-   8. PRINT LAYOUT (@media print) UNTUK CETAK SURAT JALAN & INVOICE PDF
+   8. OFFICIAL PRINTABLE DOCUMENTS (SURAT JALAN BAST & INVOICE RESMI)
+   ========================================================================== */
+.erp-rbac-lock-card {
+  background-color: var(--erp-bg-surface);
+  border-radius: var(--radius-card);
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  max-width: 680px;
+  margin: 30px auto;
+}
+
+.erp-rbac-lock-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.erp-rbac-lock-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+}
+
+.erp-rbac-lock-desc {
+  font-size: 0.85rem;
+  color: var(--erp-text);
+  line-height: 1.6;
+}
+
+/* Official Document Sheet (Screen Preview & Print Ready) */
+.erp-official-doc {
+  background-color: #ffffff;
+  color: #0a1b33;
+  padding: 32px 36px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.erp-doc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #0a1b33;
+}
+
+.erp-doc-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.erp-doc-logo {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.erp-doc-company-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--erp-navy);
+  letter-spacing: -0.01em;
+}
+
+.erp-doc-company-info {
+  font-size: 0.72rem;
+  color: #4b5d73;
+}
+
+.erp-doc-title-block {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.erp-doc-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0a1b33;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.erp-doc-number {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--erp-navy);
+}
+
+.erp-doc-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  background-color: #f8fafd;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.erp-doc-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.erp-doc-meta-row {
+  display: flex;
+  font-size: 0.78rem;
+}
+
+.erp-doc-meta-label {
+  width: 140px;
+  color: #64748b;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.erp-doc-meta-val {
+  color: #0a1b33;
+  font-weight: 600;
+  flex: 1;
+}
+
+/* Formal Document Table (Sharp Grid with Borders for Printing) */
+.erp-doc-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.erp-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.erp-doc-table th {
+  background-color: #f1f5f9;
+  color: #0a1b33;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+}
+
+.erp-doc-table td {
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.erp-doc-calc-grid {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.erp-doc-calc-box {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.erp-doc-calc-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  color: #334155;
+}
+
+.erp-doc-calc-row strong {
+  color: #0a1b33;
+}
+
+.erp-doc-calc-row-grand {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0 4px;
+  border-top: 2px solid #0a1b33;
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: var(--erp-navy);
+}
+
+.erp-doc-terbilang-box {
+  background-color: #f8fafd;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+  font-size: 0.76rem;
+  color: #1e293b;
+}
+
+.erp-doc-terbilang-box strong {
+  color: var(--erp-navy);
+}
+
+.erp-doc-bank-box {
+  background-color: #fbf5e9;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #eedec4;
+  font-size: 0.76rem;
+  color: #713f12;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.erp-doc-bank-title {
+  font-weight: 700;
+  color: #9a5b08;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.erp-doc-bank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 600;
+}
+
+/* 4-Column Signature Block (Surat Jalan / BAST) */
+.erp-doc-signatures-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+/* 2-Column Signature Block (Invoice) */
+.erp-doc-signatures-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 14px;
+}
+
+.erp-signature-box {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 125px;
+  text-align: center;
+  font-size: 0.73rem;
+  background-color: #ffffff;
+}
+
+.erp-signature-role {
+  font-weight: 700;
+  color: #0a1b33;
+}
+
+.erp-signature-space {
+  position: relative;
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.erp-doc-digital-stamp {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  border: 2px solid rgba(12, 74, 150, 0.45);
+  border-radius: 50%;
+  color: rgba(12, 74, 150, 0.75);
+  font-size: 0.58rem;
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: rotate(-12deg);
+  pointer-events: none;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.erp-signature-signer {
+  font-weight: 700;
+  color: #0a1b33;
+  border-top: 1px dashed #64748b;
+  padding-top: 4px;
+}
+
+.erp-doc-notice-box {
+  font-size: 0.71rem;
+  color: #64748b;
+  line-height: 1.45;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+}
+
+/* Delivery checklist */
+.erp-delivery-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.erp-delivery-item-row {
+  display: grid;
+  grid-template-columns: auto 2fr 1fr 1fr 1.5fr;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--erp-bg-surface);
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+/* ==========================================================================
+   9. PRINT LAYOUT (@media print) UNTUK CETAK SURAT JALAN & INVOICE PDF
    ========================================================================== */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
   body {
     background-color: #ffffff !important;
     color: #000000 !important;
+    font-size: 9.5pt !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
+  .erp-shell,
   .erp-sidebar,
   .erp-topbar,
   .erp-role-banner,
   .erp-toolbar,
   .erp-pagination,
+  .erp-modal-header,
+  .erp-modal-footer,
+  .erp-doc-actions-bar,
   .no-print {
     display: none !important;
   }
 
-  .erp-main {
-    margin-left: 0 !important;
+  .erp-modal-overlay {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    overflow: visible !important;
   }
 
-  .erp-content {
+  .erp-modal-card {
+    max-width: 100% !important;
+    width: 100% !important;
     padding: 0 !important;
+    background: transparent !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border-radius: 0 !important;
   }
 
-  .erp-section-panel {
+  .erp-official-doc {
     padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    gap: 14px !important;
+    page-break-inside: avoid;
+  }
+
+  .erp-doc-header {
+    border-bottom: 2px solid #000000 !important;
+    padding-bottom: 12px !important;
+  }
+
+  .erp-doc-meta-grid {
+    background-color: #ffffff !important;
+    border: 1px solid #94a3b8 !important;
+    padding: 8px 12px !important;
+  }
+
+  .erp-doc-table th {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #64748b !important;
+    color: #000000 !important;
+  }
+
+  .erp-doc-table td {
+    border: 1px solid #64748b !important;
+    color: #000000 !important;
+  }
+
+  .erp-signature-box {
+    border: 1px solid #64748b !important;
+    background: transparent !important;
+  }
+
+  .erp-signature-signer {
+    border-top: 1px dashed #000000 !important;
+    color: #000000 !important;
+  }
+
+  .erp-doc-bank-box {
+    background-color: #ffffff !important;
+    border: 1px solid #94a3b8 !important;
+    color: #000000 !important;
+  }
+
+  .erp-doc-bank-title {
+    color: #000000 !important;
   }
 }

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Penagihan &amp; Invoice Resmi (PPN 11%) — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet Portal Operasional Internal -->
+  <link rel="stylesheet" href="../src/internal/internal.css" />
+</head>
+
+<body id="erpBillingPage">
+  <div class="erp-shell">
+
+    <!-- BACKDROP MOBILE SIDEBAR -->
+    <div class="erp-sidebar-backdrop" id="erpSidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         1. SIDEBAR NAVIGASI (8 MODUL OPERASIONAL NPP HLD 001)
+         ==================================================================== -->
+    <aside class="erp-sidebar" id="erpSidebar" aria-label="Navigasi Modul Operasional">
+      <div class="erp-sidebar-brand">
+        <a href="../index.html" class="erp-brand-link" title="Ke Beranda Publik PT NPP">
+          <img src="../assets/logo-npp.webp" alt="PT Nusantara Puncak Perkasa" class="erp-brand-logo" />
+          <div class="erp-brand-meta">
+            <span class="erp-brand-title">NPP ERP Portal</span>
+            <span class="erp-brand-subtitle">Sistem Pengadaan HLD 001</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="erp-sidebar-nav">
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Utama & Eksekutif</span>
+          <a href="index.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9" rx="1.5" />
+              <rect x="14" y="3" width="7" height="5" rx="1.5" />
+              <rect x="14" y="12" width="7" height="9" rx="1.5" />
+              <rect x="3" y="16" width="7" height="5" rx="1.5" />
+            </svg>
+            <span>1. Dashboard & KPI</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Siklus Pengadaan & Stok</span>
+          <a href="orders.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+              <path d="M16 13H8" />
+              <path d="M16 17H8" />
+              <path d="M10 9H8" />
+            </svg>
+            <span>2. PO Pelanggan (SO)</span>
+            <span class="erp-nav-badge" id="navBadgeOrders">3 Pending</span>
+          </a>
+
+          <a href="procurement.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            <span>3. Pengadaan Supplier</span>
+          </a>
+
+          <a href="inventory.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m7.5 4.27 9 5.15" />
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            <span>4. Stok Gudang (5 Saldo)</span>
+            <span class="erp-nav-badge" id="navBadgeInventory">5 Kritis</span>
+          </a>
+
+          <a href="delivery.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13" />
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+            <span>5. Pengiriman (Surat Jalan)</span>
+          </a>
+
+          <a href="billing.html" class="erp-nav-link erp-nav-link-active" data-nav-module="billing">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <line x1="2" y1="10" x2="22" y2="10" />
+            </svg>
+            <span>6. Penagihan & Invoice</span>
+            <span class="erp-nav-badge" id="navBadgeBilling">2 Overdue</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Tata Kelola & Referensi</span>
+          <a href="archive.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="21 8 21 21 3 21 3 8" />
+              <rect x="1" y="3" width="22" height="5" />
+              <line x1="10" y1="12" x2="14" y2="12" />
+            </svg>
+            <span>7. Arsip & Audit Trail</span>
+          </a>
+
+          <a href="master-data.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+            </svg>
+            <span>8. Master Data Terpadu</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="erp-sidebar-footer">
+        <div class="erp-sidebar-user">
+          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa (SysAdmin)</span>
+          <span class="erp-sidebar-user-email" id="erpActiveUserEmail">admin@nusantarapuncakperkasa.co.id</span>
+        </div>
+        <div class="erp-sidebar-actions">
+          <a href="../login.html" class="erp-sidebar-btn">Ganti Akun</a>
+          <a href="../index.html" class="erp-sidebar-btn">Web Publik</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         2. MAIN WORKSPACE (TOPBAR + PENAGIHAN & INVOICE RESMI)
+         ==================================================================== -->
+    <main class="erp-main">
+      <!-- TOPBAR DENGAN INTERACTIVE ROLE SWITCHER -->
+      <header class="erp-topbar">
+        <div class="erp-topbar-left">
+          <button type="button" class="erp-mobile-toggle" id="erpMobileMenuBtn" aria-label="Buka Menu Navigasi">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <div>
+            <h1 class="erp-page-title">6. Penagihan &amp; Invoice Resmi (PPN 11%)</h1>
+            <p class="erp-page-desc">Penerbitan Commercial Invoice B2B (DP, Termin, Pelunasan), rekonsiliasi pembayaran rekening BCA &amp; Mandiri, serta kontrol piutang jatuh tempo</p>
+          </div>
+        </div>
+
+        <div class="erp-topbar-right">
+          <!-- Live Status Keuangan -->
+          <div class="erp-topbar-pill no-print">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <line x1="2" y1="10" x2="22" y2="10" />
+            </svg>
+            <span>Finance &amp; AR Aktif</span>
+          </div>
+
+          <!-- Interactive Role Switcher (RBAC) -->
+          <div class="erp-role-box no-print">
+            <label for="erpRoleSwitcher" class="erp-role-label">Simulasi Peran:</label>
+            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Peran Pengguna">
+              <option value="Administrator">Administrator (Akses Penuh)</option>
+              <option value="Sales / Operasional">Sales & PO</option>
+              <option value="Purchasing">Purchasing</option>
+              <option value="Gudang">Stok Gudang (Terkunci Finansial)</option>
+              <option value="Finance">Finance & Invoice (PIC Utama)</option>
+              <option value="Pimpinan / Approver">Approver</option>
+            </select>
+          </div>
+
+          <!-- Active User Badge -->
+          <div class="erp-user-badge no-print">
+            <span class="erp-user-avatar">SR</span>
+            <div class="erp-user-info">
+              <span class="erp-user-role-tag" id="erpActiveRoleTag">Finance &amp; AR</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ROLE BANNER DENGAN KETERANGAN HAK AKSES -->
+      <section class="erp-role-banner no-print">
+        <div class="erp-role-banner-content">
+          <div class="erp-role-banner-text">
+            <strong id="erpRoleBannerTitle">Peran Aktif: Finance, Penagihan &amp; Kontrol Piutang</strong>
+            <p id="erpRoleBannerDesc">Fokus kerja: Penerbitan Invoice resmi (DP 30%, Termin 50%, Pelunasan 100% + PPN 11%), rekonsiliasi transfer bank escrow BCA &amp; Mandiri, serta penagihan invoice jatuh tempo.</p>
+          </div>
+          <span class="erp-role-chip" id="erpRoleRestrictionChip">Finance &amp; Administrator Berhak Menerbitkan Tagihan</span>
+        </div>
+      </section>
+
+      <!-- KONTEN UTAMA MODUL PENAGIHAN -->
+      <div class="erp-content">
+
+        <!-- RBAC LOCK CARD: MUNCUL KHUSUS JIKA ROLE ADALAH GUDANG -->
+        <div class="erp-rbac-lock-card erp-hidden" id="billingRbacLockCard">
+          <div class="erp-rbac-lock-icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+          </div>
+          <h2 class="erp-rbac-lock-title">Akses Finansial &amp; Penagihan Terproteksi (RBAC)</h2>
+          <p class="erp-rbac-lock-desc">
+            Sesuai Standar Operasional Prosedur (SOP) PT Nusantara Puncak Perkasa, akun dengan peran <strong>Stok Gudang</strong> tidak memiliki otorisasi melihat harga transaksi, nominal tagihan, faktur komersial, maupun mutasi perbankan perusahaan.
+          </p>
+          <div class="erp-notice-box" style="max-width: 500px; text-align: left;">
+            <strong>Instruksi Simulasi:</strong> Silakan beralih ke peran <strong>Finance &amp; Invoice</strong>, <strong>Administrator</strong>, atau <strong>Approver</strong> menggunakan dropdown di Topbar kanan atas untuk mengakses modul Penagihan ini.
+          </div>
+        </div>
+
+        <!-- MAIN BILLING WORKSPACE (DISEMBUNYIKAN JIKA ROLE GUDANG) -->
+        <div id="billingMainContent">
+
+          <!-- 4 FINANCIAL KPI CARDS -->
+          <section class="erp-kpi-grid">
+            <div class="erp-kpi-card col-financial">
+              <span class="erp-kpi-label">Total Nilai Tagihan Terbit</span>
+              <div class="erp-kpi-val" id="kpiTotalBilling">Rp 0</div>
+              <div class="erp-kpi-meta">Akumulasi seluruh faktur komersial NPP</div>
+            </div>
+
+            <div class="erp-kpi-card col-financial">
+              <span class="erp-kpi-label">Tagihan Belum Lunas (Outstanding)</span>
+              <div class="erp-kpi-val text-warning" id="kpiPendingBilling">Rp 0</div>
+              <div class="erp-kpi-meta">Masih dalam masa tenggang termin pembayaran</div>
+            </div>
+
+            <div class="erp-kpi-card col-financial">
+              <span class="erp-kpi-label">Piutang Jatuh Tempo (Overdue)</span>
+              <div class="erp-kpi-val text-danger" id="kpiOverdueBilling">Rp 0</div>
+              <div class="erp-kpi-meta">Melewati batas TOP, butuh follow-up penagihan</div>
+            </div>
+
+            <div class="erp-kpi-card col-financial">
+              <span class="erp-kpi-label">Penerimaan Kas &amp; Lunas</span>
+              <div class="erp-kpi-val text-success" id="kpiPaidBilling">Rp 0</div>
+              <div class="erp-kpi-meta">Telah terealisasi di rekening BCA / Mandiri</div>
+            </div>
+          </section>
+
+          <!-- PANEL TABEL FAKTUR PENJUALAN -->
+          <section class="erp-section-panel">
+            <div class="erp-panel-header">
+              <div>
+                <h2 class="section-heading">Daftar Faktur Penjualan (Commercial Invoice) &amp; Pelunasan</h2>
+                <p class="erp-panel-subtitle">Dokumen penagihan resmi dengan kalkulasi DPP, PPN 11%, format terbilang rupiah, dan rekonsiliasi transfer bank</p>
+              </div>
+              <div class="erp-header-actions no-print">
+                <button type="button" class="btn btn-primary" id="btnOpenCreateInvoice">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  + Terbitkan Invoice Baru
+                </button>
+              </div>
+            </div>
+
+            <!-- TOOLBAR PENCARIAN & FILTER -->
+            <div class="erp-toolbar no-print">
+              <div class="erp-toolbar-left">
+                <div class="erp-search-wrap">
+                  <svg class="erp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  <input type="text" id="billingSearchInput" class="erp-search-input" placeholder="Cari No. Invoice, Pelanggan, Ref SO, atau Bank..." />
+                </div>
+
+                <div class="erp-filter-group">
+                  <select id="billingFilterStatus" class="erp-select">
+                    <option value="">Semua Status Pembayaran</option>
+                    <option value="Belum Lunas">Belum Lunas</option>
+                    <option value="Jatuh Tempo">Jatuh Tempo (Overdue)</option>
+                    <option value="Lunas">Lunas</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="erp-toolbar-right">
+                <label for="billingPageSizeSelect" class="erp-label-sm">Tampilkan:</label>
+                <select id="billingPageSizeSelect" class="erp-select erp-select-sm">
+                  <option value="5">5 baris</option>
+                  <option value="10">10 baris</option>
+                  <option value="20">20 baris</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- TABEL INVOICE -->
+            <div class="erp-table-wrap">
+              <table class="erp-table">
+                <thead>
+                  <tr>
+                    <th>No. Invoice &amp; Tipe</th>
+                    <th>Tgl Terbit &amp; Tempo</th>
+                    <th>Pelanggan &amp; Ref SO</th>
+                    <th class="col-financial">Nilai Tagihan (DPP + PPN)</th>
+                    <th>Rekening Pembayaran</th>
+                    <th>Status Pembayaran</th>
+                    <th style="min-width: 210px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="billingTableBody">
+                  <!-- Diisi dinamis oleh TableEngine via BillingController -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="erp-pagination no-print" id="billingPagination"></div>
+          </section>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 1: TERBITKAN INVOICE RESMI BARU
+       ==================================================================== -->
+  <div class="erp-modal-overlay" id="createInvoiceModal" role="dialog" aria-modal="true" aria-labelledby="createInvoiceModalTitle">
+    <div class="erp-modal-card erp-modal-large">
+      <div class="erp-modal-header">
+        <div>
+          <h3 class="erp-modal-title" id="createInvoiceModalTitle">+ Terbitkan Faktur Penjualan Baru (Commercial Invoice)</h3>
+          <p class="erp-modal-subtitle">Pilih PO Pelanggan, tentukan termin tagihan (DP/Termin/Pelunasan), dan kalkulasi otomatis DPP serta PPN 11%</p>
+        </div>
+        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Modal">&times;</button>
+      </div>
+
+      <form id="createInvoiceForm">
+        <div class="erp-modal-body">
+          <div class="erp-form-grid">
+            <div class="erp-form-group">
+              <label for="invoiceOrderSelect" class="erp-label">Referensi PO Pelanggan (SO Approved) *</label>
+              <select id="invoiceOrderSelect" class="erp-select" required>
+                <!-- Populated via JavaScript -->
+              </select>
+              <span class="cell-subtext-sm">Hanya menampilkan PO Pelanggan yang telah Disetujui &amp; belum lunas</span>
+            </div>
+
+            <div class="erp-form-group">
+              <label for="invoiceTypeSelect" class="erp-label">Tipe / Termin Penagihan *</label>
+              <select id="invoiceTypeSelect" class="erp-select" required>
+                <option value="Pelunasan Penuh (100%)">Pelunasan Penuh (100%)</option>
+                <option value="Tagihan DP 30%">Tagihan Uang Muka (DP 30%)</option>
+                <option value="Termin Bertahap (50%)">Termin Bertahap (50%)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="erp-form-grid">
+            <div class="erp-form-group">
+              <label for="invoiceDateInput" class="erp-label">Tanggal Terbit Invoice *</label>
+              <input type="date" id="invoiceDateInput" class="erp-input" required />
+            </div>
+
+            <div class="erp-form-group">
+              <label for="invoiceDueDateInput" class="erp-label">Tanggal Batas Jatuh Tempo (Due Date) *</label>
+              <input type="date" id="invoiceDueDateInput" class="erp-input" required />
+            </div>
+
+            <div class="erp-form-group">
+              <label for="invoiceBankSelect" class="erp-label">Rekening Bank Tujuan Pembayaran *</label>
+              <select id="invoiceBankSelect" class="erp-select" required>
+                <option value="BCA 521-098-7741">Bank Central Asia (BCA) — 521-098-7741 a/n PT Nusantara Puncak Perkasa</option>
+                <option value="Mandiri 156-00-0988234-5">Bank Mandiri — 156-00-0988234-5 a/n PT Nusantara Puncak Perkasa</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Box Ringkasan Finansial Kalkulasi Otomatis -->
+          <div class="erp-form-group">
+            <label class="erp-label">Ringkasan Perhitungan Finansial &amp; Pajak (PPN 11%)</label>
+            <div id="invoiceSummaryCalcBox" class="erp-kpi-card" style="padding: 16px; background-color: var(--erp-bg-surface);">
+              <!-- Diisi otomatis via JavaScript -->
+            </div>
+          </div>
+
+          <div class="erp-form-group">
+            <label for="invoiceNotesInput" class="erp-label">Catatan Penagihan / Syarat Pembayaran Tambahan</label>
+            <textarea id="invoiceNotesInput" class="erp-textarea" rows="2" placeholder="Cantumkan no faktur pajak elektronik (e-Faktur) atau instruksi memo internal..."></textarea>
+          </div>
+        </div>
+
+        <div class="erp-modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitCreateInvoice">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Terbitkan &amp; Kirim Invoice Resmi
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: PENCATATAN PEMBAYARAN & REKONSILIASI BANK
+       ==================================================================== -->
+  <div class="erp-modal-overlay" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
+    <div class="erp-modal-card">
+      <div class="erp-modal-header">
+        <div>
+          <h3 class="erp-modal-title" id="paymentModalTitle">Pencatatan Pembayaran &amp; Rekonsiliasi Bank</h3>
+          <p class="erp-modal-subtitle">Bukukan dana transfer masuk dari pelanggan ke rekening escrow resmi NPP</p>
+        </div>
+        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Modal">&times;</button>
+      </div>
+
+      <form id="paymentForm">
+        <input type="hidden" id="paymentInvoiceIdHidden" />
+        <div class="erp-modal-body">
+          <div id="paymentInvoiceInfoBox" style="margin-bottom: 14px;"></div>
+
+          <div class="erp-form-grid">
+            <div class="erp-form-group">
+              <label for="paymentDateInput" class="erp-label">Tanggal Dana Efektif Diterima *</label>
+              <input type="date" id="paymentDateInput" class="erp-input" required />
+            </div>
+
+            <div class="erp-form-group">
+              <label for="paymentBankInput" class="erp-label">Rekening Bank Penerima *</label>
+              <select id="paymentBankInput" class="erp-select" required>
+                <option value="BCA KCU Bekasi (521-098-7741)">BCA KCU Bekasi — 521-098-7741</option>
+                <option value="Bank Mandiri KCP Juanda (156-00-0988234-5)">Mandiri KCP Juanda — 156-00-0988234-5</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="erp-form-grid">
+            <div class="erp-form-group">
+              <label for="paymentRefTrxInput" class="erp-label">No. Referensi Mutasi / ID Transaksi Bank *</label>
+              <input type="text" id="paymentRefTrxInput" class="erp-input" placeholder="Contoh: TRX-BCA-261106-9921" required />
+            </div>
+
+            <div class="erp-form-group">
+              <label for="paymentAmountInput" class="erp-label">Nominal Pembayaran Diterima (Rp) *</label>
+              <input type="number" id="paymentAmountInput" class="erp-input" min="1" required />
+            </div>
+          </div>
+
+          <div class="erp-form-group">
+            <label for="paymentProofFileInput" class="erp-label">Bukti Transfer / Rekening Koran Bank</label>
+            <input type="file" id="paymentProofFileInput" class="erp-input" accept=".pdf,.jpg,.jpeg,.png" />
+            <span class="cell-subtext-sm">Simulasi upload struk transfer atau bukti konfirmasi bank</span>
+          </div>
+        </div>
+
+        <div class="erp-modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
+          <button type="submit" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Bukukan Pembayaran &amp; Update Status
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: PREVIEW & CETAK FAKTUR KOMERSIAL RESMI (INVOICE PDF)
+       ==================================================================== -->
+  <div class="erp-modal-overlay" id="modalPreviewInvoice" role="dialog" aria-modal="true" aria-labelledby="modalPreviewInvTitle">
+    <div class="erp-modal-card erp-modal-large">
+      <div class="erp-modal-header no-print">
+        <div>
+          <h3 class="erp-modal-title" id="modalPreviewInvTitle">Cetak &amp; Preview Faktur Penjualan (Commercial Invoice)</h3>
+          <p class="erp-modal-subtitle">Format formal siap cetak A4 dengan rincian DPP, PPN 11%, terbilang rupiah, dan stempel digital Finance PT NPP</p>
+        </div>
+        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Preview">&times;</button>
+      </div>
+
+      <div class="erp-modal-body" id="previewInvoiceBody">
+        <!-- Rendered dynamically by BillingController.openInvoicePrintPreview -->
+      </div>
+
+      <div class="erp-modal-footer no-print">
+        <div style="font-size:0.75rem; color:var(--erp-text); margin-right:auto;">
+          Tip: Gunakan margin standard portrait A4 pada jendela preview cetak browser
+        </div>
+        <button type="button" class="btn btn-secondary" data-modal-close>Tutup</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect x="6" y="14" width="12" height="8" />
+          </svg>
+          Cetak Invoice / Unduh PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFIKASI GLOBAL -->
+  <div id="erpGlobalToast" class="erp-toast"></div>
+
+  <!-- Script Core ERP Terpusat -->
+  <script src="../src/internal/app.js"></script>
+</body>
+
+</html>
