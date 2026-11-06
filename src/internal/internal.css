@@ -1319,6 +1319,201 @@ img {
   display: none !important;
 }
 
+.btn-erp:disabled {
+  opacity: 0.46;
+  cursor: not-allowed;
+}
+
+.erp-modal-card-wide {
+  max-width: 960px;
+}
+
+.erp-kpi-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* --- DYNAMIC LINE ITEMS BUILDER (MODAL INPUT PO PELANGGAN) --- */
+.erp-line-items-box {
+  background-color: var(--erp-bg-page);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.erp-line-items-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.erp-line-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.erp-line-item-row {
+  display: grid;
+  grid-template-columns: 2.3fr 0.75fr 1.15fr 1.15fr auto;
+  gap: 10px;
+  align-items: start;
+  background-color: var(--erp-bg-surface);
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.erp-line-item-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.erp-line-item-sublabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--erp-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.erp-line-item-stock-hint {
+  font-size: 0.69rem;
+  font-weight: 500;
+  color: var(--erp-navy);
+}
+
+.erp-line-item-stock-warn {
+  color: var(--status-danger-text);
+  font-weight: 600;
+}
+
+.erp-line-item-subtotal {
+  padding: 11px 12px;
+  border-radius: 12px;
+  background-color: var(--erp-bg-page);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+  white-space: nowrap;
+}
+
+.erp-calc-summary-wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.erp-calc-summary-box {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--erp-bg-page);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.erp-calc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--erp-text);
+}
+
+.erp-calc-row strong {
+  color: var(--erp-heading);
+}
+
+.erp-calc-row-grand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--erp-navy);
+  padding-top: 6px;
+}
+
+.erp-file-upload-wrap {
+  background-color: var(--erp-bg-page);
+  padding: 10px 14px;
+  border-radius: var(--radius-input);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.erp-file-input {
+  font-size: 0.78rem;
+  color: var(--erp-text);
+}
+
+/* --- TAB SWITCHING SYSTEM (MASTER DATA TERPADU) --- */
+.erp-tabs-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background-color: var(--erp-bg-surface);
+  padding: 8px;
+  border-radius: 18px;
+}
+
+.erp-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  border-radius: 13px;
+  font-size: 0.81rem;
+  font-weight: 600;
+  color: var(--erp-text);
+  background-color: transparent;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.erp-tab-btn:hover {
+  background-color: var(--erp-bg-page);
+  color: var(--erp-heading);
+}
+
+.erp-tab-btn-active,
+.erp-tab-btn-active:hover {
+  background-color: var(--erp-navy);
+  color: #ffffff;
+}
+
+.erp-tab-count {
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 0.69rem;
+  font-weight: 700;
+  background-color: var(--erp-bg-subtle);
+  color: var(--erp-navy);
+}
+
+.erp-tab-btn-active .erp-tab-count {
+  background-color: var(--erp-gold);
+  color: var(--erp-heading);
+}
+
+.erp-tab-pane {
+  display: none;
+}
+
+.erp-tab-pane.tab-pane-active {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 /* ==========================================================================
    7. RESPONSIVE ISOLATION (TABLET <= 1024px & MOBILE <= 768px)
    ========================================================================== */
@@ -1356,8 +1551,13 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .erp-kpi-grid {
+  .erp-kpi-grid,
+  .erp-kpi-grid-4 {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .erp-line-item-row {
+    grid-template-columns: 1fr 1fr;
   }
 
   .stock-formula-strip {
@@ -1375,7 +1575,12 @@ img {
     gap: 18px;
   }
 
-  .erp-kpi-grid {
+  .erp-kpi-grid,
+  .erp-kpi-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .erp-line-item-row {
     grid-template-columns: 1fr;
   }
 
