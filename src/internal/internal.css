@@ -1143,10 +1143,8 @@ img {
 .erp-pagination-controls {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background-color: var(--erp-bg-surface);
-  padding: 4px;
-  border-radius: 12px;
+  gap: 6px;
+  background-color: transparent;
 }
 
 .erp-page-btn {
@@ -1154,8 +1152,8 @@ img {
   height: 32px;
   padding: 0 10px;
   border-radius: 8px;
-  background-color: transparent;
-  color: var(--erp-text);
+  background-color: var(--erp-bg-surface);
+  color: var(--erp-heading);
   font-size: 0.8125rem;
   font-weight: 500;
   display: inline-flex;
@@ -1168,13 +1166,12 @@ img {
 }
 
 .erp-page-btn-nav {
-  padding: 0 11px;
+  padding: 0 12px;
   font-size: 0.75rem;
 }
 
 .erp-page-btn:hover:not(:disabled):not(.erp-page-btn-active) {
-  background-color: var(--erp-bg-page);
-  color: var(--erp-heading);
+  background-color: var(--erp-bg-subtle);
 }
 
 .erp-page-btn-active {
@@ -1184,7 +1181,7 @@ img {
 }
 
 .erp-page-btn:disabled {
-  opacity: 0.35;
+  opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
 }
