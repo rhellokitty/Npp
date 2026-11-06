@@ -1100,12 +1100,13 @@ img {
 }
 
 .btn-erp-success {
-  background-color: var(--status-success-bg);
-  color: var(--status-success-text);
+  background-color: #16a34a;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .btn-erp-success:hover {
-  background-color: #d2f0e0;
+  background-color: #15803d;
 }
 
 .btn-erp-danger {
@@ -1120,7 +1121,30 @@ img {
 .btn-erp-sm {
   padding: 6px 11px;
   font-size: 0.72rem;
-  border-radius: 9px;
+  border-radius: 8px;
+}
+
+/* Action button row styling in tables (sejajar, no wrap) */
+.erp-action-btns,
+.erp-table td > .erp-Filter-group,
+.erp-table td > .erp-filter-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.erp-action-btns .btn,
+.erp-action-btns .btn-erp,
+.erp-action-btns .btn-erp-sm {
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.erp-table td:last-child {
+  white-space: nowrap;
 }
 
 /* --- CLEAN PAGINATION BAR --- */

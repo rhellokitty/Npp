@@ -1829,10 +1829,10 @@
           var canApproveNow = roleCfg.canApprove && order.statusApproval === 'Menunggu Persetujuan';
 
           var actionBtns =
-            '<div class="erp-Filter-group">' +
+            '<div class="erp-action-btns">' +
             '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-view-order="' + order.id + '">Rincian</button>' +
             (canApproveNow
-              ? '<button type="button" class="btn-erp btn-erp-gold btn-erp-sm" data-quick-approve="' + order.id + '">Setujui</button>'
+              ? '<button type="button" class="btn-erp btn-erp-success btn-erp-sm" data-quick-approve="' + order.id + '">Setujui</button>'
               : '') +
             '</div>';
 
@@ -2376,7 +2376,7 @@
           var totalQty = (order.items || []).reduce(function (s, i) { return s + (Number(i.qty) || 0); }, 0);
 
           var actionsHtml =
-            '<div class="erp-Filter-group">' +
+            '<div class="erp-action-btns">' +
             '<a href="orders-detail.html?id=' + encodeURIComponent(order.id) + '" class="btn-erp btn-erp-secondary btn-erp-sm">Detail PO</a>' +
             (canApproveNow
               ? '<button type="button" class="btn-erp btn-erp-success btn-erp-sm" data-approve-so-row="' + order.id + '">Setujui</button>' +
@@ -4188,7 +4188,7 @@
           var totalUnits = (po.items || []).reduce(function (s, i) { return s + (Number(i.qty) || 0); }, 0);
 
           var actionBtns =
-            '<div class="erp-Filter-group">' +
+            '<div class="erp-action-btns">' +
             '<a href="procurement-detail.html?id=' + encodeURIComponent(po.id) + '" class="btn-erp btn-erp-secondary btn-erp-sm">Detail PO</a>' +
             (canApprove
               ? '<button type="button" class="btn-erp btn-erp-success btn-erp-sm" data-approve-po="' + po.id + '">Setujui</button>' +
@@ -6239,7 +6239,7 @@ var OrderCreatePageController = {
         '    <a href="orders.html" class="btn-erp btn-erp-ghost">← Kembali ke Daftar PO</a>' +
         (canApproveNow ?
           '    <button type="button" class="btn-erp btn-erp-danger" id="btnPageRejectOrder">Tolak PO Ini</button>' +
-          '    <button type="button" class="btn-erp btn-erp-primary" id="btnPageApproveOrder">Setujui PO Pelanggan</button>'
+          '    <button type="button" class="btn-erp btn-erp-success" id="btnPageApproveOrder">Setujui PO Pelanggan</button>'
           : '') +
         '  </div>' +
         '</div>';
@@ -6681,7 +6681,7 @@ var OrderCreatePageController = {
         '    <a href="procurement.html" class="btn-erp btn-erp-ghost">← Kembali ke Pengadaan</a>' +
         (canApproveNow ?
           '    <button type="button" class="btn-erp btn-erp-danger" id="btnPageRejectPo">Tolak PO Supplier</button>' +
-          '    <button type="button" class="btn-erp btn-erp-primary" id="btnPageApprovePo">Setujui PO Supplier</button>'
+          '    <button type="button" class="btn-erp btn-erp-success" id="btnPageApprovePo">Setujui PO Supplier</button>'
           : '') +
         '  </div>' +
         '</div>';
