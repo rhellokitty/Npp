@@ -204,9 +204,9 @@
             <div class="erp-section-title-group">
               <h1 class="section-heading">Master Pelanggan B2B</h1>
             </div>
-            <button type="button" class="btn-erp btn-erp-primary" id="btnOpenAddCustomerModal">
+            <a href="master-customer-create.html" class="btn-erp btn-erp-primary" id="btnOpenAddCustomerModal">
               + Tambah Pelanggan Baru
-            </button>
+            </a>
           </div>
 
           <div class="erp-toolbar">
@@ -267,9 +267,9 @@
             <div class="erp-section-title-group">
               <h2 class="section-heading">Master Supplier / Prinsipal</h2>
             </div>
-            <button type="button" class="btn-erp btn-erp-primary" id="btnOpenAddSupplierModal">
+            <a href="master-supplier-create.html" class="btn-erp btn-erp-primary" id="btnOpenAddSupplierModal">
               + Tambah Supplier Baru
-            </button>
+            </a>
           </div>
 
           <div class="erp-toolbar">
@@ -320,9 +320,9 @@
             <div class="erp-section-title-group">
               <h2 class="section-heading">Master Produk & SKU</h2>
             </div>
-            <button type="button" class="btn-erp btn-erp-primary" id="btnOpenAddProductModal">
+            <a href="master-product-create.html" class="btn-erp btn-erp-primary" id="btnOpenAddProductModal">
               + Tambah Produk / SKU Baru
-            </button>
+            </a>
           </div>
 
           <div class="erp-toolbar">
@@ -384,9 +384,9 @@
             <div class="erp-section-title-group">
               <h2 class="section-heading">Master Gudang & Rak</h2>
             </div>
-            <button type="button" class="btn-erp btn-erp-primary" id="btnOpenAddRackModal">
+            <a href="master-rack-create.html" class="btn-erp btn-erp-primary" id="btnOpenAddRackModal">
               + Tambah Lokasi Rak Baru
-            </button>
+            </a>
           </div>
 
           <div class="erp-toolbar">
@@ -430,237 +430,6 @@
       </main>
     </div>
 
-  </div>
-
-  <!-- ====================================================================
-       MODAL A: TAMBAH MASTER PELANGGAN BARU
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="modalAddCustomer" role="dialog" aria-modal="true" aria-labelledby="titleAddCustomer">
-    <div class="erp-modal-card">
-      <div class="erp-modal-header">
-        <h2 class="section-heading" id="titleAddCustomer">Tambah Master Pelanggan B2B Baru</h2>
-        <button type="button" class="erp-modal-close" id="closeAddCustomerModal" aria-label="Tutup">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <form id="formAddCustomer">
-        <div class="erp-form-grid">
-          <div class="erp-form-group">
-            <label for="custNameInput" class="erp-label">Nama PT / Instansi</label>
-            <input type="text" id="custNameInput" class="erp-input" placeholder="Contoh: PT. Krakatau Daya Listrik" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="custPicInput" class="erp-label">Nama Kontak PIC</label>
-            <input type="text" id="custPicInput" class="erp-input" placeholder="Contoh: Ir. Gunawan Setiadi" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="custPhoneInput" class="erp-label">Nomor Telepon</label>
-            <input type="text" id="custPhoneInput" class="erp-input" placeholder="Contoh: 021-5589012" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="custEmailInput" class="erp-label">Email Procurement</label>
-            <input type="email" id="custEmailInput" class="erp-input" placeholder="procurement@perusahaan.co.id" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="custNpwpInput" class="erp-label">Nomor NPWP</label>
-            <input type="text" id="custNpwpInput" class="erp-input" placeholder="01.234.567.8-090.000" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="custTopInput" class="erp-label">Syarat Pembayaran (TOP)</label>
-            <select id="custTopInput" class="erp-select" required>
-              <option value="NET 14">NET 14</option>
-              <option value="NET 30" selected>NET 30</option>
-              <option value="NET 45">NET 45</option>
-              <option value="DP 30% + Pelunasan">DP 30% + Pelunasan</option>
-            </select>
-          </div>
-          <div class="erp-form-group erp-form-group-full">
-            <label for="custAddressInput" class="erp-label">Alamat Pengiriman Lengkap</label>
-            <textarea id="custAddressInput" class="erp-textarea" rows="2" placeholder="Kawasan Industri, Jalan, Blok, Kota..." required></textarea>
-          </div>
-        </div>
-        <div class="erp-modal-footer">
-          <button type="button" class="btn-erp btn-erp-secondary" id="cancelAddCustomerBtn">Batal</button>
-          <button type="submit" class="btn-erp btn-erp-primary">Simpan Pelanggan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       MODAL B: TAMBAH MASTER SUPPLIER / PRINSIPAL BARU
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="modalAddSupplier" role="dialog" aria-modal="true" aria-labelledby="titleAddSupplier">
-    <div class="erp-modal-card">
-      <div class="erp-modal-header">
-        <h2 class="section-heading" id="titleAddSupplier">Tambah Master Supplier / Prinsipal Baru</h2>
-        <button type="button" class="erp-modal-close" id="closeAddSupplierModal" aria-label="Tutup">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <form id="formAddSupplier">
-        <div class="erp-form-grid">
-          <div class="erp-form-group">
-            <label for="supNameInput" class="erp-label">Nama Prinsipal / Pabrikan</label>
-            <input type="text" id="supNameInput" class="erp-input" placeholder="Contoh: Vision Battery Co., Ltd" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="supOriginInput" class="erp-label">Negara / Kota Asal</label>
-            <input type="text" id="supOriginInput" class="erp-input" placeholder="Contoh: Shenzhen / Hub Jakarta Utara" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="supPicInput" class="erp-label">Kontak PIC</label>
-            <input type="text" id="supPicInput" class="erp-input" placeholder="Contoh: Bpk. Raymond Tan" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="supPhoneInput" class="erp-label">Telepon</label>
-            <input type="text" id="supPhoneInput" class="erp-input" placeholder="021-6509921" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="supEmailInput" class="erp-label">Email Order Prinsipal</label>
-            <input type="email" id="supEmailInput" class="erp-input" placeholder="order@principal.com" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="supLeadTimeInput" class="erp-label">Estimasi Lead Time (Hari)</label>
-            <input type="number" id="supLeadTimeInput" class="erp-input" min="1" value="14" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="supBankInput" class="erp-label">Rekening Bank Prinsipal</label>
-            <input type="text" id="supBankInput" class="erp-input" placeholder="Contoh: Bank Mandiri • 125-00-9910293-1" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="supCategoryInput" class="erp-label">Kategori Produk Utama</label>
-            <input type="text" id="supCategoryInput" class="erp-input" placeholder="Contoh: Baterai Industri VRLA & Lithium" required />
-          </div>
-        </div>
-        <div class="erp-modal-footer">
-          <button type="button" class="btn-erp btn-erp-secondary" id="cancelAddSupplierBtn">Batal</button>
-          <button type="submit" class="btn-erp btn-erp-primary">Simpan Supplier</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       MODAL C: TAMBAH MASTER PRODUK & SKU BARU
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="modalAddProduct" role="dialog" aria-modal="true" aria-labelledby="titleAddProduct">
-    <div class="erp-modal-card">
-      <div class="erp-modal-header">
-        <h2 class="section-heading" id="titleAddProduct">Tambah Master Produk & SKU Baru</h2>
-        <button type="button" class="erp-modal-close" id="closeAddProductModal" aria-label="Tutup">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <form id="formAddProduct">
-        <div class="erp-form-grid">
-          <div class="erp-form-group">
-            <label for="prodSkuInput" class="erp-label">Kode SKU</label>
-            <input type="text" id="prodSkuInput" class="erp-input" placeholder="Contoh: SKU-RTR-12150" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="prodCategoryInput" class="erp-label">Kategori</label>
-            <select id="prodCategoryInput" class="erp-select" required>
-              <option value="Baterai RITAR">Baterai RITAR</option>
-              <option value="Baterai BSB">Baterai BSB</option>
-              <option value="UPS Ablerex">UPS Ablerex</option>
-              <option value="Stabilizer">Stabilizer</option>
-              <option value="Inverter & Solar">Inverter & Solar</option>
-            </select>
-          </div>
-          <div class="erp-form-group erp-form-group-full">
-            <label for="prodNameInput" class="erp-label">Nama Spesifikasi Produk</label>
-            <input type="text" id="prodNameInput" class="erp-input" placeholder="Contoh: Baterai RITAR RA12-150 (12V 150Ah VRLA AGM)" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="prodUnitInput" class="erp-label">Satuan</label>
-            <select id="prodUnitInput" class="erp-select" required>
-              <option value="Unit">Unit</option>
-              <option value="Cell">Cell</option>
-              <option value="Panel">Panel</option>
-              <option value="Set">Set</option>
-            </select>
-          </div>
-          <div class="erp-form-group">
-            <label for="prodPriceInput" class="erp-label">Harga Jual B2B (Rp)</label>
-            <input type="number" id="prodPriceInput" class="erp-input" min="0" step="50000" value="4250000" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="prodMinStokInput" class="erp-label">Minimum Stok / Reorder Point</label>
-            <input type="number" id="prodMinStokInput" class="erp-input" min="1" value="12" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="prodRackInput" class="erp-label">Lokasi Rak Default</label>
-            <input type="text" id="prodRackInput" class="erp-input" value="RAK-A01" required />
-          </div>
-          <div class="erp-form-group erp-form-group-full">
-            <label for="prodWebStatusInput" class="erp-label">Status Publikasi Web</label>
-            <select id="prodWebStatusInput" class="erp-select" required>
-              <option value="Tayang di Katalog">Tayang di Katalog</option>
-              <option value="Internal B2B Only">Internal B2B Only</option>
-            </select>
-          </div>
-        </div>
-        <div class="erp-modal-footer">
-          <button type="button" class="btn-erp btn-erp-secondary" id="cancelAddProductBtn">Batal</button>
-          <button type="submit" class="btn-erp btn-erp-primary">Simpan Produk & SKU</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       MODAL D: TAMBAH MASTER GUDANG & RAK BARU
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="modalAddRack" role="dialog" aria-modal="true" aria-labelledby="titleAddRack">
-    <div class="erp-modal-card">
-      <div class="erp-modal-header">
-        <h2 class="section-heading" id="titleAddRack">Tambah Lokasi Rak / Bin Gudang Baru</h2>
-        <button type="button" class="erp-modal-close" id="closeAddRackModal" aria-label="Tutup">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <form id="formAddRack">
-        <div class="erp-form-grid">
-          <div class="erp-form-group">
-            <label for="rackCodeInput" class="erp-label">Kode Rak / Bin</label>
-            <input type="text" id="rackCodeInput" class="erp-input" placeholder="Contoh: RAK-A03" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="rackZoneInput" class="erp-label">Zona Gudang</label>
-            <input type="text" id="rackZoneInput" class="erp-input" placeholder="Contoh: Zona A (Lantai 1 Heavy Bay)" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="rackCapacityInput" class="erp-label">Kapasitas Penyimpanan</label>
-            <input type="text" id="rackCapacityInput" class="erp-input" placeholder="Contoh: 160 Unit" required />
-          </div>
-          <div class="erp-form-group">
-            <label for="rackDescInput" class="erp-label">Keterangan & Spesifikasi</label>
-            <input type="text" id="rackDescInput" class="erp-input" placeholder="Contoh: Rak Pallet Baja Baterai Deep Cycle • 22°C" required />
-          </div>
-        </div>
-        <div class="erp-modal-footer">
-          <button type="button" class="btn-erp btn-erp-secondary" id="cancelAddRackBtn">Batal</button>
-          <button type="submit" class="btn-erp btn-erp-primary">Simpan Lokasi Rak</button>
-        </div>
-      </form>
-    </div>
   </div>
 
   <!-- Core ERP Engine -->

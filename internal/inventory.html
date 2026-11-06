@@ -254,13 +254,13 @@
 
           <div class="erp-Filter-group">
             <span class="badge-status badge-info" id="invGrRbacHint">Otorisasi Gudang & QC Aktif</span>
-            <button type="button" class="btn-erp btn-erp-primary" id="btnOpenCreateGrModal">
+            <a href="inventory-gr-create.html" class="btn-erp btn-erp-primary" id="btnOpenCreateGrModal">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
               <span>+ Penerimaan Barang & Uji QC (Goods Receipt)</span>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -450,80 +450,6 @@
       </main>
     </div>
 
-  </div>
-
-  <!-- ====================================================================
-       MODAL FORM: + PENERIMAAN BARANG & UJI QC (GOODS RECEIPT GR-YYYYMM-XXXX)
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="createGrModal" role="dialog" aria-modal="true" aria-labelledby="createGrModalTitle">
-    <div class="erp-modal-card erp-modal-card-wide">
-      <div class="erp-modal-header">
-        <div>
-          <h2 class="section-heading" id="createGrModalTitle">Penerimaan Barang & Uji QC Gudang</h2>
-        </div>
-        <button type="button" class="erp-modal-close" id="closeCreateGrModal" aria-label="Tutup Modal GR">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <form id="createGrForm">
-        <div class="erp-form-grid modal-grid-spaced">
-          <div class="erp-form-group">
-            <label for="grPoSelect" class="erp-label">Pilih Referensi PO Supplier Aktif (`PO-YYYYMM-XXXX`)</label>
-            <select id="grPoSelect" class="erp-select" required></select>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="grSkuSelect" class="erp-label">Pilih SKU Barang yang Diterima</label>
-            <select id="grSkuSelect" class="erp-select" required></select>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="grQtyPassed" class="erp-label">Qty Kondisi Baik / Lolos QC (+ Stok Fisik & Layak Pakai)</label>
-            <input type="number" id="grQtyPassed" class="erp-input" min="0" value="12" required />
-            <span class="cell-subtext">Langsung menambah Stok Layak Pakai & Stok Tersedia (ATP).</span>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="grQtyHold" class="erp-label">Qty Kondisi Rusak / Karantina (+ Stok Fisik & Tertahan)</label>
-            <input type="number" id="grQtyHold" class="erp-input" min="0" value="0" required />
-            <span class="cell-subtext">Menambah Stok Fisik dan dikunci sebagai Stok Tertahan (RAK-QC).</span>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="grRackSelect" class="erp-label">Lokasi Rak / Bin Penyimpanan Utama</label>
-            <select id="grRackSelect" class="erp-select" required></select>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="grReceivingStatusSelect" class="erp-label">Status Penyelesaian Penerimaan PO Supplier</label>
-            <select id="grReceivingStatusSelect" class="erp-select" required>
-              <option value="Diterima Penuh" selected>Diterima Penuh (100% Selesai)</option>
-              <option value="Diterima Sebagian">Diterima Sebagian (Pengiriman Bertahap)</option>
-            </select>
-          </div>
-
-          <div class="erp-form-group erp-form-group-full">
-            <div class="erp-file-upload-wrap">
-              <strong id="grLiveBalancePreview">Simulasi Saldo Baru -> Fisik: 0 | Tertahan: 0 | Layak Pakai: 0 | Tersedia: 0</strong>
-            </div>
-          </div>
-
-          <div class="erp-form-group erp-form-group-full">
-            <label for="grNotesInput" class="erp-label">Catatan Hasil Uji Beban / Tegangan Float QC</label>
-            <textarea id="grNotesInput" class="erp-textarea" rows="2" placeholder="Contoh: Tegangan float baterai 13.65V merata, uji beban 2 jam normal..."></textarea>
-          </div>
-        </div>
-
-        <div class="erp-modal-footer">
-          <button type="button" class="btn-erp btn-erp-secondary" id="cancelCreateGrBtn">Batal</button>
-          <button type="submit" class="btn-erp btn-erp-primary">Simpan Goods Receipt & Perbarui 5 Saldo Stok</button>
-        </div>
-      </form>
-    </div>
   </div>
 
   <!-- Core ERP Engine -->

@@ -239,13 +239,13 @@
 
             <div class="erp-Filter-group">
               <span class="badge-status badge-info" id="ordersRbacActionHint">Hak Input PO Aktif</span>
-              <button type="button" class="btn-erp btn-erp-primary" id="btnOpenCreateOrderModal">
+              <a href="orders-create.html" class="btn-erp btn-erp-primary" id="btnOpenCreateOrderModal">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
                 <span>+ Input PO Pelanggan Baru</span>
-              </button>
+              </a>
             </div>
           </div>
 
@@ -350,137 +350,6 @@
       </main>
     </div>
 
-  </div>
-
-  <!-- ====================================================================
-       MODAL 1: FORM INPUT PO PELANGGAN BARU (+ TAMBAH BARIS DINAMIS & KALKULASI PPN 11%)
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="createOrderModal" role="dialog" aria-modal="true" aria-labelledby="createOrderModalTitle">
-    <div class="erp-modal-card erp-modal-card-wide">
-      <div class="erp-modal-header">
-        <div>
-          <h2 class="section-heading" id="createOrderModalTitle">Input PO Pelanggan Baru</h2>
-        </div>
-        <button type="button" class="erp-modal-close" id="closeCreateOrderModal" aria-label="Tutup Modal Input PO">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <form id="createOrderForm">
-        <div class="erp-form-grid modal-grid-spaced">
-          <div class="erp-form-group">
-            <label for="soCustomerSelect" class="erp-label">Pilih Pelanggan B2B (Master Pelanggan)</label>
-            <select id="soCustomerSelect" class="erp-select" required></select>
-            <span class="cell-subtext" id="soCustomerInfoHint">NPWP & Alamat pengiriman otomatis mengikuti Master Pelanggan.</span>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="soClientPoNumber" class="erp-label">Nomor PO Eksternal (Dari Dokumen Klien)</label>
-            <input type="text" id="soClientPoNumber" class="erp-input" placeholder="Contoh: PO/JASTEL/XI/2026/105" required />
-          </div>
-
-          <div class="erp-form-group">
-            <label for="soDeliveryTarget" class="erp-label">Tanggal Target Pengiriman</label>
-            <input type="date" id="soDeliveryTarget" class="erp-input" value="2026-11-20" required />
-          </div>
-
-          <div class="erp-form-group">
-            <label for="soPaymentTerm" class="erp-label">Syarat Pembayaran (TOP)</label>
-            <select id="soPaymentTerm" class="erp-select" required>
-              <option value="NET 14">NET 14 (14 Hari Setelah BAST/Invoice)</option>
-              <option value="NET 30" selected>NET 30 (30 Hari Setelah BAST/Invoice)</option>
-              <option value="NET 45">NET 45 (45 Hari Setelah BAST/Invoice)</option>
-              <option value="DP 30% + Pelunasan">DP 30% + Pelunasan Sebelum Kirim</option>
-              <option value="CBD (Cash Before Delivery)">CBD (Cash Before Delivery)</option>
-            </select>
-          </div>
-
-          <div class="erp-form-group erp-form-group-full">
-            <label for="soPoFileInput" class="erp-label">Unggah Berkas PDF PO Asli Pelanggan</label>
-            <div class="erp-file-upload-wrap">
-              <input type="file" id="soPoFileInput" class="erp-file-input" accept=".pdf,.png,.jpg,.jpeg" />
-              <span class="badge-status badge-info" id="soPoFileLabel">Simulasi Arsip PDF: PO-Klien-Signed.pdf</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- RINCIAN BARIS BARANG DINAMIS -->
-        <div class="erp-line-items-box modal-grid-spaced">
-          <div class="erp-line-items-header">
-            <div>
-              <h3 class="section-heading">Daftar Item Barang & Pengecekan Stok Tersedia (ATP)</h3>
-              <p class="erp-panel-subtitle">Pilih SKU, sesuaikan kuantitas & harga jual B2B. Sistem otomatis mengecek ketersediaan stok gudang.</p>
-            </div>
-            <button type="button" class="btn-erp btn-erp-gold btn-erp-sm" id="btnAddSoLineItem">
-              + Tambah Baris Barang
-            </button>
-          </div>
-
-          <div class="erp-line-items-list" id="soLineItemsContainer">
-            <!-- Baris item dinamis di-render oleh OrdersController -->
-          </div>
-        </div>
-
-        <div class="erp-form-grid modal-grid-spaced">
-          <div class="erp-form-group">
-            <label for="soProjectNotes" class="erp-label">Catatan Proyek / Instruksi Pengiriman</label>
-            <textarea id="soProjectNotes" class="erp-textarea" rows="3" placeholder="Masukkan lokasi proyek, kontak penerima lapangan, atau instruksi instalasi..."></textarea>
-          </div>
-
-          <div class="erp-calc-summary-wrap">
-            <div class="erp-calc-summary-box">
-              <div class="erp-calc-row">
-                <span>Subtotal DPP (Sebelum Pajak):</span>
-                <strong id="soCalcDpp">Rp 0</strong>
-              </div>
-              <div class="erp-calc-row">
-                <span>PPN 11% (Faktur Pajak B2B):</span>
-                <strong id="soCalcPpn">Rp 0</strong>
-              </div>
-              <div class="erp-calc-row-grand">
-                <span>Grand Total PO:</span>
-                <span id="soCalcGrandTotal">Rp 0</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="erp-modal-footer">
-          <button type="button" class="btn-erp btn-erp-secondary" id="cancelCreateOrderBtn">Batal</button>
-          <button type="submit" class="btn-erp btn-erp-primary">Simpan PO & Kunci Reservasi Stok</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       MODAL 2: DETAIL PO PELANGGAN & AKSI OTORISASI KONTEKSTUAL (RBAC)
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="orderDetailModal" role="dialog" aria-modal="true" aria-labelledby="orderDetailModalTitle">
-    <div class="erp-modal-card erp-modal-card-wide">
-      <div class="erp-modal-header">
-        <h2 class="section-heading" id="orderDetailModalTitle">Detail PO Pelanggan</h2>
-        <button type="button" class="erp-modal-close" id="closeOrderDetailModal" aria-label="Tutup Modal Detail PO">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="erp-modal-body" id="orderDetailModalBody">
-        <!-- Di-render dinamis oleh OrdersController.openOrderDetailModal() -->
-      </div>
-
-      <div class="erp-modal-footer">
-        <button type="button" class="btn-erp btn-erp-secondary" id="closeOrderDetailFooterBtn">Tutup</button>
-        <button type="button" class="btn-erp btn-erp-danger erp-hidden" id="modalRejectOrderBtn">Tolak PO Ini</button>
-        <button type="button" class="btn-erp btn-erp-success erp-hidden" id="modalApproveOrderBtn">Setujui PO Pelanggan</button>
-      </div>
-    </div>
   </div>
 
   <!-- Core ERP Engine -->

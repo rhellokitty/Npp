@@ -223,13 +223,13 @@
                 <h2 class="section-heading">Daftar Faktur Penjualan (Commercial Invoice)</h2>
               </div>
               <div class="erp-header-actions no-print">
-                <button type="button" class="btn btn-primary" id="btnOpenCreateInvoice">
+                <a href="billing-create.html" class="btn btn-primary" id="btnOpenCreateInvoice">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <line x1="12" y1="5" x2="12" y2="19" />
                     <line x1="5" y1="12" x2="19" y2="12" />
                   </svg>
                   + Terbitkan Invoice Baru
-                </button>
+                </a>
               </div>
             </div>
 
@@ -294,185 +294,14 @@
     </main>
   </div>
 
-  <!-- ====================================================================
-       MODAL 1: TERBITKAN INVOICE RESMI BARU
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="createInvoiceModal" role="dialog" aria-modal="true" aria-labelledby="createInvoiceModalTitle">
-    <div class="erp-modal-card erp-modal-large">
-      <div class="erp-modal-header">
-        <div>
-          <h3 class="erp-modal-title" id="createInvoiceModalTitle">+ Terbitkan Faktur Penjualan Baru (Commercial Invoice)</h3>
-          <p class="erp-modal-subtitle">Pilih PO Pelanggan, tentukan termin tagihan (DP/Termin/Pelunasan), dan kalkulasi otomatis DPP serta PPN 11%</p>
-        </div>
-        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Modal">&times;</button>
-      </div>
+  <!-- TOAST NOTIFIKASI GLOBAL -->
+  <div id="erpGlobalToast" class="erp-toast"></div>
 
-      <form id="createInvoiceForm">
-        <div class="erp-modal-body">
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label for="invoiceOrderSelect" class="erp-label">Referensi PO Pelanggan (SO Approved) *</label>
-              <select id="invoiceOrderSelect" class="erp-select" required>
-                <!-- Populated via JavaScript -->
-              </select>
-              <span class="cell-subtext-sm">Hanya menampilkan PO Pelanggan yang telah Disetujui &amp; belum lunas</span>
-            </div>
+  <!-- Script Core ERP Terpusat -->
+  <script src="../src/internal/app.js"></script>
+</body>
 
-            <div class="erp-form-group">
-              <label for="invoiceTypeSelect" class="erp-label">Tipe / Termin Penagihan *</label>
-              <select id="invoiceTypeSelect" class="erp-select" required>
-                <option value="Pelunasan Penuh (100%)">Pelunasan Penuh (100%)</option>
-                <option value="Tagihan DP 30%">Tagihan Uang Muka (DP 30%)</option>
-                <option value="Termin Bertahap (50%)">Termin Bertahap (50%)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label for="invoiceDateInput" class="erp-label">Tanggal Terbit Invoice *</label>
-              <input type="date" id="invoiceDateInput" class="erp-input" required />
-            </div>
-
-            <div class="erp-form-group">
-              <label for="invoiceDueDateInput" class="erp-label">Tanggal Batas Jatuh Tempo (Due Date) *</label>
-              <input type="date" id="invoiceDueDateInput" class="erp-input" required />
-            </div>
-
-            <div class="erp-form-group">
-              <label for="invoiceBankSelect" class="erp-label">Rekening Bank Tujuan Pembayaran *</label>
-              <select id="invoiceBankSelect" class="erp-select" required>
-                <option value="BCA 521-098-7741">Bank Central Asia (BCA) — 521-098-7741 a/n PT Nusantara Puncak Perkasa</option>
-                <option value="Mandiri 156-00-0988234-5">Bank Mandiri — 156-00-0988234-5 a/n PT Nusantara Puncak Perkasa</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Box Ringkasan Finansial Kalkulasi Otomatis -->
-          <div class="erp-form-group">
-            <label class="erp-label">Ringkasan Perhitungan Finansial &amp; Pajak (PPN 11%)</label>
-            <div id="invoiceSummaryCalcBox" class="erp-kpi-card" style="padding: 16px; background-color: var(--erp-bg-surface);">
-              <!-- Diisi otomatis via JavaScript -->
-            </div>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="invoiceNotesInput" class="erp-label">Catatan Penagihan / Syarat Pembayaran Tambahan</label>
-            <textarea id="invoiceNotesInput" class="erp-textarea" rows="2" placeholder="Cantumkan no faktur pajak elektronik (e-Faktur) atau instruksi memo internal..."></textarea>
-          </div>
-        </div>
-
-        <div class="erp-modal-footer">
-          <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
-          <button type="submit" class="btn btn-primary" id="btnSubmitCreateInvoice">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            Terbitkan &amp; Kirim Invoice Resmi
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       MODAL 2: PENCATATAN PEMBAYARAN & REKONSILIASI BANK
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
-    <div class="erp-modal-card">
-      <div class="erp-modal-header">
-        <div>
-          <h3 class="erp-modal-title" id="paymentModalTitle">Pencatatan Pembayaran &amp; Rekonsiliasi Bank</h3>
-          <p class="erp-modal-subtitle">Bukukan dana transfer masuk dari pelanggan ke rekening escrow resmi NPP</p>
-        </div>
-        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Modal">&times;</button>
-      </div>
-
-      <form id="paymentForm">
-        <input type="hidden" id="paymentInvoiceIdHidden" />
-        <div class="erp-modal-body">
-          <div id="paymentInvoiceInfoBox" style="margin-bottom: 14px;"></div>
-
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label for="paymentDateInput" class="erp-label">Tanggal Dana Efektif Diterima *</label>
-              <input type="date" id="paymentDateInput" class="erp-input" required />
-            </div>
-
-            <div class="erp-form-group">
-              <label for="paymentBankInput" class="erp-label">Rekening Bank Penerima *</label>
-              <select id="paymentBankInput" class="erp-select" required>
-                <option value="BCA KCU Bekasi (521-098-7741)">BCA KCU Bekasi — 521-098-7741</option>
-                <option value="Bank Mandiri KCP Juanda (156-00-0988234-5)">Mandiri KCP Juanda — 156-00-0988234-5</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label for="paymentRefTrxInput" class="erp-label">No. Referensi Mutasi / ID Transaksi Bank *</label>
-              <input type="text" id="paymentRefTrxInput" class="erp-input" placeholder="Contoh: TRX-BCA-261106-9921" required />
-            </div>
-
-            <div class="erp-form-group">
-              <label for="paymentAmountInput" class="erp-label">Nominal Pembayaran Diterima (Rp) *</label>
-              <input type="number" id="paymentAmountInput" class="erp-input" min="1" required />
-            </div>
-          </div>
-
-          <div class="erp-form-group">
-            <label for="paymentProofFileInput" class="erp-label">Bukti Transfer / Rekening Koran Bank</label>
-            <input type="file" id="paymentProofFileInput" class="erp-input" accept=".pdf,.jpg,.jpeg,.png" />
-            <span class="cell-subtext-sm">Simulasi upload struk transfer atau bukti konfirmasi bank</span>
-          </div>
-        </div>
-
-        <div class="erp-modal-footer">
-          <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
-          <button type="submit" class="btn btn-primary">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            Bukukan Pembayaran &amp; Update Status
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       MODAL 3: PREVIEW & CETAK FAKTUR KOMERSIAL RESMI (INVOICE PDF)
-       ==================================================================== -->
-  <div class="erp-modal-overlay" id="modalPreviewInvoice" role="dialog" aria-modal="true" aria-labelledby="modalPreviewInvTitle">
-    <div class="erp-modal-card erp-modal-large">
-      <div class="erp-modal-header no-print">
-        <div>
-          <h3 class="erp-modal-title" id="modalPreviewInvTitle">Cetak &amp; Preview Faktur Penjualan (Commercial Invoice)</h3>
-          <p class="erp-modal-subtitle">Format formal siap cetak A4 dengan rincian DPP, PPN 11%, terbilang rupiah, dan stempel digital Finance PT NPP</p>
-        </div>
-        <button type="button" class="erp-modal-close" data-modal-close aria-label="Tutup Preview">&times;</button>
-      </div>
-
-      <div class="erp-modal-body" id="previewInvoiceBody">
-        <!-- Rendered dynamically by BillingController.openInvoicePrintPreview -->
-      </div>
-
-      <div class="erp-modal-footer no-print">
-        <div style="font-size:0.75rem; color:var(--erp-text); margin-right:auto;">
-          Tip: Gunakan margin standard portrait A4 pada jendela preview cetak browser
-        </div>
-        <button type="button" class="btn btn-secondary" data-modal-close>Tutup</button>
-        <button type="button" class="btn btn-primary" onclick="window.print()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <polyline points="6 9 6 2 18 2 18 9" />
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-            <rect x="6" y="14" width="12" height="8" />
-          </svg>
-          Cetak Invoice / Unduh PDF
-        </button>
-      </div>
-    </div>
-  </div>
+</html>
 
   <!-- TOAST NOTIFIKASI GLOBAL -->
   <div id="erpGlobalToast" class="erp-toast"></div>

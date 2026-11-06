@@ -1918,6 +1918,10 @@
 
     openOrderDetailModal: function (soId) {
       var modal = document.getElementById('orderDetailModal');
+      if (!modal) {
+        window.location.href = 'orders-detail.html?id=' + encodeURIComponent(soId);
+        return;
+      }
       var body = document.getElementById('orderDetailModalBody');
       var title = document.getElementById('orderDetailModalTitle');
       var approveBtn = document.getElementById('modalApproveOrderBtn');
@@ -2336,7 +2340,7 @@
 
           var actionsHtml =
             '<div class="erp-Filter-group">' +
-            '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-open-so-detail="' + order.id + '">Detail PO</button>' +
+            '<a href="orders-detail.html?id=' + encodeURIComponent(order.id) + '" class="btn-erp btn-erp-secondary btn-erp-sm">Detail PO</a>' +
             (canApproveNow
               ? '<button type="button" class="btn-erp btn-erp-success btn-erp-sm" data-approve-so-row="' + order.id + '">Setujui</button>' +
                 '<button type="button" class="btn-erp btn-erp-danger btn-erp-sm" data-reject-so-row="' + order.id + '">Tolak</button>'
@@ -2830,6 +2834,10 @@
 
     openOrderDetailModal: function (soId) {
       var modal = document.getElementById('orderDetailModal');
+      if (!modal) {
+        window.location.href = 'orders-detail.html?id=' + encodeURIComponent(soId);
+        return;
+      }
       var body = document.getElementById('orderDetailModalBody');
       var title = document.getElementById('orderDetailModalTitle');
       var approveBtn = document.getElementById('modalApproveOrderBtn');
@@ -4144,7 +4152,7 @@
 
           var actionBtns =
             '<div class="erp-Filter-group">' +
-            '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-view-po="' + po.id + '">Detail PO</button>' +
+            '<a href="procurement-detail.html?id=' + encodeURIComponent(po.id) + '" class="btn-erp btn-erp-secondary btn-erp-sm">Detail PO</a>' +
             (canApprove
               ? '<button type="button" class="btn-erp btn-erp-success btn-erp-sm" data-approve-po="' + po.id + '">Setujui</button>' +
                 '<button type="button" class="btn-erp btn-erp-danger btn-erp-sm" data-reject-po="' + po.id + '">Tolak</button>'
@@ -4548,6 +4556,10 @@
 
     openPoDetailModal: function (poId) {
       var modal = document.getElementById('poSupplierDetailModal');
+      if (!modal) {
+        window.location.href = 'procurement-detail.html?id=' + encodeURIComponent(poId);
+        return;
+      }
       var body = document.getElementById('poSupplierDetailBody');
       var title = document.getElementById('poSupplierDetailTitle');
       var approveBtn = document.getElementById('modalApprovePoBtn');
@@ -5134,11 +5146,14 @@
     },
 
     openUploadBastModal: function (deliveryId) {
+      var modal = document.getElementById('uploadBastModal');
+      if (!modal) {
+        window.location.href = 'delivery-bast.html?id=' + encodeURIComponent(deliveryId);
+        return;
+      }
       var db = window.NPP_ERP_DATA;
       var delivery = (db.deliveries || []).find(function (d) { return d.id === deliveryId; });
       if (!delivery) return;
-
-      var modal = document.getElementById('uploadBastModal');
       var title = document.getElementById('uploadBastModalTitle');
       var hiddenId = document.getElementById('bastDeliveryIdHidden');
       var signerInput = document.getElementById('bastSignerInput');
@@ -5208,11 +5223,15 @@
     },
 
     openDeliveryPrintPreview: function (deliveryId) {
+      var modal = document.getElementById('modalPreviewSuratJalan');
+      if (!modal) {
+        window.location.href = 'delivery-print.html?id=' + encodeURIComponent(deliveryId);
+        return;
+      }
       var db = window.NPP_ERP_DATA;
       var delivery = (db.deliveries || []).find(function (d) { return d.id === deliveryId; });
       if (!delivery) return;
 
-      var modal = document.getElementById('modalPreviewSuratJalan');
       var container = document.getElementById('previewSuratJalanBody');
       if (!modal || !container) return;
 
@@ -5692,11 +5711,14 @@
     },
 
     openPaymentModal: function (invoiceId) {
+      var modal = document.getElementById('paymentModal');
+      if (!modal) {
+        window.location.href = 'billing-payment.html?id=' + encodeURIComponent(invoiceId);
+        return;
+      }
       var db = window.NPP_ERP_DATA;
       var inv = (db.invoices || []).find(function (i) { return i.id === invoiceId; });
       if (!inv) return;
-
-      var modal = document.getElementById('paymentModal');
       var title = document.getElementById('paymentModalTitle');
       var hiddenId = document.getElementById('paymentInvoiceIdHidden');
       var infoBox = document.getElementById('paymentInvoiceInfoBox');
@@ -5780,11 +5802,15 @@
     },
 
     openInvoicePrintPreview: function (invoiceId) {
+      var modal = document.getElementById('modalPreviewInvoice');
+      if (!modal) {
+        window.location.href = 'billing-print.html?id=' + encodeURIComponent(invoiceId);
+        return;
+      }
       var db = window.NPP_ERP_DATA;
       var inv = (db.invoices || []).find(function (i) { return i.id === invoiceId; });
       if (!inv) return;
 
-      var modal = document.getElementById('modalPreviewInvoice');
       var container = document.getElementById('previewInvoiceBody');
       if (!modal || !container) return;
 
@@ -5892,6 +5918,1467 @@
   };
 
   /* ==========================================================================
+     15. DEDICATED CRUD PAGE CONTROLLERS (NO-MODAL ARCHITECTURE)
+     ========================================================================== */
+
+var OrderCreatePageController = {
+    init: function () {
+      if (!document.getElementById('erpOrderCreatePage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var custSel = document.getElementById('orderCustomerSelect');
+      var poDateInp = document.getElementById('orderPoDate');
+      var delivDateInp = document.getElementById('orderTargetDelivery');
+      var tbody = document.getElementById('pageOrderItemsTbody');
+      var addBtn = document.getElementById('btnPageAddOrderRow');
+      var form = document.getElementById('formCreateOrderPage');
+
+      if (custSel) {
+        custSel.innerHTML = '<option value="">-- Pilih Pelanggan B2B --</option>' +
+          (db.customers || []).map(function (c) {
+            return '<option value="' + escapeHtml(c.id) + '">' + escapeHtml(c.name) + '</option>';
+          }).join('');
+      }
+
+      var today = new Date().toISOString().split('T')[0];
+      var target = new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0];
+      if (poDateInp) poDateInp.value = today;
+      if (delivDateInp) delivDateInp.value = target;
+
+      var calcTotals = function () {
+        var dpp = 0;
+        if (!tbody) return;
+        tbody.querySelectorAll('tr').forEach(function (tr) {
+          var price = Number(tr.querySelector('.item-price').value) || 0;
+          var qty = Number(tr.querySelector('.item-qty').value) || 0;
+          var sub = price * qty;
+          var subSpan = tr.querySelector('.item-subtotal');
+          if (subSpan) subSpan.textContent = formatRupiah(sub);
+          dpp += sub;
+        });
+        var ppn = Math.round(dpp * 0.11);
+        var grand = dpp + ppn;
+        var dppEl = document.getElementById('pageSummaryDpp');
+        var ppnEl = document.getElementById('pageSummaryPpn');
+        var grandEl = document.getElementById('pageSummaryGrandTotal');
+        if (dppEl) dppEl.textContent = formatRupiah(dpp);
+        if (ppnEl) ppnEl.textContent = formatRupiah(ppn);
+        if (grandEl) grandEl.textContent = formatRupiah(grand);
+      };
+
+      var addRow = function (preSku, preQty) {
+        if (!tbody) return;
+        var tr = document.createElement('tr');
+        var rowIdx = tbody.children.length + 1;
+        var skuOptions = '<option value="">-- Pilih SKU --</option>' +
+          (db.products || []).map(function (p) {
+            var sel = (preSku && p.sku === preSku) ? ' selected' : '';
+            return '<option value="' + escapeHtml(p.sku) + '" data-price="' + p.price + '" data-unit="' + (p.unit || 'Unit') + '"' + sel + '>' + escapeHtml(p.sku + ' — ' + p.name) + '</option>';
+          }).join('');
+
+        tr.innerHTML =
+          '<td style="text-align:center;">' + rowIdx + '</td>' +
+          '<td><select class="erp-select item-sku" required>' + skuOptions + '</select></td>' +
+          '<td><input type="number" class="erp-input item-qty" min="1" value="' + (preQty || 10) + '" style="text-align:center;" required /></td>' +
+          '<td style="text-align:center;"><span class="item-unit">Unit</span></td>' +
+          '<td><input type="number" class="erp-input item-price" min="0" value="0" style="text-align:right;" required /></td>' +
+          '<td style="text-align:right; font-weight:600;"><span class="item-subtotal">Rp 0</span></td>' +
+          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row">&times;</button></td>';
+
+        var skuSel = tr.querySelector('.item-sku');
+        var qtyInp = tr.querySelector('.item-qty');
+        var priceInp = tr.querySelector('.item-price');
+        var unitSpan = tr.querySelector('.item-unit');
+        var delBtn = tr.querySelector('.btn-del-row');
+
+        var updateSku = function () {
+          var opt = skuSel.options[skuSel.selectedIndex];
+          if (opt && opt.value) {
+            var pr = Number(opt.getAttribute('data-price')) || 0;
+            priceInp.value = pr;
+            unitSpan.textContent = opt.getAttribute('data-unit') || 'Unit';
+          }
+          calcTotals();
+        };
+
+        skuSel.addEventListener('change', updateSku);
+        qtyInp.addEventListener('input', calcTotals);
+        priceInp.addEventListener('input', calcTotals);
+        delBtn.addEventListener('click', function () {
+          tr.remove();
+          calcTotals();
+        });
+
+        tbody.appendChild(tr);
+        if (preSku) updateSku();
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', function () { addRow(); });
+      }
+
+      if (db.products && db.products.length > 0) {
+        addRow(db.products[0].sku, 20);
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var custId = custSel.value;
+          var custObj = (db.customers || []).find(function (c) { return c.id === custId; }) || {};
+          var clientPo = (document.getElementById('orderClientPoNum').value || '').trim();
+          var poDate = poDateInp.value;
+          var delivDate = delivDateInp.value;
+          var topVal = document.getElementById('orderPaymentTerm').value;
+          var notesVal = (document.getElementById('orderNotes').value || '').trim();
+
+          var items = [];
+          var dpp = 0;
+          var hasShortage = false;
+
+          tbody.querySelectorAll('tr').forEach(function (tr) {
+            var skuSel = tr.querySelector('.item-sku');
+            var skuVal = skuSel.value;
+            var qtyVal = Number(tr.querySelector('.item-qty').value) || 0;
+            var priceVal = Number(tr.querySelector('.item-price').value) || 0;
+            var prod = (db.products || []).find(function (p) { return p.sku === skuVal; }) || {};
+            var lineSub = qtyVal * priceVal;
+            dpp += lineSub;
+
+            var inv = (db.inventory || []).find(function (i) { return i.sku === skuVal; });
+            var available = inv ? (inv.physical - (inv.held || 0) - (inv.reserved || 0)) : 0;
+            if (available < qtyVal) hasShortage = true;
+
+            if (inv) {
+              var reserveQty = Math.min(Math.max(0, available), qtyVal);
+              inv.reserved = (inv.reserved || 0) + reserveQty;
+            }
+
+            items.push({
+              sku: skuVal,
+              name: prod.name || skuVal,
+              qty: qtyVal,
+              unit: prod.unit || 'Unit',
+              price: priceVal,
+              subtotal: lineSub
+            });
+          });
+
+          if (items.length === 0) {
+            showToast('Harap tambahkan minimal 1 baris item produk.');
+            return;
+          }
+
+          var ppn = Math.round(dpp * 0.11);
+          var grand = dpp + ppn;
+          var newId = 'SO-' + new Date().getFullYear() + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+
+          var newOrder = {
+            id: newId,
+            soId: newId,
+            customerId: custId,
+            customerName: custObj.name || 'Pelanggan B2B',
+            clientPoNumber: clientPo,
+            poDate: poDate,
+            deliveryTarget: delivDate,
+            paymentTerm: topVal,
+            salesPic: 'Nadia Pramesti (Sales B2B)',
+            statusApproval: 'Menunggu Persetujuan',
+            statusPemenuhan: hasShortage ? 'Menunggu Pengadaan' : 'Stok Direservasi',
+            statusPengiriman: 'Belum Dikirim',
+            statusPenagihan: 'Belum Ditagih',
+            statusPembayaran: 'Belum Dibayar',
+            notes: notesVal,
+            dpp: dpp,
+            ppn: ppn,
+            total: grand,
+            items: items
+          };
+
+          db.orders.unshift(newOrder);
+          addAuditLog('SO-CREATE', newId, 'Menerbitkan pesanan pelanggan baru: ' + newId + ' (' + newOrder.customerName + ') senilai ' + formatRupiah(grand));
+          saveDatabase(db);
+          showToast('Pesanan ' + newId + ' berhasil diterbitkan!');
+          setTimeout(function () {
+            window.location.href = 'orders.html';
+          }, 200);
+        });
+      }
+    }
+  };
+
+  var OrderDetailPageController = {
+    init: function () {
+      if (!document.getElementById('erpOrderDetailPage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var params = new URLSearchParams(window.location.search);
+      var soId = params.get('id');
+      var order = (db.orders || []).find(function (o) { return o.id === soId || o.soId === soId; });
+
+      var heading = document.getElementById('orderDetailHeading');
+      var container = document.getElementById('orderDetailContainer');
+      if (!order) {
+        if (heading) heading.textContent = 'Pesanan Tidak Ditemukan';
+        if (container) container.innerHTML = '<div class="erp-form-card"><p>Nomor pesanan tidak valid atau telah dihapus.</p><a href="orders.html" class="btn-erp btn-erp-primary">Kembali ke Daftar PO</a></div>';
+        return;
+      }
+
+      if (heading) heading.textContent = 'Detail PO Pelanggan: ' + order.id;
+
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      var canApproveNow = roleCfg.canApprove && order.statusApproval === 'Menunggu Persetujuan';
+      var paymentStat = derivePaymentStatus(order);
+
+      var itemsRows = (order.items || []).map(function (it, idx) {
+        var priceVal = roleCfg.canViewPrice ? formatMoneyRBAC(it.price, false) : 'TERLINDUNGI (GUDANG)';
+        var subVal = roleCfg.canViewPrice ? formatMoneyRBAC(it.subtotal, false) : 'TERLINDUNGI (GUDANG)';
+        return (
+          '<tr>' +
+          '<td style="text-align:center;">' + (idx + 1) + '</td>' +
+          '<td><strong>' + escapeHtml(it.sku) + '</strong></td>' +
+          '<td>' + escapeHtml(it.name) + '</td>' +
+          '<td style="text-align:center; font-weight:600;">' + it.qty + '</td>' +
+          '<td style="text-align:center;">' + escapeHtml(it.unit || 'Unit') + '</td>' +
+          '<td style="text-align:right;">' + priceVal + '</td>' +
+          '<td style="text-align:right; font-weight:700;">' + subVal + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      container.innerHTML =
+        '<div class="erp-status-progress-track">' +
+        '  <div class="erp-status-progress-card"><span class="erp-status-progress-dim">1. Persetujuan</span><div>' + renderStatusBadge(order.statusApproval) + '</div></div>' +
+        '  <div class="erp-status-progress-card"><span class="erp-status-progress-dim">2. Pemenuhan Stok</span><div>' + renderStatusBadge(order.statusPemenuhan) + '</div></div>' +
+        '  <div class="erp-status-progress-card"><span class="erp-status-progress-dim">3. Pengiriman</span><div>' + renderStatusBadge(order.statusPengiriman) + '</div></div>' +
+        '  <div class="erp-status-progress-card col-financial"><span class="erp-status-progress-dim">4. Penagihan</span><div>' + renderStatusBadge(order.statusPenagihan) + '</div></div>' +
+        '  <div class="erp-status-progress-card col-financial"><span class="erp-status-progress-dim">5. Pembayaran</span><div>' + renderStatusBadge(paymentStat) + '</div></div>' +
+        '</div>' +
+
+        '<div class="erp-form-card">' +
+        '  <div class="erp-form-card-title">Informasi Pelanggan &amp; Dokumen PO</div>' +
+        '  <div class="erp-detail-grid">' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Nama Pelanggan B2B</span><span class="erp-detail-val">' + escapeHtml(order.customerName) + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">No. PO Klien Eksternal</span><span class="erp-detail-val cell-code">' + escapeHtml(order.clientPoNumber) + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Tanggal PO</span><span class="erp-detail-val">' + escapeHtml(order.poDate || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Target Tanggal Kirim</span><span class="erp-detail-val">' + escapeHtml(order.deliveryTarget || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Syarat Pembayaran (TOP)</span><span class="erp-detail-val">' + escapeHtml(order.paymentTerm || 'Net 30') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">PIC Sales Penanggung Jawab</span><span class="erp-detail-val">' + escapeHtml(order.salesPic || '-') + '</span></div>' +
+        '  </div>' +
+        '  <div class="erp-form-group erp-form-group-full">' +
+        '    <span class="erp-detail-label">Catatan Pengiriman / Instruksi Khusus:</span>' +
+        '    <p class="modal-notes-text">' + escapeHtml(order.notes || 'Tidak ada catatan tambahan.') + '</p>' +
+        '  </div>' +
+        '</div>' +
+
+        '<div class="erp-form-card">' +
+        '  <div class="erp-form-card-title">Rincian Barang yang Dipesan</div>' +
+        '  <div class="erp-table-wrap">' +
+        '    <table class="erp-table">' +
+        '      <thead>' +
+        '        <tr>' +
+        '          <th style="width:40px; text-align:center;">#</th>' +
+        '          <th style="width:140px;">Kode SKU</th>' +
+        '          <th>Deskripsi Nama Produk</th>' +
+        '          <th style="width:80px; text-align:center;">Qty</th>' +
+        '          <th style="width:80px; text-align:center;">Satuan</th>' +
+        '          <th style="width:160px; text-align:right;">Harga Satuan</th>' +
+        '          <th style="width:170px; text-align:right;">Subtotal</th>' +
+        '        </tr>' +
+        '      </thead>' +
+        '      <tbody>' + itemsRows + '</tbody>' +
+        '    </table>' +
+        '  </div>' +
+        '</div>' +
+
+        '<div class="erp-form-card">' +
+        '  <div class="erp-form-card-title">Ringkasan Finansial &amp; Otorisasi</div>' +
+        '  <div class="erp-detail-grid">' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Dasar Pengenaan Pajak (DPP)</span><span class="erp-detail-val">' + formatMoneyRBAC(order.dpp, false) + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">PPN 11%</span><span class="erp-detail-val">' + formatMoneyRBAC(order.ppn, false) + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Total Tagihan Pesanan</span><span class="erp-detail-val-highlight">' + formatMoneyRBAC(order.total, false) + '</span></div>' +
+        '  </div>' +
+        '  <div class="erp-form-actions-bar">' +
+        '    <a href="orders.html" class="btn-erp btn-erp-ghost">← Kembali ke Daftar PO</a>' +
+        (canApproveNow ?
+          '    <button type="button" class="btn-erp btn-erp-danger" id="btnPageRejectOrder">Tolak PO Ini</button>' +
+          '    <button type="button" class="btn-erp btn-erp-primary" id="btnPageApproveOrder">Setujui PO Pelanggan</button>'
+          : '') +
+        '  </div>' +
+        '</div>';
+
+      var btnApprove = document.getElementById('btnPageApproveOrder');
+      var btnReject = document.getElementById('btnPageRejectOrder');
+      if (btnApprove) {
+        btnApprove.addEventListener('click', function () {
+          order.statusApproval = 'Disetujui';
+          addAuditLog('SO-APPROVE', order.id, 'Menyetujui PO ' + order.id + ' (' + order.customerName + ')');
+          saveDatabase(db);
+          showToast('PO ' + order.id + ' berhasil disetujui!');
+          OrderDetailPageController.init();
+        });
+      }
+      if (btnReject) {
+        btnReject.addEventListener('click', function () {
+          order.statusApproval = 'Ditolak';
+          addAuditLog('SO-REJECT', order.id, 'Menolak PO ' + order.id + ' (' + order.customerName + ')');
+          saveDatabase(db);
+          showToast('PO ' + order.id + ' telah ditolak.');
+          OrderDetailPageController.init();
+        });
+      }
+    }
+  };
+
+  var MasterCustomerCreatePageController = {
+    init: function () {
+      var form = document.getElementById('formCreateCustomerPage');
+      if (!form) return;
+      var db = window.NPP_ERP_DATA;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var newId = 'CUST-' + String(Math.floor(Math.random() * 9000) + 1000);
+        var newCust = {
+          id: newId,
+          name: document.getElementById('inpCustName').value.trim(),
+          pic: document.getElementById('inpCustPic').value.trim(),
+          phone: document.getElementById('inpCustPhone').value.trim(),
+          email: document.getElementById('inpCustEmail').value.trim(),
+          npwp: document.getElementById('inpCustNpwp').value.trim() || '01.000.000.0-000.000',
+          paymentTerm: document.getElementById('inpCustTop').value,
+          address: document.getElementById('inpCustAddress').value.trim()
+        };
+
+        db.customers = db.customers || [];
+        db.customers.unshift(newCust);
+        addAuditLog('MASTER-CUSTOMER', newId, 'Menambah master pelanggan baru: ' + newCust.name);
+        saveDatabase(db);
+        showToast('Pelanggan ' + newCust.name + ' berhasil ditambahkan!');
+        setTimeout(function () {
+          window.location.href = 'master-data.html#customers';
+        }, 200);
+      });
+    }
+  };
+
+  var MasterSupplierCreatePageController = {
+    init: function () {
+      var form = document.getElementById('formCreateSupplierPage');
+      if (!form) return;
+      var db = window.NPP_ERP_DATA;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var newId = 'SUP-' + String(Math.floor(Math.random() * 9000) + 1000);
+        var newSup = {
+          id: newId,
+          name: document.getElementById('inpSuppName').value.trim(),
+          brand: document.getElementById('inpSuppBrand').value.trim(),
+          origin: document.getElementById('inpSuppOrigin').value.trim(),
+          pic: document.getElementById('inpSuppPic').value.trim(),
+          phone: document.getElementById('inpSuppPhone').value.trim(),
+          email: document.getElementById('inpSuppEmail').value.trim(),
+          leadTime: parseInt(document.getElementById('inpSuppLead').value, 10) || 14,
+          bankAccount: document.getElementById('inpSuppBank').value.trim() || 'Bank Escrow Transfer'
+        };
+
+        db.suppliers = db.suppliers || [];
+        db.suppliers.unshift(newSup);
+        addAuditLog('MASTER-SUPPLIER', newId, 'Menambah master supplier baru: ' + newSup.name);
+        saveDatabase(db);
+        showToast('Supplier ' + newSup.name + ' berhasil ditambahkan!');
+        setTimeout(function () {
+          window.location.href = 'master-data.html#suppliers';
+        }, 200);
+      });
+    }
+  };
+
+  var MasterProductCreatePageController = {
+    init: function () {
+      var form = document.getElementById('formCreateProductPage');
+      if (!form) return;
+      var db = window.NPP_ERP_DATA;
+
+      var rackSel = document.getElementById('inpProdRack');
+      if (rackSel) {
+        rackSel.innerHTML = (db.warehouseRacks || []).map(function (r) {
+          return '<option value="' + escapeHtml(r.code) + '">' + escapeHtml(r.code + ' (' + r.zone + ')') + '</option>';
+        }).join('');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var sku = document.getElementById('inpProdSku').value.trim().toUpperCase();
+        var name = document.getElementById('inpProdName').value.trim();
+        var cat = document.getElementById('inpProdCategory').value;
+        var unit = document.getElementById('inpProdUnit').value;
+        var rack = document.getElementById('inpProdRack').value;
+        var minStock = parseInt(document.getElementById('inpProdMinStock').value, 10) || 0;
+        var initStock = parseInt(document.getElementById('inpProdInitialStock').value, 10) || 0;
+        var price = parseInt(document.getElementById('inpProdPriceB2B').value, 10) || 0;
+        var cost = parseInt(document.getElementById('inpProdCost').value, 10) || 0;
+        var isWeb = document.getElementById('inpProdWebSync').value === 'true';
+
+        var newProd = {
+          sku: sku,
+          name: name,
+          category: cat,
+          brand: document.getElementById('inpProdBrand').value,
+          unit: unit,
+          price: price,
+          cost: cost,
+          minStock: minStock,
+          rack: rack,
+          publishedWeb: isWeb
+        };
+
+        db.products = db.products || [];
+        db.products.unshift(newProd);
+
+        db.inventory = db.inventory || [];
+        db.inventory.unshift({
+          sku: sku,
+          physical: initStock,
+          held: 0,
+          reserved: 0,
+          location: rack
+        });
+
+        addAuditLog('MASTER-PRODUCT', sku, 'Menambah master SKU produk: ' + sku + ' — ' + name);
+        saveDatabase(db);
+        showToast('SKU Produk ' + sku + ' berhasil ditambahkan!');
+        setTimeout(function () {
+          window.location.href = 'master-data.html#products';
+        }, 200);
+      });
+    }
+  };
+
+  var MasterRackCreatePageController = {
+    init: function () {
+      var form = document.getElementById('formCreateRackPage');
+      if (!form) return;
+      var db = window.NPP_ERP_DATA;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var code = document.getElementById('inpRackCode').value.trim().toUpperCase();
+        var zone = document.getElementById('inpRackZone').value;
+        var type = document.getElementById('inpRackType').value;
+        var cap = parseInt(document.getElementById('inpRackCap').value, 10) || 1000;
+        var status = document.getElementById('inpRackStatus').value;
+
+        var newRack = {
+          code: code,
+          zone: zone,
+          type: type,
+          capacity: cap,
+          status: status
+        };
+
+        db.warehouseRacks = db.warehouseRacks || [];
+        db.warehouseRacks.unshift(newRack);
+        addAuditLog('MASTER-RACK', code, 'Menambah lokasi rak gudang baru: ' + code);
+        saveDatabase(db);
+        showToast('Lokasi Rak ' + code + ' berhasil ditambahkan!');
+        setTimeout(function () {
+          window.location.href = 'master-data.html#racks';
+        }, 200);
+      });
+    }
+  };
+
+  var ProcurementCreatePageController = {
+    init: function () {
+      if (!document.getElementById('erpProcurementCreatePage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var suppSel = document.getElementById('poSuppSupplierSelect');
+      var orderRefSel = document.getElementById('poSuppOrderRefSelect');
+      var etaInp = document.getElementById('poSuppEtaDate');
+      var tbody = document.getElementById('pagePoSupplierItemsTbody');
+      var addBtn = document.getElementById('btnPageAddPoSupplierRow');
+      var form = document.getElementById('formCreatePoSupplierPage');
+
+      if (suppSel) {
+        suppSel.innerHTML = '<option value="">-- Pilih Supplier / Prinsipal --</option>' +
+          (db.suppliers || []).map(function (s) {
+            return '<option value="' + escapeHtml(s.id) + '">' + escapeHtml(s.name + ' (' + s.origin + ')') + '</option>';
+          }).join('');
+      }
+
+      if (orderRefSel) {
+        orderRefSel.innerHTML = '<option value="">-- Pengadaan Stok Bebas (Buffer Stock Gudang) --</option>' +
+          (db.orders || []).filter(function (o) { return o.statusPemenuhan === 'Menunggu Pengadaan'; }).map(function (o) {
+            return '<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.id + ' — ' + o.customerName) + '</option>';
+          }).join('');
+      }
+
+      var etaDefault = new Date(Date.now() + 21 * 86400000).toISOString().split('T')[0];
+      if (etaInp) etaInp.value = etaDefault;
+
+      var calcTotals = function () {
+        var total = 0;
+        if (!tbody) return;
+        tbody.querySelectorAll('tr').forEach(function (tr) {
+          var price = Number(tr.querySelector('.po-cost').value) || 0;
+          var qty = Number(tr.querySelector('.po-qty').value) || 0;
+          var sub = price * qty;
+          var subSpan = tr.querySelector('.po-subtotal');
+          if (subSpan) subSpan.textContent = formatRupiah(sub);
+          total += sub;
+        });
+        var grandEl = document.getElementById('pagePoSupplierGrandTotal');
+        if (grandEl) grandEl.textContent = formatRupiah(total);
+      };
+
+      var addRow = function (preSku, preQty) {
+        if (!tbody) return;
+        var tr = document.createElement('tr');
+        var rowIdx = tbody.children.length + 1;
+        var skuOptions = '<option value="">-- Pilih SKU --</option>' +
+          (db.products || []).map(function (p) {
+            var sel = (preSku && p.sku === preSku) ? ' selected' : '';
+            return '<option value="' + escapeHtml(p.sku) + '" data-cost="' + (p.cost || Math.round(p.price * 0.75)) + '" data-unit="' + (p.unit || 'Unit') + '"' + sel + '>' + escapeHtml(p.sku + ' — ' + p.name) + '</option>';
+          }).join('');
+
+        tr.innerHTML =
+          '<td style="text-align:center;">' + rowIdx + '</td>' +
+          '<td><select class="erp-select po-sku" required>' + skuOptions + '</select></td>' +
+          '<td><input type="number" class="erp-input po-qty" min="1" value="' + (preQty || 50) + '" style="text-align:center;" required /></td>' +
+          '<td style="text-align:center;"><span class="po-unit">Unit</span></td>' +
+          '<td><input type="number" class="erp-input po-cost" min="0" value="0" style="text-align:right;" required /></td>' +
+          '<td style="text-align:right; font-weight:600;"><span class="po-subtotal">Rp 0</span></td>' +
+          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row">&times;</button></td>';
+
+        var skuSel = tr.querySelector('.po-sku');
+        var qtyInp = tr.querySelector('.po-qty');
+        var costInp = tr.querySelector('.po-cost');
+        var unitSpan = tr.querySelector('.po-unit');
+        var delBtn = tr.querySelector('.btn-del-row');
+
+        var updateSku = function () {
+          var opt = skuSel.options[skuSel.selectedIndex];
+          if (opt && opt.value) {
+            var cst = Number(opt.getAttribute('data-cost')) || 0;
+            costInp.value = cst;
+            unitSpan.textContent = opt.getAttribute('data-unit') || 'Unit';
+          }
+          calcTotals();
+        };
+
+        skuSel.addEventListener('change', updateSku);
+        qtyInp.addEventListener('input', calcTotals);
+        costInp.addEventListener('input', calcTotals);
+        delBtn.addEventListener('click', function () {
+          tr.remove();
+          calcTotals();
+        });
+
+        tbody.appendChild(tr);
+        if (preSku) updateSku();
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', function () { addRow(); });
+      }
+
+      if (db.products && db.products.length > 0) {
+        addRow(db.products[0].sku, 50);
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var suppId = suppSel.value;
+          var suppObj = (db.suppliers || []).find(function (s) { return s.id === suppId; }) || {};
+          var orderRef = orderRefSel ? orderRefSel.value : '';
+          var etaDate = etaInp.value;
+          var topVal = document.getElementById('poSuppPaymentTerm').value;
+          var notesVal = (document.getElementById('poSuppNotes').value || '').trim();
+
+          var items = [];
+          var total = 0;
+
+          tbody.querySelectorAll('tr').forEach(function (tr) {
+            var skuSel = tr.querySelector('.po-sku');
+            var skuVal = skuSel.value;
+            var qtyVal = Number(tr.querySelector('.po-qty').value) || 0;
+            var costVal = Number(tr.querySelector('.po-cost').value) || 0;
+            var prod = (db.products || []).find(function (p) { return p.sku === skuVal; }) || {};
+            var lineSub = qtyVal * costVal;
+            total += lineSub;
+
+            items.push({
+              sku: skuVal,
+              name: prod.name || skuVal,
+              qty: qtyVal,
+              unit: prod.unit || 'Unit',
+              cost: costVal,
+              subtotal: lineSub
+            });
+          });
+
+          if (items.length === 0) {
+            showToast('Harap tambahkan minimal 1 baris SKU.');
+            return;
+          }
+
+          var newId = 'PO-' + new Date().getFullYear() + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+
+          var newPo = {
+            id: newId,
+            supplierId: suppId,
+            supplierName: suppObj.name || 'Prinsipal Pabrik',
+            refOrderId: orderRef,
+            orderDate: new Date().toISOString().split('T')[0],
+            etaDate: etaDate,
+            paymentTerm: topVal,
+            status: 'Diajukan',
+            statusApproval: 'Menunggu Persetujuan',
+            statusPenerimaan: 'Dalam Perjalanan',
+            total: total,
+            items: items,
+            notes: notesVal
+          };
+
+          db.supplierPurchaseOrders = db.supplierPurchaseOrders || [];
+          db.supplierPurchaseOrders.unshift(newPo);
+          addAuditLog('PO-SUPPLIER-CREATE', newId, 'Menerbitkan PO Supplier baru: ' + newId + ' (' + newPo.supplierName + ') senilai ' + formatRupiah(total));
+          saveDatabase(db);
+          showToast('PO Supplier ' + newId + ' berhasil diajukan!');
+          setTimeout(function () {
+            window.location.href = 'procurement.html';
+          }, 200);
+        });
+      }
+    }
+  };
+
+  var ProcurementDetailPageController = {
+    init: function () {
+      if (!document.getElementById('erpProcurementDetailPage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var params = new URLSearchParams(window.location.search);
+      var poId = params.get('id');
+      var po = (db.supplierPurchaseOrders || []).find(function (p) { return p.id === poId; });
+
+      var heading = document.getElementById('poDetailHeading');
+      var container = document.getElementById('procurementDetailContainer');
+      if (!po) {
+        if (heading) heading.textContent = 'PO Supplier Tidak Ditemukan';
+        if (container) container.innerHTML = '<div class="erp-form-card"><p>Nomor PO supplier tidak valid atau telah dihapus.</p><a href="procurement.html" class="btn-erp btn-erp-primary">Kembali ke Pengadaan</a></div>';
+        return;
+      }
+
+      if (heading) heading.textContent = 'Detail PO Supplier: ' + po.id;
+
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      var canApproveNow = roleCfg.canApprove && (po.statusApproval === 'Menunggu Persetujuan' || po.status === 'Diajukan');
+
+      var itemsRows = (po.items || []).map(function (it, idx) {
+        return (
+          '<tr>' +
+          '<td style="text-align:center;">' + (idx + 1) + '</td>' +
+          '<td><strong>' + escapeHtml(it.sku) + '</strong></td>' +
+          '<td>' + escapeHtml(it.name) + '</td>' +
+          '<td style="text-align:center; font-weight:600;">' + it.qty + '</td>' +
+          '<td style="text-align:center;">' + escapeHtml(it.unit || 'Unit') + '</td>' +
+          '<td style="text-align:right;">' + (roleCfg.canViewHPP ? formatRupiah(it.cost || 0) : 'TERLINDUNGI') + '</td>' +
+          '<td style="text-align:right; font-weight:700;">' + (roleCfg.canViewHPP ? formatRupiah(it.subtotal || 0) : 'TERLINDUNGI') + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      container.innerHTML =
+        '<div class="erp-status-progress-track">' +
+        '  <div class="erp-status-progress-card"><span class="erp-status-progress-dim">Status Dokumen</span><div>' + renderStatusBadge(po.status || 'Diajukan') + '</div></div>' +
+        '  <div class="erp-status-progress-card"><span class="erp-status-progress-dim">Status Persetujuan</span><div>' + renderStatusBadge(po.statusApproval || 'Menunggu Persetujuan') + '</div></div>' +
+        '  <div class="erp-status-progress-card"><span class="erp-status-progress-dim">Status Logistik</span><div>' + renderStatusBadge(po.statusPenerimaan || 'Dalam Perjalanan') + '</div></div>' +
+        '</div>' +
+
+        '<div class="erp-form-card">' +
+        '  <div class="erp-form-card-title">Informasi Prinsipal Manufaktur</div>' +
+        '  <div class="erp-detail-grid">' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Supplier / Prinsipal</span><span class="erp-detail-val">' + escapeHtml(po.supplierName) + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Tautkan ke SO Pelanggan</span><span class="erp-detail-val cell-code">' + escapeHtml(po.refOrderId || 'Buffer Stock Bebas') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Tanggal Order</span><span class="erp-detail-val">' + escapeHtml(po.orderDate || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Estimasi Tiba (ETA)</span><span class="erp-detail-val">' + escapeHtml(po.etaDate || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Syarat Pembayaran</span><span class="erp-detail-val">' + escapeHtml(po.paymentTerm || 'T/T') + '</span></div>' +
+        '  </div>' +
+        '  <div class="erp-form-group erp-form-group-full">' +
+        '    <span class="erp-detail-label">Catatan Pengadaan / Packing:</span>' +
+        '    <p class="modal-notes-text">' + escapeHtml(po.notes || 'Standar container ekspor pallet kayu dilapisi plastik kedap air.') + '</p>' +
+        '  </div>' +
+        '</div>' +
+
+        '<div class="erp-form-card">' +
+        '  <div class="erp-form-card-title">Rincian SKU yang Dipesan ke Pabrik</div>' +
+        '  <div class="erp-table-wrap">' +
+        '    <table class="erp-table">' +
+        '      <thead>' +
+        '        <tr>' +
+        '          <th style="width:40px; text-align:center;">#</th>' +
+        '          <th style="width:140px;">Kode SKU</th>' +
+        '          <th>Deskripsi Nama Produk</th>' +
+        '          <th style="width:80px; text-align:center;">Qty</th>' +
+        '          <th style="width:80px; text-align:center;">Satuan</th>' +
+        '          <th style="width:160px; text-align:right;">HPP Beli</th>' +
+        '          <th style="width:170px; text-align:right;">Subtotal Beli</th>' +
+        '        </tr>' +
+        '      </thead>' +
+        '      <tbody>' + itemsRows + '</tbody>' +
+        '    </table>' +
+        '  </div>' +
+        '</div>' +
+
+        '<div class="erp-form-card">' +
+        '  <div class="erp-form-card-title">Ringkasan Nilai Pengadaan &amp; Otorisasi</div>' +
+        '  <div class="erp-detail-grid">' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Total Nilai Pembelian HPP</span><span class="erp-detail-val-highlight">' + (roleCfg.canViewHPP ? formatRupiah(po.total) : 'TERLINDUNGI') + '</span></div>' +
+        '  </div>' +
+        '  <div class="erp-form-actions-bar">' +
+        '    <a href="procurement.html" class="btn-erp btn-erp-ghost">← Kembali ke Pengadaan</a>' +
+        (canApproveNow ?
+          '    <button type="button" class="btn-erp btn-erp-danger" id="btnPageRejectPo">Tolak PO Supplier</button>' +
+          '    <button type="button" class="btn-erp btn-erp-primary" id="btnPageApprovePo">Setujui PO Supplier</button>'
+          : '') +
+        '  </div>' +
+        '</div>';
+
+      var btnApprove = document.getElementById('btnPageApprovePo');
+      var btnReject = document.getElementById('btnPageRejectPo');
+      if (btnApprove) {
+        btnApprove.addEventListener('click', function () {
+          po.statusApproval = 'Disetujui';
+          po.status = 'Disetujui';
+          addAuditLog('PO-SUPPLIER-APPROVE', po.id, 'Menyetujui PO Supplier ' + po.id + ' (' + po.supplierName + ')');
+          saveDatabase(db);
+          showToast('PO Supplier ' + po.id + ' berhasil disetujui!');
+          ProcurementDetailPageController.init();
+        });
+      }
+      if (btnReject) {
+        btnReject.addEventListener('click', function () {
+          po.statusApproval = 'Ditolak';
+          po.status = 'Ditolak';
+          addAuditLog('PO-SUPPLIER-REJECT', po.id, 'Menolak PO Supplier ' + po.id + ' (' + po.supplierName + ')');
+          saveDatabase(db);
+          showToast('PO Supplier ' + po.id + ' telah ditolak.');
+          ProcurementDetailPageController.init();
+        });
+      }
+    }
+  };
+
+  var InventoryGrCreatePageController = {
+    init: function () {
+      if (!document.getElementById('erpInventoryGrCreatePage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var poSel = document.getElementById('grSupplierPoSelect');
+      var dateInp = document.getElementById('grDate');
+      var tbody = document.getElementById('pageGrItemsTbody');
+      var form = document.getElementById('formCreateGrPage');
+
+      if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
+
+      if (poSel) {
+        poSel.innerHTML = '<option value="">-- Pilih Dokumen PO Supplier Aktif --</option>' +
+          (db.supplierPurchaseOrders || []).map(function (p) {
+            return '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.id + ' — ' + p.supplierName + ' (' + (p.items || []).length + ' SKU)') + '</option>';
+          }).join('');
+
+        poSel.addEventListener('change', function () {
+          var poId = poSel.value;
+          var po = (db.supplierPurchaseOrders || []).find(function (p) { return p.id === poId; });
+          if (!tbody) return;
+          if (!po || !po.items || po.items.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:16px;">Silakan pilih PO Supplier terlebih dahulu.</td></tr>';
+            return;
+          }
+
+          var rackOptions = (db.warehouseRacks || []).map(function (r) {
+            return '<option value="' + escapeHtml(r.code) + '">' + escapeHtml(r.code) + '</option>';
+          }).join('');
+
+          tbody.innerHTML = po.items.map(function (it, idx) {
+            return (
+              '<tr>' +
+              '<td style="text-align:center;">' + (idx + 1) + '</td>' +
+              '<td><strong class="gr-sku">' + escapeHtml(it.sku) + '</strong><br><span class="cell-subtext">' + escapeHtml(it.name) + '</span></td>' +
+              '<td style="text-align:center; font-weight:600;">' + it.qty + ' ' + escapeHtml(it.unit || 'Unit') + '</td>' +
+              '<td><input type="number" class="erp-input gr-qty-passed" min="0" max="' + it.qty + '" value="' + it.qty + '" style="text-align:center;" required /></td>' +
+              '<td><input type="number" class="erp-input gr-qty-hold" min="0" max="' + it.qty + '" value="0" style="text-align:center;" required /></td>' +
+              '<td><select class="erp-select gr-rack">' + rackOptions + '</select></td>' +
+              '</tr>'
+            );
+          }).join('');
+        });
+
+        // Trigger change if there is any PO
+        if (db.supplierPurchaseOrders && db.supplierPurchaseOrders.length > 0) {
+          poSel.value = db.supplierPurchaseOrders[0].id;
+          poSel.dispatchEvent(new Event('change'));
+        }
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var poId = poSel.value;
+          var po = (db.supplierPurchaseOrders || []).find(function (p) { return p.id === poId; });
+          if (!po) {
+            showToast('Pilih PO Supplier yang valid.');
+            return;
+          }
+
+          var grId = 'GR-' + new Date().getFullYear() + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+          var grDate = dateInp.value;
+          var docRef = (document.getElementById('grDeliveryDocNum').value || '').trim();
+          var inspector = (document.getElementById('grInspector').value || '').trim();
+          var notes = (document.getElementById('grQcNotes').value || '').trim();
+
+          tbody.querySelectorAll('tr').forEach(function (tr) {
+            var skuEl = tr.querySelector('.gr-sku');
+            if (!skuEl) return;
+            var sku = skuEl.textContent.trim();
+            var passed = parseInt(tr.querySelector('.gr-qty-passed').value, 10) || 0;
+            var hold = parseInt(tr.querySelector('.gr-qty-hold').value, 10) || 0;
+            var rack = tr.querySelector('.gr-rack').value;
+
+            var inv = (db.inventory || []).find(function (i) { return i.sku === sku; });
+            if (inv) {
+              inv.physical = (inv.physical || 0) + passed + hold;
+              inv.held = (inv.held || 0) + hold;
+              inv.location = rack;
+            } else {
+              db.inventory.push({
+                sku: sku,
+                physical: passed + hold,
+                held: hold,
+                reserved: 0,
+                location: rack
+              });
+            }
+
+            db.stockLedger = db.stockLedger || [];
+            db.stockLedger.unshift({
+              date: grDate,
+              refDoc: grId,
+              sku: sku,
+              type: 'MASUK (GR/QC)',
+              qty: passed + hold,
+              balanceAfter: inv ? inv.physical : (passed + hold),
+              officer: inspector
+            });
+          });
+
+          po.statusPenerimaan = 'Diterima Gudang';
+          po.status = 'Selesai';
+          addAuditLog('GOODS-RECEIPT', grId, 'Menerima barang & uji QC untuk PO ' + po.id + ' (' + docRef + ') oleh ' + inspector);
+          saveDatabase(db);
+          showToast('Goods Receipt ' + grId + ' berhasil disimpan & saldo stok diperbarui!');
+          setTimeout(function () {
+            window.location.href = 'inventory.html#gr';
+          }, 200);
+        });
+      }
+    }
+  };
+
+  var DeliveryCreatePageController = {
+    init: function () {
+      if (!document.getElementById('erpDeliveryCreatePage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var ordSel = document.getElementById('delivOrderSelect');
+      var dateInp = document.getElementById('delivDate');
+      var tbody = document.getElementById('pageDeliveryItemsTbody');
+      var destArea = document.getElementById('delivDestination');
+      var form = document.getElementById('formCreateDeliveryPage');
+
+      if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
+
+      if (ordSel) {
+        var approvedOrders = (db.orders || []).filter(function (o) {
+          return o.statusApproval === 'Disetujui' && o.statusPengiriman !== 'Terkirim Penuh (BAST)';
+        });
+
+        ordSel.innerHTML = '<option value="">-- Pilih Pesanan Pelanggan (SO Approved) --</option>' +
+          approvedOrders.map(function (o) {
+            return '<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.id + ' — ' + o.customerName) + '</option>';
+          }).join('');
+
+        ordSel.addEventListener('change', function () {
+          var ordId = ordSel.value;
+          var ord = (db.orders || []).find(function (o) { return o.id === ordId; });
+          if (!tbody) return;
+          if (!ord) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:16px;">Silakan pilih SO terlebih dahulu.</td></tr>';
+            if (destArea) destArea.value = '';
+            return;
+          }
+
+          var cust = (db.customers || []).find(function (c) { return c.id === ord.customerId; }) || {};
+          if (destArea) destArea.value = cust.address || 'Kawasan Industri, Gudang Penerima';
+
+          tbody.innerHTML = (ord.items || []).map(function (it, idx) {
+            var inv = (db.inventory || []).find(function (i) { return i.sku === it.sku; }) || {};
+            var res = inv.reserved || 0;
+            return (
+              '<tr>' +
+              '<td style="text-align:center;"><input type="checkbox" class="deliv-item-check" checked /></td>' +
+              '<td><strong class="deliv-sku">' + escapeHtml(it.sku) + '</strong><br><span class="cell-subtext">' + escapeHtml(it.name) + '</span></td>' +
+              '<td style="text-align:center;">' + it.qty + '</td>' +
+              '<td style="text-align:center; font-weight:600; color:var(--erp-primary);">' + res + '</td>' +
+              '<td><input type="number" class="erp-input deliv-qty-send" min="1" max="' + it.qty + '" value="' + Math.min(it.qty, Math.max(1, res)) + '" style="text-align:center;" required /></td>' +
+              '<td style="text-align:center;">' + escapeHtml(it.unit || 'Unit') + '</td>' +
+              '</tr>'
+            );
+          }).join('');
+        });
+
+        if (approvedOrders.length > 0) {
+          ordSel.value = approvedOrders[0].id;
+          ordSel.dispatchEvent(new Event('change'));
+        }
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var ordId = ordSel.value;
+          var ord = (db.orders || []).find(function (o) { return o.id === ordId; });
+          if (!ord) {
+            showToast('Pilih pesanan yang valid.');
+            return;
+          }
+
+          var sjId = 'SJ-' + new Date().getFullYear() + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+          var delivDate = dateInp.value;
+          var courier = (document.getElementById('delivCourier').value || '').trim();
+          var driver = (document.getElementById('delivDriver').value || '').trim();
+          var plate = (document.getElementById('delivVehiclePlate').value || '').trim();
+          var dest = (destArea ? destArea.value : '').trim();
+          var notes = (document.getElementById('delivNotes').value || '').trim();
+
+          var sentItems = [];
+          tbody.querySelectorAll('tr').forEach(function (tr) {
+            var check = tr.querySelector('.deliv-item-check');
+            if (check && check.checked) {
+              var sku = tr.querySelector('.deliv-sku').textContent.trim();
+              var qty = parseInt(tr.querySelector('.deliv-qty-send').value, 10) || 0;
+              var prod = (db.products || []).find(function (p) { return p.sku === sku; }) || {};
+
+              var inv = (db.inventory || []).find(function (i) { return i.sku === sku; });
+              if (inv) {
+                inv.physical = Math.max(0, (inv.physical || 0) - qty);
+                inv.reserved = Math.max(0, (inv.reserved || 0) - qty);
+              }
+
+              db.stockLedger = db.stockLedger || [];
+              db.stockLedger.unshift({
+                date: delivDate,
+                refDoc: sjId,
+                sku: sku,
+                type: 'KELUAR (SJ)',
+                qty: qty,
+                balanceAfter: inv ? inv.physical : 0,
+                officer: driver + ' (' + plate + ')'
+              });
+
+              sentItems.push({
+                sku: sku,
+                name: prod.name || sku,
+                qty: qty,
+                unit: prod.unit || 'Unit'
+              });
+            }
+          });
+
+          if (sentItems.length === 0) {
+            showToast('Pilih minimal 1 item untuk dikirim.');
+            return;
+          }
+
+          var newDelivery = {
+            id: sjId,
+            orderId: ord.id,
+            customerName: ord.customerName,
+            deliveryDate: delivDate,
+            courier: courier,
+            driver: driver,
+            vehiclePlate: plate,
+            recipientPic: ord.customerName,
+            destination: dest,
+            status: 'Sedang Dikirim',
+            items: sentItems,
+            notes: notes
+          };
+
+          db.deliveries = db.deliveries || [];
+          db.deliveries.unshift(newDelivery);
+
+          ord.statusPengiriman = 'Terkirim Sebagian';
+          addAuditLog('DELIVERY-CREATE', sjId, 'Menerbitkan Surat Jalan ' + sjId + ' untuk ' + ord.customerName + ' armada ' + plate);
+          saveDatabase(db);
+          showToast('Surat Jalan ' + sjId + ' berhasil diterbitkan & stok fisik terpotong!');
+          setTimeout(function () {
+            window.location.href = 'delivery.html';
+          }, 200);
+        });
+      }
+    }
+  };
+
+  var DeliveryBastPageController = {
+    init: function () {
+      if (!document.getElementById('erpDeliveryBastPage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var params = new URLSearchParams(window.location.search);
+      var delivId = params.get('id');
+      var deliv = (db.deliveries || []).find(function (d) { return d.id === delivId; });
+
+      var docIdEl = document.getElementById('bastDocId');
+      var custEl = document.getElementById('bastCustomerName');
+      var courierEl = document.getElementById('bastCourierVehicle');
+      var dateInp = document.getElementById('bastReceivedDate');
+      var form = document.getElementById('formUploadBastPage');
+
+      if (!deliv) {
+        showToast('Dokumen pengiriman tidak ditemukan.');
+        return;
+      }
+
+      if (docIdEl) docIdEl.textContent = deliv.id;
+      if (custEl) custEl.textContent = deliv.customerName;
+      if (courierEl) courierEl.textContent = (deliv.driver || deliv.courier || '-') + ' (' + (deliv.vehiclePlate || '-') + ')';
+      if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var receiver = (document.getElementById('bastReceiverName').value || '').trim();
+          var bastDate = dateInp.value;
+          var fileEl = document.getElementById('bastFile');
+          var fileName = (fileEl && fileEl.files && fileEl.files.length > 0) ? fileEl.files[0].name : ('BAST-' + deliv.id + '-Signed.pdf');
+
+          deliv.status = 'Terkirim & BAST';
+          deliv.bastFileName = fileName;
+          deliv.recipientPic = receiver;
+
+          var ord = (db.orders || []).find(function (o) { return o.id === deliv.orderId; });
+          if (ord) {
+            ord.statusPengiriman = 'Terkirim Penuh (BAST)';
+            if (ord.statusPenagihan === 'Lunas') {
+              ord.statusOrder = 'Selesai';
+            }
+          }
+
+          db.archives = db.archives || [];
+          db.archives.unshift({
+            id: 'ARC-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9000) + 1000),
+            docType: 'Surat Jalan & BAST',
+            docNumber: deliv.id,
+            refId: deliv.orderId,
+            partner: deliv.customerName,
+            date: bastDate,
+            fileName: fileName,
+            uploadedBy: 'Budi Santoso (Kepala Gudang)'
+          });
+
+          addAuditLog('BAST-UPLOAD', deliv.id, 'Verifikasi BAST fisik ' + deliv.id + ' penerima ' + receiver);
+          saveDatabase(db);
+          showToast('BAST untuk ' + deliv.id + ' berhasil diverifikasi & disimpan!');
+          setTimeout(function () {
+            window.location.href = 'delivery.html';
+          }, 200);
+        });
+      }
+    }
+  };
+
+  var DeliveryPrintPageController = {
+    init: function () {
+      if (!document.getElementById('erpDeliveryPrintPage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var params = new URLSearchParams(window.location.search);
+      var delivId = params.get('id');
+      var container = document.getElementById('deliveryPrintContainer');
+      if (!container) return;
+
+      var deliv = (db.deliveries || []).find(function (d) { return d.id === delivId; });
+      if (!deliv) {
+        container.innerHTML = '<p>Dokumen Surat Jalan tidak ditemukan.</p><a href="delivery.html" class="btn-erp btn-erp-primary">Kembali</a>';
+        return;
+      }
+
+      var ord = (db.orders || []).find(function (o) { return o.id === deliv.orderId; }) || {};
+      var cust = (db.customers || []).find(function (c) { return c.id === ord.customerId; }) || {};
+
+      var itemsRows = (deliv.items || []).map(function (it, idx) {
+        return (
+          '<tr>' +
+          '<td style="text-align:center;">' + (idx + 1) + '</td>' +
+          '<td><strong>' + escapeHtml(it.sku) + '</strong></td>' +
+          '<td>' + escapeHtml(it.name) + '</td>' +
+          '<td style="text-align:center; font-weight:700;">' + it.qty + ' ' + escapeHtml(it.unit || 'Unit') + '</td>' +
+          '<td>Kondisi Baru, Segel Utuh & Bebas Cacat</td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      container.innerHTML =
+        '<div class="erp-official-doc">' +
+        '  <div class="erp-doc-header">' +
+        '    <div class="erp-doc-brand">' +
+        '      <div>' +
+        '        <div class="erp-doc-company-name">PT NUSANTARA PUNCAK PERKASA</div>' +
+        '        <div class="erp-doc-company-info">Solusi Daya Industri B2B Terpadu: Baterai, UPS, Stabilizer & Solar Power</div>' +
+        '        <div class="erp-doc-company-info">' + escapeHtml(db.meta.address) + ' • Telp: (021) 8834-9021</div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="erp-doc-title-block">' +
+        '      <div class="erp-doc-title">SURAT JALAN PENGIRIMAN</div>' +
+        '      <div class="erp-doc-number">' + escapeHtml(deliv.id) + '</div>' +
+        '      <div class="cell-subtext">Tanggal Kirim: ' + escapeHtml(deliv.deliveryDate) + '</div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="erp-doc-meta-grid">' +
+        '    <div class="erp-doc-meta-col">' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Tujuan Pengiriman:</span><strong class="erp-doc-meta-val">' + escapeHtml(deliv.customerName) + '</strong></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Alamat Proyek/Site:</span><span class="erp-doc-meta-val">' + escapeHtml(deliv.destination || cust.address || 'Kawasan Industri') + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">PIC Penerima Lokasi:</span><span class="erp-doc-meta-val">' + escapeHtml(deliv.recipientPic || cust.pic || '-') + '</span></div>' +
+        '    </div>' +
+        '    <div class="erp-doc-meta-col">' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Referensi SO:</span><span class="erp-doc-meta-val cell-code">' + escapeHtml(deliv.orderId) + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">No. PO Klien:</span><span class="erp-doc-meta-val cell-code">' + escapeHtml(ord.clientPoNumber || '-') + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Pengemudi / Nopol:</span><span class="erp-doc-meta-val">' + escapeHtml((deliv.driver || deliv.courier) + ' • ' + (deliv.vehiclePlate || '')) + '</span></div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="erp-doc-table-wrap">' +
+        '    <table class="erp-doc-table">' +
+        '      <thead>' +
+        '        <tr>' +
+        '          <th style="width:40px; text-align:center;">No</th>' +
+        '          <th style="width:140px;">Kode SKU</th>' +
+        '          <th>Deskripsi Spesifikasi Barang</th>' +
+        '          <th style="width:110px; text-align:center;">Kuantitas Fisik</th>' +
+        '          <th style="width:200px;">Keterangan Inspeksi</th>' +
+        '        </tr>' +
+        '      </thead>' +
+        '      <tbody>' + itemsRows + '</tbody>' +
+        '    </table>' +
+        '  </div>' +
+        '  <div class="erp-doc-signatures-4">' +
+        '    <div class="erp-signature-box"><div class="erp-signature-role">Dibuat Oleh (Admin/Sales)</div><div class="erp-signature-space"></div><div class="erp-signature-signer">Nadia Pramesti<br><span class="cell-subtext-sm">Sales &amp; Operasional</span></div></div>' +
+        '    <div class="erp-signature-box"><div class="erp-signature-role">Gudang Pengirim (Checker)</div><div class="erp-signature-space"></div><div class="erp-signature-signer">Budi Santoso<br><span class="cell-subtext-sm">Kepala Gudang NPP</span></div></div>' +
+        '    <div class="erp-signature-box"><div class="erp-signature-role">Pengemudi / Kurir</div><div class="erp-signature-space"></div><div class="erp-signature-signer">' + escapeHtml(deliv.driver || deliv.courier || 'Kurir Logistik') + '<br><span class="cell-subtext-sm">Ekspedisi Logistik</span></div></div>' +
+        '    <div class="erp-signature-box"><div class="erp-signature-role">Diterima Lengkap (Pelanggan)</div><div class="erp-signature-space"></div><div class="erp-signature-signer">' + escapeHtml(deliv.recipientPic || deliv.customerName) + '<br><span class="cell-subtext-sm">Tanda Tangan &amp; Cap Basah</span></div></div>' +
+        '  </div>' +
+        '</div>';
+    }
+  };
+
+  var BillingCreatePageController = {
+    init: function () {
+      if (!document.getElementById('erpBillingCreatePage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var ordSel = document.getElementById('invOrderSelect');
+      var typeSel = document.getElementById('invBillingType');
+      var dateInp = document.getElementById('invDate');
+      var dueInp = document.getElementById('invDueDate');
+      var form = document.getElementById('formCreateInvoicePage');
+
+      var today = new Date().toISOString().split('T')[0];
+      var due = new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0];
+      if (dateInp) dateInp.value = today;
+      if (dueInp) dueInp.value = due;
+
+      var updateCalc = function () {
+        var ordId = ordSel ? ordSel.value : '';
+        var ord = (db.orders || []).find(function (o) { return o.id === ordId; });
+        var bType = typeSel ? typeSel.value : 'Pelunasan 100%';
+
+        var dpp = 0;
+        if (ord) {
+          var ratio = 1;
+          if (bType.indexOf('30%') !== -1) ratio = 0.3;
+          else if (bType.indexOf('50%') !== -1) ratio = 0.5;
+          else if (bType.indexOf('20%') !== -1) ratio = 0.2;
+          dpp = Math.round((ord.dpp || 0) * ratio);
+        }
+
+        var ppn = Math.round(dpp * 0.11);
+        var grand = dpp + ppn;
+
+        var dppEl = document.getElementById('invCalcDpp');
+        var ppnEl = document.getElementById('invCalcPpn');
+        var totalEl = document.getElementById('invCalcTotal');
+        if (dppEl) dppEl.textContent = formatRupiah(dpp);
+        if (ppnEl) ppnEl.textContent = formatRupiah(ppn);
+        if (totalEl) totalEl.textContent = formatRupiah(grand);
+      };
+
+      if (ordSel) {
+        var unbilledOrders = (db.orders || []).filter(function (o) {
+          return o.statusApproval === 'Disetujui' && o.statusPenagihan !== 'Lunas';
+        });
+
+        ordSel.innerHTML = '<option value="">-- Pilih Pesanan Pelanggan (SO Approved) --</option>' +
+          unbilledOrders.map(function (o) {
+            return '<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.id + ' — ' + o.customerName + ' (' + formatRupiah(o.total) + ')') + '</option>';
+          }).join('');
+
+        ordSel.addEventListener('change', updateCalc);
+        if (typeSel) typeSel.addEventListener('change', updateCalc);
+
+        if (unbilledOrders.length > 0) {
+          ordSel.value = unbilledOrders[0].id;
+          updateCalc();
+        }
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var ordId = ordSel.value;
+          var ord = (db.orders || []).find(function (o) { return o.id === ordId; });
+          if (!ord) {
+            showToast('Pilih pesanan yang valid.');
+            return;
+          }
+
+          var bType = typeSel.value;
+          var invDate = dateInp.value;
+          var dueDate = dueInp.value;
+          var notes = (document.getElementById('invNotes').value || '').trim();
+
+          var ratio = 1;
+          if (bType.indexOf('30%') !== -1) ratio = 0.3;
+          else if (bType.indexOf('50%') !== -1) ratio = 0.5;
+          else if (bType.indexOf('20%') !== -1) ratio = 0.2;
+
+          var dpp = Math.round((ord.dpp || 0) * ratio);
+          var ppn = Math.round(dpp * 0.11);
+          var total = dpp + ppn;
+
+          var invId = 'INV-' + new Date().getFullYear() + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+
+          var newInv = {
+            id: invId,
+            orderId: ord.id,
+            customerName: ord.customerName,
+            clientPoNumber: ord.clientPoNumber,
+            invoiceDate: invDate,
+            dueDate: dueDate,
+            billingType: bType,
+            bankAccount: 'Bank Central Asia (BCA) 521-098-7741',
+            dpp: dpp,
+            ppn: ppn,
+            total: total,
+            paidAmount: 0,
+            status: 'Belum Dibayar',
+            items: ord.items || [],
+            notes: notes
+          };
+
+          db.invoices = db.invoices || [];
+          db.invoices.unshift(newInv);
+
+          ord.statusPenagihan = (ratio === 1) ? 'Invoice Terbit' : 'Ditagih Sebagian';
+          addAuditLog('INVOICE-CREATE', invId, 'Menerbitkan faktur komersial ' + invId + ' (' + bType + ') untuk ' + ord.customerName + ' senilai ' + formatRupiah(total));
+          saveDatabase(db);
+          showToast('Faktur Penjualan ' + invId + ' berhasil diterbitkan!');
+          setTimeout(function () {
+            window.location.href = 'billing.html';
+          }, 200);
+        });
+      }
+    }
+  };
+
+  var BillingPaymentPageController = {
+    init: function () {
+      if (!document.getElementById('erpBillingPaymentPage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var params = new URLSearchParams(window.location.search);
+      var invId = params.get('id');
+      var inv = (db.invoices || []).find(function (i) { return i.id === invId; });
+
+      var invNoEl = document.getElementById('payInvNumber');
+      var custEl = document.getElementById('payCustomerName');
+      var totalEl = document.getElementById('payInvoiceTotal');
+      var amountInp = document.getElementById('payAmount');
+      var dateInp = document.getElementById('payDate');
+      var form = document.getElementById('formRecordPaymentPage');
+
+      if (!inv) {
+        showToast('Faktur tagihan tidak ditemukan.');
+        return;
+      }
+
+      var remaining = Math.max(0, (inv.total || 0) - (inv.paidAmount || 0));
+
+      if (invNoEl) invNoEl.textContent = inv.id;
+      if (custEl) custEl.textContent = inv.customerName;
+      if (totalEl) totalEl.textContent = formatRupiah(inv.total) + ' (Sisa: ' + formatRupiah(remaining) + ')';
+      if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
+      if (amountInp) amountInp.value = remaining;
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var payAmount = parseFloat(amountInp.value) || 0;
+          var payDate = dateInp.value;
+          var bank = document.getElementById('payBank').value;
+          var ref = (document.getElementById('payRefNumber').value || '').trim();
+
+          inv.paidAmount = Math.min(inv.total, (inv.paidAmount || 0) + payAmount);
+          if (inv.paidAmount >= inv.total) {
+            inv.status = 'Lunas';
+          } else {
+            inv.status = 'Dibayar Parsial';
+          }
+
+          var ord = (db.orders || []).find(function (o) { return o.id === inv.orderId; });
+          if (ord) {
+            if (inv.status === 'Lunas') {
+              ord.statusPenagihan = 'Lunas';
+              ord.statusPembayaran = 'Lunas';
+              if (ord.statusPengiriman === 'Terkirim Penuh (BAST)') {
+                ord.statusOrder = 'Selesai';
+              }
+            } else {
+              ord.statusPembayaran = 'Dibayar Sebagian';
+            }
+          }
+
+          addAuditLog('PAYMENT-RECORD', inv.id, 'Menerima pembayaran ' + formatRupiah(payAmount) + ' via ' + bank + ' (' + ref + ')');
+          saveDatabase(db);
+          showToast('Pembayaran ' + formatRupiah(payAmount) + ' berhasil dibukukan!');
+          setTimeout(function () {
+            window.location.href = 'billing.html';
+          }, 200);
+        });
+      }
+    }
+  };
+
+  var BillingPrintPageController = {
+    init: function () {
+      if (!document.getElementById('erpBillingPrintPage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      var db = window.NPP_ERP_DATA;
+      var params = new URLSearchParams(window.location.search);
+      var invId = params.get('id');
+      var container = document.getElementById('billingPrintContainer');
+      if (!container) return;
+
+      var inv = (db.invoices || []).find(function (i) { return i.id === invId; });
+      if (!inv) {
+        container.innerHTML = '<p>Dokumen Faktur Penjualan tidak ditemukan.</p><a href="billing.html" class="btn-erp btn-erp-primary">Kembali</a>';
+        return;
+      }
+
+      var ord = (db.orders || []).find(function (o) { return o.id === inv.orderId; }) || {};
+      var cust = (db.customers || []).find(function (c) { return c.id === ord.customerId; }) || {};
+
+      var itemsRows = (inv.items || ord.items || []).map(function (it, idx) {
+        var price = it.price || 0;
+        var sub = it.subtotal || (it.qty * price);
+        return (
+          '<tr>' +
+          '<td style="text-align:center;">' + (idx + 1) + '</td>' +
+          '<td><strong>' + escapeHtml(it.sku) + '</strong></td>' +
+          '<td>' + escapeHtml(it.name) + '</td>' +
+          '<td style="text-align:center; font-weight:700;">' + it.qty + ' ' + escapeHtml(it.unit || 'Unit') + '</td>' +
+          '<td style="text-align:right;">' + formatRupiah(price) + '</td>' +
+          '<td style="text-align:right; font-weight:700;">' + formatRupiah(sub) + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      container.innerHTML =
+        '<div class="erp-official-doc">' +
+        '  <div class="erp-doc-header">' +
+        '    <div class="erp-doc-brand">' +
+        '      <div>' +
+        '        <div class="erp-doc-company-name">PT NUSANTARA PUNCAK PERKASA</div>' +
+        '        <div class="erp-doc-company-info">Solusi Daya Industri B2B Terpadu: Battery, UPS, Stabilizer & Inverter</div>' +
+        '        <div class="erp-doc-company-info">' + escapeHtml(db.meta.address) + ' • NPWP: ' + escapeHtml(db.meta.npwp) + ' • Telp: (021) 8834-9021</div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="erp-doc-title-block">' +
+        '      <div class="erp-doc-title">FAKTUR PENJUALAN (COMMERCIAL INVOICE)</div>' +
+        '      <div class="erp-doc-number">' + escapeHtml(inv.id) + '</div>' +
+        '      <div class="cell-subtext">Tanggal Terbit: ' + escapeHtml(inv.invoiceDate) + '</div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="erp-doc-meta-grid">' +
+        '    <div class="erp-doc-meta-col">' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Ditagihkan Kepada:</span><strong class="erp-doc-meta-val">' + escapeHtml(inv.customerName) + '</strong></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">NPWP Pelanggan:</span><span class="erp-doc-meta-val cell-code">' + escapeHtml(cust.npwp || '01.345.678.9-012.000') + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Alamat Penagihan:</span><span class="erp-doc-meta-val">' + escapeHtml(cust.address || 'Kawasan Industri') + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">PIC Pembelian:</span><span class="erp-doc-meta-val">' + escapeHtml(cust.pic || '-') + '</span></div>' +
+        '    </div>' +
+        '    <div class="erp-doc-meta-col">' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">No. PO Klien:</span><span class="erp-doc-meta-val cell-code">' + escapeHtml(inv.clientPoNumber || ord.clientPoNumber || '-') + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Referensi SO:</span><span class="erp-doc-meta-val cell-code">' + escapeHtml(inv.orderId) + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Syarat Pembayaran:</span><span class="erp-doc-meta-val">' + escapeHtml(cust.paymentTerm || ord.paymentTerm || 'Net 30') + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Jatuh Tempo:</span><strong class="erp-doc-meta-val" style="color:var(--status-danger-text);">' + escapeHtml(inv.dueDate) + '</strong></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Termin Penagihan:</span><span class="erp-doc-meta-val">' + escapeHtml(inv.billingType || 'Pelunasan 100%') + '</span></div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="erp-doc-table-wrap">' +
+        '    <table class="erp-doc-table">' +
+        '      <thead>' +
+        '        <tr>' +
+        '          <th style="width:40px; text-align:center;">No</th>' +
+        '          <th style="width:140px;">Kode SKU</th>' +
+        '          <th>Deskripsi Spesifikasi Barang</th>' +
+        '          <th style="width:100px; text-align:center;">Kuantitas</th>' +
+        '          <th style="width:140px; text-align:right;">Harga Satuan B2B</th>' +
+        '          <th style="width:150px; text-align:right;">Subtotal DPP</th>' +
+        '        </tr>' +
+        '      </thead>' +
+        '      <tbody>' + itemsRows + '</tbody>' +
+        '    </table>' +
+        '  </div>' +
+        '  <div class="erp-doc-calc-grid">' +
+        '    <div class="erp-doc-calc-box">' +
+        '      <div class="erp-doc-calc-row"><span>Dasar Pengenaan Pajak (DPP):</span><strong>' + formatRupiah(inv.dpp) + '</strong></div>' +
+        '      <div class="erp-doc-calc-row"><span>Pajak Pertambahan Nilai (PPN 11%):</span><strong>' + formatRupiah(inv.ppn) + '</strong></div>' +
+        '      <div class="erp-doc-calc-row-grand"><span>TOTAL TAGIHAN:</span><strong>' + formatRupiah(inv.total) + '</strong></div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="erp-doc-terbilang-box">' +
+        '    Terbilang: <strong>## ' + escapeHtml(terbilang(inv.total)) + ' ##</strong>' +
+        '  </div>' +
+        '  <div class="erp-doc-bank-box">' +
+        '    <div class="erp-doc-bank-title">Instruksi Pembayaran Transfer Bank:</div>' +
+        '    <div class="erp-doc-bank-list">' +
+        '      <div>1. <strong>Bank Central Asia (BCA)</strong> — No. Rekening: <strong>521-098-7741</strong> a/n PT Nusantara Puncak Perkasa (KCU Bekasi)</div>' +
+        '      <div>2. <strong>Bank Mandiri</strong> — No. Rekening: <strong>156-00-0988234-5</strong> a/n PT Nusantara Puncak Perkasa (KCP Bekasi Juanda)</div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="erp-doc-signatures-2">' +
+        '    <div class="erp-signature-box"><div class="erp-signature-role">Diterima &amp; Disetujui Oleh (Pelanggan)</div><div class="erp-signature-space"></div><div class="erp-signature-signer">' + escapeHtml(inv.customerName) + '<br><span class="cell-subtext-sm">(Tanda Tangan, Nama Jelas &amp; Cap Perusahaan)</span></div></div>' +
+        '    <div class="erp-signature-box"><div class="erp-signature-role">Hormat Kami, PT Nusantara Puncak Perkasa</div><div class="erp-signature-space"><div class="erp-doc-digital-stamp">PT NPP<br>FINANCE<br>OFFICIAL</div></div><div class="erp-signature-signer">Siti Rahmawati / Ir. Darmawan Putra<br><span class="cell-subtext-sm">Finance &amp; Direktur Operasional</span></div></div>' +
+        '  </div>' +
+        '</div>';
+    }
+  };
+
+  /* ==========================================================================
      15. EKSPOR API GLOBAL & AUTO-INIT SAAT DOM READY
      ========================================================================== */
   window.NPP_ERP = {
@@ -5905,6 +7392,21 @@
     ProcurementController: ProcurementController,
     DeliveryController: DeliveryController,
     BillingController: BillingController,
+    OrderCreatePageController: OrderCreatePageController,
+    OrderDetailPageController: OrderDetailPageController,
+    MasterCustomerCreatePageController: MasterCustomerCreatePageController,
+    MasterSupplierCreatePageController: MasterSupplierCreatePageController,
+    MasterProductCreatePageController: MasterProductCreatePageController,
+    MasterRackCreatePageController: MasterRackCreatePageController,
+    ProcurementCreatePageController: ProcurementCreatePageController,
+    ProcurementDetailPageController: ProcurementDetailPageController,
+    InventoryGrCreatePageController: InventoryGrCreatePageController,
+    DeliveryCreatePageController: DeliveryCreatePageController,
+    DeliveryBastPageController: DeliveryBastPageController,
+    DeliveryPrintPageController: DeliveryPrintPageController,
+    BillingCreatePageController: BillingCreatePageController,
+    BillingPaymentPageController: BillingPaymentPageController,
+    BillingPrintPageController: BillingPrintPageController,
     saveDatabase: saveDatabase,
     resetDatabase: resetDatabase,
     formatRupiah: formatRupiah,
@@ -5925,5 +7427,20 @@
     ProcurementController.init();
     DeliveryController.init();
     BillingController.init();
+    OrderCreatePageController.init();
+    OrderDetailPageController.init();
+    MasterCustomerCreatePageController.init();
+    MasterSupplierCreatePageController.init();
+    MasterProductCreatePageController.init();
+    MasterRackCreatePageController.init();
+    ProcurementCreatePageController.init();
+    ProcurementDetailPageController.init();
+    InventoryGrCreatePageController.init();
+    DeliveryCreatePageController.init();
+    DeliveryBastPageController.init();
+    DeliveryPrintPageController.init();
+    BillingCreatePageController.init();
+    BillingPaymentPageController.init();
+    BillingPrintPageController.init();
   });
 })();
