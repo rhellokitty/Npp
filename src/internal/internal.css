@@ -1129,16 +1129,24 @@ img {
   align-items: center;
   justify-content: flex-end;
   background-color: transparent;
-  padding: 14px 2px 2px;
+  padding: 0 4px;
+  margin-top: -10px;
+}
+
+.erp-pagination.erp-tab-pane.tab-pane-active {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
 }
 
 .erp-pagination-controls {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background-color: var(--erp-bg-page);
+  background-color: var(--erp-bg-surface);
   padding: 4px;
-  border-radius: 11px;
+  border-radius: 12px;
 }
 
 .erp-page-btn {
@@ -1165,7 +1173,7 @@ img {
 }
 
 .erp-page-btn:hover:not(:disabled):not(.erp-page-btn-active) {
-  background-color: var(--erp-bg-surface);
+  background-color: var(--erp-bg-page);
   color: var(--erp-heading);
 }
 
@@ -1891,8 +1899,10 @@ img {
     font-size: 1.2rem;
   }
 
-  .erp-pagination {
-    justify-content: center;
+  .erp-pagination,
+  .erp-pagination.erp-tab-pane.tab-pane-active {
+    justify-content: center !important;
+    margin-top: -6px;
   }
 }
 
