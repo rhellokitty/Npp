@@ -359,17 +359,14 @@ img {
 }
 
 .erp-breadcrumb-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--erp-navy);
+  display: none !important;
 }
 
 .erp-breadcrumb-title {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--erp-heading);
+  letter-spacing: -0.015em;
 }
 
 .erp-topbar-right {
@@ -423,14 +420,7 @@ img {
    3. ROLE BANNER & S-CURVE INVERTED BORDER RADIUS HIGHLIGHT CARD
    ========================================================================== */
 .erp-role-banner {
-  background-color: var(--erp-bg-surface);
-  border-radius: var(--radius-panel);
-  padding: 16px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+  display: none !important;
 }
 
 .erp-role-banner-info {
@@ -803,17 +793,10 @@ img {
   gap: 4px;
 }
 
-.erp-section-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--erp-navy);
-}
-
-.erp-section-desc {
-  font-size: 0.8rem;
-  color: var(--erp-text);
+.erp-section-eyebrow,
+.erp-section-desc,
+.erp-panel-subtitle {
+  display: none !important;
 }
 
 /* --- FILTER & SEARCH TOOLBAR --- */

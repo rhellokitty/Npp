@@ -150,55 +150,26 @@
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
-          <div>
-            <h1 class="erp-page-title">6. Penagihan &amp; Invoice Resmi (PPN 11%)</h1>
-            <p class="erp-page-desc">Penerbitan Commercial Invoice B2B (DP, Termin, Pelunasan), rekonsiliasi pembayaran rekening BCA &amp; Mandiri, serta kontrol piutang jatuh tempo</p>
+          <div class="erp-breadcrumb">
+            <span class="erp-breadcrumb-title">Penagihan &amp; Invoice Resmi</span>
           </div>
         </div>
 
         <div class="erp-topbar-right">
-          <!-- Live Status Keuangan -->
-          <div class="erp-topbar-pill no-print">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="5" width="20" height="14" rx="2" />
-              <line x1="2" y1="10" x2="22" y2="10" />
-            </svg>
-            <span>Finance &amp; AR Aktif</span>
-          </div>
-
-          <!-- Interactive Role Switcher (RBAC) -->
-          <div class="erp-role-box no-print">
-            <label for="erpRoleSwitcher" class="erp-role-label">Simulasi Peran:</label>
-            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Peran Pengguna">
-              <option value="Administrator">Administrator (Akses Penuh)</option>
-              <option value="Sales / Operasional">Sales & PO</option>
-              <option value="Purchasing">Purchasing</option>
-              <option value="Gudang">Stok Gudang (Terkunci Finansial)</option>
-              <option value="Finance">Finance & Invoice (PIC Utama)</option>
-              <option value="Pimpinan / Approver">Approver</option>
+          <!-- Interactive Role Switcher (6 Peran HLD) -->
+          <div class="erp-role-switcher-wrap">
+            <span class="erp-role-switcher-label">Simulasi Peran (RBAC):</span>
+            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
+              <option value="Administrator">1. Administrator (Full Access)</option>
+              <option value="Sales / Operasional">2. Sales & PO (Operasional)</option>
+              <option value="Purchasing">3. Purchasing (PO Supplier)</option>
+              <option value="Gudang">4. Stok Gudang (Tanpa Harga/HPP)</option>
+              <option value="Finance">5. Finance & Invoice (Keuangan)</option>
+              <option value="Pimpinan / Approver">6. Approver (Direksi / Otorisasi)</option>
             </select>
-          </div>
-
-          <!-- Active User Badge -->
-          <div class="erp-user-badge no-print">
-            <span class="erp-user-avatar">SR</span>
-            <div class="erp-user-info">
-              <span class="erp-user-role-tag" id="erpActiveRoleTag">Finance &amp; AR</span>
-            </div>
           </div>
         </div>
       </header>
-
-      <!-- ROLE BANNER DENGAN KETERANGAN HAK AKSES -->
-      <section class="erp-role-banner no-print">
-        <div class="erp-role-banner-content">
-          <div class="erp-role-banner-text">
-            <strong id="erpRoleBannerTitle">Peran Aktif: Finance, Penagihan &amp; Kontrol Piutang</strong>
-            <p id="erpRoleBannerDesc">Fokus kerja: Penerbitan Invoice resmi (DP 30%, Termin 50%, Pelunasan 100% + PPN 11%), rekonsiliasi transfer bank escrow BCA &amp; Mandiri, serta penagihan invoice jatuh tempo.</p>
-          </div>
-          <span class="erp-role-chip" id="erpRoleRestrictionChip">Finance &amp; Administrator Berhak Menerbitkan Tagihan</span>
-        </div>
-      </section>
 
       <!-- KONTEN UTAMA MODUL PENAGIHAN -->
       <div class="erp-content">
@@ -254,8 +225,7 @@
           <section class="erp-section-panel">
             <div class="erp-panel-header">
               <div>
-                <h2 class="section-heading">Daftar Faktur Penjualan (Commercial Invoice) &amp; Pelunasan</h2>
-                <p class="erp-panel-subtitle">Dokumen penagihan resmi dengan kalkulasi DPP, PPN 11%, format terbilang rupiah, dan rekonsiliasi transfer bank</p>
+                <h2 class="section-heading">Daftar Faktur Penjualan (Commercial Invoice)</h2>
               </div>
               <div class="erp-header-actions no-print">
                 <button type="button" class="btn btn-primary" id="btnOpenCreateInvoice">

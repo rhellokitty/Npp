@@ -150,55 +150,26 @@
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
-          <div>
-            <h1 class="erp-page-title">5. Pengiriman & Surat Jalan (BAST)</h1>
-            <p class="erp-page-desc">Penerbitan Surat Jalan resmi, alokasi armada ekspedisi, pemotongan stok fisik secara atomik, dan verifikasi Berita Acara Serah Terima</p>
+          <div class="erp-breadcrumb">
+            <span class="erp-breadcrumb-title">Pengiriman & Surat Jalan (BAST)</span>
           </div>
         </div>
 
         <div class="erp-topbar-right">
-          <!-- Live Status Jam & Tanggal -->
-          <div class="erp-topbar-pill no-print">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-            <span id="erpCurrentTimeText">Logistik Aktif</span>
-          </div>
-
-          <!-- Interactive Role Switcher (RBAC) -->
-          <div class="erp-role-box no-print">
-            <label for="erpRoleSwitcher" class="erp-role-label">Simulasi Peran:</label>
-            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Peran Pengguna">
-              <option value="Administrator">Administrator (Akses Penuh)</option>
-              <option value="Sales / Operasional">Sales & PO</option>
-              <option value="Purchasing">Purchasing</option>
-              <option value="Gudang">Stok Gudang (PIC Surat Jalan)</option>
-              <option value="Finance">Finance & Invoice</option>
-              <option value="Pimpinan / Approver">Approver</option>
+          <!-- Interactive Role Switcher (6 Peran HLD) -->
+          <div class="erp-role-switcher-wrap">
+            <span class="erp-role-switcher-label">Simulasi Peran (RBAC):</span>
+            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
+              <option value="Administrator">1. Administrator (Full Access)</option>
+              <option value="Sales / Operasional">2. Sales & PO (Operasional)</option>
+              <option value="Purchasing">3. Purchasing (PO Supplier)</option>
+              <option value="Gudang">4. Stok Gudang (Tanpa Harga/HPP)</option>
+              <option value="Finance">5. Finance & Invoice (Keuangan)</option>
+              <option value="Pimpinan / Approver">6. Approver (Direksi / Otorisasi)</option>
             </select>
-          </div>
-
-          <!-- Active User Badge -->
-          <div class="erp-user-badge no-print">
-            <span class="erp-user-avatar">NP</span>
-            <div class="erp-user-info">
-              <span class="erp-user-role-tag" id="erpActiveRoleTag">Administrator</span>
-            </div>
           </div>
         </div>
       </header>
-
-      <!-- ROLE BANNER DENGAN KETERANGAN HAK AKSES -->
-      <section class="erp-role-banner no-print">
-        <div class="erp-role-banner-content">
-          <div class="erp-role-banner-text">
-            <strong id="erpRoleBannerTitle">Peran Aktif: Kontrol Gudang & Logistik Pengiriman</strong>
-            <p id="erpRoleBannerDesc">Fokus kerja: Memilih PO Pelanggan yang telah disetujui, mencetak Surat Jalan resmi 4 kolom tanda tangan (tanpa harga), memotong stok fisik secara atomik, dan mengarsipkan berkas BAST.</p>
-          </div>
-          <span class="erp-role-chip" id="erpRoleRestrictionChip">Gudang & Administrator Berhak Terbitkan Surat Jalan</span>
-        </div>
-      </section>
 
       <!-- KONTEN UTAMA MODUL PENGIRIMAN -->
       <div class="erp-content">
@@ -237,8 +208,7 @@
         <section class="erp-section-panel">
           <div class="erp-panel-header">
             <div>
-              <h2 class="section-heading">Daftar Pengiriman Fisik & Berita Acara Serah Terima (BAST)</h2>
-              <p class="erp-panel-subtitle">Monitoring status logistik B2B, armada kurir, dan berkas fisik bukti penerimaan barang</p>
+              <h2 class="section-heading">Daftar Pengiriman Fisik (Surat Jalan & BAST)</h2>
             </div>
             <div class="erp-header-actions no-print">
               <button type="button" class="btn btn-primary" id="btnOpenCreateDelivery">

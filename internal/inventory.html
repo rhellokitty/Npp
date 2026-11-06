@@ -152,8 +152,7 @@
             </svg>
           </button>
           <div class="erp-breadcrumb">
-            <span class="erp-breadcrumb-eyebrow">NPP HLD 001 • Modul 4 Gudang & QC</span>
-            <span class="erp-breadcrumb-title">Kontrol Stok Gudang (5 Saldo), Buku Besar Mutasi & Penerimaan QC</span>
+            <span class="erp-breadcrumb-title">Stok Gudang (5 Saldo)</span>
           </div>
         </div>
 
@@ -174,22 +173,6 @@
 
       <!-- KONTEN UTAMA INVENTORI & GUDANG -->
       <main class="erp-content">
-
-        <!-- BANNER STATUS PERAN AKTIF -->
-        <section class="erp-role-banner" aria-label="Informasi Peran Aktif">
-          <div class="erp-role-banner-info">
-            <div class="erp-role-icon-box">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <div class="erp-role-banner-text">
-              <span class="erp-role-banner-title" id="erpRoleBannerTitle">Akses Penuh Sistem Operasional (Superuser Administrator)</span>
-              <span class="erp-role-banner-desc" id="erpRoleBannerDesc">Anda memiliki otorisasi penuh ke seluruh 8 modul operasional, konfigurasi Master Data, persetujuan dokumen (Approval), keuangan, dan Audit Trail.</span>
-            </div>
-          </div>
-          <span class="erp-role-restriction-chip" id="erpRoleRestrictionChip">Full Access • 8 Modul Aktif</span>
-        </section>
 
         <!-- BANNER RUMUS MATEMATIS 5 INDIKATOR SALDO STOK (HLD BAGIAN 5) -->
         <section class="erp-math-banner" aria-label="Rumus Matematis 5 Saldo Stok Gudang">
@@ -288,11 +271,7 @@
         <section class="erp-section-panel erp-tab-pane tab-pane-active" data-inv-pane="balances" aria-label="Tabel Saldo Stok 5 Indikator">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <span class="erp-section-eyebrow">Pemantauan Kuantitas Fisik Murni (Bebas Nilai Uang / HPP)</span>
-              <h1 class="section-heading">Tabel Saldo Stok SKU & 5 Indikator Gudang</h1>
-              <p class="erp-section-desc">
-                Sesuai kebijakan RBAC HLD PT Nusantara Puncak Perkasa, layar operasional gudang hanya menampilkan kuantitas fisik, lokasi rak, dan status batas minimum tanpa mencantumkan harga beli maupun harga jual.
-              </p>
+              <h1 class="section-heading">Tabel Saldo Stok SKU (5 Indikator)</h1>
             </div>
           </div>
 
@@ -363,11 +342,7 @@
         <section class="erp-section-panel erp-tab-pane" data-inv-pane="ledger" aria-label="Buku Besar Mutasi Stok">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <span class="erp-section-eyebrow">Jejak Audit Pergerakan Barang Masuk, Keluar, Reservasi & QC</span>
               <h2 class="section-heading">Buku Besar Mutasi Stok (Stock Ledger)</h2>
-              <p class="erp-section-desc">
-                Mencatat setiap perubahan kuantitas stok secara kronologis beserta dokumen referensi (`SO`, `PO`, `GR`, `SJ`), saldo akhir fisik, dan petugas pelaksana.
-              </p>
             </div>
           </div>
 
@@ -427,11 +402,7 @@
         <section class="erp-section-panel erp-tab-pane" data-inv-pane="receipts" aria-label="Riwayat Penerimaan Barang dan QC">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <span class="erp-section-eyebrow">Berita Acara Pemeriksaan Fisik & Uji Beban Gudang</span>
-              <h2 class="section-heading">Riwayat Penerimaan Barang & QC (`GR-YYYYMM-XXXX`)</h2>
-              <p class="erp-section-desc">
-                Dokumentasi pemisahan barang masuk dari prinsipal antara unit yang langsung layak pakai dan unit yang ditahan di area karantina QC.
-              </p>
+              <h2 class="section-heading">Riwayat Penerimaan Barang & QC (GR)</h2>
             </div>
           </div>
 
@@ -489,7 +460,6 @@
     <div class="erp-modal-card erp-modal-card-wide">
       <div class="erp-modal-header">
         <div>
-          <span class="erp-section-eyebrow">Inspeksi Kedatangan Barang Prinsipal (GR-YYYYMM-XXXX)</span>
           <h2 class="section-heading" id="createGrModalTitle">Penerimaan Barang & Uji QC Gudang</h2>
         </div>
         <button type="button" class="erp-modal-close" id="closeCreateGrModal" aria-label="Tutup Modal GR">
