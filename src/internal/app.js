@@ -16,6 +16,15 @@
 
   var STORAGE_KEY_SESSION = 'npp_portal_session';
   var STORAGE_KEY_DB = 'npp_erp_db_v1';
+  var STORAGE_KEY_THEME = 'npp_erp_theme';
+
+  // Terapkan tema tersimpan secara sinkron sebelum render untuk mencegah flash terang
+  try {
+    var initialTheme = localStorage.getItem(STORAGE_KEY_THEME);
+    if (initialTheme === 'dark' || initialTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', initialTheme);
+    }
+  } catch (e) {}
 
   /* ==========================================================================
      1. DEFINISI 6 PERAN PENGGUNA (RBAC — HLD BAGIAN 3)
@@ -1190,6 +1199,94 @@
       toast.classList.remove('erp-toast-visible');
     }, 3400);
   }
+
+  /* ==========================================================================
+     4B. THEME MANAGER (DARK / LIGHT MODE DENGAN PERSISTENCE & SOFT EYE-CARE)
+     ========================================================================== */
+  var ThemeManager = {
+    STORAGE_KEY: STORAGE_KEY_THEME,
+
+    getSavedTheme: function () {
+      try {
+        var saved = localStorage.getItem(this.STORAGE_KEY);
+        if (saved === 'dark' || saved === 'light') return saved;
+      } catch (e) {}
+      return 'light';
+    },
+
+    setTheme: function (theme) {
+      if (theme !== 'dark' && theme !== 'light') theme = 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem(this.STORAGE_KEY, theme);
+      } catch (e) {}
+      this.updateToggles(theme);
+    },
+
+    toggle: function () {
+      var current = document.documentElement.getAttribute('data-theme') || this.getSavedTheme();
+      var next = current === 'dark' ? 'light' : 'dark';
+      this.setTheme(next);
+      return next;
+    },
+
+    updateToggles: function (theme) {
+      var toggles = document.querySelectorAll('.erp-theme-toggle');
+      toggles.forEach(function (btn) {
+        var isDark = theme === 'dark';
+        btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        btn.setAttribute('title', isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap');
+        btn.setAttribute('aria-label', isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap');
+      });
+    },
+
+    init: function () {
+      var theme = this.getSavedTheme();
+      this.setTheme(theme);
+
+      var topbarRights = document.querySelectorAll('.erp-topbar-right');
+      var self = this;
+
+      topbarRights.forEach(function (wrap) {
+        var existingBtn = wrap.querySelector('.erp-theme-toggle');
+        if (!existingBtn) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'erp-theme-toggle';
+          btn.id = 'erpThemeToggle';
+          btn.setAttribute('aria-label', theme === 'dark' ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap');
+          btn.setAttribute('title', theme === 'dark' ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap');
+          btn.innerHTML =
+            '<svg class="erp-theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+            '<circle cx="12" cy="12" r="5" />' +
+            '<line x1="12" y1="1" x2="12" y2="3" />' +
+            '<line x1="12" y1="21" x2="12" y2="23" />' +
+            '<line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />' +
+            '<line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />' +
+            '<line x1="1" y1="12" x2="3" y2="12" />' +
+            '<line x1="21" y1="12" x2="23" y2="12" />' +
+            '<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />' +
+            '<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />' +
+            '</svg>' +
+            '<svg class="erp-theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+            '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />' +
+            '</svg>';
+
+          btn.addEventListener('click', function () {
+            self.toggle();
+          });
+
+          wrap.appendChild(btn);
+        } else {
+          existingBtn.addEventListener('click', function () {
+            self.toggle();
+          });
+        }
+      });
+
+      this.updateToggles(theme);
+    }
+  };
 
   /* ==========================================================================
      5. ROLE MANAGER (RBAC 6 PERAN & SINKRONISASI UI REAL-TIME)
@@ -7454,10 +7551,12 @@ var OrderCreatePageController = {
     renderStatusBadge: renderStatusBadge,
     escapeHtml: escapeHtml,
     addAuditLog: addAuditLog,
-    showToast: showToast
+    showToast: showToast,
+    ThemeManager: ThemeManager
   };
 
   document.addEventListener('DOMContentLoaded', function () {
+    ThemeManager.init();
     RoleManager.initTopbarSwitcher();
     DashboardController.init();
     OrdersController.init();

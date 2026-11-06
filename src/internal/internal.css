@@ -9,7 +9,8 @@
    - Geometri S-Curve Inverted Border Radius (H >= R_box + R_svg)
    ========================================================================== */
 
-:root {
+:root,
+html[data-theme="light"] {
   --erp-bg-page: #f4f6fa;
   --erp-bg-surface: #ffffff;
   --erp-bg-subtle: #e9eef6;
@@ -43,6 +44,35 @@
   --radius-panel: 20px;
   --radius-pill: 9999px;
   --radius-input: 14px;
+}
+
+html[data-theme="dark"] {
+  --erp-bg-page: #0b1320;
+  --erp-bg-surface: #141e30;
+  --erp-bg-subtle: #1c2a42;
+  --erp-bg-zebra: #18243a;
+  --erp-sidebar-bg: #0f1726;
+  --erp-sidebar-surface: #162238;
+  --erp-heading: #e8edf5;
+  --erp-text: #cbd5e1;
+  --erp-text-muted: #8295ac;
+  --erp-navy: #3b82f6;
+  --erp-navy-dark: #2563eb;
+  --erp-gold: #d4a249;
+  --erp-gold-bright: #fbbf24;
+  --erp-gold-soft: #272115;
+
+  /* Palet Status 5 Dimensi Soft Surface (Zero Glare, Eye-Care Executive) */
+  --status-success-bg: rgba(34, 197, 94, 0.16);
+  --status-success-text: #4ade80;
+  --status-warning-bg: rgba(245, 158, 11, 0.16);
+  --status-warning-text: #fbbf24;
+  --status-danger-bg: rgba(239, 68, 68, 0.16);
+  --status-danger-text: #f87171;
+  --status-info-bg: rgba(59, 130, 246, 0.16);
+  --status-info-text: #60a5fa;
+  --status-neutral-bg: rgba(148, 163, 184, 0.16);
+  --status-neutral-text: #94a3b8;
 }
 
 /* ==========================================================================
@@ -420,8 +450,10 @@ img {
   background-size: 12px 12px;
 }
 
-.erp-role-select option {
-  background-color: #ffffff;
+.erp-role-select option,
+.erp-filter-select option,
+.erp-select option {
+  background-color: var(--erp-bg-surface);
   color: var(--erp-heading);
 }
 
@@ -1083,7 +1115,8 @@ img {
 
 .btn-erp-gold {
   background-color: var(--erp-gold);
-  color: var(--erp-heading);
+  color: #0a1b33;
+  font-weight: 700;
 }
 
 .btn-erp-gold:hover {
@@ -1123,6 +1156,79 @@ img {
   padding: 6px 11px;
   font-size: 0.72rem;
   border-radius: 8px;
+}
+
+/* --- DARK MODE REFINEMENTS (BUTTONS, HIGHLIGHTS, OVERLAY) --- */
+html[data-theme="dark"] .btn-erp-secondary:hover {
+  background-color: #243550;
+}
+
+html[data-theme="dark"] .btn-erp-success {
+  background-color: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+}
+
+html[data-theme="dark"] .btn-erp-success:hover {
+  background-color: rgba(34, 197, 94, 0.28);
+  color: #86efac;
+}
+
+html[data-theme="dark"] .btn-erp-danger:hover {
+  background-color: rgba(239, 68, 68, 0.26);
+}
+
+html[data-theme="dark"] .stock-formula-box-highlight {
+  background-color: rgba(59, 130, 246, 0.14);
+}
+
+html[data-theme="dark"] .stock-formula-box-highlight .stock-formula-val {
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .erp-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+html[data-theme="dark"] .erp-toast {
+  background-color: var(--erp-bg-subtle);
+  color: var(--erp-heading);
+}
+
+/* --- THEME TOGGLE BUTTON (CLEAN, ZERO BORDER, ZERO SHADOW, SOFT EYE CARE) --- */
+.erp-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  background-color: var(--erp-bg-page);
+  color: var(--erp-text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.erp-theme-toggle:hover {
+  background-color: var(--erp-bg-subtle);
+  color: var(--erp-navy);
+}
+
+.erp-theme-icon-sun {
+  display: none;
+}
+
+.erp-theme-icon-moon {
+  display: block;
+}
+
+html[data-theme="dark"] .erp-theme-icon-sun {
+  display: block;
+  color: var(--erp-gold-bright);
+}
+
+html[data-theme="dark"] .erp-theme-icon-moon {
+  display: none;
 }
 
 /* Action button row styling in tables (sejajar, no wrap) */
@@ -1705,7 +1811,8 @@ img {
 
 .erp-tab-btn-active .erp-tab-count {
   background-color: var(--erp-gold);
-  color: var(--erp-heading);
+  color: #0a1b33;
+  font-weight: 700;
 }
 
 .erp-tab-pane {
@@ -1869,8 +1976,17 @@ img {
     padding: 18px 16px;
   }
 
-  .erp-role-switcher-wrap {
+  .erp-topbar-right {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .erp-role-switcher-wrap {
+    flex: 1;
+    min-width: 0;
     justify-content: space-between;
   }
 
