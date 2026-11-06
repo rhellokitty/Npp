@@ -1760,6 +1760,7 @@
     },
 
     renderStockSummaryStrip: function () {
+      if (!document.getElementById('sumStokFisik')) return;
       var db = window.NPP_ERP_DATA;
       var totals = db.inventory.reduce(function (acc, item) {
         acc.fisik += item.fisik;
