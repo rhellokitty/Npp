@@ -1872,6 +1872,7 @@
     },
 
     initStockTable: function () {
+      if (!document.getElementById('dashboardStockTbody')) return;
       this.stockTable = new TableEngine({
         tbodyId: 'dashboardStockTbody',
         paginationId: 'dashboardStockPagination',

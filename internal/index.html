@@ -447,69 +447,7 @@
               <div class="stock-formula-val" id="sumStokTersedia">125 Unit</div>
             </div>
           </div>
-
-          <!-- Toolbar Pencarian & Filter SKU -->
-          <div class="erp-toolbar">
-            <div class="erp-search-box">
-              <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-              <input
-                type="search"
-                id="dashboardStockSearch"
-                class="erp-search-input"
-                placeholder="Cari Kode SKU, Nama Produk, atau Lokasi Rak..." />
-            </div>
-
-            <div class="erp-Filter-group">
-              <select id="filterStockCategory" class="erp-filter-select" aria-label="Filter Kategori Produk">
-                <option value="ALL">Semua Kategori Produk</option>
-                <option value="Baterai RITAR">Baterai RITAR</option>
-                <option value="Baterai BSB">Baterai BSB</option>
-                <option value="UPS Ablerex">UPS Ablerex</option>
-                <option value="Stabilizer">Stabilizer</option>
-                <option value="Inverter & Solar">Inverter & Solar</option>
-              </select>
-
-              <select id="filterStockHealth" class="erp-filter-select" aria-label="Filter Kesehatan Stok">
-                <option value="ALL">Semua Status Stok</option>
-                <option value="KRITIS">Stok Kritis</option>
-                <option value="AMAN">Stok Aman</option>
-              </select>
-
-              <select id="dashboardStockPageSize" class="erp-filter-select" aria-label="Jumlah Baris Tabel Stok">
-                <option value="5">5 SKU / Hal</option>
-                <option value="10">10 SKU / Hal</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Tabel 5 Saldo Stok per SKU -->
-          <div class="erp-table-wrap">
-            <table class="erp-table">
-              <thead>
-                <tr>
-                  <th>Kode SKU & Rak</th>
-                  <th>Nama Spesifikasi Produk</th>
-                  <th>Fisik</th>
-                  <th>Tertahan</th>
-                  <th>Layak Pakai</th>
-                  <th>Reservasi</th>
-                  <th>Stok Tersedia</th>
-                  <th class="col-financial">Harga Jual</th>
-                  <th>Status Kesehatan</th>
-                </tr>
-              </thead>
-              <tbody id="dashboardStockTbody">
-                <!-- Di-render oleh TableEngine -->
-              </tbody>
-            </table>
-          </div>
         </section>
-
-        <!-- Clean Pagination Bar -->
-        <div class="erp-pagination" id="dashboardStockPagination"></div>
 
       </main>
     </div>
