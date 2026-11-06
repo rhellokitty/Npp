@@ -1,0 +1,2014 @@
+/**
+ * ============================================================================
+ * PT NUSANTARA PUNCAK PERKASA — CORE ERP ENGINE (NPP HLD 001)
+ * File: src/internal/app.js
+ * Stack: Pure Vanilla JavaScript (ES6+), Zero External Framework
+ * Cakupan:
+ *   1. Database Mockup Terpusat (window.NPP_ERP_DATA) + Persistence localStorage
+ *   2. RoleManager (RBAC 6 Peran, Proteksi Harga/HPP untuk Gudang, Otorisasi Approver)
+ *   3. TableEngine (Live Search, Multi-Filter, Page Size, Clean Pagination)
+ *   4. Dashboard Controller (KPI, 5 Dimensi Status PO, 5 Saldo Stok, Quick Approval)
+ * ============================================================================
+ */
+
+(function () {
+  'use strict';
+
+  var STORAGE_KEY_SESSION = 'npp_portal_session';
+  var STORAGE_KEY_DB = 'npp_erp_db_v1';
+
+  /* ==========================================================================
+     1. DEFINISI 6 PERAN PENGGUNA (RBAC — HLD BAGIAN 3)
+     ========================================================================== */
+  var ROLE_CONFIG = {
+    'Administrator': {
+      code: 'Administrator',
+      display: 'Administrator',
+      shortLabel: 'Administrator',
+      email: 'admin@nusantarapuncakperkasa.co.id',
+      userName: 'Raja Daffa (SysAdmin)',
+      canViewPrice: true,
+      canViewHPP: true,
+      canApprove: true,
+      canAccessBilling: true,
+      bannerTitle: 'Akses Penuh Sistem Operasional (Superuser Administrator)',
+      bannerDesc: 'Anda memiliki otorisasi penuh ke seluruh 8 modul operasional, konfigurasi Master Data, persetujuan dokumen (Approval), keuangan, dan Audit Trail.',
+      restrictionText: 'Full Access • 8 Modul Aktif'
+    },
+    'Sales / Operasional': {
+      code: 'Sales / Operasional',
+      display: 'Sales & PO',
+      shortLabel: 'Sales & PO',
+      email: 'sales@nusantarapuncakperkasa.co.id',
+      userName: 'Nadia Pramesti (Sales B2B)',
+      canViewPrice: true,
+      canViewHPP: false,
+      canApprove: false,
+      canAccessBilling: true,
+      bannerTitle: 'Peran Aktif: Sales & Administrasi PO Pelanggan',
+      bannerDesc: 'Fokus kerja: Pencatatan PO Pelanggan (SO), unggah berkas PO asli klien, pengecekan Stok Tersedia (Available to Promise), dan koordinasi jadwal pengiriman.',
+      restrictionText: 'HPP Supplier Disembunyikan • Butuh Otorisasi Approver'
+    },
+    'Purchasing': {
+      code: 'Purchasing',
+      display: 'Purchasing',
+      shortLabel: 'Purchasing',
+      email: 'purchasing@nusantarapuncakperkasa.co.id',
+      userName: 'Hendra Gunawan (Procurement)',
+      canViewPrice: true,
+      canViewHPP: true,
+      canApprove: false,
+      canAccessBilling: false,
+      bannerTitle: 'Peran Aktif: Purchasing & Pengadaan Prinsipal',
+      bannerDesc: 'Fokus kerja: Memantau antrean kekurangan stok (Backorder/Shortage), menerbitkan PO ke Prinsipal (RITAR, BSB, Ablerex), dan memonitor lead-time kedatangan.',
+      restrictionText: 'Fokus PO Supplier & HPP • Otorisasi PO oleh Pimpinan'
+    },
+    'Gudang': {
+      code: 'Gudang',
+      display: 'Stok Gudang',
+      shortLabel: 'Stok Gudang',
+      email: 'gudang@nusantarapuncakperkasa.co.id',
+      userName: 'Budi Santoso (Kepala Gudang)',
+      canViewPrice: false,
+      canViewHPP: false,
+      canApprove: false,
+      canAccessBilling: false,
+      bannerTitle: 'Peran Aktif: Kontrol Stok Gudang, QC & Logistik Pengiriman',
+      bannerDesc: 'Fokus kerja: Mengelola 5 Saldo Stok (Fisik, Tertahan, Layak, Reservasi, Tersedia), inspeksi penerimaan barang (GR & QC), serta pencetakan Surat Jalan.',
+      restrictionText: 'PROTEKSI AKTIF: Seluruh Harga, HPP, Omset & Invoice Disembunyikan'
+    },
+    'Finance': {
+      code: 'Finance',
+      display: 'Finance & Invoice',
+      shortLabel: 'Finance & Invoice',
+      email: 'finance@nusantarapuncakperkasa.co.id',
+      userName: 'Siti Rahmawati (Finance & AR)',
+      canViewPrice: true,
+      canViewHPP: true,
+      canApprove: false,
+      canAccessBilling: true,
+      bannerTitle: 'Peran Aktif: Finance, Penagihan (Invoicing) & Kontrol Piutang',
+      bannerDesc: 'Fokus kerja: Penerbitan Invoice Resmi (DP, Termin, Pelunasan + PPN 11%), rekonsiliasi BAST/Surat Jalan, dan pencatatan bukti pelunasan rekening BCA/Mandiri.',
+      restrictionText: 'Akses Keuangan & Piutang • Tanpa Hak Ubah Stok Fisik'
+    },
+    'Pimpinan / Approver': {
+      code: 'Pimpinan / Approver',
+      display: 'Approver',
+      shortLabel: 'Approver',
+      email: 'pimpinan@nusantarapuncakperkasa.co.id',
+      userName: 'Ir. Darmawan Putra (Direktur Operasional)',
+      canViewPrice: true,
+      canViewHPP: true,
+      canApprove: true,
+      canAccessBilling: true,
+      bannerTitle: 'Peran Aktif: Pimpinan & Otorisasi Eksekutif (Approver)',
+      bannerDesc: 'Fokus kerja: Meninjau KPI strategis perusahaan, menyetujui atau menolak PO Pelanggan bernilai besar & PO Pengadaan Supplier, serta mengawasi piutang jatuh tempo.',
+      restrictionText: 'Hak Otorisasi (Approve / Reject) Aktif'
+    }
+  };
+
+  /* ==========================================================================
+     2. DATABASE DUMMY B2B AWAL (REALISTIS & KONSISTEN DENGAN PDF HLD 001)
+     ========================================================================== */
+  function createInitialDatabase() {
+    return {
+      meta: {
+        version: '1.0.0-HLD001',
+        company: 'PT Nusantara Puncak Perkasa',
+        npwp: '02.918.445.7-432.000',
+        address: 'Jl. Flamboyan Raya, Pondok Timur Indah, Bekasi 17115',
+        bankAccounts: [
+          { bank: 'Bank Central Asia (BCA)', accountNo: '521-098-7741', accountName: 'PT Nusantara Puncak Perkasa', branch: 'KCU Bekasi' },
+          { bank: 'Bank Mandiri', accountNo: '156-00-0988234-5', accountName: 'PT Nusantara Puncak Perkasa', branch: 'KCP Bekasi Juanda' }
+        ]
+      },
+
+      /* --- MASTER PELANGGAN (6 KLIEN B2B RESMI) --- */
+      customers: [
+        {
+          id: 'CUST-001',
+          name: 'PT. Daya Pustaka Indonesia',
+          npwp: '01.345.678.9-012.000',
+          sector: 'Data Center & Penerbitan Digital',
+          pic: 'Bpk. Hendra Wijaya',
+          rolePic: 'Infrastructure Manager',
+          phone: '021-4608821',
+          email: 'procurement@dayapustaka.co.id',
+          paymentTerm: 'NET 30',
+          creditLimit: 750000000,
+          address: 'Kawasan Industri Pulogadung Blok J-14, Jakarta Timur',
+          status: 'Aktif'
+        },
+        {
+          id: 'CUST-002',
+          name: 'PT. Jasnita Telekomindo Tbk',
+          npwp: '01.882.441.2-054.000',
+          sector: 'Telekomunikasi & Jaringan Fiber',
+          pic: 'Bpk. Reza Pratama',
+          rolePic: 'VP Network Core & Power',
+          phone: '021-3914450',
+          email: 'supplychain@jasnita.co.id',
+          paymentTerm: 'NET 45',
+          creditLimit: 1500000000,
+          address: 'Gedung E-Trade Lt. 12, Jl. KH Wahid Hasyim No. 55, Jakarta Pusat',
+          status: 'Aktif'
+        },
+        {
+          id: 'CUST-003',
+          name: 'PT. The Master Steel Mfc',
+          npwp: '01.112.908.4-007.000',
+          sector: 'Industri Peleburan Baja Berat',
+          pic: 'Ir. Bambang Suryono',
+          rolePic: 'Chief Electrical Engineer',
+          phone: '021-4602755',
+          email: 'purchasing.plant@mastersteel.co.id',
+          paymentTerm: 'DP 30% + Pelunasan',
+          creditLimit: 2000000000,
+          address: 'Jl. Raya Bekasi KM 21, Pulogadung, Jakarta Timur',
+          status: 'Aktif'
+        },
+        {
+          id: 'CUST-004',
+          name: 'PT. Sumber Abadi Indonesia',
+          npwp: '02.419.553.1-403.000',
+          sector: 'Manufaktur Otomotif & Komponen',
+          pic: 'Ibu Ratna Kusuma',
+          rolePic: 'Procurement Lead',
+          phone: '021-8935512',
+          email: 'ratna.procurement@sumberabadi.co.id',
+          paymentTerm: 'NET 14',
+          creditLimit: 500000000,
+          address: 'Kawasan Industri Jababeka II Blok C-8, Cikarang, Bekasi',
+          status: 'Aktif'
+        },
+        {
+          id: 'CUST-005',
+          name: 'PT. Indovicker Furnitama',
+          npwp: '01.674.332.8-412.000',
+          sector: 'Manufaktur Ekspor & Fasilitas Pabrik',
+          pic: 'Bpk. Antonius Halim',
+          rolePic: 'Facility & Utility Head',
+          phone: '021-5901188',
+          email: 'utility.buyer@indovicker.co.id',
+          paymentTerm: 'NET 30',
+          creditLimit: 600000000,
+          address: 'Kawasan Industri Jatake Jl. Industri Raya III, Tangerang',
+          status: 'Aktif'
+        },
+        {
+          id: 'CUST-006',
+          name: 'PT. Bizzy Commerce Indonesia',
+          npwp: '03.298.771.5-021.000',
+          sector: 'B2B Supply Chain & Fulfillment Hub',
+          pic: 'Bpk. Dimas Anggara',
+          rolePic: 'Enterprise Supply Chain Lead',
+          phone: '021-29407700',
+          email: 'vendor.management@bizzy.co.id',
+          paymentTerm: 'NET 30',
+          creditLimit: 1200000000,
+          address: 'Sovereign Plaza Lt. 16, Jl. TB Simatupang Kav. 36, Jakarta Selatan',
+          status: 'Aktif'
+        }
+      ],
+
+      /* --- MASTER SUPPLIER / PRINSIPAL --- */
+      suppliers: [
+        {
+          id: 'SUP-001',
+          name: 'Ritar Power International Ltd',
+          category: 'Baterai RITAR (VRLA & Deep Cycle)',
+          pic: 'Mr. Kevin Zhang / PT Ritar Indo Distribusi',
+          phone: '021-65831100',
+          email: 'order.id@ritarpower.com',
+          leadTimeDays: 14,
+          paymentTerm: 'T/T 30 Days',
+          origin: 'Shenzhen / Gudang Bonded Tanjung Priok',
+          status: 'Prinsipal Resmi'
+        },
+        {
+          id: 'SUP-002',
+          name: 'BSB Power Co., Ltd',
+          category: 'Baterai BSB (Telecom Front Terminal & OPzV)',
+          pic: 'Ms. Linda Chen / Divisi B2B Asia Tenggara',
+          phone: '021-65409988',
+          email: 'sea.sales@bsbpower.com',
+          leadTimeDays: 21,
+          paymentTerm: 'L/C 45 Days',
+          origin: 'Shenzhen / Hub Logistik Marunda',
+          status: 'Prinsipal Resmi'
+        },
+        {
+          id: 'SUP-003',
+          name: 'Ablerex Electronics Co., Ltd',
+          category: 'UPS Ablerex (Online 1-Phase & 3-Phase)',
+          pic: 'Ir. Hendro Wibowo (Country Channel Manager)',
+          phone: '021-56982210',
+          email: 'id.partner@ablerex.com.tw',
+          leadTimeDays: 10,
+          paymentTerm: 'NET 30',
+          origin: 'Taipei / Hub Pergudangan Sunter',
+          status: 'Prinsipal Resmi'
+        },
+        {
+          id: 'SUP-004',
+          name: 'PT. Matsuyama Power Stabilizer Nusantara',
+          category: 'Stabilizer AVR & Trafo Isolasi Industri',
+          pic: 'Bpk. Wahyu Hidayat',
+          phone: '021-88904411',
+          email: 'sales.project@matsuyamapower.co.id',
+          leadTimeDays: 7,
+          paymentTerm: 'NET 14',
+          origin: 'Kawasan Industri Bekasi Fajar',
+          status: 'Mitra Pabrikan'
+        },
+        {
+          id: 'SUP-005',
+          name: 'PT. Surya Energi Inverterindo',
+          category: 'Inverter Hybrid & Solar Panel Tier-1',
+          pic: 'Bpk. Fajar Nugroho',
+          phone: '021-22548890',
+          email: 'b2b@suryaenergi-inv.co.id',
+          leadTimeDays: 7,
+          paymentTerm: 'DP 50% + Pelunasan',
+          origin: 'Pergudangan Bandara Mas, Tangerang',
+          status: 'Mitra Pabrikan'
+        }
+      ],
+
+      /* --- MASTER LOKASI RAK GUDang --- */
+      racks: [
+        { code: 'RAK-A01', zone: 'Zona A (Lantai 1 Heavy Duty)', category: 'Baterai RITAR VRLA 12V', capacity: '200 Unit', tempSpec: '20°C - 25°C Dry', pic: 'Budi Santoso' },
+        { code: 'RAK-A02', zone: 'Zona A (Lantai 1 Telecom Bay)', category: 'Baterai BSB Front Terminal & OPzV', capacity: '180 Unit/Cell', tempSpec: '18°C - 24°C AC', pic: 'Budi Santoso' },
+        { code: 'RAK-B01', zone: 'Zona B (Ruang Presisi Elektron)', category: 'UPS Ablerex 1-10 kVA Rack/Tower', capacity: '50 Unit', tempSpec: '22°C Controlled Humidity', pic: 'Rudi Hermawan' },
+        { code: 'RAK-B02', zone: 'Zona B (Heavy Power Bay)', category: 'UPS Ablerex 3-Phase 20-100 kVA', capacity: '20 Unit', tempSpec: '22°C Dust-Free', pic: 'Rudi Hermawan' },
+        { code: 'RAK-C01', zone: 'Zona C (Bay Mekanikal & Trafo)', category: 'Servo Stabilizer & Isolation Transformer', capacity: '35 Unit', tempSpec: 'Ambient Terlindung', pic: 'Agus Setiawan' },
+        { code: 'RAK-D01', zone: 'Zona D (Mezzanine Energi Surya)', category: 'Inverter Hybrid & Panel Surya 550Wp', capacity: '150 Panel / 30 Inv', tempSpec: 'Dry Ventilated', pic: 'Agus Setiawan' },
+        { code: 'RAK-QC', zone: 'Area Karantina & Inspeksi QC', category: 'Stok Tertahan / Menunggu Uji Beban', capacity: '40 Unit', tempSpec: 'Isolated Test Bench', pic: 'Tim QC Teknik' }
+      ],
+
+      /* --- MASTER SKU & 5 SALDO STOK GUDANG ---
+         Rumus Invarian:
+         layak = fisik - tertahan
+         tersedia = layak - reservasi
+      */
+      inventory: [
+        {
+          sku: 'SKU-RTR-12100',
+          name: 'Baterai RITAR RA12-100 (12V 100Ah VRLA AGM)',
+          category: 'Baterai RITAR',
+          brand: 'RITAR',
+          unit: 'Unit',
+          rack: 'RAK-A01',
+          hpp: 2450000,
+          sellPrice: 3150000,
+          fisik: 64,
+          tertahan: 2,
+          layak: 62,
+          reservasi: 24,
+          tersedia: 38,
+          minStok: 20,
+          supplierId: 'SUP-001',
+          lastAudit: '2026-11-05'
+        },
+        {
+          sku: 'SKU-RTR-12200',
+          name: 'Baterai RITAR RA12-200 (12V 200Ah Deep Cycle)',
+          category: 'Baterai RITAR',
+          brand: 'RITAR',
+          unit: 'Unit',
+          rack: 'RAK-A01',
+          hpp: 4650000,
+          sellPrice: 5850000,
+          fisik: 22,
+          tertahan: 2,
+          layak: 20,
+          reservasi: 16,
+          tersedia: 4,
+          minStok: 12,
+          supplierId: 'SUP-001',
+          lastAudit: '2026-11-05'
+        },
+        {
+          sku: 'SKU-BSB-FT150',
+          name: 'Baterai BSB FT12-150 (12V 150Ah Front Terminal Telecom)',
+          category: 'Baterai BSB',
+          brand: 'BSB',
+          unit: 'Unit',
+          rack: 'RAK-A02',
+          hpp: 3900000,
+          sellPrice: 4950000,
+          fisik: 40,
+          tertahan: 0,
+          layak: 40,
+          reservasi: 32,
+          tersedia: 8,
+          minStok: 16,
+          supplierId: 'SUP-002',
+          lastAudit: '2026-11-04'
+        },
+        {
+          sku: 'SKU-BSB-OPZV500',
+          name: 'Baterai BSB OPzV 2V 500Ah Tubular Gel Industrial',
+          category: 'Baterai BSB',
+          brand: 'BSB',
+          unit: 'Cell',
+          rack: 'RAK-A02',
+          hpp: 4200000,
+          sellPrice: 5400000,
+          fisik: 28,
+          tertahan: 4,
+          layak: 24,
+          reservasi: 24,
+          tersedia: 0,
+          minStok: 24,
+          supplierId: 'SUP-002',
+          lastAudit: '2026-11-04'
+        },
+        {
+          sku: 'SKU-ABL-MS3K',
+          name: 'UPS Ablerex Mars II MS3000RT (3 kVA / 2.7 kW Online)',
+          category: 'UPS Ablerex',
+          brand: 'Ablerex',
+          unit: 'Unit',
+          rack: 'RAK-B01',
+          hpp: 11200000,
+          sellPrice: 14500000,
+          fisik: 15,
+          tertahan: 1,
+          layak: 14,
+          reservasi: 6,
+          tersedia: 8,
+          minStok: 5,
+          supplierId: 'SUP-003',
+          lastAudit: '2026-11-05'
+        },
+        {
+          sku: 'SKU-ABL-MS10K',
+          name: 'UPS Ablerex Mars II MS10000RT (10 kVA Online Rack/Tower)',
+          category: 'UPS Ablerex',
+          brand: 'Ablerex',
+          unit: 'Unit',
+          rack: 'RAK-B01',
+          hpp: 28500000,
+          sellPrice: 36800000,
+          fisik: 7,
+          tertahan: 0,
+          layak: 7,
+          reservasi: 5,
+          tersedia: 2,
+          minStok: 4,
+          supplierId: 'SUP-003',
+          lastAudit: '2026-11-05'
+        },
+        {
+          sku: 'SKU-ABL-ARS30K',
+          name: 'UPS Ablerex Ares 30 kVA 3-Phase Online Transformerless',
+          category: 'UPS Ablerex',
+          brand: 'Ablerex',
+          unit: 'Unit',
+          rack: 'RAK-B02',
+          hpp: 86000000,
+          sellPrice: 112000000,
+          fisik: 3,
+          tertahan: 0,
+          layak: 3,
+          reservasi: 2,
+          tersedia: 1,
+          minStok: 2,
+          supplierId: 'SUP-003',
+          lastAudit: '2026-11-03'
+        },
+        {
+          sku: 'SKU-AVR-30KVA',
+          name: 'Servo Voltage Stabilizer 3-Phase 30 kVA Heavy Industrial',
+          category: 'Stabilizer',
+          brand: 'Matsuyama-NPP',
+          unit: 'Unit',
+          rack: 'RAK-C01',
+          hpp: 24000000,
+          sellPrice: 31500000,
+          fisik: 9,
+          tertahan: 1,
+          layak: 8,
+          reservasi: 3,
+          tersedia: 5,
+          minStok: 3,
+          supplierId: 'SUP-004',
+          lastAudit: '2026-11-02'
+        },
+        {
+          sku: 'SKU-INV-10KW',
+          name: 'Hybrid Solar Inverter 10 kW 48V Pure Sine Wave Industrial',
+          category: 'Inverter & Solar',
+          brand: 'NPP SolarCore',
+          unit: 'Unit',
+          rack: 'RAK-D01',
+          hpp: 21500000,
+          sellPrice: 28000000,
+          fisik: 11,
+          tertahan: 0,
+          layak: 11,
+          reservasi: 4,
+          tersedia: 7,
+          minStok: 4,
+          supplierId: 'SUP-005',
+          lastAudit: '2026-11-01'
+        },
+        {
+          sku: 'SKU-SLR-550W',
+          name: 'Solar Panel Monocrystalline 550Wp Half-Cut Tier-1',
+          category: 'Inverter & Solar',
+          brand: 'NPP SolarCore',
+          unit: 'Panel',
+          rack: 'RAK-D01',
+          hpp: 1950000,
+          sellPrice: 2650000,
+          fisik: 85,
+          tertahan: 3,
+          layak: 82,
+          reservasi: 30,
+          tersedia: 52,
+          minStok: 30,
+          supplierId: 'SUP-005',
+          lastAudit: '2026-11-01'
+        }
+      ],
+
+      /* --- DAFTAR PO PELANGGAN (SO-YYYYMM-XXXX) DENGAN 5 DIMENSI STATUS INDEPENDEN --- */
+      orders: [
+        {
+          id: 'SO-202611-0012',
+          clientPoNumber: 'PO/JASTEL/XI/2026/089',
+          customerId: 'CUST-002',
+          customerName: 'PT. Jasnita Telekomindo Tbk',
+          orderDate: '2026-11-06',
+          deliveryTarget: '2026-11-14',
+          paymentTerm: 'NET 45',
+          poFileName: 'PO-Jasnita-089-Signed.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-BSB-FT150', name: 'Baterai BSB FT12-150 (12V 150Ah Front Terminal Telecom)', qty: 16, unit: 'Unit', price: 4950000 },
+            { sku: 'SKU-ABL-MS10K', name: 'UPS Ablerex Mars II MS10000RT (10 kVA Online Rack/Tower)', qty: 2, unit: 'Unit', price: 36800000 }
+          ],
+          dpp: 152800000,
+          ppn: 16808000,
+          total: 169608000,
+          statusOrder: 'Dikonfirmasi',
+          statusApproval: 'Menunggu Persetujuan',
+          statusPemenuhan: 'Stok Direservasi',
+          statusPengiriman: 'Belum Dikirim',
+          statusPenagihan: 'Belum Ditagih',
+          notes: 'Backup power POP Core Fiber Jakarta Pusat. Menunggu otorisasi Direktur karena nilai > Rp 150 Juta.'
+        },
+        {
+          id: 'SO-202611-0011',
+          clientPoNumber: 'PO-MSTEEL/ELC/2026/412',
+          customerId: 'CUST-003',
+          customerName: 'PT. The Master Steel Mfc',
+          orderDate: '2026-11-05',
+          deliveryTarget: '2026-11-18',
+          paymentTerm: 'DP 30% + Pelunasan',
+          poFileName: 'PO-MasterSteel-412-Stempel.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-ABL-ARS30K', name: 'UPS Ablerex Ares 30 kVA 3-Phase Online Transformerless', qty: 2, unit: 'Unit', price: 112000000 },
+            { sku: 'SKU-BSB-OPZV500', name: 'Baterai BSB OPzV 2V 500Ah Tubular Gel Industrial', qty: 24, unit: 'Cell', price: 5400000 }
+          ],
+          dpp: 353600000,
+          ppn: 38896000,
+          total: 392496000,
+          statusOrder: 'Diproses',
+          statusApproval: 'Menunggu Persetujuan',
+          statusPemenuhan: 'Menunggu Pengadaan',
+          statusPengiriman: 'Belum Dikirim',
+          statusPenagihan: 'Tagihan DP Terbit',
+          notes: 'Proyek ruang kontrol tanur induksi Pulogadung. Perlu persetujuan Pimpinan & pengadaan tambahan OPzV.'
+        },
+        {
+          id: 'SO-202611-0010',
+          clientPoNumber: 'PO/DPI-DC/2026/1104',
+          customerId: 'CUST-001',
+          customerName: 'PT. Daya Pustaka Indonesia',
+          orderDate: '2026-11-04',
+          deliveryTarget: '2026-11-10',
+          paymentTerm: 'NET 30',
+          poFileName: 'PO-DayaPustaka-1104.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-RTR-12100', name: 'Baterai RITAR RA12-100 (12V 100Ah VRLA AGM)', qty: 24, unit: 'Unit', price: 3150000 },
+            { sku: 'SKU-ABL-MS3K', name: 'UPS Ablerex Mars II MS3000RT (3 kVA / 2.7 kW Online)', qty: 4, unit: 'Unit', price: 14500000 }
+          ],
+          dpp: 133600000,
+          ppn: 14696000,
+          total: 148296000,
+          statusOrder: 'Diproses',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Stok Direservasi',
+          statusPengiriman: 'Terkirim Sebagian',
+          statusPenagihan: 'Ditagih Sebagian',
+          notes: 'Pengiriman Tahap 1 (16 baterai + 2 UPS) sudah dikirim via SJ-202611-0008. Sisa dikirim minggu depan.'
+        },
+        {
+          id: 'SO-202611-0009',
+          clientPoNumber: 'SAI/PROC/PO/2026/773',
+          customerId: 'CUST-004',
+          customerName: 'PT. Sumber Abadi Indonesia',
+          orderDate: '2026-11-03',
+          deliveryTarget: '2026-11-09',
+          paymentTerm: 'NET 14',
+          poFileName: 'PO-SumberAbadi-773.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-AVR-30KVA', name: 'Servo Voltage Stabilizer 3-Phase 30 kVA Heavy Industrial', qty: 3, unit: 'Unit', price: 31500000 },
+            { sku: 'SKU-RTR-12200', name: 'Baterai RITAR RA12-200 (12V 200Ah Deep Cycle)', qty: 8, unit: 'Unit', price: 5850000 }
+          ],
+          dpp: 141300000,
+          ppn: 15543000,
+          total: 156843000,
+          statusOrder: 'Diproses',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Siap Kirim',
+          statusPengiriman: 'Siap Kirim Gudang',
+          statusPenagihan: 'Belum Ditagih',
+          notes: 'Lini robotik stamping Cikarang. Seluruh unit telah lolos QC beban penuh, siap terbit Surat Jalan.'
+        },
+        {
+          id: 'SO-202611-0008',
+          clientPoNumber: 'PO-IVF/UTL/XI/029',
+          customerId: 'CUST-005',
+          customerName: 'PT. Indovicker Furnitama',
+          orderDate: '2026-11-02',
+          deliveryTarget: '2026-11-12',
+          paymentTerm: 'NET 30',
+          poFileName: 'PO-Indovicker-029.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-INV-10KW', name: 'Hybrid Solar Inverter 10 kW 48V Pure Sine Wave Industrial', qty: 2, unit: 'Unit', price: 28000000 },
+            { sku: 'SKU-SLR-550W', name: 'Solar Panel Monocrystalline 550Wp Half-Cut Tier-1', qty: 30, unit: 'Panel', price: 2650000 }
+          ],
+          dpp: 135500000,
+          ppn: 14905000,
+          total: 150405000,
+          statusOrder: 'Dikonfirmasi',
+          statusApproval: 'Menunggu Persetujuan',
+          statusPemenuhan: 'Stok Direservasi',
+          statusPengiriman: 'Belum Dikirim',
+          statusPenagihan: 'Belum Ditagih',
+          notes: 'Rooftop solar backup gedung administrasi pabrik Jatake. Menunggu approval Direktur.'
+        },
+        {
+          id: 'SO-202611-0007',
+          clientPoNumber: 'BIZZY-ENT-PO-99201',
+          customerId: 'CUST-006',
+          customerName: 'PT. Bizzy Commerce Indonesia',
+          orderDate: '2026-11-01',
+          deliveryTarget: '2026-11-06',
+          paymentTerm: 'NET 30',
+          poFileName: 'PO-BizzyCommerce-99201.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-ABL-MS10K', name: 'UPS Ablerex Mars II MS10000RT (10 kVA Online Rack/Tower)', qty: 3, unit: 'Unit', price: 36800000 },
+            { sku: 'SKU-BSB-FT150', name: 'Baterai BSB FT12-150 (12V 150Ah Front Terminal Telecom)', qty: 16, unit: 'Unit', price: 4950000 }
+          ],
+          dpp: 189600000,
+          ppn: 20856000,
+          total: 210456000,
+          statusOrder: 'Diproses',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Terpenuhi Penuh',
+          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPenagihan: 'Invoice Terbit',
+          notes: 'Fulfillment Hub Sunter & Cikarang. Barang sudah diterima (BAST lengkap), menunggu jatuh tempo invoice.'
+        },
+        {
+          id: 'SO-202610-0006',
+          clientPoNumber: 'PO/JASTEL/X/2026/071',
+          customerId: 'CUST-002',
+          customerName: 'PT. Jasnita Telekomindo Tbk',
+          orderDate: '2026-10-24',
+          deliveryTarget: '2026-10-30',
+          paymentTerm: 'NET 45',
+          poFileName: 'PO-Jasnita-071.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-BSB-FT150', name: 'Baterai BSB FT12-150 (12V 150Ah Front Terminal Telecom)', qty: 24, unit: 'Unit', price: 4950000 }
+          ],
+          dpp: 118800000,
+          ppn: 13068000,
+          total: 131868000,
+          statusOrder: 'Selesai',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Terpenuhi Penuh',
+          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPenagihan: 'Lunas',
+          notes: 'Penggantian baterai shelter BTS Jabodetabek. Pembayaran lunas via Mandiri.'
+        },
+        {
+          id: 'SO-202610-0005',
+          clientPoNumber: 'PO/DPI-DC/2026/1019',
+          customerId: 'CUST-001',
+          customerName: 'PT. Daya Pustaka Indonesia',
+          orderDate: '2026-10-18',
+          deliveryTarget: '2026-10-25',
+          paymentTerm: 'NET 30',
+          poFileName: 'PO-DayaPustaka-1019.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-ABL-MS3K', name: 'UPS Ablerex Mars II MS3000RT (3 kVA / 2.7 kW Online)', qty: 6, unit: 'Unit', price: 14500000 }
+          ],
+          dpp: 87000000,
+          ppn: 9570000,
+          total: 96570000,
+          statusOrder: 'Diproses',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Terpenuhi Penuh',
+          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPenagihan: 'Jatuh Tempo',
+          notes: 'Pengiriman selesai 24 Okt 2026. Invoice INV-202610-0004 melewati batas termin, perlu follow-up Finance.'
+        },
+        {
+          id: 'SO-202610-0004',
+          clientPoNumber: 'PO-MSTEEL/ELC/2026/380',
+          customerId: 'CUST-003',
+          customerName: 'PT. The Master Steel Mfc',
+          orderDate: '2026-10-14',
+          deliveryTarget: '2026-10-22',
+          paymentTerm: 'DP 30% + Pelunasan',
+          poFileName: 'PO-MasterSteel-380.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-AVR-30KVA', name: 'Servo Voltage Stabilizer 3-Phase 30 kVA Heavy Industrial', qty: 4, unit: 'Unit', price: 31500000 }
+          ],
+          dpp: 126000000,
+          ppn: 13860000,
+          total: 139860000,
+          statusOrder: 'Selesai',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Terpenuhi Penuh',
+          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPenagihan: 'Lunas',
+          notes: 'Instalasi & komisioning selesai di pabrik Pulogadung. Pelunasan diterima via BCA.'
+        },
+        {
+          id: 'SO-202610-0003',
+          clientPoNumber: 'SAI/PROC/PO/2026/710',
+          customerId: 'CUST-004',
+          customerName: 'PT. Sumber Abadi Indonesia',
+          orderDate: '2026-10-10',
+          deliveryTarget: '2026-10-16',
+          paymentTerm: 'NET 14',
+          poFileName: 'PO-SumberAbadi-710.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-RTR-12100', name: 'Baterai RITAR RA12-100 (12V 100Ah VRLA AGM)', qty: 30, unit: 'Unit', price: 3150000 }
+          ],
+          dpp: 94500000,
+          ppn: 10395000,
+          total: 104895000,
+          statusOrder: 'Diproses',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Terpenuhi Penuh',
+          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPenagihan: 'Jatuh Tempo',
+          notes: 'BAST sudah ditandatangani. Tagihan INV-202610-0002 jatuh tempo 4 hari lalu.'
+        },
+        {
+          id: 'SO-202610-0002',
+          clientPoNumber: 'PO-IVF/UTL/X/011',
+          customerId: 'CUST-005',
+          customerName: 'PT. Indovicker Furnitama',
+          orderDate: '2026-10-05',
+          deliveryTarget: '2026-10-12',
+          paymentTerm: 'NET 30',
+          poFileName: 'PO-Indovicker-011.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-RTR-12200', name: 'Baterai RITAR RA12-200 (12V 200Ah Deep Cycle)', qty: 12, unit: 'Unit', price: 5850000 }
+          ],
+          dpp: 70200000,
+          ppn: 7722000,
+          total: 77922000,
+          statusOrder: 'Selesai',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Terpenuhi Penuh',
+          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPenagihan: 'Lunas',
+          notes: 'Penggantian bank baterai forklift elektrik & UPS ruang server Jatake. Lunas.'
+        },
+        {
+          id: 'SO-202610-0001',
+          clientPoNumber: 'BIZZY-ENT-PO-98810',
+          customerId: 'CUST-006',
+          customerName: 'PT. Bizzy Commerce Indonesia',
+          orderDate: '2026-10-02',
+          deliveryTarget: '2026-10-09',
+          paymentTerm: 'NET 30',
+          poFileName: 'PO-BizzyCommerce-98810.pdf',
+          salesPic: 'Nadia Pramesti',
+          items: [
+            { sku: 'SKU-INV-10KW', name: 'Hybrid Solar Inverter 10 kW 48V Pure Sine Wave Industrial', qty: 2, unit: 'Unit', price: 28000000 },
+            { sku: 'SKU-RTR-12200', name: 'Baterai RITAR RA12-200 (12V 200Ah Deep Cycle)', qty: 8, unit: 'Unit', price: 5850000 }
+          ],
+          dpp: 102800000,
+          ppn: 11308000,
+          total: 114108000,
+          statusOrder: 'Selesai',
+          statusApproval: 'Disetujui',
+          statusPemenuhan: 'Terpenuhi Penuh',
+          statusPengiriman: 'Terkirim Penuh (BAST)',
+          statusPenagihan: 'Lunas',
+          notes: 'Proyek backup power hub logistik Bizzy BSD. Lunas tepat waktu.'
+        }
+      ],
+
+      /* --- PENGADAAN & PO SUPPLIER (PO-YYYYMM-XXXX) --- */
+      procurements: [
+        {
+          id: 'PO-202611-0005',
+          supplierId: 'SUP-002',
+          supplierName: 'BSB Power Co., Ltd',
+          refOrderId: 'SO-202611-0011',
+          orderDate: '2026-11-05',
+          etaDate: '2026-11-16',
+          statusApproval: 'Menunggu Persetujuan',
+          statusReceiving: 'Belum Diterima',
+          items: [
+            { sku: 'SKU-BSB-OPZV500', name: 'Baterai BSB OPzV 2V 500Ah Tubular Gel Industrial', qty: 36, unit: 'Cell', hpp: 4200000 },
+            { sku: 'SKU-BSB-FT150', name: 'Baterai BSB FT12-150 (12V 150Ah Front Terminal Telecom)', qty: 24, unit: 'Unit', hpp: 3900000 }
+          ],
+          totalHpp: 244800000,
+          notes: 'Restock proyek PT. The Master Steel Mfc & safety stock gudang Bekasi.'
+        },
+        {
+          id: 'PO-202611-0004',
+          supplierId: 'SUP-001',
+          supplierName: 'Ritar Power International Ltd',
+          refOrderId: 'SO-202611-0009',
+          orderDate: '2026-11-03',
+          etaDate: '2026-11-12',
+          statusApproval: 'Disetujui',
+          statusReceiving: 'Dalam Perjalanan',
+          items: [
+            { sku: 'SKU-RTR-12200', name: 'Baterai RITAR RA12-200 (12V 200Ah Deep Cycle)', qty: 24, unit: 'Unit', hpp: 4650000 }
+          ],
+          totalHpp: 111600000,
+          notes: 'Pengisian ulang stok kritis RITAR 200Ah Deep Cycle.'
+        },
+        {
+          id: 'PO-202610-0003',
+          supplierId: 'SUP-003',
+          supplierName: 'Ablerex Electronics Co., Ltd',
+          refOrderId: 'SO-202611-0007',
+          orderDate: '2026-10-25',
+          etaDate: '2026-11-02',
+          statusApproval: 'Disetujui',
+          statusReceiving: 'Diterima Penuh (GR)',
+          items: [
+            { sku: 'SKU-ABL-MS10K', name: 'UPS Ablerex Mars II MS10000RT (10 kVA Online Rack/Tower)', qty: 6, unit: 'Unit', hpp: 28500000 },
+            { sku: 'SKU-ABL-ARS30K', name: 'UPS Ablerex Ares 30 kVA 3-Phase Online Transformerless', qty: 2, unit: 'Unit', hpp: 86000000 }
+          ],
+          totalHpp: 343000000,
+          notes: 'Telah diterima di Gudang Bekasi via GR-202611-0004.'
+        }
+      ],
+
+      /* --- RIWAYAT PENERIMAAN BARANG & QC (GR-YYYYMM-XXXX) --- */
+      goodsReceipts: [
+        {
+          id: 'GR-202611-0004',
+          poSupplierId: 'PO-202610-0003',
+          supplierName: 'Ablerex Electronics Co., Ltd',
+          date: '2026-11-02',
+          inspector: 'Budi Santoso (Gudang & QC)',
+          sku: 'SKU-ABL-MS10K',
+          skuName: 'UPS Ablerex Mars II MS10000RT (10 kVA Online Rack/Tower)',
+          qtyReceived: 6,
+          qtyPassed: 6,
+          qtyHold: 0,
+          rackTarget: 'RAK-B01',
+          notes: 'Tegangan output stabil 230V ±1%, lolos burn-in test 4 jam.'
+        },
+        {
+          id: 'GR-202611-0003',
+          poSupplierId: 'PO-202610-0002',
+          supplierName: 'Ritar Power International Ltd',
+          date: '2026-11-01',
+          inspector: 'Budi Santoso (Gudang & QC)',
+          sku: 'SKU-RTR-12100',
+          skuName: 'Baterai RITAR RA12-100 (12V 100Ah VRLA AGM)',
+          qtyReceived: 40,
+          qtyPassed: 38,
+          qtyHold: 2,
+          rackTarget: 'RAK-A01',
+          notes: '38 unit tegangan float 13.6V normal. 2 unit casing lecet diisolasi ke RAK-QC (Stok Tertahan).'
+        }
+      ],
+
+      /* --- BUKU BESAR MUTASI STOK (STOCK LEDGER) --- */
+      stockLedger: [
+        { id: 'MUT-009', date: '2026-11-06 09:40', sku: 'SKU-BSB-FT150', skuName: 'Baterai BSB FT12-150', type: 'RESERVASI (+)', qty: 16, refDoc: 'SO-202611-0012', pic: 'Nadia Pramesti', note: 'Reservasi otomatis PO PT. Jasnita Telekomindo Tbk' },
+        { id: 'MUT-008', date: '2026-11-05 15:20', sku: 'SKU-ABL-ARS30K', skuName: 'UPS Ablerex Ares 30 kVA 3-Phase', type: 'RESERVASI (+)', qty: 2, refDoc: 'SO-202611-0011', pic: 'Nadia Pramesti', note: 'Reservasi proyek PT. The Master Steel Mfc' },
+        { id: 'MUT-007', date: '2026-11-05 11:10', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'KELUAR (SJ)', qty: -16, refDoc: 'SJ-202611-0008', pic: 'Budi Santoso', note: 'Pengiriman parsial Tahap 1 ke PT. Daya Pustaka Indonesia' },
+        { id: 'MUT-006', date: '2026-11-03 14:05', sku: 'SKU-AVR-30KVA', skuName: 'Servo Stabilizer 3-Phase 30 kVA', type: 'RESERVASI (+)', qty: 3, refDoc: 'SO-202611-0009', pic: 'Nadia Pramesti', note: 'Reservasi PO PT. Sumber Abadi Indonesia' },
+        { id: 'MUT-005', date: '2026-11-02 16:30', sku: 'SKU-ABL-MS10K', skuName: 'UPS Ablerex Mars II MS10000RT', type: 'MASUK (GR-QC)', qty: 6, refDoc: 'GR-202611-0004', pic: 'Budi Santoso', note: 'Penerimaan prinsipal Ablerex lolos QC 100%' },
+        { id: 'MUT-004', date: '2026-11-01 10:15', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'MASUK (GR-QC)', qty: 38, refDoc: 'GR-202611-0003', pic: 'Budi Santoso', note: 'Penerimaan layak pakai ke RAK-A01' },
+        { id: 'MUT-003', date: '2026-11-01 10:18', sku: 'SKU-RTR-12100', skuName: 'Baterai RITAR RA12-100', type: 'TERTAHAN (QC)', qty: 2, refDoc: 'GR-202611-0003', pic: 'Budi Santoso', note: 'Karantina 2 unit ke RAK-QC untuk klaim prinsipal' }
+      ],
+
+      /* --- PENGIRIMAN & SURAT JALAN (SJ-YYYYMM-XXXX) --- */
+      deliveries: [
+        {
+          id: 'SJ-202611-0008',
+          orderId: 'SO-202611-0010',
+          clientPoNumber: 'PO/DPI-DC/2026/1104',
+          customerName: 'PT. Daya Pustaka Indonesia',
+          deliveryDate: '2026-11-05',
+          driverName: 'Pak Slamet Riyadi',
+          vehiclePlate: 'B 9482 KXT (Blindvan Box NPP-02)',
+          deliveryType: 'Parsial (Tahap 1)',
+          status: 'Terkirim & BAST',
+          bastFileName: 'BAST-SJ-202611-0008-Signed.pdf',
+          address: 'Kawasan Industri Pulogadung Blok J-14, Jakarta Timur',
+          recipientPic: 'Bpk. Hendra Wijaya',
+          items: [
+            { sku: 'SKU-RTR-12100', name: 'Baterai RITAR RA12-100 (12V 100Ah VRLA AGM)', qty: 16, unit: 'Unit', serialRange: 'RTR100-2611-001 s/d 016' },
+            { sku: 'SKU-ABL-MS3K', name: 'UPS Ablerex Mars II MS3000RT (3 kVA Online)', qty: 2, unit: 'Unit', serialRange: 'ABL3K-99201, ABL3K-99202' }
+          ]
+        },
+        {
+          id: 'SJ-202611-0007',
+          orderId: 'SO-202611-0007',
+          clientPoNumber: 'BIZZY-ENT-PO-99201',
+          customerName: 'PT. Bizzy Commerce Indonesia',
+          deliveryDate: '2026-11-04',
+          driverName: 'Pak Dedi Kurniawan',
+          vehiclePlate: 'B 9104 KXA (Engkel Box NPP-01)',
+          deliveryType: 'Pengiriman Penuh',
+          status: 'Terkirim & BAST',
+          bastFileName: 'BAST-SJ-202611-0007-Signed.pdf',
+          address: 'Sovereign Plaza / Hub Fulfillment Bizzy Sunter',
+          recipientPic: 'Bpk. Dimas Anggara',
+          items: [
+            { sku: 'SKU-ABL-MS10K', name: 'UPS Ablerex Mars II MS10000RT (10 kVA Online)', qty: 3, unit: 'Unit', serialRange: 'ABL10K-88101 s/d 88103' },
+            { sku: 'SKU-BSB-FT150', name: 'Baterai BSB FT12-150 (12V 150Ah Front Terminal)', qty: 16, unit: 'Unit', serialRange: 'BSB150-4401 s/d 4416' }
+          ]
+        }
+      ],
+
+      /* --- PENAGIHAN & INVOICE RESMI (INV-YYYYMM-XXXX) --- */
+      invoices: [
+        {
+          id: 'INV-202611-0006',
+          orderId: 'SO-202611-0011',
+          clientPoNumber: 'PO-MSTEEL/ELC/2026/412',
+          customerName: 'PT. The Master Steel Mfc',
+          invoiceDate: '2026-11-05',
+          dueDate: '2026-11-12',
+          billingType: 'Tagihan DP 30%',
+          dpp: 106080000,
+          ppn: 11668800,
+          total: 117748800,
+          paidAmount: 0,
+          status: 'Belum Lunas',
+          bankRef: 'BCA 521-098-7741'
+        },
+        {
+          id: 'INV-202611-0005',
+          orderId: 'SO-202611-0007',
+          clientPoNumber: 'BIZZY-ENT-PO-99201',
+          customerName: 'PT. Bizzy Commerce Indonesia',
+          invoiceDate: '2026-11-04',
+          dueDate: '2026-12-04',
+          billingType: 'Pelunasan Penuh (100%)',
+          dpp: 189600000,
+          ppn: 20856000,
+          total: 210456000,
+          paidAmount: 0,
+          status: 'Belum Lunas',
+          bankRef: 'Mandiri 156-00-0988234-5'
+        },
+        {
+          id: 'INV-202610-0004',
+          orderId: 'SO-202610-0005',
+          clientPoNumber: 'PO/DPI-DC/2026/1019',
+          customerName: 'PT. Daya Pustaka Indonesia',
+          invoiceDate: '2026-10-05',
+          dueDate: '2026-11-04',
+          billingType: 'Pelunasan Penuh (100%)',
+          dpp: 87000000,
+          ppn: 9570000,
+          total: 96570000,
+          paidAmount: 0,
+          status: 'Jatuh Tempo',
+          bankRef: 'BCA 521-098-7741'
+        },
+        {
+          id: 'INV-202610-0003',
+          orderId: 'SO-202610-0006',
+          clientPoNumber: 'PO/JASTEL/X/2026/071',
+          customerName: 'PT. Jasnita Telekomindo Tbk',
+          invoiceDate: '2026-10-25',
+          dueDate: '2026-12-09',
+          billingType: 'Pelunasan Penuh (100%)',
+          dpp: 118800000,
+          ppn: 13068000,
+          total: 131868000,
+          paidAmount: 131868000,
+          status: 'Lunas',
+          bankRef: 'Mandiri 156-00-0988234-5'
+        },
+        {
+          id: 'INV-202610-0002',
+          orderId: 'SO-202610-0003',
+          clientPoNumber: 'SAI/PROC/PO/2026/710',
+          customerName: 'PT. Sumber Abadi Indonesia',
+          invoiceDate: '2026-10-16',
+          dueDate: '2026-10-30',
+          billingType: 'Pelunasan Penuh (100%)',
+          dpp: 94500000,
+          ppn: 10395000,
+          total: 104895000,
+          paidAmount: 0,
+          status: 'Jatuh Tempo',
+          bankRef: 'BCA 521-098-7741'
+        }
+      ],
+
+      /* --- ARSIP DOKUMEN DIGITAL --- */
+      archives: [
+        { id: 'ARC-2026-011', docType: 'PO Asli Pelanggan', docNumber: 'PO/JASTEL/XI/2026/089', refId: 'SO-202611-0012', partner: 'PT. Jasnita Telekomindo Tbk', date: '2026-11-06', fileName: 'PO-Jasnita-089-Signed.pdf', uploadedBy: 'Nadia Pramesti' },
+        { id: 'ARC-2026-010', docType: 'PO Asli Pelanggan', docNumber: 'PO-MSTEEL/ELC/2026/412', refId: 'SO-202611-0011', partner: 'PT. The Master Steel Mfc', date: '2026-11-05', fileName: 'PO-MasterSteel-412-Stempel.pdf', uploadedBy: 'Nadia Pramesti' },
+        { id: 'ARC-2026-009', docType: 'Surat Jalan & BAST', docNumber: 'SJ-202611-0008', refId: 'SO-202611-0010', partner: 'PT. Daya Pustaka Indonesia', date: '2026-11-05', fileName: 'BAST-SJ-202611-0008-Signed.pdf', uploadedBy: 'Budi Santoso' },
+        { id: 'ARC-2026-008', docType: 'Invoice & Faktur Pajak', docNumber: 'INV-202611-0005', refId: 'SO-202611-0007', partner: 'PT. Bizzy Commerce Indonesia', date: '2026-11-04', fileName: 'INV-202611-0005-eFaktur.pdf', uploadedBy: 'Siti Rahmawati' },
+        { id: 'ARC-2026-007', docType: 'Surat Jalan & BAST', docNumber: 'SJ-202611-0007', refId: 'SO-202611-0007', partner: 'PT. Bizzy Commerce Indonesia', date: '2026-11-04', fileName: 'BAST-SJ-202611-0007-Signed.pdf', uploadedBy: 'Budi Santoso' }
+      ],
+
+      /* --- LOG AUDIT TRAIL SISTEM --- */
+      auditLogs: [
+        { id: 'LOG-1008', timestamp: '2026-11-06 10:15:22', user: 'Nadia Pramesti', role: 'Sales / Operasional', action: 'INPUT_PO_PELANGGAN', target: 'SO-202611-0012', detail: 'Membuat pesanan baru PT. Jasnita Telekomindo Tbk senilai Rp 169.608.000 (Menunggu Approval)' },
+        { id: 'LOG-1007', timestamp: '2026-11-05 16:40:10', user: 'Siti Rahmawati', role: 'Finance', action: 'TERBIT_INVOICE_DP', target: 'INV-202611-0006', detail: 'Menerbitkan Tagihan DP 30% untuk PT. The Master Steel Mfc (SO-202611-0011)' },
+        { id: 'LOG-1006', timestamp: '2026-11-05 14:12:05', user: 'Budi Santoso', role: 'Gudang', action: 'CETAK_SURAT_JALAN', target: 'SJ-202611-0008', detail: 'Menerbitkan Surat Jalan pengiriman parsial Tahap 1 ke PT. Daya Pustaka Indonesia' },
+        { id: 'LOG-1005', timestamp: '2026-11-04 11:30:49', user: 'Ir. Darmawan Putra', role: 'Pimpinan / Approver', action: 'APPROVE_SO', target: 'SO-202611-0010', detail: 'Menyetujui PO Pelanggan PT. Daya Pustaka Indonesia & mengaktifkan kuota pengiriman' },
+        { id: 'LOG-1004', timestamp: '2026-11-02 16:28:00', user: 'Budi Santoso', role: 'Gudang', action: 'QC_GOODS_RECEIPT', target: 'GR-202611-0004', detail: 'Menerima 6 unit UPS Ablerex 10 kVA dari PO-202610-0003 (100% Lolos QC -> RAK-B01)' }
+      ]
+    };
+  }
+
+  /* ==========================================================================
+     3. INISIALISASI & PERSISTENSI DATABASE DI LOCALSTORAGE
+     ========================================================================== */
+  function loadDatabase() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_DB);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.meta && parsed.meta.version === '1.0.0-HLD001' && Array.isArray(parsed.orders)) {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.warn('Gagal membaca localStorage DB, menggunakan data default:', err);
+    }
+    var fresh = createInitialDatabase();
+    saveDatabase(fresh);
+    return fresh;
+  }
+
+  function saveDatabase(dbObj) {
+    try {
+      localStorage.setItem(STORAGE_KEY_DB, JSON.stringify(dbObj || window.NPP_ERP_DATA));
+    } catch (err) {
+      console.warn('Gagal menyimpan DB ke localStorage:', err);
+    }
+  }
+
+  function resetDatabase() {
+    var fresh = createInitialDatabase();
+    window.NPP_ERP_DATA = fresh;
+    saveDatabase(fresh);
+    return fresh;
+  }
+
+  window.NPP_ERP_DATA = loadDatabase();
+
+  /* ==========================================================================
+     4. UTILITAS FORMATTING & BADGE MAPPER
+     ========================================================================== */
+  function formatRupiah(amount) {
+    var num = Number(amount) || 0;
+    return 'Rp ' + num.toLocaleString('id-ID');
+  }
+
+  function formatMoneyRBAC(amount, isHpp) {
+    var role = RoleManager.getCurrentRoleConfig();
+    if (!role.canViewPrice) {
+      return '<span class="badge-status badge-neutral" title="Disembunyikan untuk peran Gudang">Terproteksi (RBAC)</span>';
+    }
+    if (isHpp && !role.canViewHPP) {
+      return '<span class="badge-status badge-neutral" title="HPP hanya untuk Purchasing, Finance, Approver & Admin">HPP Terproteksi</span>';
+    }
+    return formatRupiah(amount);
+  }
+
+  function getStatusBadgeClass(statusText) {
+    var s = String(statusText || '').toLowerCase();
+    if (
+      s.indexOf('disetujui') !== -1 ||
+      s.indexOf('lunas') !== -1 ||
+      s.indexOf('selesai') !== -1 ||
+      s.indexOf('terpenuhi') !== -1 ||
+      s.indexOf('terkirim penuh') !== -1 ||
+      s.indexOf('siap kirim') !== -1 ||
+      s.indexOf('diterima penuh') !== -1 ||
+      s.indexOf('aktif') !== -1
+    ) {
+      return 'badge-success';
+    }
+    if (
+      s.indexOf('menunggu') !== -1 ||
+      s.indexOf('sebagian') !== -1 ||
+      s.indexOf('perjalanan') !== -1 ||
+      s.indexOf('tagihan dp') !== -1 ||
+      s.indexOf('invoice terbit') !== -1 ||
+      s.indexOf('belum lunas') !== -1
+    ) {
+      return 'badge-warning';
+    }
+    if (
+      s.indexOf('jatuh tempo') !== -1 ||
+      s.indexOf('ditolak') !== -1 ||
+      s.indexOf('kritis') !== -1 ||
+      s.indexOf('tertahan') !== -1 ||
+      s.indexOf('habis') !== -1
+    ) {
+      return 'badge-danger';
+    }
+    if (
+      s.indexOf('diproses') !== -1 ||
+      s.indexOf('dikonfirmasi') !== -1 ||
+      s.indexOf('direservasi') !== -1
+    ) {
+      return 'badge-info';
+    }
+    return 'badge-neutral';
+  }
+
+  function renderStatusBadge(label) {
+    var cls = getStatusBadgeClass(label);
+    return '<span class="badge-status ' + cls + '"><span class="badge-dot"></span>' + escapeHtml(label) + '</span>';
+  }
+
+  function escapeHtml(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function addAuditLog(action, target, detail) {
+    var roleCfg = RoleManager.getCurrentRoleConfig();
+    var now = new Date();
+    var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+    var ts = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + ' ' +
+      pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+
+    var entry = {
+      id: 'LOG-' + (1000 + window.NPP_ERP_DATA.auditLogs.length + 1),
+      timestamp: ts,
+      user: roleCfg.userName,
+      role: roleCfg.code,
+      action: action,
+      target: target,
+      detail: detail
+    };
+    window.NPP_ERP_DATA.auditLogs.unshift(entry);
+    saveDatabase(window.NPP_ERP_DATA);
+  }
+
+  function showToast(message) {
+    var toast = document.getElementById('erpGlobalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'erpGlobalToast';
+      toast.className = 'erp-toast';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML =
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c99d51" stroke-width="2.4">' +
+      '<path d="M20 6 9 17l-5-5"/>' +
+      '</svg>' +
+      '<span>' + escapeHtml(message) + '</span>';
+    toast.classList.add('erp-toast-visible');
+    if (toast._timer) clearTimeout(toast._timer);
+    toast._timer = setTimeout(function () {
+      toast.classList.remove('erp-toast-visible');
+    }, 3400);
+  }
+
+  /* ==========================================================================
+     5. ROLE MANAGER (RBAC 6 PERAN & SINKRONISASI UI REAL-TIME)
+     ========================================================================== */
+  var RoleManager = {
+    listeners: [],
+
+    getCurrentSession: function () {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY_SESSION);
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && parsed.role && ROLE_CONFIG[parsed.role]) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        /* ignore */
+      }
+      var def = ROLE_CONFIG['Administrator'];
+      return {
+        role: def.code,
+        email: def.email,
+        userName: def.userName,
+        loginAt: new Date().toISOString()
+      };
+    },
+
+    getCurrentRoleConfig: function () {
+      var session = this.getCurrentSession();
+      return ROLE_CONFIG[session.role] || ROLE_CONFIG['Administrator'];
+    },
+
+    setRole: function (roleCode) {
+      var cfg = ROLE_CONFIG[roleCode] || ROLE_CONFIG['Administrator'];
+      var session = {
+        role: cfg.code,
+        email: cfg.email,
+        userName: cfg.userName,
+        loginAt: new Date().toISOString()
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(session));
+      } catch (e) {
+        /* ignore */
+      }
+      this.applyRoleToDOM();
+      this.listeners.forEach(function (fn) {
+        try { fn(cfg); } catch (err) { console.error(err); }
+      });
+      showToast('Peran aktif diubah ke: ' + cfg.display + ' (' + cfg.userName + ')');
+    },
+
+    onChange: function (callback) {
+      if (typeof callback === 'function') {
+        this.listeners.push(callback);
+      }
+    },
+
+    applyRoleToDOM: function () {
+      var cfg = this.getCurrentRoleConfig();
+
+      // 1. Toggle class proteksi harga pada body jika role adalah Gudang
+      if (cfg.code === 'Gudang') {
+        document.body.classList.add('role-gudang-active');
+      } else {
+        document.body.classList.remove('role-gudang-active');
+      }
+
+      // 2. Sinkronisasi Dropdown Role Switcher di Topbar
+      var switcher = document.getElementById('erpRoleSwitcher');
+      if (switcher && switcher.value !== cfg.code) {
+        switcher.value = cfg.code;
+      }
+
+      // 3. Sinkronisasi Nama & Email Pegawai di Sidebar / Topbar
+      var userNameEl = document.getElementById('erpActiveUserName');
+      if (userNameEl) userNameEl.textContent = cfg.userName;
+
+      var userEmailEl = document.getElementById('erpActiveUserEmail');
+      if (userEmailEl) userEmailEl.textContent = cfg.email;
+
+      var roleBadgeEl = document.getElementById('erpActiveRoleTag');
+      if (roleBadgeEl) roleBadgeEl.textContent = cfg.display;
+
+      // 4. Sinkronisasi Banner Status Peran Aktif
+      var bannerTitle = document.getElementById('erpRoleBannerTitle');
+      var bannerDesc = document.getElementById('erpRoleBannerDesc');
+      var bannerChip = document.getElementById('erpRoleRestrictionChip');
+      if (bannerTitle) bannerTitle.textContent = cfg.bannerTitle;
+      if (bannerDesc) bannerDesc.textContent = cfg.bannerDesc;
+      if (bannerChip) bannerChip.textContent = cfg.restrictionText;
+
+      // 5. Sembunyikan menu Penagihan & Invoice pada Sidebar jika role adalah Gudang
+      var billingNavItems = document.querySelectorAll('[data-nav-module="billing"]');
+      billingNavItems.forEach(function (el) {
+        el.classList.toggle('erp-hidden', cfg.code === 'Gudang');
+      });
+
+      // 6. Toggle elemen dengan atribut data-rbac-ApproveOnly
+      var approveOnlyEls = document.querySelectorAll('[data-rbac-approver-only="true"]');
+      approveOnlyEls.forEach(function (el) {
+        el.classList.toggle('erp-hidden', !cfg.canApprove);
+      });
+    },
+
+    initTopbarSwitcher: function () {
+      var self = this;
+      var switcher = document.getElementById('erpRoleSwitcher');
+      if (switcher) {
+        var current = this.getCurrentRoleConfig();
+        switcher.value = current.code;
+        switcher.addEventListener('change', function () {
+          self.setRole(switcher.value);
+        });
+      }
+
+      // Mobile sidebar toggle
+      var mobileToggle = document.getElementById('erpMobileMenuBtn');
+      var sidebar = document.getElementById('erpSidebar');
+      var backdrop = document.getElementById('erpSidebarBackdrop');
+
+      if (mobileToggle && sidebar) {
+        mobileToggle.addEventListener('click', function () {
+          sidebar.classList.toggle('sidebar-open');
+          if (backdrop) backdrop.classList.toggle('backdrop-active');
+        });
+      }
+      if (backdrop && sidebar) {
+        backdrop.addEventListener('click', function () {
+          sidebar.classList.remove('sidebar-open');
+          backdrop.classList.remove('backdrop-active');
+        });
+      }
+
+      // Update badge jumlah antrean approval di sidebar
+      this.updateSidebarCounters();
+      this.applyRoleToDOM();
+    },
+
+    updateSidebarCounters: function () {
+      var db = window.NPP_ERP_DATA;
+      var pendingOrders = db.orders.filter(function (o) {
+        return o.statusApproval === 'Menunggu Persetujuan';
+      }).length;
+      var criticalSkus = db.inventory.filter(function (item) {
+        return item.tersedia <= item.minStok;
+      }).length;
+      var overdueInvoices = db.invoices.filter(function (inv) {
+        return inv.status === 'Jatuh Tempo';
+      }).length;
+
+      var badgeOrders = document.getElementById('navBadgeOrders');
+      if (badgeOrders) badgeOrders.textContent = pendingOrders > 0 ? pendingOrders + ' Pending' : db.orders.length;
+
+      var badgeInv = document.getElementById('navBadgeInventory');
+      if (badgeInv) badgeInv.textContent = criticalSkus > 0 ? criticalSkus + ' Kritis' : db.inventory.length + ' SKU';
+
+      var badgeBilling = document.getElementById('navBadgeBilling');
+      if (badgeBilling) badgeBilling.textContent = overdueInvoices > 0 ? overdueInvoices + ' Overdue' : db.invoices.length;
+    }
+  };
+
+  /* ==========================================================================
+     6. TABLE ENGINE (REUSABLE SEARCH, MULTI-FILTER & CLEAN PAGINATION)
+     ========================================================================== */
+  function TableEngine(options) {
+    this.getData = options.getData || function () { return []; };
+    this.renderRow = options.renderRow;
+    this.tbodyId = options.tbodyId;
+    this.paginationId = options.paginationId;
+    this.searchInputId = options.searchInputId;
+    this.pageSizeSelectId = options.pageSizeSelectId;
+    this.filters = options.filters || []; // [{ selectId: '...', match: function(item, val) }]
+    this.searchFn = options.searchFn || function () { return true; };
+    this.emptyMessage = options.emptyMessage || 'Tidak ada data yang sesuai dengan kriteria pencarian.';
+    this.colSpan = options.colSpan || 8;
+    this.currentPage = 1;
+    this.pageSize = options.defaultPageSize || 5;
+    this.onAfterRender = options.onAfterRender || null;
+
+    this.bindControls();
+  }
+
+  TableEngine.prototype.bindControls = function () {
+    var self = this;
+
+    if (this.searchInputId) {
+      var searchEl = document.getElementById(this.searchInputId);
+      if (searchEl) {
+        searchEl.addEventListener('input', function () {
+          self.currentPage = 1;
+          self.render();
+        });
+      }
+    }
+
+    if (this.pageSizeSelectId) {
+      var sizeEl = document.getElementById(this.pageSizeSelectId);
+      if (sizeEl) {
+        sizeEl.value = String(this.pageSize);
+        sizeEl.addEventListener('change', function () {
+          self.pageSize = parseInt(sizeEl.value, 10) || 5;
+          self.currentPage = 1;
+          self.render();
+        });
+      }
+    }
+
+    this.filters.forEach(function (f) {
+      var sel = document.getElementById(f.selectId);
+      if (sel) {
+        sel.addEventListener('change', function () {
+          self.currentPage = 1;
+          self.render();
+        });
+      }
+    });
+  };
+
+  TableEngine.prototype.getFilteredData = function () {
+    var raw = this.getData() || [];
+    var query = '';
+    if (this.searchInputId) {
+      var sEl = document.getElementById(this.searchInputId);
+      if (sEl) query = sEl.value.trim().toLowerCase();
+    }
+
+    var activeFilters = this.filters.map(function (f) {
+      var el = document.getElementById(f.selectId);
+      return {
+        val: el ? el.value : 'ALL',
+        match: f.match
+      };
+    });
+
+    var self = this;
+    return raw.filter(function (item) {
+      if (query && !self.searchFn(item, query)) {
+        return false;
+      }
+      for (var i = 0; i < activeFilters.length; i++) {
+        var af = activeFilters[i];
+        if (af.val && af.val !== 'ALL') {
+          if (!af.match(item, af.val)) return false;
+        }
+      }
+      return true;
+    });
+  };
+
+  TableEngine.prototype.render = function () {
+    var tbody = document.getElementById(this.tbodyId);
+    if (!tbody) return;
+
+    var filtered = this.getFilteredData();
+    var totalItems = filtered.length;
+    var totalPages = Math.max(1, Math.ceil(totalItems / this.pageSize));
+    if (this.currentPage > totalPages) this.currentPage = totalPages;
+    if (this.currentPage < 1) this.currentPage = 1;
+
+    var startIdx = (this.currentPage - 1) * this.pageSize;
+    var endIdx = Math.min(startIdx + this.pageSize, totalItems);
+    var pageItems = filtered.slice(startIdx, endIdx);
+
+    if (pageItems.length === 0) {
+      tbody.innerHTML =
+        '<tr><td colspan="' + this.colSpan + '" class="erp-empty-state">' +
+        escapeHtml(this.emptyMessage) +
+        '</td></tr>';
+    } else {
+      var htmlRows = [];
+      for (var i = 0; i < pageItems.length; i++) {
+        htmlRows.push(this.renderRow(pageItems[i], startIdx + i));
+      }
+      tbody.innerHTML = htmlRows.join('');
+    }
+
+    this.renderPagination(totalItems, startIdx, endIdx, totalPages);
+
+    if (typeof this.onAfterRender === 'function') {
+      this.onAfterRender(pageItems, totalItems);
+    }
+  };
+
+  TableEngine.prototype.renderPagination = function (totalItems, startIdx, endIdx, totalPages) {
+    var container = document.getElementById(this.paginationId);
+    if (!container) return;
+
+    var fromNum = totalItems === 0 ? 0 : startIdx + 1;
+    var toNum = endIdx;
+
+    var pageButtons = [];
+    pageButtons.push(
+      '<button type="button" class="erp-page-btn" data-page="' + (this.currentPage - 1) + '" ' +
+      (this.currentPage <= 1 ? 'disabled' : '') + '>Sebelumnya</button>'
+    );
+
+    for (var p = 1; p <= totalPages; p++) {
+      var activeCls = p === this.currentPage ? ' erp-page-btn-active' : '';
+      pageButtons.push(
+        '<button type="button" class="erp-page-btn' + activeCls + '" data-page="' + p + '">' + p + '</button>'
+      );
+    }
+
+    pageButtons.push(
+      '<button type="button" class="erp-page-btn" data-page="' + (this.currentPage + 1) + '" ' +
+      (this.currentPage >= totalPages ? 'disabled' : '') + '>Berikutnya</button>'
+    );
+
+    container.innerHTML =
+      '<div class="erp-pagination-info">' +
+      'Menampilkan <strong>' + fromNum + '–' + toNum + '</strong> dari <strong>' + totalItems + '</strong> data' +
+      '</div>' +
+      '<div class="erp-pagination-controls">' + pageButtons.join('') + '</div>';
+
+    var self = this;
+    var btns = container.querySelectorAll('.erp-page-btn');
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        var targetPage = parseInt(btn.getAttribute('data-page'), 10);
+        if (!isNaN(targetPage) && targetPage >= 1 && targetPage <= totalPages) {
+          self.currentPage = targetPage;
+          self.render();
+        }
+      });
+    });
+  };
+
+  /* ==========================================================================
+     7. DASHBOARD CONTROLLER (KHUSUS HALAMAN internal/index.html)
+     ========================================================================== */
+  var DashboardController = {
+    ordersTable: null,
+    stockTable: null,
+
+    init: function () {
+      if (!document.getElementById('erpDashboardPage')) return;
+
+      var self = this;
+      this.renderKPIs();
+      this.renderQuickApprovalPanel();
+      this.renderStockSummaryStrip();
+      this.initOrdersTable();
+      this.initStockTable();
+      this.bindOrderDetailModal();
+
+      // Re-render semua bagian saat Role diubah lewat Role Switcher
+      RoleManager.onChange(function () {
+        self.renderKPIs();
+        self.renderQuickApprovalPanel();
+        self.renderStockSummaryStrip();
+        if (self.ordersTable) self.ordersTable.render();
+        if (self.stockTable) self.stockTable.render();
+      });
+    },
+
+    renderKPIs: function () {
+      var db = window.NPP_ERP_DATA;
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+
+      // 1. Pesanan Aktif
+      var activeOrders = db.orders.filter(function (o) {
+        return o.statusOrder !== 'Selesai' && o.statusOrder !== 'Dibatalkan';
+      });
+      var kpiActiveOrdersVal = document.getElementById('kpiActiveOrdersVal');
+      var kpiActiveOrdersSub = document.getElementById('kpiActiveOrdersSub');
+      if (kpiActiveOrdersVal) kpiActiveOrdersVal.textContent = activeOrders.length + ' PO Aktif';
+      if (kpiActiveOrdersSub) kpiActiveOrdersSub.textContent = 'Dari total ' + db.orders.length + ' PO Pelanggan B2B';
+
+      // 2. Omset Bulan Berjalan (Disembunyikan otomatis bila role = Gudang)
+      var novOrders = db.orders.filter(function (o) {
+        return o.orderDate.indexOf('2026-11') === 0;
+      });
+      var totalOmsetNov = novOrders.reduce(function (acc, o) { return acc + (o.total || 0); }, 0);
+      var totalDeliveredReady = db.deliveries.length;
+
+      var kpiOmsetLabel = document.getElementById('kpiOmsetLabel');
+      var kpiOmsetVal = document.getElementById('kpiOmsetVal');
+      var kpiOmsetSub = document.getElementById('kpiOmsetSub');
+
+      if (roleCfg.code === 'Gudang') {
+        if (kpiOmsetLabel) kpiOmsetLabel.textContent = 'Realisasi Surat Jalan';
+        if (kpiOmsetVal) kpiOmsetVal.textContent = totalDeliveredReady + ' Pengiriman';
+        if (kpiOmsetSub) kpiOmsetSub.textContent = 'Mode Gudang: Nilai Rupiah disembunyikan';
+      } else {
+        if (kpiOmsetLabel) kpiOmsetLabel.textContent = 'Omset Bulan Berjalan';
+        if (kpiOmsetVal) kpiOmsetVal.textContent = formatRupiah(totalOmsetNov);
+        if (kpiOmsetSub) kpiOmsetSub.textContent = novOrders.length + ' PO masuk periode November 2026';
+      }
+
+      // 3. Antrean Approval
+      var pendingSO = db.orders.filter(function (o) { return o.statusApproval === 'Menunggu Persetujuan'; }).length;
+      var pendingPO = db.procurements.filter(function (p) { return p.statusApproval === 'Menunggu Persetujuan'; }).length;
+      var totalPendingApproval = pendingSO + pendingPO;
+
+      var kpiApprovalVal = document.getElementById('kpiApprovalVal');
+      var kpiApprovalSub = document.getElementById('kpiApprovalSub');
+      if (kpiApprovalVal) kpiApprovalVal.textContent = totalPendingApproval + ' Dokumen';
+      if (kpiApprovalSub) kpiApprovalSub.textContent = pendingSO + ' PO Klien • ' + pendingPO + ' PO Prinsipal';
+
+      // 4. Alert Stok Kritis
+      var criticalSkus = db.inventory.filter(function (item) {
+        return item.tersedia <= item.minStok;
+      });
+      var kpiCriticalVal = document.getElementById('kpiCriticalVal');
+      var kpiCriticalSub = document.getElementById('kpiCriticalSub');
+      if (kpiCriticalVal) kpiCriticalVal.textContent = criticalSkus.length + ' SKU Kritis';
+      if (kpiCriticalSub) kpiCriticalSub.textContent = 'Stok Tersedia di bawah batas minimum';
+
+      // 5. Piutang Jatuh Tempo (Atau Total Kuota Reservasi bila role = Gudang)
+      var overdueInvs = db.invoices.filter(function (inv) { return inv.status === 'Jatuh Tempo'; });
+      var overdueSum = overdueInvs.reduce(function (acc, inv) { return acc + (inv.total - inv.paidAmount); }, 0);
+      var totalReservedUnits = db.inventory.reduce(function (acc, i) { return acc + i.reservasi; }, 0);
+
+      var kpiReceivableLabel = document.getElementById('kpiReceivableLabel');
+      var kpiReceivableVal = document.getElementById('kpiReceivableVal');
+      var kpiReceivableSub = document.getElementById('kpiReceivableSub');
+
+      if (roleCfg.code === 'Gudang') {
+        if (kpiReceivableLabel) kpiReceivableLabel.textContent = 'Total Unit Direservasi';
+        if (kpiReceivableVal) kpiReceivableVal.textContent = totalReservedUnits + ' Unit/Cell';
+        if (kpiReceivableSub) kpiReceivableSub.textContent = 'Terkunci untuk pesanan aktif pelanggan';
+      } else {
+        if (kpiReceivableLabel) kpiReceivableLabel.textContent = 'Piutang Jatuh Tempo';
+        if (kpiReceivableVal) kpiReceivableVal.textContent = formatRupiah(overdueSum);
+        if (kpiReceivableSub) kpiReceivableSub.textContent = overdueInvs.length + ' Invoice melewati batas termin';
+      }
+    },
+
+    renderQuickApprovalPanel: function () {
+      var container = document.getElementById('quickApprovalList');
+      var roleTag = document.getElementById('quickApprovalRoleHint');
+      if (!container) return;
+
+      var db = window.NPP_ERP_DATA;
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+
+      if (roleTag) {
+        roleTag.textContent = roleCfg.canApprove
+          ? 'Otorisasi Aktif (' + roleCfg.display + ')'
+          : 'Mode Baca — Otorisasi oleh Approver / Admin';
+      }
+
+      var pendingOrders = db.orders.filter(function (o) {
+        return o.statusApproval === 'Menunggu Persetujuan';
+      });
+
+      if (pendingOrders.length === 0) {
+        container.innerHTML =
+          '<div class="approval-item">' +
+          '<div class="approval-item-top">' +
+          '<span class="approval-item-id">Semua Dokumen Terotorisasi</span>' +
+          '<span class="badge-status badge-success"><span class="badge-dot"></span>Zero Backlog</span>' +
+          '</div>' +
+          '<div class="approval-item-meta">Tidak ada antrean PO Pelanggan yang menunggu persetujuan saat ini.</div>' +
+          '</div>';
+        return;
+      }
+
+      var self = this;
+      var html = pendingOrders.map(function (o) {
+        var priceText = roleCfg.canViewPrice ? formatRupiah(o.total) : 'Nominal Terproteksi';
+        var actionButtons = roleCfg.canApprove
+          ? '<div class="approval-item-actions">' +
+            '<button type="button" class="btn-erp btn-erp-success btn-erp-sm" data-approve-so="' + o.id + '">Setujui PO</button>' +
+            '<button type="button" class="btn-erp btn-erp-danger btn-erp-sm" data-reject-so="' + o.id + '">Tolak</button>' +
+            '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-detail-so="' + o.id + '">Detail</button>' +
+            '</div>'
+          : '<div class="approval-item-actions">' +
+            '<span class="badge-status badge-warning"><span class="badge-dot"></span>Menunggu Otorisasi Pimpinan</span>' +
+            '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-detail-so="' + o.id + '">Lihat Rincian</button>' +
+            '</div>';
+
+        return (
+          '<div class="approval-item">' +
+          '<div class="approval-item-top">' +
+          '<span class="approval-item-id">' + escapeHtml(o.id) + ' • ' + escapeHtml(o.clientPoNumber) + '</span>' +
+          '<span class="approval-item-value">' + priceText + '</span>' +
+          '</div>' +
+          '<div class="approval-item-client">' + escapeHtml(o.customerName) + '</div>' +
+          '<div class="approval-item-meta">Termin: ' + escapeHtml(o.paymentTerm) + ' • Target Kirim: ' + escapeHtml(o.deliveryTarget) + '</div>' +
+          actionButtons +
+          '</div>'
+        );
+      }).join('');
+
+      container.innerHTML = html;
+
+      // Bind tombol Setujui / Tolak / Detail
+      container.querySelectorAll('[data-approve-so]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var soId = btn.getAttribute('data-approve-so');
+          self.handleOrderApproval(soId, 'Disetujui');
+        });
+      });
+
+      container.querySelectorAll('[data-reject-so]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var soId = btn.getAttribute('data-reject-so');
+          self.handleOrderApproval(soId, 'Ditolak');
+        });
+      });
+
+      container.querySelectorAll('[data-detail-so]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var soId = btn.getAttribute('data-detail-so');
+          self.openOrderDetailModal(soId);
+        });
+      });
+    },
+
+    handleOrderApproval: function (soId, newStatus) {
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      if (!roleCfg.canApprove) {
+        showToast('Akses ditolak: Hanya Approver atau Administrator yang dapat mengotorisasi PO.');
+        return;
+      }
+
+      var db = window.NPP_ERP_DATA;
+      var order = db.orders.find(function (o) { return o.id === soId; });
+      if (!order) return;
+
+      order.statusApproval = newStatus;
+      if (newStatus === 'Disetujui') {
+        order.statusOrder = 'Diproses';
+        if (order.statusPemenuhan === 'Stok Direservasi') {
+          order.statusPengiriman = 'Siap Kirim Gudang';
+        }
+      } else if (newStatus === 'Ditolak') {
+        order.statusOrder = 'Ditangguhkan';
+      }
+
+      saveDatabase(db);
+      addAuditLog(
+        newStatus === 'Disetujui' ? 'APPROVE_SO' : 'REJECT_SO',
+        order.id,
+        'Mengubah status persetujuan ' + order.id + ' (' + order.customerName + ') menjadi: ' + newStatus
+      );
+
+      RoleManager.updateSidebarCounters();
+      this.renderKPIs();
+      this.renderQuickApprovalPanel();
+      if (this.ordersTable) this.ordersTable.render();
+      showToast('Dokumen ' + order.id + ' berhasil diperbarui menjadi: ' + newStatus);
+    },
+
+    renderStockSummaryStrip: function () {
+      var db = window.NPP_ERP_DATA;
+      var totals = db.inventory.reduce(function (acc, item) {
+        acc.fisik += item.fisik;
+        acc.tertahan += item.tertahan;
+        acc.layak += item.layak;
+        acc.reservasi += item.reservasi;
+        acc.tersedia += item.tersedia;
+        return acc;
+      }, { fisik: 0, tertahan: 0, layak: 0, reservasi: 0, tersedia: 0 });
+
+      var elFisik = document.getElementById('sumStokFisik');
+      var elTertahan = document.getElementById('sumStokTertahan');
+      var elLayak = document.getElementById('sumStokLayak');
+      var elReservasi = document.getElementById('sumStokReservasi');
+      var elTersedia = document.getElementById('sumStokTersedia');
+
+      if (elFisik) elFisik.textContent = totals.fisik + ' Unit';
+      if (elTertahan) elTertahan.textContent = totals.tertahan + ' Unit';
+      if (elLayak) elLayak.textContent = totals.layak + ' Unit';
+      if (elReservasi) elReservasi.textContent = totals.reservasi + ' Unit';
+      if (elTersedia) elTersedia.textContent = totals.tersedia + ' Unit';
+    },
+
+    initOrdersTable: function () {
+      var self = this;
+      this.ordersTable = new TableEngine({
+        tbodyId: 'dashboardOrdersTbody',
+        paginationId: 'dashboardOrdersPagination',
+        searchInputId: 'dashboardOrdersSearch',
+        pageSizeSelectId: 'dashboardOrdersPageSize',
+        defaultPageSize: 5,
+        colSpan: 9,
+        getData: function () {
+          return window.NPP_ERP_DATA.orders;
+        },
+        searchFn: function (order, q) {
+          return (
+            order.id.toLowerCase().indexOf(q) !== -1 ||
+            order.clientPoNumber.toLowerCase().indexOf(q) !== -1 ||
+            order.customerName.toLowerCase().indexOf(q) !== -1 ||
+            order.statusOrder.toLowerCase().indexOf(q) !== -1 ||
+            order.statusApproval.toLowerCase().indexOf(q) !== -1
+          );
+        },
+        filters: [
+          {
+            selectId: 'filterOrderApproval',
+            match: function (order, val) {
+              return order.statusApproval === val;
+            }
+          },
+          {
+            selectId: 'filterOrderDelivery',
+            match: function (order, val) {
+              return order.statusPengiriman === val;
+            }
+          },
+          {
+            selectId: 'filterOrderBilling',
+            match: function (order, val) {
+              return order.statusPenagihan === val;
+            }
+          }
+        ],
+        renderRow: function (order) {
+          var roleCfg = RoleManager.getCurrentRoleConfig();
+          var canApproveNow = roleCfg.canApprove && order.statusApproval === 'Menunggu Persetujuan';
+
+          var actionBtns =
+            '<div class="erp-Filter-group">' +
+            '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-view-order="' + order.id + '">Rincian</button>' +
+            (canApproveNow
+              ? '<button type="button" class="btn-erp btn-erp-gold btn-erp-sm" data-quick-approve="' + order.id + '">Setujui</button>'
+              : '') +
+            '</div>';
+
+          return (
+            '<tr>' +
+            '<td>' +
+            '<span class="cell-code">' + escapeHtml(order.id) + '</span>' +
+            '<span class="cell-subtext">' + escapeHtml(order.orderDate) + '</span>' +
+            '</td>' +
+            '<td>' +
+            '<span class="cell-client">' + escapeHtml(order.customerName) + '</span>' +
+            '<span class="cell-subtext">Ref PO: ' + escapeHtml(order.clientPoNumber) + '</span>' +
+            '</td>' +
+            '<td class="col-financial">' +
+            '<span class="cell-money">' + formatMoneyRBAC(order.total, false) + '</span>' +
+            '<span class="cell-subtext">Termin: ' + escapeHtml(order.paymentTerm) + '</span>' +
+            '</td>' +
+            '<td>' + renderStatusBadge(order.statusOrder) + '</td>' +
+            '<td>' + renderStatusBadge(order.statusApproval) + '</td>' +
+            '<td>' + renderStatusBadge(order.statusPemenuhan) + '</td>' +
+            '<td>' + renderStatusBadge(order.statusPengiriman) + '</td>' +
+            '<td class="col-financial">' + renderStatusBadge(order.statusPenagihan) + '</td>' +
+            '<td>' + actionBtns + '</td>' +
+            '</tr>'
+          );
+        },
+        onAfterRender: function () {
+          var tbody = document.getElementById('dashboardOrdersTbody');
+          if (!tbody) return;
+
+          tbody.querySelectorAll('[data-view-order]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              self.openOrderDetailModal(btn.getAttribute('data-view-order'));
+            });
+          });
+
+          tbody.querySelectorAll('[data-quick-approve]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              self.handleOrderApproval(btn.getAttribute('data-quick-approve'), 'Disetujui');
+            });
+          });
+        }
+      });
+
+      this.ordersTable.render();
+    },
+
+    initStockTable: function () {
+      this.stockTable = new TableEngine({
+        tbodyId: 'dashboardStockTbody',
+        paginationId: 'dashboardStockPagination',
+        searchInputId: 'dashboardStockSearch',
+        pageSizeSelectId: 'dashboardStockPageSize',
+        defaultPageSize: 5,
+        colSpan: 9,
+        getData: function () {
+          return window.NPP_ERP_DATA.inventory;
+        },
+        searchFn: function (item, q) {
+          return (
+            item.sku.toLowerCase().indexOf(q) !== -1 ||
+            item.name.toLowerCase().indexOf(q) !== -1 ||
+            item.category.toLowerCase().indexOf(q) !== -1 ||
+            item.rack.toLowerCase().indexOf(q) !== -1
+          );
+        },
+        filters: [
+          {
+            selectId: 'filterStockCategory',
+            match: function (item, val) {
+              return item.category === val;
+            }
+          },
+          {
+            selectId: 'filterStockHealth',
+            match: function (item, val) {
+              if (val === 'KRITIS') return item.tersedia <= item.minStok;
+              if (val === 'AMAN') return item.tersedia > item.minStok;
+              return true;
+            }
+          }
+        ],
+        renderRow: function (item) {
+          var isCritical = item.tersedia <= item.minStok;
+          var statusBadge = isCritical
+            ? '<span class="badge-status badge-danger"><span class="badge-dot"></span>Stok Kritis (Min ' + item.minStok + ')</span>'
+            : '<span class="badge-status badge-success"><span class="badge-dot"></span>Stok Aman</span>';
+
+          return (
+            '<tr>' +
+            '<td>' +
+            '<span class="cell-code">' + escapeHtml(item.sku) + '</span>' +
+            '<span class="cell-subtext">Rak: ' + escapeHtml(item.rack) + '</span>' +
+            '</td>' +
+            '<td>' +
+            '<span class="cell-client">' + escapeHtml(item.name) + '</span>' +
+            '<span class="cell-subtext">' + escapeHtml(item.category) + ' • Satuan: ' + escapeHtml(item.unit) + '</span>' +
+            '</td>' +
+            '<td><strong>' + item.fisik + '</strong> ' + escapeHtml(item.unit) + '</td>' +
+            '<td>' +
+            (item.tertahan > 0
+              ? '<span class="badge-status badge-danger">' + item.tertahan + ' Hold</span>'
+              : '<span class="cell-subtext">0</span>') +
+            '</td>' +
+            '<td><strong>' + item.layak + '</strong> ' + escapeHtml(item.unit) + '</td>' +
+            '<td><span class="badge-status badge-info">' + item.reservasi + ' Direservasi</span></td>' +
+            '<td><strong class="cell-stock-available">' + item.tersedia + ' ' + escapeHtml(item.unit) + '</strong></td>' +
+            '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(item.sellPrice, false) + '</span></td>' +
+            '<td>' + statusBadge + '</td>' +
+            '</tr>'
+          );
+        }
+      });
+
+      this.stockTable.render();
+    },
+
+    bindOrderDetailModal: function () {
+      var modal = document.getElementById('orderDetailModal');
+      var closeBtn = document.getElementById('closeOrderDetailModal');
+      var closeFooterBtn = document.getElementById('closeOrderDetailFooterBtn');
+
+      var closeModal = function () {
+        if (modal) modal.classList.remove('modal-open');
+      };
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) closeModal();
+        });
+      }
+    },
+
+    openOrderDetailModal: function (soId) {
+      var modal = document.getElementById('orderDetailModal');
+      var body = document.getElementById('orderDetailModalBody');
+      var title = document.getElementById('orderDetailModalTitle');
+      var approveBtn = document.getElementById('modalApproveOrderBtn');
+      if (!modal || !body) return;
+
+      var db = window.NPP_ERP_DATA;
+      var order = db.orders.find(function (o) { return o.id === soId; });
+      if (!order) return;
+
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      if (title) title.textContent = 'Rincian Pesanan Pelanggan — ' + order.id;
+
+      var rowsHtml = order.items.map(function (item, idx) {
+        var subtotal = item.qty * item.price;
+        return (
+          '<tr>' +
+          '<td>' + (idx + 1) + '</td>' +
+          '<td><span class="cell-code">' + escapeHtml(item.sku) + '</span></td>' +
+          '<td><strong>' + escapeHtml(item.name) + '</strong></td>' +
+          '<td>' + item.qty + ' ' + escapeHtml(item.unit) + '</td>' +
+          '<td>' + formatMoneyRBAC(item.price, false) + '</td>' +
+          '<td><strong>' + formatMoneyRBAC(subtotal, false) + '</strong></td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      body.innerHTML =
+        '<div class="erp-form-grid modal-grid-spaced">' +
+        '<div class="erp-kpi-card">' +
+        '<span class="erp-kpi-label">Pelanggan B2B</span>' +
+        '<div class="modal-card-title-strong">' + escapeHtml(order.customerName) + '</div>' +
+        '<span class="cell-subtext">Nomor PO Klien: ' + escapeHtml(order.clientPoNumber) + '</span>' +
+        '<span class="cell-subtext">Berkas PO Asli: ' + escapeHtml(order.poFileName) + '</span>' +
+        '</div>' +
+        '<div class="erp-kpi-card">' +
+        '<span class="erp-kpi-label">Jadwal & Termin Pembayaran</span>' +
+        '<div class="modal-card-title-strong">Target Kirim: ' + escapeHtml(order.deliveryTarget) + '</div>' +
+        '<span class="cell-subtext">Tanggal Order: ' + escapeHtml(order.orderDate) + ' • Termin: ' + escapeHtml(order.paymentTerm) + '</span>' +
+        '<span class="cell-subtext">PIC Sales: ' + escapeHtml(order.salesPic) + '</span>' +
+        '</div>' +
+        '</div>' +
+        '<div class="stock-formula-strip modal-five-dim-strip">' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">1. Status Order</div>' + renderStatusBadge(order.statusOrder) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">2. Status Approval</div>' + renderStatusBadge(order.statusApproval) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">3. Pemenuhan Stok</div>' + renderStatusBadge(order.statusPemenuhan) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">4. Pengiriman (SJ)</div>' + renderStatusBadge(order.statusPengiriman) + '</div>' +
+        '<div class="stock-formula-box"><div class="stock-formula-title">5. Penagihan (INV)</div>' + renderStatusBadge(order.statusPenagihan) + '</div>' +
+        '</div>' +
+        '<div class="erp-table-wrap modal-table-spaced">' +
+        '<table class="erp-table">' +
+        '<thead><tr><th>No</th><th>SKU</th><th>Deskripsi Unit Industri</th><th>Qty</th><th>Harga Satuan</th><th>Subtotal</th></tr></thead>' +
+        '<tbody>' + rowsHtml + '</tbody>' +
+        '</table>' +
+        '</div>' +
+        '<div class="erp-form-grid">' +
+        '<div class="erp-kpi-card">' +
+        '<span class="erp-kpi-label">Catatan Operasional & Proyek</span>' +
+        '<p class="modal-notes-text">' + escapeHtml(order.notes || '-') + '</p>' +
+        '</div>' +
+        '<div class="erp-kpi-card">' +
+        '<span class="erp-kpi-label">Ringkasan Nilai Transaksi (PPN 11%)</span>' +
+        '<div class="modal-summary-row"><span>DPP:</span><strong>' + formatMoneyRBAC(order.dpp, false) + '</strong></div>' +
+        '<div class="modal-summary-row"><span>PPN 11%:</span><strong>' + formatMoneyRBAC(order.ppn, false) + '</strong></div>' +
+        '<div class="modal-summary-total"><span>Total Tagihan:</span><strong>' + formatMoneyRBAC(order.total, false) + '</strong></div>' +
+        '</div>' +
+        '</div>';
+
+      var self = this;
+      if (approveBtn) {
+        if (roleCfg.canApprove && order.statusApproval === 'Menunggu Persetujuan') {
+          approveBtn.classList.remove('erp-hidden');
+          approveBtn.onclick = function () {
+            self.handleOrderApproval(order.id, 'Disetujui');
+            modal.classList.remove('modal-open');
+          };
+        } else {
+          approveBtn.classList.add('erp-hidden');
+        }
+      }
+
+      modal.classList.add('modal-open');
+    }
+  };
+
+  /* ==========================================================================
+     8. EKSPOR API GLOBAL & AUTO-INIT SAAT DOM READY
+     ========================================================================== */
+  window.NPP_ERP = {
+    ROLE_CONFIG: ROLE_CONFIG,
+    RoleManager: RoleManager,
+    TableEngine: TableEngine,
+    DashboardController: DashboardController,
+    saveDatabase: saveDatabase,
+    resetDatabase: resetDatabase,
+    formatRupiah: formatRupiah,
+    formatMoneyRBAC: formatMoneyRBAC,
+    renderStatusBadge: renderStatusBadge,
+    escapeHtml: escapeHtml,
+    addAuditLog: addAuditLog,
+    showToast: showToast
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    RoleManager.initTopbarSwitcher();
+    DashboardController.init();
+  });
+})();

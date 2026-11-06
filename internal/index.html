@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dashboard Eksekutif & KPI — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet Portal Operasional Internal -->
+  <link rel="stylesheet" href="../src/internal/internal.css" />
+</head>
+
+<body id="erpDashboardPage">
+  <div class="erp-shell">
+
+    <!-- BACKDROP MOBILE SIDEBAR -->
+    <div class="erp-sidebar-backdrop" id="erpSidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         1. SIDEBAR NAVIGASI (8 MODUL OPERASIONAL NPP HLD 001)
+         ==================================================================== -->
+    <aside class="erp-sidebar" id="erpSidebar" aria-label="Navigasi Modul Operasional">
+      <div class="erp-sidebar-brand">
+        <a href="../index.html" class="erp-brand-link" title="Ke Beranda Publik PT NPP">
+          <img src="../assets/logo-npp.webp" alt="PT Nusantara Puncak Perkasa" class="erp-brand-logo" />
+          <div class="erp-brand-meta">
+            <span class="erp-brand-title">NPP ERP Portal</span>
+            <span class="erp-brand-subtitle">Sistem Pengadaan HLD 001</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="erp-sidebar-nav">
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Utama & Eksekutif</span>
+          <a href="index.html" class="erp-nav-link erp-nav-link-active">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9" rx="1.5" />
+              <rect x="14" y="3" width="7" height="5" rx="1.5" />
+              <rect x="14" y="12" width="7" height="9" rx="1.5" />
+              <rect x="3" y="16" width="7" height="5" rx="1.5" />
+            </svg>
+            <span>1. Dashboard & KPI</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Siklus Pengadaan & Stok</span>
+          <a href="orders.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+              <path d="M16 13H8" />
+              <path d="M16 17H8" />
+              <path d="M10 9H8" />
+            </svg>
+            <span>2. PO Pelanggan (SO)</span>
+            <span class="erp-nav-badge" id="navBadgeOrders">3 Pending</span>
+          </a>
+
+          <a href="procurement.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            <span>3. Pengadaan Supplier</span>
+          </a>
+
+          <a href="inventory.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m7.5 4.27 9 5.15" />
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            <span>4. Stok Gudang (5 Saldo)</span>
+            <span class="erp-nav-badge" id="navBadgeInventory">5 Kritis</span>
+          </a>
+
+          <a href="delivery.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13" />
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+            <span>5. Pengiriman (Surat Jalan)</span>
+          </a>
+
+          <a href="billing.html" class="erp-nav-link" data-nav-module="billing">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <line x1="2" y1="10" x2="22" y2="10" />
+            </svg>
+            <span>6. Penagihan & Invoice</span>
+            <span class="erp-nav-badge" id="navBadgeBilling">2 Overdue</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Tata Kelola & Referensi</span>
+          <a href="archive.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="21 8 21 21 3 21 3 8" />
+              <rect x="1" y="3" width="22" height="5" />
+              <line x1="10" y1="12" x2="14" y2="12" />
+            </svg>
+            <span>7. Arsip & Audit Trail</span>
+          </a>
+
+          <a href="master-data.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+            </svg>
+            <span>8. Master Data Terpadu</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="erp-sidebar-footer">
+        <div class="erp-sidebar-user">
+          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa (SysAdmin)</span>
+          <span class="erp-sidebar-user-email" id="erpActiveUserEmail">admin@nusantarapuncakperkasa.co.id</span>
+        </div>
+        <div class="erp-sidebar-actions">
+          <a href="../login.html" class="erp-sidebar-btn">Ganti Akun</a>
+          <a href="../index.html" class="erp-sidebar-btn">Web Publik</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         2. MAIN WORKSPACE (TOPBAR + DASHBOARD CONTENT)
+         ==================================================================== -->
+    <div class="erp-main">
+
+      <!-- TOPBAR DENGAN INTERACTIVE ROLE SWITCHER (RBAC REAL-TIME) -->
+      <header class="erp-topbar">
+        <div class="erp-topbar-left">
+          <button type="button" class="erp-mobile-toggle" id="erpMobileMenuBtn" aria-label="Buka Navigasi Modul">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <div class="erp-breadcrumb">
+            <span class="erp-breadcrumb-eyebrow">NPP HLD 001 • Portal Internal Terintegrasi</span>
+            <span class="erp-breadcrumb-title">Dashboard Eksekutif & Kontrol Operasional</span>
+          </div>
+        </div>
+
+        <div class="erp-topbar-right">
+          <!-- Interactive Role Switcher (6 Peran HLD) -->
+          <div class="erp-role-switcher-wrap">
+            <span class="erp-role-switcher-label">Simulasi Peran (RBAC):</span>
+            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
+              <option value="Administrator">1. Administrator (Full Access)</option>
+              <option value="Sales / Operasional">2. Sales & PO (Operasional)</option>
+              <option value="Purchasing">3. Purchasing (PO Supplier)</option>
+              <option value="Gudang">4. Stok Gudang (Tanpa Harga/HPP)</option>
+              <option value="Finance">5. Finance & Invoice (Keuangan)</option>
+              <option value="Pimpinan / Approver">6. Approver (Direksi / Otorisasi)</option>
+            </select>
+          </div>
+        </div>
+      </header>
+
+      <!-- KONTEN UTAMA DASHBOARD -->
+      <main class="erp-content">
+
+        <!-- BANNER STATUS PERAN AKTIF & INFORMASI WEWENANG -->
+        <section class="erp-role-banner" aria-label="Informasi Peran Aktif">
+          <div class="erp-role-banner-info">
+            <div class="erp-role-icon-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <div class="erp-role-banner-text">
+              <span class="erp-role-banner-title" id="erpRoleBannerTitle">Akses Penuh Sistem Operasional (Superuser Administrator)</span>
+              <span class="erp-role-banner-desc" id="erpRoleBannerDesc">Anda memiliki otorisasi penuh ke seluruh 8 modul operasional, konfigurasi Master Data, persetujuan dokumen (Approval), keuangan, dan Audit Trail.</span>
+            </div>
+          </div>
+          <span class="erp-role-restriction-chip" id="erpRoleRestrictionChip">Full Access • 8 Modul Aktif</span>
+        </section>
+
+        <!-- BARIS HIGHLIGHT: S-CURVE INVERTED BORDER RADIUS CARD + PANEL QUICK APPROVAL -->
+        <section class="erp-highlight-grid" aria-label="Highlight Operasional & Quick Approval">
+
+          <!-- Kartu Visual Utama dengan S-Curve Inverted Border Radius (Identitas Visual PT NPP) -->
+          <div class="erp-cutout-card">
+            <!-- Cutout Kiri Atas -->
+            <div class="erp-cutout-tl">
+              <svg class="cutout-svg cutout-svg-tl-right" viewBox="-2 -2 26 26" fill="currentColor" shape-rendering="geometricPrecision">
+                <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+              </svg>
+              <svg class="cutout-svg cutout-svg-tl-bottom" viewBox="-2 -2 26 26" fill="currentColor" shape-rendering="geometricPrecision">
+                <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+              </svg>
+              <span class="erp-cutout-pill-gold">NPP HLD 001</span>
+              <span class="erp-cutout-pill-navy" id="erpActiveRoleTag">Administrator</span>
+            </div>
+
+            <img
+              src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&fm=webp&w=1200&q=80"
+              alt="Pusat Kendali Pengadaan & Gudang Industri PT Nusantara Puncak Perkasa"
+              class="erp-cutout-img" />
+
+            <div class="erp-cutout-overlay">
+              <span class="erp-cutout-tag">Siklus Pengadaan & Logistik Terintegrasi</span>
+              <h1 class="section-heading">Kendali Real-Time 5 Dimensi PO & 5 Saldo Persediaan Industri.</h1>
+              <p class="erp-cutout-desc">
+                Memastikan akurasi reservasi stok Baterai RITAR, Baterai BSB, UPS Ablerex, Stabilizer, dan Solar Inverter mulai dari penerimaan PO Klien hingga pelunasan Faktur Pajak.
+              </p>
+            </div>
+
+            <!-- Cutout Kanan Bawah -->
+            <div class="erp-cutout-br">
+              <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor" shape-rendering="geometricPrecision">
+                <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+              </svg>
+              <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor" shape-rendering="geometricPrecision">
+                <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+              </svg>
+              <div class="erp-cutout-status">
+                <span class="erp-cutout-dot"></span>
+                <span>Sinkronisasi Stok & Transaksi Aktif</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel Quick Approval (Otorisasi Cepat untuk Approver / Pimpinan & Administrator) -->
+          <div class="erp-approval-panel">
+            <div class="erp-panel-header">
+              <div>
+                <h2 class="section-heading">Panel Quick Approval</h2>
+                <p class="erp-panel-subtitle">Otorisasi langsung PO Pelanggan yang menunggu persetujuan pimpinan.</p>
+              </div>
+              <span class="badge-status badge-info" id="quickApprovalRoleHint">Otorisasi Aktif</span>
+            </div>
+
+            <div class="approval-list" id="quickApprovalList">
+              <!-- Di-render dinamis oleh DashboardController.renderQuickApprovalPanel() -->
+            </div>
+          </div>
+
+        </section>
+
+        <!-- 5 KARTU KPI UTAMA EKSEKUTIF -->
+        <section class="erp-kpi-grid" aria-label="Lima Indikator Kinerja Utama">
+
+          <!-- KPI 1: Pesanan Aktif -->
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">1. Pesanan Aktif</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <path d="M14 2v6h6" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiActiveOrdersVal">8 PO Aktif</div>
+            <div class="erp-kpi-sub" id="kpiActiveOrdersSub">Dari total 12 PO Pelanggan B2B</div>
+          </article>
+
+          <!-- KPI 2: Omset Bulan Berjalan (Adaptif untuk Gudang) -->
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label" id="kpiOmsetLabel">2. Omset Bulan Berjalan</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <line x1="12" y1="1" x2="12" y2="23" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiOmsetVal">Rp 1.228.104.000</div>
+            <div class="erp-kpi-sub" id="kpiOmsetSub">6 PO masuk periode November 2026</div>
+          </article>
+
+          <!-- KPI 3: Antrean Approval -->
+          <article class="erp-kpi-card erp-kpi-card-warning">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">3. Antrean Approval</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiApprovalVal">4 Dokumen</div>
+            <div class="erp-kpi-sub" id="kpiApprovalSub">3 PO Klien • 1 PO Prinsipal</div>
+          </article>
+
+          <!-- KPI 4: Alert Stok Kritis -->
+          <article class="erp-kpi-card erp-kpi-card-alert">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">4. Alert Stok Kritis</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiCriticalVal">5 SKU Kritis</div>
+            <div class="erp-kpi-sub" id="kpiCriticalSub">Stok Tersedia di bawah batas minimum</div>
+          </article>
+
+          <!-- KPI 5: Piutang Jatuh Tempo (Adaptif untuk Gudang) -->
+          <article class="erp-kpi-card erp-kpi-card-alert">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label" id="kpiReceivableLabel">5. Piutang Jatuh Tempo</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <rect x="2" y="5" width="20" height="14" rx="2" />
+                  <line x1="2" y1="10" x2="22" y2="10" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiReceivableVal">Rp 201.465.000</div>
+            <div class="erp-kpi-sub" id="kpiReceivableSub">2 Invoice melewati batas termin</div>
+          </article>
+
+        </section>
+
+        <!-- ==================================================================
+             3. TABEL RINGKASAN PO PELANGGAN TERBARU (5 DIMENSI STATUS INDEPENDEN)
+             ================================================================== -->
+        <section class="erp-section-panel" aria-label="Tabel Ringkasan PO Pelanggan Terbaru">
+          <div class="erp-section-header">
+            <div class="erp-section-title-group">
+              <span class="erp-section-eyebrow">Pemantauan Multi-Dimensi (HLD Bagian 4)</span>
+              <h2 class="section-heading">Ringkasan PO Pelanggan & 5 Dimensi Status Independen</h2>
+              <p class="erp-section-desc">
+                Setiap pesanan dipantau secara terpisah pada dimensi Order, Approval, Pemenuhan Stok, Pengiriman (Surat Jalan), dan Penagihan (Invoice).
+              </p>
+            </div>
+            <div class="erp-Filter-group">
+              <a href="orders.html" class="btn-erp btn-erp-primary">
+                <span>Buka Modul PO Pelanggan</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Toolbar Pencarian & Filter 5 Dimensi -->
+          <div class="erp-toolbar">
+            <div class="erp-search-box">
+              <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                id="dashboardOrdersSearch"
+                class="erp-search-input"
+                placeholder="Cari Nomor SO, Nomor PO Klien, atau Nama Perusahaan B2B..." />
+            </div>
+
+            <div class="erp-Filter-group">
+              <select id="filterOrderApproval" class="erp-filter-select" aria-label="Filter Status Approval">
+                <option value="ALL">Semua Approval</option>
+                <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
+                <option value="Disetujui">Disetujui</option>
+                <option value="Ditolak">Ditolak</option>
+              </select>
+
+              <select id="filterOrderDelivery" class="erp-filter-select" aria-label="Filter Status Pengiriman">
+                <option value="ALL">Semua Pengiriman</option>
+                <option value="Belum Dikirim">Belum Dikirim</option>
+                <option value="Siap Kirim Gudang">Siap Kirim Gudang</option>
+                <option value="Terkirim Sebagian">Terkirim Sebagian</option>
+                <option value="Terkirim Penuh (BAST)">Terkirim Penuh (BAST)</option>
+              </select>
+
+              <select id="filterOrderBilling" class="erp-filter-select col-financial" aria-label="Filter Status Penagihan">
+                <option value="ALL">Semua Penagihan</option>
+                <option value="Belum Ditagih">Belum Ditagih</option>
+                <option value="Tagihan DP Terbit">Tagihan DP Terbit</option>
+                <option value="Ditagih Sebagian">Ditagih Sebagian</option>
+                <option value="Invoice Terbit">Invoice Terbit</option>
+                <option value="Jatuh Tempo">Jatuh Tempo</option>
+                <option value="Lunas">Lunas</option>
+              </select>
+
+              <select id="dashboardOrdersPageSize" class="erp-filter-select" aria-label="Jumlah Baris Tabel PO">
+                <option value="5">5 Baris / Hal</option>
+                <option value="10">10 Baris / Hal</option>
+                <option value="20">20 Baris / Hal</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabel Data Zero-Border -->
+          <div class="erp-table-wrap">
+            <table class="erp-table">
+              <thead>
+                <tr>
+                  <th>No. SO & Tanggal</th>
+                  <th>Pelanggan B2B & Ref PO</th>
+                  <th class="col-financial">Total (+PPN 11%)</th>
+                  <th>1. Status Order</th>
+                  <th>2. Approval</th>
+                  <th>3. Pemenuhan Stok</th>
+                  <th>4. Pengiriman (SJ)</th>
+                  <th class="col-financial">5. Penagihan (INV)</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardOrdersTbody">
+                <!-- Di-render oleh TableEngine -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Clean Pagination Bar -->
+          <div class="erp-pagination" id="dashboardOrdersPagination"></div>
+        </section>
+
+        <!-- ==================================================================
+             4. PANEL RINGKASAN 5 SALDO STOK GUDANG (FISIK, TERTAHAN, LAYAK, RESERVASI, TERSEDIA)
+             ================================================================== -->
+        <section class="erp-section-panel" aria-label="Panel Ringkasan 5 Saldo Stok Gudang">
+          <div class="erp-section-header">
+            <div class="erp-section-title-group">
+              <span class="erp-section-eyebrow">Kontrol Inventori Presisi (HLD Bagian 5)</span>
+              <h2 class="section-heading">Panel Ringkasan 5 Saldo Stok Gudang</h2>
+              <p class="erp-section-desc">
+                Memisahkan stok fisik dengan unit karantina QC serta mengunci kuota reservasi pesanan agar tidak terjadi penjualan ganda (over-selling).
+              </p>
+            </div>
+            <div class="erp-Filter-group">
+              <a href="inventory.html" class="btn-erp btn-erp-secondary">
+                <span>Buka Modul Gudang & QC</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Strip Rumus & Agregat 5 Saldo Gudang -->
+          <div class="stock-formula-strip">
+            <div class="stock-formula-box">
+              <div class="stock-formula-title">1. Stok Fisik (On-Hand)</div>
+              <div class="stock-formula-val" id="sumStokFisik">284 Unit</div>
+              <div class="stock-formula-desc">Total seluruh barang di rak gudang</div>
+            </div>
+            <div class="stock-formula-box">
+              <div class="stock-formula-title">2. Stok Tertahan (QC Hold)</div>
+              <div class="stock-formula-val" id="sumStokTertahan">13 Unit</div>
+              <div class="stock-formula-desc">Karantina uji beban / klaim prinsipal</div>
+            </div>
+            <div class="stock-formula-box">
+              <div class="stock-formula-title">3. Stok Layak Pakai</div>
+              <div class="stock-formula-val" id="sumStokLayak">271 Unit</div>
+              <div class="stock-formula-desc">Rumus: Fisik dikurangi Tertahan</div>
+            </div>
+            <div class="stock-formula-box">
+              <div class="stock-formula-title">4. Stok Direservasi (SO)</div>
+              <div class="stock-formula-val" id="sumStokReservasi">146 Unit</div>
+              <div class="stock-formula-desc">Terkunci untuk PO Pelanggan aktif</div>
+            </div>
+            <div class="stock-formula-box stock-formula-box-highlight">
+              <div class="stock-formula-title">5. Stok Tersedia (ATP)</div>
+              <div class="stock-formula-val" id="sumStokTersedia">125 Unit</div>
+              <div class="stock-formula-desc">Rumus: Layak Pakai dikurangi Reservasi</div>
+            </div>
+          </div>
+
+          <!-- Toolbar Pencarian & Filter SKU -->
+          <div class="erp-toolbar">
+            <div class="erp-search-box">
+              <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                id="dashboardStockSearch"
+                class="erp-search-input"
+                placeholder="Cari Kode SKU, Nama Produk (RITAR, BSB, Ablerex), atau Kode Rak..." />
+            </div>
+
+            <div class="erp-Filter-group">
+              <select id="filterStockCategory" class="erp-filter-select" aria-label="Filter Kategori Produk">
+                <option value="ALL">Semua Kategori Produk</option>
+                <option value="Baterai RITAR">Baterai RITAR</option>
+                <option value="Baterai BSB">Baterai BSB</option>
+                <option value="UPS Ablerex">UPS Ablerex</option>
+                <option value="Stabilizer">Stabilizer</option>
+                <option value="Inverter & Solar">Inverter & Solar</option>
+              </select>
+
+              <select id="filterStockHealth" class="erp-filter-select" aria-label="Filter Kesehatan Stok">
+                <option value="ALL">Semua Status Stok</option>
+                <option value="KRITIS">Stok Kritis (Perlu Pengadaan)</option>
+                <option value="AMAN">Stok Aman</option>
+              </select>
+
+              <select id="dashboardStockPageSize" class="erp-filter-select" aria-label="Jumlah Baris Tabel Stok">
+                <option value="5">5 SKU / Hal</option>
+                <option value="10">10 SKU / Hal</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabel 5 Saldo Stok per SKU -->
+          <div class="erp-table-wrap">
+            <table class="erp-table">
+              <thead>
+                <tr>
+                  <th>Kode SKU & Rak</th>
+                  <th>Nama Spesifikasi Produk</th>
+                  <th>1. Fisik</th>
+                  <th>2. Tertahan</th>
+                  <th>3. Layak Pakai</th>
+                  <th>4. Reservasi</th>
+                  <th>5. Tersedia (ATP)</th>
+                  <th class="col-financial">Harga Jual</th>
+                  <th>Status Kesehatan</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardStockTbody">
+                <!-- Di-render oleh TableEngine -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Clean Pagination Bar -->
+          <div class="erp-pagination" id="dashboardStockPagination"></div>
+        </section>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- ====================================================================
+       MODAL RINCIAN PO PELANGGAN (DENGAN TOMBOL OTORISASI APPROVER)
+       ==================================================================== -->
+  <div class="erp-modal-overlay" id="orderDetailModal" role="dialog" aria-modal="true" aria-labelledby="orderDetailModalTitle">
+    <div class="erp-modal-card">
+      <div class="erp-modal-header">
+        <h3 class="section-heading" id="orderDetailModalTitle">Rincian Pesanan Pelanggan</h3>
+        <button type="button" class="erp-modal-close" id="closeOrderDetailModal" aria-label="Tutup Modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="erp-modal-body" id="orderDetailModalBody">
+        <!-- Diisi dinamis oleh DashboardController.openOrderDetailModal() -->
+      </div>
+      <div class="erp-modal-footer">
+        <button type="button" class="btn-erp btn-erp-secondary" id="closeOrderDetailFooterBtn">Tutup</button>
+        <button type="button" class="btn-erp btn-erp-success erp-hidden" id="modalApproveOrderBtn">Setujui PO Pelanggan Ini</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core ERP Engine -->
+  <script src="../src/internal/app.js"></script>
+</body>
+
+</html>

@@ -25,6 +25,11 @@ if (fs.existsSync('login.html')) {
   fs.copyFileSync('login.html', path.join(dist, 'login.html'));
 }
 
+// Copy internal portal pages
+if (fs.existsSync('internal')) {
+  fs.cpSync('internal', path.join(dist, 'internal'), { recursive: true });
+}
+
 // Copy src
 if (fs.existsSync('src')) {
   fs.cpSync('src', path.join(dist, 'src'), { recursive: true });

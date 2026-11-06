@@ -1,0 +1,1476 @@
+/* ==========================================================================
+   PT NUSANTARA PUNCAK PERKASA — PORTAL OPERASIONAL PENGADAAN (NPP HLD 001)
+   Stylesheet Terpusat Modul Internal: src/internal/internal.css
+   Mematuhi penuh aturan AGENTS.md:
+   - Zero Border & Zero Box-Shadow (pemisah murni kontras surface & gap)
+   - Zero Scrollbar (scrollbar-width: none & ::-webkit-scrollbar hidden)
+   - Zero Hover Lift (tanpa transform: translateY pada hover)
+   - Font: 'Poppins' & konsistensi .section-heading
+   - Geometri S-Curve Inverted Border Radius (H >= R_box + R_svg)
+   ========================================================================== */
+
+:root {
+  --erp-bg-page: #f4f6fa;
+  --erp-bg-surface: #ffffff;
+  --erp-bg-subtle: #e9eef6;
+  --erp-bg-zebra: #f8fafd;
+  --erp-sidebar-bg: #0a1b33;
+  --erp-sidebar-surface: #112849;
+  --erp-heading: #0a1b33;
+  --erp-text: #4b5d73;
+  --erp-text-muted: #76879d;
+  --erp-navy: #0c4a96;
+  --erp-navy-dark: #072a56;
+  --erp-gold: #c99d51;
+  --erp-gold-bright: #d4a249;
+  --erp-gold-soft: #fbf5e9;
+
+  /* Palet Status 5 Dimensi (Soft Surface + High-Contrast Text, Zero Border) */
+  --status-success-bg: #e6f6ee;
+  --status-success-text: #0e6f3c;
+  --status-warning-bg: #fef3de;
+  --status-warning-text: #9a5b08;
+  --status-danger-bg: #fdeaea;
+  --status-danger-text: #b42318;
+  --status-info-bg: #e7f0fb;
+  --status-info-text: #0c4a96;
+  --status-neutral-bg: #e9eef6;
+  --status-neutral-text: #4b5d73;
+
+  --sidebar-width: 268px;
+  --topbar-height: 74px;
+  --radius-card: 24px;
+  --radius-panel: 20px;
+  --radius-pill: 9999px;
+  --radius-input: 14px;
+}
+
+/* ==========================================================================
+   1. RESET & GLOBAL INVARIANTS (ZERO BORDER, ZERO SHADOW, ZERO SCROLLBAR)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+html {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--erp-text);
+  background-color: var(--erp-bg-page);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-text);
+  overflow-x: clip;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Wajib .section-heading sesuai AGENTS.md */
+.section-heading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--erp-heading);
+  letter-spacing: -0.015em;
+}
+
+/* ==========================================================================
+   2. SHELL LAYOUT: FIXED LEFT SIDEBAR + STICKY TOPBAR + MAIN WORKSPACE
+   ========================================================================== */
+.erp-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* --- SIDEBAR KIRI TETAP (FIXED) --- */
+.erp-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: var(--erp-sidebar-bg);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  z-index: 120;
+  overflow-y: auto;
+  padding: 22px 16px;
+  gap: 20px;
+}
+
+.erp-sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: var(--erp-sidebar-surface);
+  border-radius: 16px;
+}
+
+.erp-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.erp-brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: contain;
+  background-color: #ffffff;
+  padding: 4px;
+}
+
+.erp-brand-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.erp-brand-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.erp-brand-subtitle {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--erp-gold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.erp-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+.erp-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.erp-nav-group-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.46);
+  padding: 0 12px 4px;
+}
+
+.erp-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 14px;
+  border-radius: 13px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.76);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.erp-nav-link:hover {
+  background-color: var(--erp-sidebar-surface);
+  color: #ffffff;
+}
+
+.erp-nav-link-active {
+  background-color: var(--erp-navy);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.erp-nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.erp-nav-link-active .erp-nav-icon {
+  color: var(--erp-gold-bright);
+}
+
+.erp-nav-badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 0.68rem;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.erp-nav-link-active .erp-nav-badge {
+  background-color: var(--erp-gold);
+  color: var(--erp-heading);
+}
+
+.erp-sidebar-footer {
+  padding: 14px;
+  background-color: var(--erp-sidebar-surface);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.erp-sidebar-user {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.erp-sidebar-user-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.erp-sidebar-user-email {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.62);
+  word-break: break-all;
+}
+
+.erp-sidebar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.erp-sidebar-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transition: background-color 0.18s ease;
+}
+
+.erp-sidebar-btn:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+/* --- MAIN WORKSPACE & STICKY TOPBAR --- */
+.erp-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.erp-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  min-height: var(--topbar-height);
+  background-color: var(--erp-bg-surface);
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.erp-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.erp-mobile-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-heading);
+  align-items: center;
+  justify-content: center;
+}
+
+.erp-breadcrumb {
+  display: flex;
+  flex-direction: column;
+}
+
+.erp-breadcrumb-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--erp-navy);
+}
+
+.erp-breadcrumb-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+}
+
+.erp-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* --- INTERACTIVE ROLE SWITCHER (RBAC) --- */
+.erp-role-switcher-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--erp-bg-page);
+  padding: 6px 8px 6px 14px;
+  border-radius: var(--radius-pill);
+}
+
+.erp-role-switcher-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--erp-text);
+  white-space: nowrap;
+}
+
+.erp-role-select {
+  background-color: var(--erp-navy);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.erp-role-select option {
+  background-color: #ffffff;
+  color: var(--erp-heading);
+}
+
+/* --- MAIN CONTENT CONTAINER --- */
+.erp-content {
+  padding: 24px 28px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ==========================================================================
+   3. ROLE BANNER & S-CURVE INVERTED BORDER RADIUS HIGHLIGHT CARD
+   ========================================================================== */
+.erp-role-banner {
+  background-color: var(--erp-bg-surface);
+  border-radius: var(--radius-panel);
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.erp-role-banner-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.erp-role-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background-color: var(--status-info-bg);
+  color: var(--erp-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.erp-role-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.erp-role-banner-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+}
+
+.erp-role-banner-desc {
+  font-size: 0.78rem;
+  color: var(--erp-text);
+}
+
+.erp-role-restriction-chip {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.74rem;
+  font-weight: 600;
+  background-color: var(--erp-gold-soft);
+  color: var(--status-warning-text);
+}
+
+/* --- HIGHLIGHT ROW: S-CURVE CARD + QUICK APPROVAL PANEL --- */
+.erp-highlight-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* Container Cutout WAJIB position: relative TANPA overflow: hidden (AGENTS.md Section 4) */
+.erp-cutout-card {
+  position: relative;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.erp-cutout-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  filter: brightness(0.42) contrast(1.06);
+}
+
+.erp-cutout-overlay {
+  position: relative;
+  z-index: 2;
+  padding: 72px 28px 66px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 640px;
+}
+
+.erp-cutout-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--erp-gold-bright);
+}
+
+.erp-cutout-overlay .section-heading {
+  color: #ffffff;
+  font-size: 1.48rem;
+}
+
+.erp-cutout-desc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.55;
+}
+
+/* Cutout Kiri Atas & Kanan Bawah (Desktop Zero Seam: offset -1px, SVG 26x26, H >= 48px) */
+.erp-cutout-tl {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  z-index: 4;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-bg-page);
+  padding: 8px 16px 10px 10px;
+  border-bottom-right-radius: 24px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.erp-cutout-br {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  z-index: 4;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-bg-page);
+  padding: 10px 10px 8px 16px;
+  border-top-left-radius: 24px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.erp-cutout-card .cutout-svg {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  color: var(--erp-bg-page);
+  pointer-events: none;
+}
+
+.erp-cutout-card .cutout-svg-tl-right {
+  top: -2px;
+  right: -24px;
+}
+
+.erp-cutout-card .cutout-svg-tl-bottom {
+  bottom: -24px;
+  left: -2px;
+}
+
+.erp-cutout-card .cutout-svg-br-top {
+  top: -24px;
+  right: -2px;
+}
+
+.erp-cutout-card .cutout-svg-br-left {
+  bottom: -2px;
+  left: -24px;
+}
+
+.erp-cutout-pill-gold {
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  background-color: var(--erp-gold);
+  color: var(--erp-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.erp-cutout-pill-navy {
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  background-color: var(--erp-navy);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.erp-cutout-status {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background-color: var(--erp-bg-surface);
+  color: var(--erp-heading);
+  font-size: 0.74rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.erp-cutout-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #12b76a;
+}
+
+/* --- PANEL QUICK APPROVAL --- */
+.erp-approval-panel {
+  background-color: var(--erp-bg-surface);
+  border-radius: var(--radius-card);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.erp-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.erp-panel-subtitle {
+  font-size: 0.76rem;
+  color: var(--erp-text-muted);
+}
+
+.approval-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.approval-item {
+  background-color: var(--erp-bg-page);
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.approval-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.approval-item-id {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--erp-navy);
+}
+
+.approval-item-value {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+}
+
+.approval-item-client {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--erp-heading);
+}
+
+.approval-item-meta {
+  font-size: 0.72rem;
+  color: var(--erp-text-muted);
+}
+
+.approval-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+/* ==========================================================================
+   4. 5 KARTU KPI UTAMA (PESANAN, OMSET, APPROVAL, STOK KRITIS, PIUTANG)
+   ========================================================================== */
+.erp-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.erp-kpi-card {
+  background-color: var(--erp-bg-surface);
+  border-radius: var(--radius-panel);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.erp-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.erp-kpi-label {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--erp-text);
+}
+
+.erp-kpi-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.erp-kpi-value {
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+  line-height: 1.2;
+}
+
+.erp-kpi-sub {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--erp-text-muted);
+}
+
+.erp-kpi-card-alert .erp-kpi-icon {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}
+
+.erp-kpi-card-warning .erp-kpi-icon {
+  background-color: var(--status-warning-bg);
+  color: var(--status-warning-text);
+}
+
+/* ==========================================================================
+   5. DATA SECTION PANEL, TOOLBAR, ZERO-BORDER TABLE & CLEAN PAGINATION
+   ========================================================================== */
+.erp-section-panel {
+  background-color: var(--erp-bg-surface);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.erp-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.erp-section-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.erp-section-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--erp-navy);
+}
+
+.erp-section-desc {
+  font-size: 0.8rem;
+  color: var(--erp-text);
+}
+
+/* --- FILTER & SEARCH TOOLBAR --- */
+.erp-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background-color: var(--erp-bg-page);
+  padding: 12px 14px;
+  border-radius: 16px;
+}
+
+.erp-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--erp-bg-surface);
+  padding: 9px 14px;
+  border-radius: 12px;
+  min-width: 260px;
+  flex: 1;
+}
+
+.erp-search-icon {
+  color: var(--erp-text-muted);
+  flex-shrink: 0;
+}
+
+.erp-search-input {
+  width: 100%;
+  font-size: 0.82rem;
+  color: var(--erp-heading);
+}
+
+.erp-search-input::placeholder {
+  color: var(--erp-text-muted);
+}
+
+.erp-Filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.erp-filter-select {
+  background-color: var(--erp-bg-surface);
+  color: var(--erp-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* --- ZERO-BORDER DATA TABLE (ZEBRA STRIPING + LEGA) --- */
+.erp-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+}
+
+.erp-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 860px;
+}
+
+.erp-table thead th {
+  background-color: var(--erp-bg-subtle);
+  color: var(--erp-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 16px;
+  white-space: nowrap;
+}
+
+.erp-table tbody tr {
+  background-color: var(--erp-bg-surface);
+  transition: background-color 0.15s ease;
+}
+
+.erp-table tbody tr:nth-child(even) {
+  background-color: var(--erp-bg-zebra);
+}
+
+.erp-table tbody tr:hover {
+  background-color: var(--erp-bg-subtle);
+}
+
+.erp-table tbody td {
+  padding: 14px 16px;
+  font-size: 0.81rem;
+  color: var(--erp-text);
+  vertical-align: middle;
+}
+
+.cell-code {
+  font-weight: 700;
+  color: var(--erp-navy);
+  white-space: nowrap;
+}
+
+.cell-client {
+  font-weight: 600;
+  color: var(--erp-heading);
+}
+
+.cell-subtext {
+  display: block;
+  font-size: 0.71rem;
+  color: var(--erp-text-muted);
+  margin-top: 2px;
+}
+
+.cell-money {
+  font-weight: 700;
+  color: var(--erp-heading);
+  white-space: nowrap;
+}
+
+.cell-stock-available {
+  color: var(--erp-navy);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+/* --- 5 FORMULA BAR SALDO STOK GUDANG --- */
+.stock-formula-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.stock-formula-box {
+  background-color: var(--erp-bg-page);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stock-formula-box-highlight {
+  background-color: var(--status-info-bg);
+}
+
+.stock-formula-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+}
+
+.stock-formula-val {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--erp-navy);
+}
+
+.stock-formula-desc {
+  font-size: 0.69rem;
+  color: var(--erp-text-muted);
+}
+
+/* --- STATUS BADGES (5 DIMENSI INDEPENDEN) --- */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.71rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.badge-success {
+  background-color: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.badge-warning {
+  background-color: var(--status-warning-bg);
+  color: var(--status-warning-text);
+}
+
+.badge-danger {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}
+
+.badge-info {
+  background-color: var(--status-info-bg);
+  color: var(--status-info-text);
+}
+
+.badge-neutral {
+  background-color: var(--status-neutral-bg);
+  color: var(--status-neutral-text);
+}
+
+/* --- BUTTONS (ZERO HOVER LIFT SESUAI AGENTS.MD) --- */
+.btn-erp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.btn-erp-primary {
+  background-color: var(--erp-navy);
+  color: #ffffff;
+}
+
+.btn-erp-primary:hover {
+  background-color: var(--erp-navy-dark);
+}
+
+.btn-erp-gold {
+  background-color: var(--erp-gold);
+  color: var(--erp-heading);
+}
+
+.btn-erp-gold:hover {
+  background-color: var(--erp-gold-bright);
+}
+
+.btn-erp-secondary {
+  background-color: var(--erp-bg-subtle);
+  color: var(--erp-heading);
+}
+
+.btn-erp-secondary:hover {
+  background-color: #dce4f0;
+}
+
+.btn-erp-success {
+  background-color: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.btn-erp-success:hover {
+  background-color: #d2f0e0;
+}
+
+.btn-erp-danger {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}
+
+.btn-erp-danger:hover {
+  background-color: #fad6d6;
+}
+
+.btn-erp-sm {
+  padding: 6px 11px;
+  font-size: 0.72rem;
+  border-radius: 9px;
+}
+
+/* --- CLEAN PAGINATION BAR --- */
+.erp-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background-color: var(--erp-bg-page);
+  padding: 10px 16px;
+  border-radius: 14px;
+}
+
+.erp-pagination-info {
+  font-size: 0.76rem;
+  color: var(--erp-text);
+}
+
+.erp-pagination-info strong {
+  color: var(--erp-heading);
+}
+
+.erp-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.erp-page-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background-color: var(--erp-bg-surface);
+  color: var(--erp-heading);
+  font-size: 0.76rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.erp-page-btn:hover:not(:disabled) {
+  background-color: var(--erp-bg-subtle);
+}
+
+.erp-page-btn-active {
+  background-color: var(--erp-navy) !important;
+  color: #ffffff !important;
+}
+
+.erp-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   6. MODAL OVERLAY, FORM GRID & TOAST NOTIFICATION
+   ========================================================================== */
+.erp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background-color: rgba(10, 27, 51, 0.58);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.erp-modal-overlay.modal-open {
+  display: flex;
+}
+
+.erp-modal-card {
+  width: 100%;
+  max-width: 780px;
+  background-color: var(--erp-bg-surface);
+  border-radius: var(--radius-card);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.erp-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.erp-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: var(--erp-bg-page);
+  color: var(--erp-heading);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.erp-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.erp-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.erp-form-group-full {
+  grid-column: 1 / -1;
+}
+
+.erp-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--erp-heading);
+}
+
+.erp-input,
+.erp-select,
+.erp-textarea {
+  background-color: var(--erp-bg-page);
+  padding: 11px 14px;
+  border-radius: var(--radius-input);
+  font-size: 0.82rem;
+  color: var(--erp-heading);
+  width: 100%;
+}
+
+.erp-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+/* Modal Content Helpers (Zero Inline Styles) */
+.modal-grid-spaced {
+  margin-bottom: 18px;
+}
+
+.modal-five-dim-strip {
+  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 18px;
+}
+
+.modal-table-spaced {
+  margin-bottom: 16px;
+}
+
+.modal-card-title-strong {
+  font-weight: 700;
+  color: var(--erp-heading);
+  font-size: 0.95rem;
+}
+
+.modal-notes-text {
+  font-size: 0.84rem;
+  color: var(--erp-heading);
+  margin-top: 4px;
+}
+
+.modal-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+.modal-summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: var(--erp-navy);
+  padding-top: 4px;
+}
+
+/* --- TOAST FEEDBACK --- */
+.erp-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 300;
+  background-color: var(--erp-heading);
+  color: #ffffff;
+  padding: 13px 18px;
+  border-radius: 14px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.erp-toast.erp-toast-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.erp-empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--erp-text-muted);
+  font-size: 0.84rem;
+}
+
+/* RBAC Visibility Helper */
+.role-gudang-active .col-financial,
+.role-gudang-active .financial-only,
+.erp-hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   7. RESPONSIVE ISOLATION (TABLET <= 1024px & MOBILE <= 768px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .erp-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  .erp-sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .erp-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 27, 51, 0.45);
+    z-index: 110;
+    display: none;
+  }
+
+  .erp-sidebar-backdrop.backdrop-active {
+    display: block;
+  }
+
+  .erp-main {
+    margin-left: 0;
+  }
+
+  .erp-mobile-toggle {
+    display: inline-flex;
+  }
+
+  .erp-highlight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .erp-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stock-formula-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .erp-topbar {
+    padding: 12px 16px;
+  }
+
+  .erp-content {
+    padding: 16px 16px 36px;
+    gap: 18px;
+  }
+
+  .erp-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stock-formula-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .erp-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .erp-section-panel {
+    padding: 18px 16px;
+  }
+
+  .erp-role-switcher-wrap {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* INVARIAN GEOMETRI S-CURVE MOBILE (Scale k = 0.75 sesuai AGENTS.md Section 4):
+     SVG = 19.5px, overlap = -1.5px, offset = -18px, radius = 18px, min-height >= 38px */
+  .erp-cutout-tl {
+    padding: 6px 12px 8px 8px;
+    border-bottom-right-radius: 18px;
+    min-height: 38px;
+  }
+
+  .erp-cutout-br {
+    padding: 8px 8px 6px 12px;
+    border-top-left-radius: 18px;
+    min-height: 38px;
+  }
+
+  .erp-cutout-card .cutout-svg {
+    width: 19.5px;
+    height: 19.5px;
+  }
+
+  .erp-cutout-card .cutout-svg-tl-right {
+    top: -1.5px;
+    right: -18px;
+  }
+
+  .erp-cutout-card .cutout-svg-tl-bottom {
+    bottom: -18px;
+    left: -1.5px;
+  }
+
+  .erp-cutout-card .cutout-svg-br-top {
+    top: -18px;
+    right: -1.5px;
+  }
+
+  .erp-cutout-card .cutout-svg-br-left {
+    bottom: -1.5px;
+    left: -18px;
+  }
+
+  .erp-cutout-overlay {
+    padding: 58px 18px 54px;
+  }
+
+  .erp-cutout-overlay .section-heading {
+    font-size: 1.2rem;
+  }
+}
+
+/* ==========================================================================
+   8. PRINT LAYOUT (@media print) UNTUK CETAK SURAT JALAN & INVOICE PDF
+   ========================================================================== */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .erp-sidebar,
+  .erp-topbar,
+  .erp-role-banner,
+  .erp-toolbar,
+  .erp-pagination,
+  .no-print {
+    display: none !important;
+  }
+
+  .erp-main {
+    margin-left: 0 !important;
+  }
+
+  .erp-content {
+    padding: 0 !important;
+  }
+
+  .erp-section-panel {
+    padding: 0 !important;
+  }
+}

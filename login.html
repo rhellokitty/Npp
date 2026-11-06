@@ -241,16 +241,26 @@
           var emailVal = emailInput ? emailInput.value.trim() : '';
           if (!emailVal) return;
 
+          try {
+            localStorage.setItem('npp_portal_session', JSON.stringify({
+              role: currentRole,
+              email: emailVal,
+              loginAt: new Date().toISOString()
+            }));
+          } catch (err) {
+            /* ignore storage errors */
+          }
+
           if (submitText) submitText.textContent = 'Memverifikasi Akses...';
+          if (feedbackBox) {
+            feedbackBox.style.display = 'flex';
+            feedbackBox.innerHTML =
+              '<strong>Otentikasi Berhasil (' + currentRole + ')</strong>' +
+              '<span>Sesi terverifikasi untuk <b>' + emailVal + '</b>. Mengarahkan ke Dashboard Operasional Internal...</span>';
+          }
           setTimeout(function () {
-            if (submitText) submitText.textContent = 'Masuk ke Portal Internal';
-            if (feedbackBox) {
-              feedbackBox.style.display = 'flex';
-              feedbackBox.innerHTML =
-                '<strong>Otentikasi Berhasil (' + currentRole + ')</strong>' +
-                '<span>Sesi terverifikasi untuk <b>' + emailVal + '</b>. Modul dashboard operasional internal siap dihubungkan pada tahap berikutnya.</span>';
-            }
-          }, 350);
+            window.location.href = 'internal/index.html';
+          }, 320);
         });
       }
     })();
