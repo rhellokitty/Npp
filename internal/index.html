@@ -408,14 +408,14 @@
         <!-- ==================================================================
              4. PANEL RINGKASAN 5 SALDO STOK GUDANG (FISIK, TERTAHAN, LAYAK, RESERVASI, TERSEDIA)
              ================================================================== -->
-        <section class="erp-section-panel" aria-label="Panel Ringkasan 5 Saldo Stok Gudang">
+        <section class="erp-section-panel" aria-label="Panel Ringkasan Saldo Stok Gudang">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <h2 class="section-heading">Ringkasan 5 Saldo Stok Gudang</h2>
+              <h2 class="section-heading">Ringkasan Saldo Stok Gudang</h2>
             </div>
             <div class="erp-Filter-group">
               <a href="inventory.html" class="btn-erp btn-erp-secondary">
-                <span>Buka Modul Gudang & QC</span>
+                <span>Modul Gudang &amp; QC</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <path d="M5 12h14" />
                   <path d="m12 5 7 7-7 7" />
@@ -424,32 +424,27 @@
             </div>
           </div>
 
-          <!-- Strip Rumus & Agregat 5 Saldo Gudang -->
+          <!-- Strip 5 Saldo Gudang -->
           <div class="stock-formula-strip">
             <div class="stock-formula-box">
               <div class="stock-formula-title">Stok Fisik</div>
               <div class="stock-formula-val" id="sumStokFisik">284 Unit</div>
-              <div class="stock-formula-desc">Total seluruh barang di rak gudang</div>
             </div>
             <div class="stock-formula-box">
               <div class="stock-formula-title">Stok Tertahan</div>
               <div class="stock-formula-val" id="sumStokTertahan">13 Unit</div>
-              <div class="stock-formula-desc">Karantina uji beban / klaim prinsipal</div>
             </div>
             <div class="stock-formula-box">
               <div class="stock-formula-title">Stok Layak Pakai</div>
               <div class="stock-formula-val" id="sumStokLayak">271 Unit</div>
-              <div class="stock-formula-desc">Rumus: Fisik dikurangi Tertahan</div>
             </div>
             <div class="stock-formula-box">
               <div class="stock-formula-title">Stok Direservasi</div>
               <div class="stock-formula-val" id="sumStokReservasi">146 Unit</div>
-              <div class="stock-formula-desc">Terkunci untuk PO Pelanggan aktif</div>
             </div>
             <div class="stock-formula-box stock-formula-box-highlight">
               <div class="stock-formula-title">Stok Tersedia</div>
               <div class="stock-formula-val" id="sumStokTersedia">125 Unit</div>
-              <div class="stock-formula-desc">Rumus: Layak Pakai dikurangi Reservasi</div>
             </div>
           </div>
 
@@ -464,7 +459,7 @@
                 type="search"
                 id="dashboardStockSearch"
                 class="erp-search-input"
-                placeholder="Cari Kode SKU, Nama Produk (RITAR, BSB, Ablerex), atau Kode Rak..." />
+                placeholder="Cari Kode SKU, Nama Produk, atau Lokasi Rak..." />
             </div>
 
             <div class="erp-Filter-group">

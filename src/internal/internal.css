@@ -986,32 +986,35 @@ img {
 
 .stock-formula-box {
   background-color: var(--erp-bg-page);
-  border-radius: 16px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
 .stock-formula-box-highlight {
-  background-color: var(--status-info-bg);
+  background-color: #eaf2fd;
 }
 
 .stock-formula-title {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--erp-text);
+}
+
+.stock-formula-val {
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--erp-heading);
 }
 
-.stock-formula-val {
-  font-size: 1.2rem;
-  font-weight: 700;
+.stock-formula-box-highlight .stock-formula-val {
   color: var(--erp-navy);
 }
 
 .stock-formula-desc {
-  font-size: 0.69rem;
-  color: var(--erp-text-muted);
+  display: none;
 }
 
 /* --- STATUS BADGES (5 DIMENSI INDEPENDEN) --- */
