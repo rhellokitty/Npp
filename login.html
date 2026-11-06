@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Login Portal Internal — PT Nusantara Puncak Perkasa</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Global stylesheet (single source of CSS): src/style.css -->
+  <link rel="stylesheet" href="src/style.css">
+</head>
+
+<body>
+  <div id="app" class="login-page-wrapper">
+
+    <!-- TOPBAR LOGIN -->
+    <header class="login-header">
+      <div class="container login-topbar">
+        <a href="index.html" class="navbar-brand">
+          <img src="assets/logo-npp.webp" alt="PT Nusantara Puncak Perkasa" class="navbar-brand-logo" />
+        </a>
+
+        <a href="index.html" class="detail-back-btn">
+          <span class="detail-back-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </span>
+          <span>Kembali ke Beranda</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- MAIN LOGIN SECTION -->
+    <main class="container login-main">
+      <div class="login-split-grid">
+
+        <!-- Sisi Kiri: Visual Industri dengan Inverted Border Radius (Cutout) -->
+        <div class="login-visual-col">
+          <div class="login-visual-card">
+            <!-- Cutout Kiri Atas -->
+            <div class="login-cutout-tl">
+              <svg class="cutout-svg cutout-svg-tl-right" viewBox="-2 -2 26 26" fill="currentColor"
+                shape-rendering="geometricPrecision">
+                <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+              </svg>
+              <svg class="cutout-svg cutout-svg-tl-bottom" viewBox="-2 -2 26 26" fill="currentColor"
+                shape-rendering="geometricPrecision">
+                <path d="M-2 -2 L24 -2 L24 0 A24 24 0 0 0 0 24 L-2 24 Z" />
+              </svg>
+
+              <span class="detail-rarity-pill">Portal Internal</span>
+              <div class="detail-rating-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <span>Akses Terenkripsi</span>
+              </div>
+            </div>
+
+            <img
+              src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&fm=webp&w=1100&q=80"
+              alt="Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa" class="login-visual-img" />
+
+            <!-- Caption Mengambang Kiri Bawah -->
+            <div class="login-visual-overlay">
+              <span class="login-visual-tag">NPP HLD 001 • Sistem Operasional Pengadaan</span>
+              <h2 class="login-visual-title">Kendali Terpadu Pesanan, Persediaan, Pengiriman & Penagihan.</h2>
+              <p class="login-visual-desc">Satu alur kerja terhubung untuk Sales, Purchasing, Gudang, Finance, dan
+                Manajemen PT Nusantara Puncak Perkasa.</p>
+            </div>
+
+            <!-- Cutout Kanan Bawah -->
+            <div class="login-cutout-br">
+              <svg class="cutout-svg cutout-svg-br-top" viewBox="0 0 26 26" fill="currentColor"
+                shape-rendering="geometricPrecision">
+                <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+              </svg>
+              <svg class="cutout-svg cutout-svg-br-left" viewBox="0 0 26 26" fill="currentColor"
+                shape-rendering="geometricPrecision">
+                <path d="M26 26 L0 26 L0 24 A24 24 0 0 0 24 0 L26 0 Z" />
+              </svg>
+
+              <div class="detail-status-pill">
+                <span class="detail-status-dot"></span>
+                <span>PO • Stok • Surat Jalan • Invoice</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sisi Kanan: Form Login Pegawai -->
+        <div class="login-form-card">
+          <div class="login-form-header">
+            <span class="login-form-eyebrow">Otentikasi Pegawai Resmi</span>
+            <h1 class="section-heading">Masuk ke Portal</h1>
+            <p class="login-form-subtitle">Gunakan kredensial akun pegawai PT Nusantara Puncak Perkasa sesuai peran dan
+              cakupan otorisasi Anda.</p>
+          </div>
+
+          <!-- Pilihan Cepat Simulasi Peran (Sesuai HLD Bagian 3) -->
+          <div class="login-role-box">
+            <span class="login-role-label">Pilih Peran Akses (Simulasi HLD):</span>
+            <div class="login-role-pills" id="loginRolePills">
+              <button type="button" class="login-role-pill login-role-pill-active"
+                data-email="admin@nusantarapuncakperkasa.co.id" data-role="Administrator">Administrator</button>
+              <button type="button" class="login-role-pill" data-email="sales@nusantarapuncakperkasa.co.id"
+                data-role="Sales / Operasional">Sales & PO</button>
+              <button type="button" class="login-role-pill" data-email="purchasing@nusantarapuncakperkasa.co.id"
+                data-role="Purchasing">Purchasing</button>
+              <button type="button" class="login-role-pill" data-email="gudang@nusantarapuncakperkasa.co.id"
+                data-role="Gudang">Stok Gudang</button>
+              <button type="button" class="login-role-pill" data-email="finance@nusantarapuncakperkasa.co.id"
+                data-role="Finance">Finance & Invoice</button>
+              <button type="button" class="login-role-pill" data-email="pimpinan@nusantarapuncakperkasa.co.id"
+                data-role="Pimpinan / Approver">Approver</button>
+            </div>
+          </div>
+
+          <form id="portalLoginForm" class="login-form" autocomplete="on">
+            <div class="login-field-group">
+              <label for="loginEmail" class="login-label">Email / ID Pegawai</label>
+              <div class="login-input-wrap">
+                <svg class="login-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+                <input type="email" id="loginEmail" name="email" class="login-input"
+                  placeholder="nama@nusantarapuncakperkasa.co.id" value="admin@nusantarapuncakperkasa.co.id" required />
+              </div>
+            </div>
+
+            <div class="login-field-group">
+              <div class="login-label-row">
+                <label for="loginPassword" class="login-label">Kata Sandi</label>
+                <span class="login-role-indicator" id="loginActiveRoleTag">Peran: Administrator</span>
+              </div>
+              <div class="login-input-wrap">
+                <svg class="login-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <input type="password" id="loginPassword" name="password" class="login-input"
+                  placeholder="Masukkan kata sandi..." value="NPP-Portal-2026" required />
+                <button type="button" id="togglePasswordBtn" class="login-pass-toggle"
+                  aria-label="Tampilkan Kata Sandi">
+                  <svg id="eyeIconOpen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="login-options-row">
+              <label class="login-checkbox-label">
+                <input type="checkbox" id="loginRemember" class="login-checkbox" checked />
+                <span>Ingat sesi perangkat (batas idle 30 menit)</span>
+              </label>
+            </div>
+
+            <div id="loginFeedbackBox" class="login-feedback-box" style="display: none;"></div>
+
+            <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
+              <span id="loginSubmitText">Masuk ke Portal Internal</span>
+              <span class="btn-pill-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+            </button>
+          </form>
+
+          <div class="login-security-note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <p>Akun pegawai dibuat atau diundang oleh Administrator. Hubungi tim IT internal jika memerlukan pemulihan
+              akses atau perubahan hak peran.</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER RINGKAS -->
+    <footer class="login-footer">
+      <div class="container login-footer-inner">
+        <span>© 2026 PT Nusantara Puncak Perkasa. Sistem Operasional Pengadaan Internal.</span>
+        <span>Jl. Flamboyan Raya, Pondok Timur Indah, Bekasi</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var rolePills = document.querySelectorAll('#loginRolePills .login-role-pill');
+      var emailInput = document.getElementById('loginEmail');
+      var activeRoleTag = document.getElementById('loginActiveRoleTag');
+      var togglePassBtn = document.getElementById('togglePasswordBtn');
+      var passInput = document.getElementById('loginPassword');
+      var loginForm = document.getElementById('portalLoginForm');
+      var feedbackBox = document.getElementById('loginFeedbackBox');
+      var submitText = document.getElementById('loginSubmitText');
+      var currentRole = 'Administrator';
+
+      rolePills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          rolePills.forEach(function (p) { p.classList.remove('login-role-pill-active'); });
+          pill.classList.add('login-role-pill-active');
+          var email = pill.getAttribute('data-email');
+          currentRole = pill.getAttribute('data-role') || 'Administrator';
+          if (emailInput && email) emailInput.value = email;
+          if (activeRoleTag) activeRoleTag.textContent = 'Peran: ' + currentRole;
+          if (feedbackBox) feedbackBox.style.display = 'none';
+        });
+      });
+
+      if (togglePassBtn && passInput) {
+        togglePassBtn.addEventListener('click', function () {
+          var isPass = passInput.type === 'password';
+          passInput.type = isPass ? 'text' : 'password';
+        });
+      }
+
+      if (loginForm) {
+        loginForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var emailVal = emailInput ? emailInput.value.trim() : '';
+          if (!emailVal) return;
+
+          if (submitText) submitText.textContent = 'Memverifikasi Akses...';
+          setTimeout(function () {
+            if (submitText) submitText.textContent = 'Masuk ke Portal Internal';
+            if (feedbackBox) {
+              feedbackBox.style.display = 'flex';
+              feedbackBox.innerHTML =
+                '<strong>Otentikasi Berhasil (' + currentRole + ')</strong>' +
+                '<span>Sesi terverifikasi untuk <b>' + emailVal + '</b>. Modul dashboard operasional internal siap dihubungkan pada tahap berikutnya.</span>';
+            }
+          }, 350);
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
