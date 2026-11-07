@@ -1189,7 +1189,7 @@
       document.body.appendChild(toast);
     }
     toast.innerHTML =
-      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c99d51" stroke-width="2.4">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
       '<path d="M20 6 9 17l-5-5"/>' +
       '</svg>' +
       '<span>' + escapeHtml(message) + '</span>';

@@ -1225,8 +1225,8 @@ html[data-theme="dark"] .erp-modal-overlay {
 }
 
 html[data-theme="dark"] .erp-toast {
-  background-color: var(--erp-bg-subtle);
-  color: var(--erp-heading);
+  background-color: #166534;
+  color: #ffffff;
 }
 
 /* --- THEME TOGGLE BUTTON (CLEAN, ZERO BORDER, ZERO SHADOW, SOFT EYE CARE) --- */
@@ -1905,26 +1905,31 @@ html[data-theme="dark"] .erp-file-icon-box {
 /* --- TOAST FEEDBACK --- */
 .erp-toast {
   position: fixed;
-  bottom: 24px;
+  top: 24px;
   right: 24px;
-  z-index: 300;
-  background-color: var(--erp-heading);
+  bottom: auto;
+  left: auto;
+  z-index: 350;
+  background-color: #15803d;
   color: #ffffff;
-  padding: 13px 18px;
+  padding: 12px 18px;
   border-radius: 14px;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.84rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 10px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transform: translateY(-8px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  max-width: calc(100vw - 48px);
 }
 
 .erp-toast.erp-toast-visible {
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(0);
 }
 
 .erp-empty-state {
@@ -2297,6 +2302,12 @@ html[data-theme="dark"] .erp-file-icon-box {
 
   .erp-section-panel {
     padding: 18px 16px;
+  }
+
+  .erp-toast {
+    top: 14px;
+    right: 14px;
+    max-width: calc(100vw - 28px);
   }
 
   .erp-topbar-right {
