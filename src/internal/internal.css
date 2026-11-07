@@ -1297,7 +1297,12 @@ html[data-theme="dark"] .erp-theme-icon-moon {
   justify-content: flex-end;
   background-color: transparent;
   padding: 0 4px;
-  margin-top: -10px;
+  margin-top: 18px;
+}
+
+.erp-pagination:empty {
+  display: none !important;
+  margin: 0 !important;
 }
 
 .erp-pagination.erp-tab-pane.tab-pane-active {
@@ -1305,6 +1310,7 @@ html[data-theme="dark"] .erp-theme-icon-moon {
   flex-direction: row !important;
   align-items: center !important;
   justify-content: flex-end !important;
+  margin-top: 18px !important;
 }
 
 .erp-pagination-controls {
@@ -2210,7 +2216,7 @@ html[data-theme="dark"] .erp-file-icon-box {
   .erp-pagination,
   .erp-pagination.erp-tab-pane.tab-pane-active {
     justify-content: center !important;
-    margin-top: -6px;
+    margin-top: 16px !important;
   }
 }
 
