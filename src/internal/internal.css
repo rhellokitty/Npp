@@ -677,9 +677,8 @@ img {
 
 /* --- PANEL QUICK APPROVAL --- */
 .erp-approval-panel {
-  background-color: var(--erp-bg-surface);
-  border-radius: var(--radius-card);
-  padding: 22px;
+  background-color: transparent;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -700,16 +699,16 @@ img {
 .approval-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .approval-item {
-  background-color: var(--erp-bg-page);
-  border-radius: 16px;
-  padding: 12px 14px;
+  background-color: var(--erp-bg-surface);
+  border-radius: var(--radius-card);
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .approval-item-top {
