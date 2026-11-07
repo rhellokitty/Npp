@@ -69,10 +69,9 @@
 
             <!-- Caption Mengambang Kiri Bawah -->
             <div class="login-visual-overlay">
-              <span class="login-visual-tag">NPP HLD 001 • Sistem Operasional Pengadaan</span>
-              <h2 class="login-visual-title">Kendali Terpadu Pesanan, Persediaan, Pengiriman & Penagihan.</h2>
-              <p class="login-visual-desc">Satu alur kerja terhubung untuk Sales, Purchasing, Gudang, Finance, dan
-                Manajemen PT Nusantara Puncak Perkasa.</p>
+              <span class="login-visual-tag">PT Nusantara Puncak Perkasa</span>
+              <h2 class="login-visual-title">Sistem Operasional Pengadaan Terpadu.</h2>
+              <p class="login-visual-desc">Kendali satu pintu untuk Pesanan, Persediaan Gudang, Pengiriman, dan Penagihan Invoice.</p>
             </div>
 
             <!-- Cutout Kanan Bawah -->
@@ -97,34 +96,29 @@
         <!-- Sisi Kanan: Form Login Pegawai -->
         <div class="login-form-card">
           <div class="login-form-header">
-            <span class="login-form-eyebrow">Otentikasi Pegawai Resmi</span>
             <h1 class="section-heading">Masuk ke Portal</h1>
-            <p class="login-form-subtitle">Gunakan kredensial akun pegawai PT Nusantara Puncak Perkasa sesuai peran dan
-              cakupan otorisasi Anda.</p>
+            <p class="login-form-subtitle">Pilih peran akses atau masuk menggunakan akun resmi PT Nusantara Puncak Perkasa.</p>
           </div>
 
-          <!-- Pilihan Cepat Simulasi Peran (Sesuai HLD Bagian 3) -->
+          <!-- Pilihan Cepat Peran Akses (3 Peran) -->
           <div class="login-role-box">
-            <span class="login-role-label">Pilih Peran Akses (Simulasi HLD):</span>
+            <span class="login-role-label">Peran Akses Cepat</span>
             <div class="login-role-pills" id="loginRolePills">
               <button type="button" class="login-role-pill login-role-pill-active"
-                data-email="admin@nusantarapuncakperkasa.co.id" data-role="Administrator">Administrator</button>
-              <button type="button" class="login-role-pill" data-email="sales@nusantarapuncakperkasa.co.id"
-                data-role="Sales / Operasional">Sales & PO</button>
-              <button type="button" class="login-role-pill" data-email="purchasing@nusantarapuncakperkasa.co.id"
-                data-role="Purchasing">Purchasing</button>
-              <button type="button" class="login-role-pill" data-email="gudang@nusantarapuncakperkasa.co.id"
-                data-role="Gudang">Stok Gudang</button>
-              <button type="button" class="login-role-pill" data-email="finance@nusantarapuncakperkasa.co.id"
-                data-role="Finance">Finance & Invoice</button>
-              <button type="button" class="login-role-pill" data-email="pimpinan@nusantarapuncakperkasa.co.id"
-                data-role="Pimpinan / Approver">Approver</button>
+                data-email="admin@nusantarapuncakperkasa.co.id" data-name="Raja Daffa"
+                data-role="Super Admin">Super Admin</button>
+              <button type="button" class="login-role-pill"
+                data-email="operasional@nusantarapuncakperkasa.co.id" data-name="Tim Operasional & Logistik"
+                data-role="Operasional">Operasional</button>
+              <button type="button" class="login-role-pill"
+                data-email="finance@nusantarapuncakperkasa.co.id" data-name="Siti Rahmawati"
+                data-role="Finance">Finance</button>
             </div>
           </div>
 
           <form id="portalLoginForm" class="login-form" autocomplete="on">
             <div class="login-field-group">
-              <label for="loginEmail" class="login-label">Email / ID Pegawai</label>
+              <label for="loginEmail" class="login-label">Email Pegawai</label>
               <div class="login-input-wrap">
                 <svg class="login-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2">
@@ -137,10 +131,7 @@
             </div>
 
             <div class="login-field-group">
-              <div class="login-label-row">
-                <label for="loginPassword" class="login-label">Kata Sandi</label>
-                <span class="login-role-indicator" id="loginActiveRoleTag">Peran: Administrator</span>
-              </div>
+              <label for="loginPassword" class="login-label">Kata Sandi</label>
               <div class="login-input-wrap">
                 <svg class="login-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2">
@@ -160,13 +151,6 @@
               </div>
             </div>
 
-            <div class="login-options-row">
-              <label class="login-checkbox-label">
-                <input type="checkbox" id="loginRemember" class="login-checkbox" checked />
-                <span>Ingat sesi perangkat (batas idle 30 menit)</span>
-              </label>
-            </div>
-
             <div id="loginFeedbackBox" class="login-feedback-box" style="display: none;"></div>
 
             <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
@@ -179,26 +163,10 @@
               </span>
             </button>
           </form>
-
-          <div class="login-security-note">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
-            <p>Akun pegawai dibuat atau diundang oleh Administrator. Hubungi tim IT internal jika memerlukan pemulihan
-              akses atau perubahan hak peran.</p>
-          </div>
         </div>
 
       </div>
     </main>
-
-    <!-- FOOTER RINGKAS -->
-    <footer class="login-footer">
-      <div class="container login-footer-inner">
-        <span>© 2026 PT Nusantara Puncak Perkasa. Sistem Operasional Pengadaan Internal.</span>
-        <span>Jl. Flamboyan Raya, Pondok Timur Indah, Bekasi</span>
-      </div>
-    </footer>
 
   </div>
 
@@ -208,22 +176,22 @@
 
       var rolePills = document.querySelectorAll('#loginRolePills .login-role-pill');
       var emailInput = document.getElementById('loginEmail');
-      var activeRoleTag = document.getElementById('loginActiveRoleTag');
       var togglePassBtn = document.getElementById('togglePasswordBtn');
       var passInput = document.getElementById('loginPassword');
       var loginForm = document.getElementById('portalLoginForm');
       var feedbackBox = document.getElementById('loginFeedbackBox');
       var submitText = document.getElementById('loginSubmitText');
-      var currentRole = 'Administrator';
+      var currentRole = 'Super Admin';
+      var currentName = 'Raja Daffa';
 
       rolePills.forEach(function (pill) {
         pill.addEventListener('click', function () {
           rolePills.forEach(function (p) { p.classList.remove('login-role-pill-active'); });
           pill.classList.add('login-role-pill-active');
           var email = pill.getAttribute('data-email');
-          currentRole = pill.getAttribute('data-role') || 'Administrator';
+          currentRole = pill.getAttribute('data-role') || 'Super Admin';
+          currentName = pill.getAttribute('data-name') || 'Raja Daffa';
           if (emailInput && email) emailInput.value = email;
-          if (activeRoleTag) activeRoleTag.textContent = 'Peran: ' + currentRole;
           if (feedbackBox) feedbackBox.style.display = 'none';
         });
       });
@@ -245,6 +213,7 @@
             localStorage.setItem('npp_portal_session', JSON.stringify({
               role: currentRole,
               email: emailVal,
+              userName: currentName,
               loginAt: new Date().toISOString()
             }));
           } catch (err) {
@@ -256,11 +225,11 @@
             feedbackBox.style.display = 'flex';
             feedbackBox.innerHTML =
               '<strong>Otentikasi Berhasil (' + currentRole + ')</strong>' +
-              '<span>Sesi terverifikasi untuk <b>' + emailVal + '</b>. Mengarahkan ke Dashboard Operasional Internal...</span>';
+              '<span>Mengarahkan ke Dashboard Operasional Internal...</span>';
           }
           setTimeout(function () {
             window.location.href = 'internal/index.html';
-          }, 320);
+          }, 260);
         });
       }
     })();
