@@ -3357,6 +3357,8 @@ a.contact-simple-val:hover {
   .login-split-grid {
     grid-template-columns: 1fr;
     max-width: 520px;
+    height: auto;
+    align-items: center;
     margin: 0 auto;
   }
 
@@ -3373,10 +3375,21 @@ a.contact-simple-val:hover {
   }
 }
 
+@media (max-width: 1024px) and (max-height: 600px) {
+  .login-page-wrapper {
+    min-height: 100dvh;
+    height: auto;
+    max-height: none;
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+}
+
 @media (max-width: 768px) {
   .login-topbar {
     padding-top: 12px;
     padding-bottom: 10px;
+    gap: 10px;
   }
 
   .login-main {
@@ -3388,5 +3401,67 @@ a.contact-simple-val:hover {
     padding: 24px 20px;
     border-radius: 24px;
     gap: 16px;
+  }
+
+  .login-role-pills {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .login-role-pill {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 420px) {
+  .login-topbar .navbar-brand-logo {
+    height: 30px;
+  }
+
+  .login-topbar .detail-back-btn {
+    padding: 5px 12px 5px 6px;
+    font-size: 0.73rem;
+    gap: 6px;
+  }
+
+  .login-form-card {
+    padding: 20px 16px;
+    border-radius: 20px;
+    gap: 14px;
+  }
+
+  .login-role-box {
+    padding: 10px 10px;
+  }
+
+  .login-role-pills {
+    gap: 5px;
+  }
+
+  .login-role-pill {
+    font-size: 0.68rem;
+    padding: 8px 4px;
+  }
+
+  .login-submit-btn {
+    padding: 9px 9px 9px 16px;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .login-role-box {
+    padding: 9px 8px;
+  }
+
+  .login-role-pills {
+    gap: 4px;
+  }
+
+  .login-role-pill {
+    font-size: 0.62rem;
+    padding: 7px 3px;
   }
 }

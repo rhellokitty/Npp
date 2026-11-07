@@ -1488,18 +1488,53 @@
       var sidebar = document.getElementById('erpSidebar');
       var backdrop = document.getElementById('erpSidebarBackdrop');
 
-      if (mobileToggle && sidebar) {
-        mobileToggle.addEventListener('click', function () {
-          sidebar.classList.toggle('sidebar-open');
-          if (backdrop) backdrop.classList.toggle('backdrop-active');
+      var closeSidebar = function () {
+        if (sidebar) sidebar.classList.remove('sidebar-open');
+        if (backdrop) backdrop.classList.remove('backdrop-active');
+        document.body.classList.remove('erp-drawer-open');
+      };
+
+      var toggleSidebar = function () {
+        if (!sidebar) return;
+        var willOpen = !sidebar.classList.contains('sidebar-open');
+        sidebar.classList.toggle('sidebar-open', willOpen);
+        if (backdrop) backdrop.classList.toggle('backdrop-active', willOpen);
+        document.body.classList.toggle('erp-drawer-open', willOpen);
+      };
+
+      if (sidebar) {
+        var brandBar = sidebar.querySelector('.erp-sidebar-brand');
+        if (brandBar && !brandBar.querySelector('.erp-sidebar-close-btn')) {
+          var closeBtn = document.createElement('button');
+          closeBtn.type = 'button';
+          closeBtn.className = 'erp-sidebar-close-btn';
+          closeBtn.setAttribute('aria-label', 'Tutup Navigasi');
+          closeBtn.innerHTML =
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">' +
+            '<line x1="18" y1="6" x2="6" y2="18"></line>' +
+            '<line x1="6" y1="6" x2="18" y2="18"></line>' +
+            '</svg>';
+          closeBtn.addEventListener('click', closeSidebar);
+          brandBar.appendChild(closeBtn);
+        }
+        sidebar.querySelectorAll('.erp-nav-link').forEach(function (link) {
+          link.addEventListener('click', function () {
+            if (window.innerWidth <= 1024) closeSidebar();
+          });
         });
+      }
+
+      if (mobileToggle && sidebar) {
+        mobileToggle.addEventListener('click', toggleSidebar);
       }
       if (backdrop && sidebar) {
-        backdrop.addEventListener('click', function () {
-          sidebar.classList.remove('sidebar-open');
-          backdrop.classList.remove('backdrop-active');
-        });
+        backdrop.addEventListener('click', closeSidebar);
       }
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.keyCode === 27) && sidebar && sidebar.classList.contains('sidebar-open')) {
+          closeSidebar();
+        }
+      });
 
       // Update badge jumlah antrean approval di sidebar
       this.updateSidebarCounters();
@@ -2251,13 +2286,30 @@
       });
     }
 
-    // 3. Pastikan setiap SKU memiliki status Publikasi Web
+    // 3. Pastikan setiap SKU memiliki status Publikasi Web & sinkronisasi katalog db.products
     if (Array.isArray(db.inventory)) {
       db.inventory.forEach(function (item) {
         if (!item.webPublished) {
           item.webPublished = 'Tayang di Katalog';
         }
       });
+      if (!Array.isArray(db.products) || db.products.length === 0) {
+        db.products = db.inventory.map(function (it) {
+          return {
+            sku: it.sku,
+            name: it.name,
+            category: it.category || 'Industrial Power',
+            unit: it.unit || 'Unit',
+            price: Number(it.price != null ? it.price : it.sellPrice) || 0,
+            sellPrice: Number(it.sellPrice != null ? it.sellPrice : it.price) || 0,
+            cost: Number(it.cost != null ? it.cost : it.hpp) || 0,
+            hpp: Number(it.hpp != null ? it.hpp : it.cost) || 0,
+            minStock: Number(it.minStok != null ? it.minStok : it.minStock) || 0,
+            rack: it.rack || it.location || 'RAK-A01',
+            webPublished: it.webPublished
+          };
+        });
+      }
     }
 
     // 4. Pastikan setiap Rak memiliki keterangan lengkap
@@ -5500,7 +5552,7 @@
         '<div class="erp-official-doc">' +
         '  <div class="erp-doc-header">' +
         '    <div class="erp-doc-brand">' +
-        '      <img src="assets/img/logo.png" alt="PT NPP Logo" class="erp-doc-logo" onerror="this.style.display=\'none\'">' +
+        '      <img src="../assets/logo-npp.webp" alt="PT NPP Logo" class="erp-doc-logo" onerror="this.style.display=\'none\'">' +
         '      <div>' +
         '        <div class="erp-doc-company-name">PT NUSANTARA PUNCAK PERKASA</div>' +
         '        <div class="erp-doc-company-info">Spesialis Sistem Tenaga Industri B2B (Battery, UPS, Stabilizer, Inverter, Solar Panel)</div>' +
@@ -6082,7 +6134,7 @@
         '<div class="erp-official-doc">' +
         '  <div class="erp-doc-header">' +
         '    <div class="erp-doc-brand">' +
-        '      <img src="assets/img/logo.png" alt="PT NPP Logo" class="erp-doc-logo" onerror="this.style.display=\'none\'">' +
+        '      <img src="../assets/logo-npp.webp" alt="PT NPP Logo" class="erp-doc-logo" onerror="this.style.display=\'none\'">' +
         '      <div>' +
         '        <div class="erp-doc-company-name">PT NUSANTARA PUNCAK PERKASA</div>' +
         '        <div class="erp-doc-company-info">Solusi Daya Industri B2B Terpadu</div>' +
@@ -6355,13 +6407,13 @@ var OrderCreatePageController = {
           }).join('');
 
         tr.innerHTML =
-          '<td style="text-align:center;">' + rowIdx + '</td>' +
-          '<td><select class="erp-select item-sku" required>' + skuOptions + '</select></td>' +
-          '<td><input type="number" class="erp-input item-qty" min="1" value="' + (preQty || 10) + '" style="text-align:center;" required /></td>' +
-          '<td style="text-align:center;"><span class="item-unit">Unit</span></td>' +
-          '<td><input type="number" class="erp-input item-price" min="0" value="0" style="text-align:right;" required /></td>' +
-          '<td style="text-align:right; font-weight:600;"><span class="item-subtotal">Rp 0</span></td>' +
-          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row" aria-label="Hapus Baris"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
+          '<td class="cell-row-num" data-label="No" style="text-align:center;">' + rowIdx + '</td>' +
+          '<td class="cell-row-full" data-label="Pilih Produk / SKU NPP"><select class="erp-select item-sku" required>' + skuOptions + '</select></td>' +
+          '<td data-label="Qty"><input type="number" class="erp-input item-qty" min="1" value="' + (preQty || 10) + '" style="text-align:center;" required /></td>' +
+          '<td data-label="Satuan" style="text-align:center;"><span class="item-unit">Unit</span></td>' +
+          '<td data-label="Harga Satuan B2B"><input type="number" class="erp-input item-price" min="0" value="0" style="text-align:right;" required /></td>' +
+          '<td data-label="Subtotal DPP" style="text-align:right; font-weight:600;"><span class="item-subtotal">Rp 0</span></td>' +
+          '<td class="cell-row-action" data-label="Aksi" style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row" aria-label="Hapus Baris"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
 
         var skuSel = tr.querySelector('.item-sku');
         var qtyInp = tr.querySelector('.item-qty');
@@ -6561,8 +6613,8 @@ var OrderCreatePageController = {
         '  <div class="erp-detail-grid">' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Nama Pelanggan B2B</span><span class="erp-detail-val">' + escapeHtml(order.customerName) + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">No. PO Klien Eksternal</span><span class="erp-detail-val cell-code">' + escapeHtml(order.clientPoNumber) + '</span></div>' +
-        '    <div class="erp-detail-item"><span class="erp-detail-label">Tanggal PO</span><span class="erp-detail-val">' + escapeHtml(order.poDate || '-') + '</span></div>' +
-        '    <div class="erp-detail-item"><span class="erp-detail-label">Target Tanggal Kirim</span><span class="erp-detail-val">' + escapeHtml(order.deliveryTarget || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Tanggal PO</span><span class="erp-detail-val">' + escapeHtml(order.poDate || order.orderDate || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Target Tanggal Kirim</span><span class="erp-detail-val">' + escapeHtml(order.deliveryTarget || order.targetDate || '-') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Syarat Pembayaran</span><span class="erp-detail-val">' + escapeHtml(order.paymentTerm || 'Net 30') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">PIC Sales Penanggung Jawab</span><span class="erp-detail-val">' + escapeHtml(order.salesPic || '-') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Berkas Scan PO</span><span class="erp-detail-val">' + (order.poFileName ? ('<span class="badge-status badge-info">' + escapeHtml(order.poFileName) + '</span>') : '<span class="badge-status badge-neutral">Belum Dilampirkan</span>') + '</span></div>' +
@@ -6770,13 +6822,21 @@ var OrderCreatePageController = {
           sku: sku,
           name: name,
           category: cat,
+          unit: unit,
+          sellPrice: price,
+          price: price,
+          hpp: cost,
+          cost: cost,
+          rack: rack,
           location: rack,
           fisik: initStock,
           tertahan: 0,
           layak: initStock,
           reservasi: 0,
           tersedia: initStock,
+          minStok: minStock,
           minStock: minStock,
+          webPublished: isWeb ? 'Tayang di Katalog' : 'Internal ERP',
           status: initStock === 0 ? 'Habis' : (initStock <= minStock ? 'Kritis' : 'Normal'),
           physical: initStock,
           held: 0,
@@ -6884,13 +6944,13 @@ var OrderCreatePageController = {
           }).join('');
 
         tr.innerHTML =
-          '<td style="text-align:center;">' + rowIdx + '</td>' +
-          '<td><select class="erp-select po-sku" required>' + skuOptions + '</select></td>' +
-          '<td><input type="number" class="erp-input po-qty" min="1" value="' + (preQty || 50) + '" style="text-align:center;" required /></td>' +
-          '<td style="text-align:center;"><span class="po-unit">Unit</span></td>' +
-          '<td><input type="number" class="erp-input po-cost" min="0" value="0" style="text-align:right;" required /></td>' +
-          '<td style="text-align:right; font-weight:600;"><span class="po-subtotal">Rp 0</span></td>' +
-          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row" aria-label="Hapus Baris"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
+          '<td class="cell-row-num" data-label="No" style="text-align:center;">' + rowIdx + '</td>' +
+          '<td class="cell-row-full" data-label="Pilih SKU Produk NPP"><select class="erp-select po-sku" required>' + skuOptions + '</select></td>' +
+          '<td data-label="Qty Order"><input type="number" class="erp-input po-qty" min="1" value="' + (preQty || 50) + '" style="text-align:center;" required /></td>' +
+          '<td data-label="Satuan" style="text-align:center;"><span class="po-unit">Unit</span></td>' +
+          '<td data-label="HPP Satuan"><input type="number" class="erp-input po-cost" min="0" value="0" style="text-align:right;" required /></td>' +
+          '<td data-label="Subtotal Pembelian" style="text-align:right; font-weight:600;"><span class="po-subtotal">Rp 0</span></td>' +
+          '<td class="cell-row-action" data-label="Aksi" style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row" aria-label="Hapus Baris"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
 
         var skuSel = tr.querySelector('.po-sku');
         var qtyInp = tr.querySelector('.po-qty');
@@ -7192,12 +7252,12 @@ var OrderCreatePageController = {
           tbody.innerHTML = po.items.map(function (it, idx) {
             return (
               '<tr>' +
-              '<td style="text-align:center;">' + (idx + 1) + '</td>' +
-              '<td><strong class="gr-sku">' + escapeHtml(it.sku) + '</strong><br><span class="cell-subtext">' + escapeHtml(it.name) + '</span></td>' +
-              '<td style="text-align:center; font-weight:600;">' + it.qty + ' ' + escapeHtml(it.unit || 'Unit') + '</td>' +
-              '<td><input type="number" class="erp-input gr-qty-passed" min="0" max="' + it.qty + '" value="' + it.qty + '" style="text-align:center;" required /></td>' +
-              '<td><input type="number" class="erp-input gr-qty-hold" min="0" max="' + it.qty + '" value="0" style="text-align:center;" required /></td>' +
-              '<td><select class="erp-select gr-rack">' + rackOptions + '</select></td>' +
+              '<td class="cell-row-num" data-label="No" style="text-align:center;">' + (idx + 1) + '</td>' +
+              '<td class="cell-row-full" data-label="Deskripsi SKU Barang"><strong class="gr-sku">' + escapeHtml(it.sku) + '</strong><br><span class="cell-subtext">' + escapeHtml(it.name) + '</span></td>' +
+              '<td data-label="Qty Dipesan" style="text-align:center; font-weight:600;">' + it.qty + ' ' + escapeHtml(it.unit || 'Unit') + '</td>' +
+              '<td data-label="Kondisi Baik - Lolos QC"><input type="number" class="erp-input gr-qty-passed" min="0" max="' + it.qty + '" value="' + it.qty + '" style="text-align:center;" required /></td>' +
+              '<td data-label="Karantina / Rusak"><input type="number" class="erp-input gr-qty-hold" min="0" max="' + it.qty + '" value="0" style="text-align:center;" required /></td>' +
+              '<td data-label="Alokasi Rak / Bin"><select class="erp-select gr-rack">' + rackOptions + '</select></td>' +
               '</tr>'
             );
           }).join('');
@@ -7329,12 +7389,12 @@ var OrderCreatePageController = {
             var res = inv.reservasi !== undefined ? inv.reservasi : (inv.reserved || 0);
             return (
               '<tr>' +
-              '<td style="text-align:center;"><input type="checkbox" class="deliv-item-check" checked /></td>' +
-              '<td><strong class="deliv-sku">' + escapeHtml(it.sku) + '</strong><br><span class="cell-subtext">' + escapeHtml(it.name) + '</span></td>' +
-              '<td style="text-align:center;">' + it.qty + '</td>' +
-              '<td style="text-align:center; font-weight:600; color:var(--erp-navy);">' + res + '</td>' +
-              '<td><input type="number" class="erp-input deliv-qty-send" min="1" max="' + it.qty + '" value="' + Math.min(it.qty, Math.max(1, res)) + '" style="text-align:center;" required /></td>' +
-              '<td style="text-align:center;">' + escapeHtml(it.unit || 'Unit') + '</td>' +
+              '<td data-label="Pilih Kirim" style="text-align:center;"><input type="checkbox" class="deliv-item-check" checked /></td>' +
+              '<td class="cell-row-full cell-row-top" data-label="Deskripsi SKU Barang"><strong class="deliv-sku">' + escapeHtml(it.sku) + '</strong><br><span class="cell-subtext">' + escapeHtml(it.name) + '</span></td>' +
+              '<td data-label="Qty Dipesan" style="text-align:center;">' + it.qty + '</td>' +
+              '<td data-label="Stok Reservasi" style="text-align:center; font-weight:600; color:var(--erp-navy);">' + res + '</td>' +
+              '<td class="cell-row-full cell-row-bottom" data-label="Qty Dikirim Sekarang"><input type="number" class="erp-input deliv-qty-send" min="1" max="' + it.qty + '" value="' + Math.min(it.qty, Math.max(1, res)) + '" style="text-align:center;" required /></td>' +
+              '<td data-label="Satuan" style="text-align:center;">' + escapeHtml(it.unit || 'Unit') + '</td>' +
               '</tr>'
             );
           }).join('');
@@ -7467,7 +7527,7 @@ var OrderCreatePageController = {
 
       if (docIdEl) docIdEl.textContent = deliv.id;
       if (custEl) custEl.textContent = deliv.customerName;
-      if (courierEl) courierEl.textContent = (deliv.driver || deliv.courier || '-') + ' (' + (deliv.vehiclePlate || '-') + ')';
+      if (courierEl) courierEl.textContent = (deliv.driver || deliv.driverName || deliv.courier || '-') + ' (' + (deliv.vehiclePlate || '-') + ')';
       if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
 
       if (form) {
@@ -7569,7 +7629,7 @@ var OrderCreatePageController = {
         '    <div class="erp-doc-meta-col">' +
         '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Referensi SO:</span><span class="erp-doc-meta-val cell-code">' + escapeHtml(deliv.orderId) + '</span></div>' +
         '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">No. PO Klien:</span><span class="erp-doc-meta-val cell-code">' + escapeHtml(ord.clientPoNumber || '-') + '</span></div>' +
-        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Pengemudi / Nopol:</span><span class="erp-doc-meta-val">' + escapeHtml((deliv.driver || deliv.courier) + ' • ' + (deliv.vehiclePlate || '')) + '</span></div>' +
+        '      <div class="erp-doc-meta-row"><span class="erp-doc-meta-label">Pengemudi / Nopol:</span><span class="erp-doc-meta-val">' + escapeHtml((deliv.driver || deliv.driverName || deliv.courier || 'Kurir Logistik') + (deliv.vehiclePlate ? (' • ' + deliv.vehiclePlate) : '')) + '</span></div>' +
         '    </div>' +
         '  </div>' +
         '  <div class="erp-doc-table-wrap">' +
@@ -7589,7 +7649,7 @@ var OrderCreatePageController = {
         '  <div class="erp-doc-signatures-4">' +
         '    <div class="erp-signature-box"><div class="erp-signature-role">Dibuat Oleh (Admin/Sales)</div><div class="erp-signature-space"></div><div class="erp-signature-signer">Nadia Pramesti<br><span class="cell-subtext-sm">Sales &amp; Operasional</span></div></div>' +
         '    <div class="erp-signature-box"><div class="erp-signature-role">Gudang Pengirim (Checker)</div><div class="erp-signature-space"></div><div class="erp-signature-signer">Budi Santoso<br><span class="cell-subtext-sm">Kepala Gudang NPP</span></div></div>' +
-        '    <div class="erp-signature-box"><div class="erp-signature-role">Pengemudi / Kurir</div><div class="erp-signature-space"></div><div class="erp-signature-signer">' + escapeHtml(deliv.driver || deliv.courier || 'Kurir Logistik') + '<br><span class="cell-subtext-sm">Ekspedisi Logistik</span></div></div>' +
+        '    <div class="erp-signature-box"><div class="erp-signature-role">Pengemudi / Kurir</div><div class="erp-signature-space"></div><div class="erp-signature-signer">' + escapeHtml(deliv.driver || deliv.driverName || deliv.courier || 'Kurir Logistik') + '<br><span class="cell-subtext-sm">Ekspedisi Logistik</span></div></div>' +
         '    <div class="erp-signature-box"><div class="erp-signature-role">Diterima Lengkap (Pelanggan)</div><div class="erp-signature-space"></div><div class="erp-signature-signer">' + escapeHtml(deliv.recipientPic || deliv.customerName) + '<br><span class="cell-subtext-sm">Tanda Tangan &amp; Cap Basah</span></div></div>' +
         '  </div>' +
         '</div>';
