@@ -191,58 +191,74 @@
       <!-- KONTEN UTAMA INVENTORI & GUDANG -->
       <main class="erp-content">
 
-        <!-- BANNER RUMUS MATEMATIS 5 INDIKATOR SALDO STOK (HLD BAGIAN 5) -->
-        <section class="erp-math-banner" aria-label="Rumus Matematis 5 Saldo Stok Gudang">
-          <div class="erp-math-equation-card">
-            <span class="erp-math-equation-title">Pemisahan Karantina QC</span>
-            <div class="erp-math-equation-code">
-              <span class="erp-math-result">Stok Layak Pakai</span>
-              <span class="erp-math-operator">=</span>
-              <span>Stok Fisik</span>
-              <span class="erp-math-operator">−</span>
-              <span>Stok Tertahan</span>
+        <!-- 5 KARTU KPI SALDO STOK REAL-TIME -->
+        <section class="erp-kpi-grid" aria-label="Agregat 5 Indikator Saldo Stok">
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Stok Fisik</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                  <line x1="12" y1="22.08" x2="12" y2="12" />
+                </svg>
+              </div>
             </div>
-            <span class="cell-subtext">Memastikan barang cacat atau belum lulus uji beban tidak ikut terhitung sebagai barang siap jual.</span>
-          </div>
+            <div class="erp-kpi-value" id="invSumFisik">284 Unit</div>
+          </article>
 
-          <div class="erp-math-equation-card">
-            <span class="erp-math-equation-title">Proteksi Anti Over-Selling</span>
-            <div class="erp-math-equation-code">
-              <span class="erp-math-result">Stok Tersedia</span>
-              <span class="erp-math-operator">=</span>
-              <span>Stok Layak Pakai</span>
-              <span class="erp-math-operator">−</span>
-              <span>Reservasi Aktif</span>
+          <article class="erp-kpi-card erp-kpi-card-warning">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Stok Tertahan</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
             </div>
-            <span class="cell-subtext">Kuota yang sudah direservasi oleh PO Pelanggan aktif tidak dapat dijual ganda ke pesanan lain.</span>
-          </div>
-        </section>
-
-        <!-- STRIP AGREGAT 5 SALDO STOK REAL-TIME -->
-        <section class="stock-formula-strip" aria-label="Agregat 5 Indikator Saldo Stok">
-          <article class="stock-formula-box">
-            <div class="stock-formula-title">Stok Fisik</div>
-            <div class="stock-formula-val" id="invSumFisik">284 Unit</div>
+            <div class="erp-kpi-value" id="invSumTertahan">13 Unit</div>
           </article>
 
-          <article class="stock-formula-box">
-            <div class="stock-formula-title">Stok Tertahan</div>
-            <div class="stock-formula-val" id="invSumTertahan">13 Unit</div>
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Stok Layak Pakai</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="invSumLayak">271 Unit</div>
           </article>
 
-          <article class="stock-formula-box">
-            <div class="stock-formula-title">Stok Layak Pakai</div>
-            <div class="stock-formula-val" id="invSumLayak">271 Unit</div>
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Reservasi Aktif</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="invSumReservasi">146 Unit</div>
           </article>
 
-          <article class="stock-formula-box">
-            <div class="stock-formula-title">Reservasi Aktif</div>
-            <div class="stock-formula-val" id="invSumReservasi">146 Unit</div>
-          </article>
-
-          <article class="stock-formula-box stock-formula-box-highlight">
-            <div class="stock-formula-title">Stok Tersedia</div>
-            <div class="stock-formula-val" id="invSumTersedia">125 Unit</div>
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Stok Tersedia</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                  <polyline points="2 17 12 22 22 17" />
+                  <polyline points="2 12 12 17 22 12" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="invSumTersedia">125 Unit</div>
           </article>
         </section>
 

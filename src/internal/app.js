@@ -5024,13 +5024,13 @@
           var bastAction = '';
           if (d.status === 'Sedang Dikirim') {
             bastAction =
-              '<button type="button" class="btn btn-secondary btn-sm" onclick="NPP_ERP.DeliveryController.openUploadBastModal(\'' + d.id + '\')">' +
+              '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" onclick="NPP_ERP.DeliveryController.openUploadBastModal(\'' + d.id + '\')">' +
               '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
-              'Upload BAST' +
+              '<span>Upload BAST</span>' +
               '</button>';
           } else {
             bastAction =
-              '<span class="cell-subtext text-success" title="File BAST: ' + escapeHtml(d.bastFileName || 'BAST Tersimpan') + '">' +
+              '<span class="badge-status badge-success" title="File BAST: ' + escapeHtml(d.bastFileName || 'BAST Tersimpan') + '">' +
               '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ' +
               escapeHtml(d.bastFileName || 'BAST Terverifikasi') +
               '</span>';
@@ -5041,14 +5041,14 @@
             '<td><span class="cell-code">' + escapeHtml(d.id) + '</span></td>' +
             '<td>' + escapeHtml(d.deliveryDate) + '</td>' +
             '<td><span class="cell-client">' + escapeHtml(d.customerName) + '</span></td>' +
-            '<td>' + escapeHtml(d.driverName) + ' (' + escapeHtml(d.vehiclePlate) + ')</td>' +
+            '<td>' + escapeHtml(d.driverName || d.driver || '-') + ' (' + escapeHtml(d.vehiclePlate || '-') + ')</td>' +
             '<td>Total: ' + totalItemsQty + ' Unit</td>' +
             '<td>' + renderStatusBadge(d.status) + '</td>' +
             '<td>' +
             '<div class="erp-action-btns">' +
-            '<button type="button" class="btn btn-primary btn-sm" onclick="NPP_ERP.DeliveryController.openDeliveryPrintPreview(\'' + d.id + '\')">' +
+            '<button type="button" class="btn-erp btn-erp-primary btn-erp-sm" onclick="NPP_ERP.DeliveryController.openDeliveryPrintPreview(\'' + d.id + '\')">' +
             '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>' +
-            'Cetak / Preview SJ' +
+            '<span>Cetak / Preview SJ</span>' +
             '</button>' +
             bastAction +
             '</div>' +
@@ -5701,13 +5701,13 @@
           var paymentAction = '';
           if (inv.status !== 'Lunas') {
             paymentAction =
-              '<button type="button" class="btn btn-secondary btn-sm" onclick="NPP_ERP.BillingController.openPaymentModal(\'' + inv.id + '\')">' +
+              '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" onclick="NPP_ERP.BillingController.openPaymentModal(\'' + inv.id + '\')">' +
               '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>' +
-              'Catat Bayar' +
+              '<span>Catat Bayar</span>' +
               '</button>';
           } else {
             paymentAction =
-              '<span class="cell-subtext text-success">' +
+              '<span class="badge-status badge-success">' +
               '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Lunas 100%' +
               '</span>';
           }
@@ -5718,13 +5718,13 @@
             '<td>' + escapeHtml(inv.invoiceDate) + '</td>' +
             '<td><span class="cell-client">' + escapeHtml(inv.customerName) + '</span></td>' +
             '<td class="col-financial"><strong>' + formatMoneyRBAC(inv.total) + '</strong></td>' +
-            '<td>' + escapeHtml(inv.bankRef || 'BCA 521-098-7741') + '</td>' +
+            '<td>' + escapeHtml(inv.bankRef || inv.bankAccount || 'BCA 521-098-7741') + '</td>' +
             '<td>' + renderStatusBadge(inv.status) + '</td>' +
             '<td>' +
             '<div class="erp-action-btns">' +
-            '<button type="button" class="btn btn-primary btn-sm" onclick="NPP_ERP.BillingController.openInvoicePrintPreview(\'' + inv.id + '\')">' +
+            '<button type="button" class="btn-erp btn-erp-primary btn-erp-sm" onclick="NPP_ERP.BillingController.openInvoicePrintPreview(\'' + inv.id + '\')">' +
             '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>' +
-            'Cetak / Preview' +
+            '<span>Cetak / Preview</span>' +
             '</button>' +
             paymentAction +
             '</div>' +
@@ -6377,7 +6377,7 @@ var OrderCreatePageController = {
           '<td style="text-align:center;"><span class="item-unit">Unit</span></td>' +
           '<td><input type="number" class="erp-input item-price" min="0" value="0" style="text-align:right;" required /></td>' +
           '<td style="text-align:right; font-weight:600;"><span class="item-subtotal">Rp 0</span></td>' +
-          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row">&times;</button></td>';
+          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row" aria-label="Hapus Baris"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
 
         var skuSel = tr.querySelector('.item-sku');
         var qtyInp = tr.querySelector('.item-qty');
@@ -6455,12 +6455,18 @@ var OrderCreatePageController = {
             dpp += lineSub;
 
             var inv = (db.inventory || []).find(function (i) { return i.sku === skuVal; });
-            var available = inv ? (inv.physical - (inv.held || 0) - (inv.reserved || 0)) : 0;
+            var phys = inv ? (inv.fisik !== undefined ? inv.fisik : (inv.physical || 0)) : 0;
+            var hld = inv ? (inv.tertahan !== undefined ? inv.tertahan : (inv.held || 0)) : 0;
+            var res = inv ? (inv.reservasi !== undefined ? inv.reservasi : (inv.reserved || 0)) : 0;
+            var available = inv ? (inv.tersedia !== undefined ? inv.tersedia : Math.max(0, phys - hld - res)) : 0;
             if (available < qtyVal) hasShortage = true;
 
             if (inv) {
               var reserveQty = Math.min(Math.max(0, available), qtyVal);
-              inv.reserved = (inv.reserved || 0) + reserveQty;
+              inv.reservasi = res + reserveQty;
+              inv.reserved = inv.reservasi;
+              inv.layak = Math.max(0, phys - hld);
+              inv.tersedia = Math.max(0, inv.layak - inv.reservasi);
             }
 
             items.push({
@@ -6609,7 +6615,7 @@ var OrderCreatePageController = {
         '    <div class="erp-detail-item"><span class="erp-detail-label">Total Tagihan Pesanan</span><span class="erp-detail-val-highlight">' + formatMoneyRBAC(order.total, false) + '</span></div>' +
         '  </div>' +
         '  <div class="erp-form-actions-bar">' +
-        '    <a href="orders.html" class="btn-erp btn-erp-ghost">← Kembali ke Daftar PO</a>' +
+        '    <a href="orders.html" class="btn-erp btn-erp-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg><span>Kembali</span></a>' +
         (canApproveNow ?
           '    <button type="button" class="btn-erp btn-erp-danger" id="btnPageRejectOrder">Tolak PO Ini</button>' +
           '    <button type="button" class="btn-erp btn-erp-success" id="btnPageApproveOrder">Setujui PO Pelanggan</button>'
@@ -6738,7 +6744,8 @@ var OrderCreatePageController = {
 
       var rackSel = document.getElementById('inpProdRack');
       if (rackSel) {
-        rackSel.innerHTML = (db.warehouseRacks || []).map(function (r) {
+        var rackList = db.racks || db.warehouseRacks || [];
+        rackSel.innerHTML = rackList.map(function (r) {
           return '<option value="' + escapeHtml(r.code) + '">' + escapeHtml(r.code + ' (' + r.zone + ')') + '</option>';
         }).join('');
       }
@@ -6763,10 +6770,12 @@ var OrderCreatePageController = {
           brand: document.getElementById('inpProdBrand').value,
           unit: unit,
           price: price,
+          hpp: cost,
           cost: cost,
           minStock: minStock,
           rack: rack,
-          publishedWeb: isWeb
+          publishedWeb: isWeb,
+          webPublished: isWeb
         };
 
         db.products = db.products || [];
@@ -6775,10 +6784,19 @@ var OrderCreatePageController = {
         db.inventory = db.inventory || [];
         db.inventory.unshift({
           sku: sku,
+          name: name,
+          category: cat,
+          location: rack,
+          fisik: initStock,
+          tertahan: 0,
+          layak: initStock,
+          reservasi: 0,
+          tersedia: initStock,
+          minStock: minStock,
+          status: initStock === 0 ? 'Habis' : (initStock <= minStock ? 'Kritis' : 'Normal'),
           physical: initStock,
           held: 0,
-          reserved: 0,
-          location: rack
+          reserved: 0
         });
 
         addAuditLog('MASTER-PRODUCT', sku, 'Menambah master SKU produk: ' + sku + ' — ' + name);
@@ -6810,11 +6828,13 @@ var OrderCreatePageController = {
           zone: zone,
           type: type,
           capacity: cap,
+          used: 0,
           status: status
         };
 
-        db.warehouseRacks = db.warehouseRacks || [];
-        db.warehouseRacks.unshift(newRack);
+        db.racks = db.racks || [];
+        db.racks.unshift(newRack);
+        db.warehouseRacks = db.racks;
         addAuditLog('MASTER-RACK', code, 'Menambah lokasi rak gudang baru: ' + code);
         saveDatabase(db);
         showToast('Lokasi Rak ' + code + ' berhasil ditambahkan!');
@@ -6886,7 +6906,7 @@ var OrderCreatePageController = {
           '<td style="text-align:center;"><span class="po-unit">Unit</span></td>' +
           '<td><input type="number" class="erp-input po-cost" min="0" value="0" style="text-align:right;" required /></td>' +
           '<td style="text-align:right; font-weight:600;"><span class="po-subtotal">Rp 0</span></td>' +
-          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row">&times;</button></td>';
+          '<td style="text-align:center;"><button type="button" class="btn-erp btn-erp-danger btn-erp-sm btn-del-row" aria-label="Hapus Baris"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
 
         var skuSel = tr.querySelector('.po-sku');
         var qtyInp = tr.querySelector('.po-qty');
@@ -6980,22 +7000,28 @@ var OrderCreatePageController = {
 
           var newPo = {
             id: newId,
+            poId: newId,
             supplierId: suppId,
             supplierName: suppObj.name || 'Prinsipal Pabrik',
+            refSoId: orderRef || 'BUFFER-STOCK',
             refOrderId: orderRef,
+            poDate: new Date().toISOString().split('T')[0],
             orderDate: new Date().toISOString().split('T')[0],
+            eta: etaDate,
             etaDate: etaDate,
             paymentTerm: topVal,
             status: 'Diajukan',
             statusApproval: 'Menunggu Persetujuan',
             statusPenerimaan: 'Dalam Perjalanan',
+            totalHpp: total,
             total: total,
             items: items,
             notes: notesVal
           };
 
-          db.supplierPurchaseOrders = db.supplierPurchaseOrders || [];
-          db.supplierPurchaseOrders.unshift(newPo);
+          db.procurements = db.procurements || [];
+          db.procurements.unshift(newPo);
+          db.supplierPurchaseOrders = db.procurements;
           addAuditLog('PO-SUPPLIER-CREATE', newId, 'Menerbitkan PO Supplier baru: ' + newId + ' (' + newPo.supplierName + ') senilai ' + formatRupiah(total));
           saveDatabase(db);
           showToast('PO Supplier ' + newId + ' berhasil diajukan!');
@@ -7014,7 +7040,8 @@ var OrderCreatePageController = {
       var db = window.NPP_ERP_DATA;
       var params = new URLSearchParams(window.location.search);
       var poId = params.get('id');
-      var po = (db.supplierPurchaseOrders || []).find(function (p) { return p.id === poId; });
+      var poList = db.procurements || db.supplierPurchaseOrders || [];
+      var po = poList.find(function (p) { return p.id === poId || p.poId === poId; });
 
       var heading = document.getElementById('poDetailHeading');
       var container = document.getElementById('procurementDetailContainer');
@@ -7024,12 +7051,16 @@ var OrderCreatePageController = {
         return;
       }
 
-      if (heading) heading.textContent = 'Detail PO Supplier: ' + po.id;
+      var poCode = po.id || po.poId;
+      if (heading) heading.textContent = 'Detail PO Supplier: ' + poCode;
 
       var roleCfg = RoleManager.getCurrentRoleConfig();
-      var canApproveNow = roleCfg.canApprove && (po.statusApproval === 'Menunggu Persetujuan' || po.status === 'Diajukan');
+      var canApproveNow = roleCfg.canApprove && (po.statusApproval === 'Menunggu Persetujuan' || po.status === 'Diajukan' || po.status === 'Menunggu Approval');
+      var poTotal = po.total !== undefined ? po.total : (po.totalHpp || 0);
 
       var itemsRows = (po.items || []).map(function (it, idx) {
+        var unitCost = it.cost !== undefined ? it.cost : (it.hpp || 0);
+        var lineSub = it.subtotal !== undefined ? it.subtotal : (it.qty * unitCost);
         return (
           '<tr>' +
           '<td style="text-align:center;">' + (idx + 1) + '</td>' +
@@ -7037,8 +7068,8 @@ var OrderCreatePageController = {
           '<td>' + escapeHtml(it.name) + '</td>' +
           '<td style="text-align:center; font-weight:600;">' + it.qty + '</td>' +
           '<td style="text-align:center;">' + escapeHtml(it.unit || 'Unit') + '</td>' +
-          '<td style="text-align:right;">' + (roleCfg.canViewHPP ? formatRupiah(it.cost || 0) : 'TERLINDUNGI') + '</td>' +
-          '<td style="text-align:right; font-weight:700;">' + (roleCfg.canViewHPP ? formatRupiah(it.subtotal || 0) : 'TERLINDUNGI') + '</td>' +
+          '<td style="text-align:right;">' + (roleCfg.canViewHPP ? formatRupiah(unitCost) : 'TERLINDUNGI') + '</td>' +
+          '<td style="text-align:right; font-weight:700;">' + (roleCfg.canViewHPP ? formatRupiah(lineSub) : 'TERLINDUNGI') + '</td>' +
           '</tr>'
         );
       }).join('');
@@ -7053,9 +7084,9 @@ var OrderCreatePageController = {
         '<div class="erp-form-card">' +
         '  <div class="erp-detail-grid">' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Supplier / Prinsipal</span><span class="erp-detail-val">' + escapeHtml(po.supplierName) + '</span></div>' +
-        '    <div class="erp-detail-item"><span class="erp-detail-label">Tautkan ke SO Pelanggan</span><span class="erp-detail-val cell-code">' + escapeHtml(po.refOrderId || 'Buffer Stock Bebas') + '</span></div>' +
-        '    <div class="erp-detail-item"><span class="erp-detail-label">Tanggal Order</span><span class="erp-detail-val">' + escapeHtml(po.orderDate || '-') + '</span></div>' +
-        '    <div class="erp-detail-item"><span class="erp-detail-label">Estimasi Tiba (ETA)</span><span class="erp-detail-val">' + escapeHtml(po.etaDate || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Tautkan ke SO Pelanggan</span><span class="erp-detail-val cell-code">' + escapeHtml(po.refOrderId || po.refSoId || 'Buffer Stock Bebas') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Tanggal Order</span><span class="erp-detail-val">' + escapeHtml(po.orderDate || po.poDate || '-') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Estimasi Tiba (ETA)</span><span class="erp-detail-val">' + escapeHtml(po.etaDate || po.eta || '-') + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Syarat Pembayaran</span><span class="erp-detail-val">' + escapeHtml(po.paymentTerm || 'T/T') + '</span></div>' +
         '  </div>' +
         '  <div class="erp-form-group erp-form-group-full">' +
@@ -7085,10 +7116,10 @@ var OrderCreatePageController = {
 
         '<div class="erp-form-card">' +
         '  <div class="erp-detail-grid">' +
-        '    <div class="erp-detail-item"><span class="erp-detail-label">Total Nilai Pembelian HPP</span><span class="erp-detail-val-highlight">' + (roleCfg.canViewHPP ? formatRupiah(po.total) : 'TERLINDUNGI') + '</span></div>' +
+        '    <div class="erp-detail-item"><span class="erp-detail-label">Total Nilai Pembelian HPP</span><span class="erp-detail-val-highlight">' + (roleCfg.canViewHPP ? formatRupiah(poTotal) : 'TERLINDUNGI') + '</span></div>' +
         '  </div>' +
         '  <div class="erp-form-actions-bar">' +
-        '    <a href="procurement.html" class="btn-erp btn-erp-ghost">← Kembali ke Pengadaan</a>' +
+        '    <a href="procurement.html" class="btn-erp btn-erp-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg><span>Kembali</span></a>' +
         (canApproveNow ?
           '    <button type="button" class="btn-erp btn-erp-danger" id="btnPageRejectPo">Tolak PO Supplier</button>' +
           '    <button type="button" class="btn-erp btn-erp-success" id="btnPageApprovePo">Setujui PO Supplier</button>'
@@ -7151,22 +7182,26 @@ var OrderCreatePageController = {
 
       if (dateInp) dateInp.value = new Date().toISOString().split('T')[0];
 
+      var poList = db.procurements || db.supplierPurchaseOrders || [];
+
       if (poSel) {
         poSel.innerHTML = '<option value="">-- Pilih Dokumen PO Supplier Aktif --</option>' +
-          (db.supplierPurchaseOrders || []).map(function (p) {
-            return '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.id + ' — ' + p.supplierName + ' (' + (p.items || []).length + ' SKU)') + '</option>';
+          poList.map(function (p) {
+            var pid = p.id || p.poId;
+            return '<option value="' + escapeHtml(pid) + '">' + escapeHtml(pid + ' — ' + p.supplierName + ' (' + (p.items || []).length + ' SKU)') + '</option>';
           }).join('');
 
         poSel.addEventListener('change', function () {
           var poId = poSel.value;
-          var po = (db.supplierPurchaseOrders || []).find(function (p) { return p.id === poId; });
+          var po = poList.find(function (p) { return (p.id || p.poId) === poId; });
           if (!tbody) return;
           if (!po || !po.items || po.items.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:16px;">Silakan pilih PO Supplier terlebih dahulu.</td></tr>';
             return;
           }
 
-          var rackOptions = (db.warehouseRacks || []).map(function (r) {
+          var rackList = db.racks || db.warehouseRacks || [];
+          var rackOptions = rackList.map(function (r) {
             return '<option value="' + escapeHtml(r.code) + '">' + escapeHtml(r.code) + '</option>';
           }).join('');
 
@@ -7185,8 +7220,8 @@ var OrderCreatePageController = {
         });
 
         // Trigger change if there is any PO
-        if (db.supplierPurchaseOrders && db.supplierPurchaseOrders.length > 0) {
-          poSel.value = db.supplierPurchaseOrders[0].id;
+        if (poList.length > 0) {
+          poSel.value = poList[0].id || poList[0].poId;
           poSel.dispatchEvent(new Event('change'));
         }
       }
@@ -7195,7 +7230,7 @@ var OrderCreatePageController = {
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           var poId = poSel.value;
-          var po = (db.supplierPurchaseOrders || []).find(function (p) { return p.id === poId; });
+          var po = poList.find(function (p) { return (p.id || p.poId) === poId; });
           if (!po) {
             showToast('Pilih PO Supplier yang valid.');
             return;
@@ -7217,12 +7252,24 @@ var OrderCreatePageController = {
 
             var inv = (db.inventory || []).find(function (i) { return i.sku === sku; });
             if (inv) {
-              inv.physical = (inv.physical || 0) + passed + hold;
-              inv.held = (inv.held || 0) + hold;
+              var curFisik = inv.fisik !== undefined ? inv.fisik : (inv.physical || 0);
+              var curHold = inv.tertahan !== undefined ? inv.tertahan : (inv.held || 0);
+              var curRes = inv.reservasi !== undefined ? inv.reservasi : (inv.reserved || 0);
+              inv.fisik = curFisik + passed + hold;
+              inv.tertahan = curHold + hold;
+              inv.layak = Math.max(0, inv.fisik - inv.tertahan);
+              inv.tersedia = Math.max(0, inv.layak - curRes);
+              inv.physical = inv.fisik;
+              inv.held = inv.tertahan;
               inv.location = rack;
             } else {
               db.inventory.push({
                 sku: sku,
+                fisik: passed + hold,
+                tertahan: hold,
+                layak: passed,
+                reservasi: 0,
+                tersedia: passed,
                 physical: passed + hold,
                 held: hold,
                 reserved: 0,
@@ -7232,12 +7279,14 @@ var OrderCreatePageController = {
 
             db.stockLedger = db.stockLedger || [];
             db.stockLedger.unshift({
+              id: 'MUT-' + Math.floor(Math.random() * 90000 + 10000),
               date: grDate,
               refDoc: grId,
               sku: sku,
               type: 'MASUK',
               qty: passed + hold,
-              balanceAfter: inv ? inv.physical : (passed + hold),
+              balanceAfter: inv ? inv.fisik : (passed + hold),
+              pic: inspector,
               officer: inspector
             });
           });
@@ -7293,13 +7342,13 @@ var OrderCreatePageController = {
 
           tbody.innerHTML = (ord.items || []).map(function (it, idx) {
             var inv = (db.inventory || []).find(function (i) { return i.sku === it.sku; }) || {};
-            var res = inv.reserved || 0;
+            var res = inv.reservasi !== undefined ? inv.reservasi : (inv.reserved || 0);
             return (
               '<tr>' +
               '<td style="text-align:center;"><input type="checkbox" class="deliv-item-check" checked /></td>' +
               '<td><strong class="deliv-sku">' + escapeHtml(it.sku) + '</strong><br><span class="cell-subtext">' + escapeHtml(it.name) + '</span></td>' +
               '<td style="text-align:center;">' + it.qty + '</td>' +
-              '<td style="text-align:center; font-weight:600; color:var(--erp-primary);">' + res + '</td>' +
+              '<td style="text-align:center; font-weight:600; color:var(--erp-navy);">' + res + '</td>' +
               '<td><input type="number" class="erp-input deliv-qty-send" min="1" max="' + it.qty + '" value="' + Math.min(it.qty, Math.max(1, res)) + '" style="text-align:center;" required /></td>' +
               '<td style="text-align:center;">' + escapeHtml(it.unit || 'Unit') + '</td>' +
               '</tr>'
@@ -7341,18 +7390,27 @@ var OrderCreatePageController = {
 
               var inv = (db.inventory || []).find(function (i) { return i.sku === sku; });
               if (inv) {
-                inv.physical = Math.max(0, (inv.physical || 0) - qty);
-                inv.reserved = Math.max(0, (inv.reserved || 0) - qty);
+                var curFisik = inv.fisik !== undefined ? inv.fisik : (inv.physical || 0);
+                var curHold = inv.tertahan !== undefined ? inv.tertahan : (inv.held || 0);
+                var curRes = inv.reservasi !== undefined ? inv.reservasi : (inv.reserved || 0);
+                inv.fisik = Math.max(0, curFisik - qty);
+                inv.reservasi = Math.max(0, curRes - qty);
+                inv.layak = Math.max(0, inv.fisik - curHold);
+                inv.tersedia = Math.max(0, inv.layak - inv.reservasi);
+                inv.physical = inv.fisik;
+                inv.reserved = inv.reservasi;
               }
 
               db.stockLedger = db.stockLedger || [];
               db.stockLedger.unshift({
+                id: 'MUT-' + Math.floor(Math.random() * 90000 + 10000),
                 date: delivDate,
                 refDoc: sjId,
                 sku: sku,
                 type: 'KELUAR',
                 qty: qty,
-                balanceAfter: inv ? inv.physical : 0,
+                balanceAfter: inv ? inv.fisik : 0,
+                pic: driver + ' (' + plate + ')',
                 officer: driver + ' (' + plate + ')'
               });
 
@@ -7373,13 +7431,16 @@ var OrderCreatePageController = {
           var newDelivery = {
             id: sjId,
             orderId: ord.id,
+            clientPoNumber: ord.clientPoNumber,
             customerName: ord.customerName,
             deliveryDate: delivDate,
             courier: courier,
             driver: driver,
+            driverName: driver,
             vehiclePlate: plate,
             recipientPic: ord.customerName,
             destination: dest,
+            address: dest,
             status: 'Sedang Dikirim',
             items: sentItems,
             notes: notes

@@ -191,41 +191,77 @@
       <!-- KONTEN UTAMA MODUL PENGIRIMAN -->
       <div class="erp-content">
 
-        <!-- NOTICE BOX RBAC JIKA BUKAN GUDANG/ADMIN -->
         <div id="deliveryRbacNotice" class="erp-hidden"></div>
 
         <!-- 4 KPI CARDS PENGIRIMAN -->
-        <section class="erp-kpi-grid">
-          <div class="erp-kpi-card">
-            <span class="erp-kpi-label">Total Surat Jalan Diterbitkan</span>
-            <div class="erp-kpi-val" id="kpiTotalDeliveries">0 Dokumen</div>
-          </div>
+        <section class="erp-kpi-grid erp-kpi-grid-4" aria-label="Ringkasan KPI Pengiriman">
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Total Surat Jalan Diterbitkan</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiTotalDeliveries">0 Dokumen</div>
+          </article>
 
-          <div class="erp-kpi-card">
-            <span class="erp-kpi-label">Pengiriman Dalam Perjalanan</span>
-            <div class="erp-kpi-val text-warning" id="kpiInTransitDeliveries">0 Pengiriman</div>
-          </div>
+          <article class="erp-kpi-card erp-kpi-card-warning">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Pengiriman Dalam Perjalanan</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="3" width="15" height="13" rx="2" />
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                  <circle cx="5.5" cy="18.5" r="2.5" />
+                  <circle cx="18.5" cy="18.5" r="2.5" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiInTransitDeliveries">0 Pengiriman</div>
+          </article>
 
-          <div class="erp-kpi-card">
-            <span class="erp-kpi-label">BAST Selesai & Terverifikasi</span>
-            <div class="erp-kpi-val text-success" id="kpiCompletedBast">0 Selesai</div>
-          </div>
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">BAST Selesai &amp; Terverifikasi</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiCompletedBast">0 Selesai</div>
+          </article>
 
-          <div class="erp-kpi-card">
-            <span class="erp-kpi-label">Total Unit Fisik Diserahkan</span>
-            <div class="erp-kpi-val" id="kpiTotalDeliveredUnits">0 Unit</div>
-          </div>
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Total Unit Fisik Diserahkan</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                  <line x1="12" y1="22.08" x2="12" y2="12" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiTotalDeliveredUnits">0 Unit</div>
+          </article>
         </section>
 
         <!-- PANEL TABEL RIWAYAT PENGIRIMAN -->
         <section class="erp-section-panel">
-          <div class="erp-panel-header">
-            <div>
+          <div class="erp-section-header">
+            <div class="erp-section-title-group">
               <h2 class="section-heading">Daftar Pengiriman Fisik</h2>
             </div>
-            <div class="erp-header-actions no-print">
+            <div class="erp-Filter-group no-print">
               <a href="delivery-create.html" class="btn-erp btn-erp-primary" id="btnOpenCreateDelivery">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
@@ -236,27 +272,22 @@
 
           <!-- TOOLBAR PENCARIAN & FILTER -->
           <div class="erp-toolbar no-print">
-            <div class="erp-toolbar-left">
-              <div class="erp-search-wrap">
-                <svg class="erp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <input type="text" id="deliverySearchInput" class="erp-search-input" placeholder="Cari No. SJ, Pelanggan, Ref SO, Ekspedisi, atau SKU..." />
-              </div>
-
-              <div class="erp-filter-group">
-                <select id="deliveryFilterStatus" class="erp-filter-select">
-                  <option value="">Semua Status Pengiriman</option>
-                  <option value="Sedang Dikirim">Sedang Dikirim</option>
-                  <option value="Terkirim & BAST">Terkirim & BAST</option>
-                </select>
-              </div>
+            <div class="erp-search-box">
+              <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="search" id="deliverySearchInput" class="erp-search-input" placeholder="Cari No. SJ, Pelanggan, Ref SO, Ekspedisi, atau SKU..." />
             </div>
 
-            <div class="erp-toolbar-right">
-              <label for="deliveryPageSizeSelect" class="erp-label-sm">Tampilkan:</label>
-              <select id="deliveryPageSizeSelect" class="erp-filter-select">
+            <div class="erp-Filter-group">
+              <select id="deliveryFilterStatus" class="erp-filter-select" aria-label="Filter Status Pengiriman">
+                <option value="">Semua Status Pengiriman</option>
+                <option value="Sedang Dikirim">Sedang Dikirim</option>
+                <option value="Terkirim & BAST">Terkirim & BAST</option>
+              </select>
+
+              <select id="deliveryPageSizeSelect" class="erp-filter-select" aria-label="Jumlah Baris per Halaman">
                 <option value="5">5 baris</option>
                 <option value="10">10 baris</option>
                 <option value="20">20 baris</option>
