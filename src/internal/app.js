@@ -1821,17 +1821,10 @@
 
     renderQuickApprovalPanel: function () {
       var container = document.getElementById('quickApprovalList');
-      var roleTag = document.getElementById('quickApprovalRoleHint');
       if (!container) return;
 
       var db = window.NPP_ERP_DATA;
       var roleCfg = RoleManager.getCurrentRoleConfig();
-
-      if (roleTag) {
-        roleTag.textContent = roleCfg.canApprove
-          ? 'Otorisasi Aktif (' + roleCfg.display + ')'
-          : 'Mode Baca — Otorisasi oleh Approver / Admin';
-      }
 
       var pendingOrders = db.orders.filter(function (o) {
         return o.statusApproval === 'Menunggu Persetujuan';
@@ -2439,7 +2432,6 @@
     syncCreateButtonRBAC: function () {
       var roleCfg = RoleManager.getCurrentRoleConfig();
       var btnCreate = document.getElementById('btnOpenCreateOrderModal');
-      var rbacNote = document.getElementById('ordersRbacActionHint');
       var canCreateSO = roleCfg.code === 'Sales / Operasional' || roleCfg.code === 'Administrator';
 
       if (btnCreate) {
@@ -2447,11 +2439,6 @@
         btnCreate.title = canCreateSO
           ? 'Buat PO Pelanggan B2B Baru'
           : 'Hanya peran Sales & PO atau Administrator yang dapat menginput PO Pelanggan baru';
-      }
-      if (rbacNote) {
-        rbacNote.textContent = canCreateSO
-          ? 'Hak Input PO Aktif (' + roleCfg.display + ')'
-          : 'Mode Baca (' + roleCfg.display + ') — Input PO hanya untuk Sales & Admin';
       }
     },
 
@@ -3653,18 +3640,12 @@
       var roleCfg = RoleManager.getCurrentRoleConfig();
       var canReceiveGr = roleCfg.code === 'Gudang' || roleCfg.code === 'Administrator';
       var btnGr = document.getElementById('btnOpenCreateGrModal');
-      var hintEl = document.getElementById('invGrRbacHint');
 
       if (btnGr) {
         btnGr.disabled = !canReceiveGr;
         btnGr.title = canReceiveGr
           ? 'Catat Penerimaan Barang Fisik & Inspeksi QC Gudang'
           : 'Hanya peran Stok Gudang atau Administrator yang dapat mencatat Penerimaan Barang & QC';
-      }
-      if (hintEl) {
-        hintEl.textContent = canReceiveGr
-          ? 'Otorisasi Gudang & QC Aktif (' + roleCfg.display + ') • Bebas Informasi Harga/HPP'
-          : 'Mode Pantau (' + roleCfg.display + ') • Input GR & QC khusus Stok Gudang & Admin';
       }
     },
 
@@ -4262,18 +4243,12 @@
       var roleCfg = RoleManager.getCurrentRoleConfig();
       var canCreatePo = roleCfg.code === 'Purchasing' || roleCfg.code === 'Administrator';
       var btnCreate = document.getElementById('btnOpenCreatePoModal');
-      var hintEl = document.getElementById('procRbacActionHint');
 
       if (btnCreate) {
         btnCreate.disabled = !canCreatePo;
         btnCreate.title = canCreatePo
           ? 'Terbitkan PO Baru ke Prinsipal / Pabrikan'
           : 'Hanya peran Purchasing atau Administrator yang dapat menerbitkan PO Supplier baru';
-      }
-      if (hintEl) {
-        hintEl.textContent = canCreatePo
-          ? 'Otorisasi Penerbitan PO Supplier Aktif (' + roleCfg.display + ')'
-          : 'Mode Pantau (' + roleCfg.display + ') — Penerbitan PO khusus Purchasing & Admin';
       }
     },
 
