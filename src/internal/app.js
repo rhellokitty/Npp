@@ -6568,7 +6568,6 @@ var OrderCreatePageController = {
         '</div>' +
 
         '<div class="erp-form-card">' +
-        '  <div class="erp-form-card-title">Informasi Pelanggan &amp; Dokumen PO</div>' +
         '  <div class="erp-detail-grid">' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Nama Pelanggan B2B</span><span class="erp-detail-val">' + escapeHtml(order.customerName) + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">No. PO Klien Eksternal</span><span class="erp-detail-val cell-code">' + escapeHtml(order.clientPoNumber) + '</span></div>' +
@@ -6585,7 +6584,6 @@ var OrderCreatePageController = {
         '</div>' +
 
         '<div class="erp-form-card">' +
-        '  <div class="erp-form-card-title">Rincian Barang yang Dipesan</div>' +
         '  <div class="erp-table-wrap">' +
         '    <table class="erp-table">' +
         '      <thead>' +
@@ -6605,7 +6603,6 @@ var OrderCreatePageController = {
         '</div>' +
 
         '<div class="erp-form-card">' +
-        '  <div class="erp-form-card-title">Ringkasan Finansial &amp; Otorisasi</div>' +
         '  <div class="erp-detail-grid">' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Dasar Pengenaan Pajak (DPP)</span><span class="erp-detail-val">' + formatMoneyRBAC(order.dpp, false) + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">PPN 11%</span><span class="erp-detail-val">' + formatMoneyRBAC(order.ppn, false) + '</span></div>' +
@@ -7054,7 +7051,6 @@ var OrderCreatePageController = {
         '</div>' +
 
         '<div class="erp-form-card">' +
-        '  <div class="erp-form-card-title">Informasi Prinsipal Manufaktur</div>' +
         '  <div class="erp-detail-grid">' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Supplier / Prinsipal</span><span class="erp-detail-val">' + escapeHtml(po.supplierName) + '</span></div>' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Tautkan ke SO Pelanggan</span><span class="erp-detail-val cell-code">' + escapeHtml(po.refOrderId || 'Buffer Stock Bebas') + '</span></div>' +
@@ -7069,7 +7065,6 @@ var OrderCreatePageController = {
         '</div>' +
 
         '<div class="erp-form-card">' +
-        '  <div class="erp-form-card-title">Rincian SKU yang Dipesan ke Pabrik</div>' +
         '  <div class="erp-table-wrap">' +
         '    <table class="erp-table">' +
         '      <thead>' +
@@ -7089,7 +7084,6 @@ var OrderCreatePageController = {
         '</div>' +
 
         '<div class="erp-form-card">' +
-        '  <div class="erp-form-card-title">Ringkasan Nilai Pengadaan &amp; Otorisasi</div>' +
         '  <div class="erp-detail-grid">' +
         '    <div class="erp-detail-item"><span class="erp-detail-label">Total Nilai Pembelian HPP</span><span class="erp-detail-val-highlight">' + (roleCfg.canViewHPP ? formatRupiah(po.total) : 'TERLINDUNGI') + '</span></div>' +
         '  </div>' +

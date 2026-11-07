@@ -1844,24 +1844,14 @@ html[data-theme="dark"] .erp-file-icon-box {
 .erp-form-card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
-.erp-form-card-header .erp-form-card-title {
-  margin-bottom: 0;
-}
-
 .erp-form-card-title {
-  font-size: 0.96rem;
-  font-weight: 700;
-  color: var(--erp-heading);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: none !important;
 }
 
 .erp-form-actions-bar {
