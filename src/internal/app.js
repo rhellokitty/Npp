@@ -1680,11 +1680,53 @@
     }
 
     this.renderPagination(totalItems, startIdx, endIdx, totalPages);
+    syncResponsiveTableLabels(tbody.closest('table'));
 
     if (typeof this.onAfterRender === 'function') {
       this.onAfterRender(pageItems, totalItems);
     }
   };
+
+  function syncResponsiveTableLabels(root) {
+    var scope = root || document;
+    var tables = [];
+    if (scope.nodeType === 1 && scope.matches && scope.matches('table.erp-table, table.erp-doc-table')) {
+      tables = [scope];
+    } else if (scope.querySelectorAll) {
+      tables = scope.querySelectorAll('table.erp-table, table.erp-doc-table');
+    }
+    Array.prototype.forEach.call(tables, function (tbl) {
+      var ths = tbl.querySelectorAll('thead th');
+      if (!ths || ths.length === 0) return;
+      var headers = Array.prototype.map.call(ths, function (th) {
+        return (th.textContent || '').replace(/\s+/g, ' ').trim();
+      });
+      var rows = tbl.querySelectorAll('tbody tr');
+      Array.prototype.forEach.call(rows, function (tr) {
+        var tds = tr.children;
+        for (var i = 0; i < tds.length; i++) {
+          var td = tds[i];
+          if (!td || td.tagName !== 'TD') continue;
+          if (td.hasAttribute('colspan')) {
+            td.classList.add('cell-mobile-empty');
+            continue;
+          }
+          var label = headers[i] || '';
+          if (!td.hasAttribute('data-label') && label) {
+            td.setAttribute('data-label', label);
+          }
+          var effectiveLabel = td.getAttribute('data-label') || label;
+          if (effectiveLabel === '#' || /^no\.?$/i.test(effectiveLabel)) {
+            td.classList.add('cell-mobile-num');
+          } else if (/^aksi/i.test(effectiveLabel)) {
+            td.classList.add('cell-mobile-actions');
+          } else if (/(pelanggan|nama\s*&\s*jabatan|nama produk|deskripsi|rincian|alamat|email|berkas|spesifikasi|petugas|rekening|prinsipal|vendor)/i.test(effectiveLabel)) {
+            td.classList.add('cell-mobile-wide');
+          }
+        }
+      });
+    });
+  }
 
   TableEngine.prototype.renderPagination = function (totalItems, startIdx, endIdx, totalPages) {
     var container = document.getElementById(this.paginationId);
@@ -8594,5 +8636,20 @@ var OrderCreatePageController = {
     BillingCreatePageController.init();
     BillingPaymentPageController.init();
     BillingPrintPageController.init();
+    syncResponsiveTableLabels(document);
+    RoleManager.onChange(function () {
+      syncResponsiveTableLabels(document);
+    });
+    if (typeof MutationObserver !== 'undefined' && document.body) {
+      var tblObserver = new MutationObserver(function (mutations) {
+        for (var m = 0; m < mutations.length; m++) {
+          if (mutations[m].addedNodes && mutations[m].addedNodes.length > 0) {
+            syncResponsiveTableLabels(document);
+            break;
+          }
+        }
+      });
+      tblObserver.observe(document.body, { childList: true, subtree: true });
+    }
   });
 })();

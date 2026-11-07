@@ -2531,33 +2531,186 @@ html[data-theme="dark"] .erp-file-icon-box {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .erp-toolbar {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .erp-toolbar-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .erp-search-box,
+  .erp-search-wrap {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .erp-toolbar .erp-Filter-group,
+  .erp-toolbar .erp-filter-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+
+  .erp-toolbar .erp-filter-select {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .erp-toolbar-right {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+  }
+
   .erp-table-wrap,
   .erp-doc-table-wrap {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
   }
+}
 
-  #pageOrderItemsTable,
-  #pagePoSupplierItemsTable,
-  #pageGrItemsTable,
-  #pageDeliveryItemsTable {
-    min-width: 0;
+@media screen and (max-width: 1024px) {
+  .erp-table-wrap {
+    overflow-x: visible;
   }
 
-  #pageOrderItemsTable thead th,
-  #pagePoSupplierItemsTable thead th,
-  #pageGrItemsTable thead th,
-  #pageDeliveryItemsTable thead th {
+  .erp-table {
+    display: block;
+    width: 100%;
     min-width: 0 !important;
-    padding: 11px 10px;
-    font-size: 0.68rem;
   }
 
-  #pageOrderItemsTable tbody td,
-  #pagePoSupplierItemsTable tbody td,
-  #pageGrItemsTable tbody td,
-  #pageDeliveryItemsTable tbody td {
-    padding: 10px 8px;
+  .erp-table thead {
+    display: none;
+  }
+
+  .erp-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .erp-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px 16px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background-color: var(--erp-bg-page) !important;
+  }
+
+  .erp-table tbody td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: 0 !important;
+    white-space: normal !important;
+    text-align: left !important;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .role-gudang-active .erp-table tbody td.col-financial,
+  .erp-table tbody td.erp-hidden,
+  .erp-table tbody td.cell-mobile-num,
+  .erp-table tbody td.cell-row-num {
+    display: none !important;
+  }
+
+  .erp-table tbody td[colspan],
+  .erp-table tbody td.cell-mobile-empty {
+    grid-column: 1 / -1;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 14px !important;
+  }
+
+  .erp-table tbody td[data-label]::before {
+    content: attr(data-label);
+    font-size: 0.67rem;
+    font-weight: 600;
+    color: var(--erp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .erp-table tbody td > br {
+    display: none;
+  }
+
+  .erp-table tbody td .cell-code,
+  .erp-table tbody td .cell-client,
+  .erp-table tbody td .cell-money {
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .erp-table tbody td .cell-subtext,
+  .erp-table tbody td .cell-subtext-sm {
+    display: block !important;
+    white-space: normal;
+    line-height: 1.35;
+  }
+
+  .erp-table tbody td .badge-status {
+    width: fit-content;
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.3;
+    text-align: left;
+  }
+
+  .erp-table tbody td.cell-row-full {
+    grid-column: 1 / -1;
+  }
+
+  .erp-table tbody td.cell-mobile-actions,
+  .erp-table tbody td.cell-row-action {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center !important;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 4px !important;
+  }
+
+  .erp-table tbody td .erp-action-btns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .erp-table tbody td .erp-input,
+  .erp-table tbody td .erp-select {
+    width: 100%;
+    text-align: left !important;
+    padding: 9px 12px;
+    font-size: 0.81rem;
+  }
+
+  .erp-table tbody td .erp-select {
+    padding-right: 34px;
   }
 }
 
@@ -2773,108 +2926,14 @@ html[data-theme="dark"] .erp-file-icon-box {
     white-space: nowrap;
   }
 
-  .erp-table {
-    min-width: 680px;
-  }
-
-  .erp-table thead th {
-    padding: 11px 12px;
-    font-size: 0.69rem;
-  }
-
-  .erp-table tbody td {
-    padding: 10px 12px;
-    font-size: 0.78rem;
-  }
-
-  /* Stacked Mobile Cards untuk Tabel Input Form (Zero Hidden-Scrollbar Typing) */
-  #pageOrderItemsTable,
-  #pagePoSupplierItemsTable,
-  #pageGrItemsTable,
-  #pageDeliveryItemsTable {
-    display: block;
-    width: 100%;
-    min-width: 0 !important;
-  }
-
-  #pageOrderItemsTable thead,
-  #pagePoSupplierItemsTable thead,
-  #pageGrItemsTable thead,
-  #pageDeliveryItemsTable thead {
-    display: none;
-  }
-
-  #pageOrderItemsTable tbody,
-  #pagePoSupplierItemsTable tbody,
-  #pageGrItemsTable tbody,
-  #pageDeliveryItemsTable tbody {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-  }
-
-  #pageOrderItemsTable tbody tr,
-  #pagePoSupplierItemsTable tbody tr,
-  #pageGrItemsTable tbody tr,
-  #pageDeliveryItemsTable tbody tr {
-    display: grid;
+  .erp-table tbody tr {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px 12px;
     padding: 14px;
-    border-radius: 14px;
-    background-color: var(--erp-bg-page) !important;
   }
 
-  #pageOrderItemsTable tbody td,
-  #pagePoSupplierItemsTable tbody td,
-  #pageGrItemsTable tbody td,
-  #pageDeliveryItemsTable tbody td {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch !important;
-    justify-content: flex-start;
-    gap: 5px;
-    padding: 0 !important;
-    white-space: normal !important;
-    text-align: left !important;
-    min-width: 0;
-  }
-
-  #pageOrderItemsTable tbody td[colspan],
-  #pagePoSupplierItemsTable tbody td[colspan],
-  #pageGrItemsTable tbody td[colspan],
-  #pageDeliveryItemsTable tbody td[colspan] {
-    grid-column: 1 / -1;
-    align-items: center !important;
-    text-align: center !important;
-    padding: 12px !important;
-  }
-
-  #pageOrderItemsTable tbody td[data-label]::before,
-  #pagePoSupplierItemsTable tbody td[data-label]::before,
-  #pageGrItemsTable tbody td[data-label]::before,
-  #pageDeliveryItemsTable tbody td[data-label]::before {
-    content: attr(data-label);
-    font-size: 0.67rem;
-    font-weight: 600;
-    color: var(--erp-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-  }
-
-  #pageOrderItemsTable tbody td.cell-row-num,
-  #pagePoSupplierItemsTable tbody td.cell-row-num,
-  #pageGrItemsTable tbody td.cell-row-num,
-  #pageDeliveryItemsTable tbody td.cell-row-num {
-    display: none !important;
-  }
-
-  #pageOrderItemsTable tbody td.cell-row-full,
-  #pagePoSupplierItemsTable tbody td.cell-row-full,
-  #pageGrItemsTable tbody td.cell-row-full,
-  #pageDeliveryItemsTable tbody td.cell-row-full {
+  .erp-table tbody td.cell-mobile-wide,
+  .erp-table tbody td.cell-row-full {
     grid-column: 1 / -1;
   }
 
@@ -2884,48 +2943,6 @@ html[data-theme="dark"] .erp-file-icon-box {
 
   #pageDeliveryItemsTable tbody td.cell-row-bottom {
     order: 2;
-  }
-
-  #pageOrderItemsTable tbody td.cell-row-action,
-  #pagePoSupplierItemsTable tbody td.cell-row-action {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    align-items: center !important;
-    justify-content: space-between;
-    padding-top: 4px !important;
-  }
-
-  #pageOrderItemsTable tbody td .erp-input,
-  #pagePoSupplierItemsTable tbody td .erp-input,
-  #pageGrItemsTable tbody td .erp-input,
-  #pageDeliveryItemsTable tbody td .erp-input,
-  #pageOrderItemsTable tbody td .erp-select,
-  #pagePoSupplierItemsTable tbody td .erp-select,
-  #pageGrItemsTable tbody td .erp-select,
-  #pageDeliveryItemsTable tbody td .erp-select {
-    width: 100%;
-    text-align: left !important;
-    padding: 9px 12px;
-    font-size: 0.81rem;
-  }
-
-  #pageOrderItemsTable tbody td .erp-select,
-  #pagePoSupplierItemsTable tbody td .erp-select,
-  #pageGrItemsTable tbody td .erp-select,
-  #pageDeliveryItemsTable tbody td .erp-select {
-    padding-right: 34px;
-  }
-
-  #pageGrItemsTable tbody td br,
-  #pageDeliveryItemsTable tbody td br {
-    display: none;
-  }
-
-  #pageGrItemsTable tbody td .cell-subtext,
-  #pageDeliveryItemsTable tbody td .cell-subtext {
-    display: block !important;
-    white-space: normal;
-    line-height: 1.35;
   }
 
   .erp-file-card {
@@ -3334,6 +3351,11 @@ html[data-theme="dark"] .erp-file-icon-box {
 
   .erp-kpi-grid > .erp-kpi-card:last-child:nth-child(odd) {
     grid-column: auto;
+  }
+
+  .erp-table tbody tr {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
   }
 }
 
@@ -3762,8 +3784,65 @@ html[data-theme="dark"] .erp-file-icon-box {
     word-break: break-word;
   }
 
+  .erp-doc-table-wrap {
+    overflow-x: visible;
+  }
+
   .erp-doc-table {
-    min-width: 560px;
+    display: block;
+    width: 100%;
+    min-width: 0 !important;
+  }
+
+  .erp-doc-table thead {
+    display: none;
+  }
+
+  .erp-doc-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .erp-doc-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background-color: #f8fafc;
+  }
+
+  .erp-doc-table tbody td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 0 !important;
+    border: 0 !important;
+    text-align: left !important;
+    white-space: normal !important;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .erp-doc-table tbody td.cell-mobile-num {
+    display: none !important;
+  }
+
+  .erp-doc-table tbody td.cell-mobile-wide {
+    grid-column: 1 / -1;
+  }
+
+  .erp-doc-table tbody td[data-label]::before {
+    content: attr(data-label);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
   }
 
   .erp-doc-calc-box {
