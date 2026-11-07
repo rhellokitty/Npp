@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Arsip Dokumen &amp; Audit Trail — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet Portal Operasional Internal -->
+  <link rel="stylesheet" href="../src/internal/internal.css" />
+</head>
+
+<body id="erpArchivePage">
+  <div class="erp-shell">
+
+    <!-- BACKDROP MOBILE SIDEBAR -->
+    <div class="erp-sidebar-backdrop" id="erpSidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         1. SIDEBAR NAVIGASI (8 MODUL OPERASIONAL NPP HLD 001)
+         ==================================================================== -->
+    <aside class="erp-sidebar" id="erpSidebar" aria-label="Navigasi Modul Operasional">
+      <div class="erp-sidebar-brand">
+        <a href="../index.html" class="erp-brand-link" title="Ke Beranda Publik PT NPP">
+          <img src="../assets/logo-npp.webp" alt="PT Nusantara Puncak Perkasa" class="erp-brand-logo" />
+          <div class="erp-brand-meta">
+            <span class="erp-brand-title">NPP ERP Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="erp-sidebar-nav">
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Utama &amp; Eksekutif</span>
+          <a href="index.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9" rx="1.5" />
+              <rect x="14" y="3" width="7" height="5" rx="1.5" />
+              <rect x="14" y="12" width="7" height="9" rx="1.5" />
+              <rect x="3" y="16" width="7" height="5" rx="1.5" />
+            </svg>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Siklus Pengadaan &amp; Stok</span>
+          <a href="orders.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+              <path d="M16 13H8" />
+              <path d="M16 17H8" />
+              <path d="M10 9H8" />
+            </svg>
+            <span>PO Pelanggan</span>
+            <span class="erp-nav-badge" id="navBadgeOrders">3 Pending</span>
+          </a>
+
+          <a href="procurement.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            <span>Pengadaan Supplier</span>
+          </a>
+
+          <a href="inventory.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m7.5 4.27 9 5.15" />
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            <span>Stok Gudang</span>
+            <span class="erp-nav-badge" id="navBadgeInventory">5 Kritis</span>
+          </a>
+
+          <a href="delivery.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13" rx="2" />
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+            <span>Pengiriman</span>
+          </a>
+
+          <a href="billing.html" class="erp-nav-link" data-nav-module="billing">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <line x1="2" y1="10" x2="22" y2="10" />
+            </svg>
+            <span>Penagihan &amp; Invoice</span>
+            <span class="erp-nav-badge" id="navBadgeBilling">2 Overdue</span>
+          </a>
+        </div>
+
+        <div class="erp-nav-group">
+          <span class="erp-nav-group-label">Tata Kelola &amp; Referensi</span>
+          <a href="archive.html" class="erp-nav-link erp-nav-link-active">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="21 8 21 21 3 21 3 8" />
+              <rect x="1" y="3" width="22" height="5" />
+              <line x1="10" y1="12" x2="14" y2="12" />
+            </svg>
+            <span>Arsip &amp; Audit</span>
+          </a>
+
+          <a href="master-data.html" class="erp-nav-link">
+            <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+            </svg>
+            <span>Master Data</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="erp-sidebar-footer">
+        <div class="erp-sidebar-user">
+          <span class="erp-sidebar-user-name" id="erpActiveUserName">Raja Daffa</span>
+          <span class="erp-sidebar-user-email" id="erpActiveUserEmail">admin@nusantarapuncakperkasa.co.id</span>
+        </div>
+        <a href="../login.html" class="erp-sidebar-btn" title="Ganti Akun" aria-label="Ganti Akun">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         2. MAIN WORKSPACE (TOPBAR + ARCHIVE & AUDIT CONTENT)
+         ==================================================================== -->
+    <div class="erp-main">
+
+      <!-- TOPBAR DENGAN INTERACTIVE ROLE SWITCHER -->
+      <header class="erp-topbar">
+        <div class="erp-topbar-left">
+          <button type="button" class="erp-mobile-toggle" id="erpMobileMenuBtn" aria-label="Buka Navigasi Modul">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <div class="erp-breadcrumb">
+            <span class="erp-breadcrumb-title">Arsip &amp; Audit Trail</span>
+          </div>
+        </div>
+
+        <div class="erp-topbar-right">
+          <div class="erp-role-switcher-wrap">
+            <span class="erp-role-switcher-label">Simulasi Peran:</span>
+            <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
+              <option value="Administrator">Administrator</option>
+              <option value="Sales / Operasional">Sales &amp; PO</option>
+              <option value="Purchasing">Purchasing</option>
+              <option value="Gudang">Stok Gudang</option>
+              <option value="Finance">Finance &amp; Invoice</option>
+              <option value="Pimpinan / Approver">Approver</option>
+            </select>
+          </div>
+
+          <!-- Clean Dark/Light Mode Toggle -->
+          <button type="button" class="erp-theme-toggle" id="erpThemeToggle" aria-label="Beralih Mode Gelap/Terang" title="Beralih Mode Gelap/Terang">
+            <svg class="erp-theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            <svg class="erp-theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- KONTEN UTAMA ARSIP DOKUMEN & AUDIT TRAIL -->
+      <main class="erp-content">
+
+        <!-- 4 KPI CARDS ARSIP & INTEGRITAS SISTEM -->
+        <section class="erp-kpi-grid erp-kpi-grid-4" aria-label="Ringkasan KPI Arsip & Audit">
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Total Dokumen Terarsip</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiTotalArchives">0 Dokumen</div>
+          </article>
+
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">PO &amp; Kontrak Pelanggan</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 11 12 14 22 4" />
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiPoArchives">0 Berkas</div>
+          </article>
+
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Surat Jalan &amp; BAST Fisik</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="3" width="15" height="13" rx="2" />
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                  <circle cx="5.5" cy="18.5" r="2.5" />
+                  <circle cx="18.5" cy="18.5" r="2.5" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiBastArchives">0 Berkas</div>
+          </article>
+
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Buku Catatan Audit Trail</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiTotalAuditLogs">0 Catatan</div>
+          </article>
+        </section>
+
+        <!-- BAR NAVIGASI 2 TAB (ARSIP DOKUMEN & AUDIT TRAIL) -->
+        <div class="erp-section-header">
+          <nav class="erp-tabs-nav" aria-label="Navigasi Sub-Modul Arsip &amp; Audit">
+            <button type="button" class="erp-tab-btn erp-tab-btn-active" data-archive-tab="documents">
+              <span>Arsip Dokumen Digital</span>
+              <span class="erp-tab-count" id="countTabArchives">0</span>
+            </button>
+
+            <button type="button" class="erp-tab-btn" data-archive-tab="audit">
+              <span>Buku Audit Trail</span>
+              <span class="erp-tab-count" id="countTabAuditLogs">0</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- ==================================================================
+             TAB PANE A: ARSIP DOKUMEN DIGITAL (PO, SJ, BAST, INVOICE)
+             ================================================================== -->
+        <section class="erp-section-panel erp-tab-pane tab-pane-active" data-archive-pane="documents" aria-label="Tabel Arsip Dokumen Digital">
+          <div class="erp-section-header">
+            <div class="erp-section-title-group">
+              <h1 class="section-heading">Arsip Dokumen Digital Terverifikasi</h1>
+            </div>
+          </div>
+
+          <!-- TOOLBAR PENCARIAN & FILTER DOKUMEN -->
+          <div class="erp-toolbar">
+            <div class="erp-search-box">
+              <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                id="archiveSearchInput"
+                class="erp-search-input"
+                placeholder="Cari No. Dokumen, No. Referensi, Pelanggan, atau Nama File..." />
+            </div>
+
+            <div class="erp-Filter-group">
+              <select id="archiveFilterDocType" class="erp-filter-select" aria-label="Filter Kategori Dokumen">
+                <option value="">Semua Kategori Dokumen</option>
+                <option value="PO Asli Pelanggan">PO Asli Pelanggan</option>
+                <option value="Surat Jalan &amp; BAST">Surat Jalan &amp; BAST</option>
+                <option value="Invoice &amp; Faktur Pajak">Invoice &amp; Faktur Pajak</option>
+              </select>
+
+              <select id="archivePageSizeSelect" class="erp-filter-select" aria-label="Jumlah Baris Dokumen">
+                <option value="5">5 baris</option>
+                <option value="10">10 baris</option>
+                <option value="20">20 baris</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TABEL ARSIP DOKUMEN -->
+          <div class="erp-table-wrap">
+            <table class="erp-table">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Kategori Dokumen</th>
+                  <th>No. Dokumen / Referensi</th>
+                  <th>Ref SO / Pesanan</th>
+                  <th>Mitra Pelanggan / Supplier</th>
+                  <th>Nama Berkas Digital</th>
+                  <th style="min-width: 140px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="archiveTableBody">
+                <!-- Diisi dinamis oleh TableEngine via ArchiveController -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- PAGINATION TAB A -->
+        <div class="erp-pagination erp-tab-pane tab-pane-active" data-archive-pane="documents" id="archivePagination"></div>
+
+        <!-- ==================================================================
+             TAB PANE B: BUKU AUDIT TRAIL (LOG AKTIVITAS SISTEM - READ ONLY)
+             ================================================================== -->
+        <section class="erp-section-panel erp-tab-pane" data-archive-pane="audit" aria-label="Buku Audit Trail Sistem">
+          <div class="erp-section-header">
+            <div class="erp-section-title-group">
+              <h2 class="section-heading">Buku Audit Trail &amp; Integritas Sistem</h2>
+            </div>
+          </div>
+
+          <!-- TOOLBAR PENCARIAN & FILTER LOG -->
+          <div class="erp-toolbar">
+            <div class="erp-search-box">
+              <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                id="auditSearchInput"
+                class="erp-search-input"
+                placeholder="Cari Waktu, User, Peran, Aksi, atau Target Referensi..." />
+            </div>
+
+            <div class="erp-Filter-group">
+              <select id="auditFilterRole" class="erp-filter-select" aria-label="Filter Peran RBAC">
+                <option value="">Semua Peran RBAC</option>
+                <option value="Administrator">Administrator</option>
+                <option value="Sales / Operasional">Sales / Operasional</option>
+                <option value="Purchasing">Purchasing</option>
+                <option value="Gudang">Gudang</option>
+                <option value="Finance">Finance</option>
+                <option value="Pimpinan / Approver">Pimpinan / Approver</option>
+              </select>
+
+              <select id="auditPageSizeSelect" class="erp-filter-select" aria-label="Jumlah Baris Log">
+                <option value="5">5 baris</option>
+                <option value="10">10 baris</option>
+                <option value="20">20 baris</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TABEL AUDIT TRAIL (READ-ONLY) -->
+          <div class="erp-table-wrap">
+            <table class="erp-table">
+              <thead>
+                <tr>
+                  <th>Waktu (Timestamp)</th>
+                  <th>User Penanggung Jawab</th>
+                  <th>Peran RBAC</th>
+                  <th>Aksi Sistem</th>
+                  <th>Objek Referensi</th>
+                  <th>Rincian Aktivitas</th>
+                </tr>
+              </thead>
+              <tbody id="auditTableBody">
+                <!-- Diisi dinamis oleh TableEngine via ArchiveController -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- PAGINATION TAB B -->
+        <div class="erp-pagination erp-tab-pane" data-archive-pane="audit" id="auditPagination"></div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL PRATINJAU DOKUMEN ARSIP DIGITAL -->
+  <div class="erp-modal-overlay" id="archiveDocModal" aria-hidden="true">
+    <div class="erp-modal-card erp-modal-card-wide" role="dialog" aria-modal="true" aria-labelledby="archiveModalTitle">
+      <div class="erp-modal-header">
+        <div>
+          <h2 class="erp-modal-title" id="archiveModalTitle">Pratinjau Dokumen Arsip</h2>
+          <span class="cell-subtext" id="archiveModalSubtitle">Dokumen Resmi Terverifikasi</span>
+        </div>
+        <button type="button" class="erp-modal-close" id="btnCloseArchiveModal" aria-label="Tutup Pratinjau">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="erp-modal-body">
+        <div class="erp-detail-grid modal-grid-spaced" id="archiveModalMetaGrid">
+          <!-- Diisi dinamis -->
+        </div>
+        <div class="erp-file-preview-viewer" id="archiveModalViewer">
+          <!-- Diisi dinamis -->
+        </div>
+      </div>
+      <div class="erp-modal-footer">
+        <a href="#" class="btn-erp btn-erp-secondary" id="btnArchiveDirectLink" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+          <span>Buka Dokumen Resmi</span>
+        </a>
+        <button type="button" class="btn-erp btn-erp-secondary" id="btnDownloadArchiveFile">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span>Unduh Berkas</span>
+        </button>
+        <button type="button" class="btn-erp btn-erp-primary" id="btnDismissArchiveModal">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFIKASI GLOBAL -->
+  <div id="erpGlobalToast" class="erp-toast"></div>
+
+  <!-- Script Core ERP Terpusat -->
+  <script src="../src/internal/app.js"></script>
+</body>
+
+</html>

@@ -7905,6 +7905,284 @@ var OrderCreatePageController = {
   };
 
   /* ==========================================================================
+     14B. KONTROLER MODUL ARSIP DOKUMEN DIGITAL & AUDIT TRAIL (HLD BAGIAN 9)
+     ========================================================================== */
+  var ArchiveController = {
+    init: function () {
+      if (!document.getElementById('erpArchivePage')) return;
+      ensureDataSchema(window.NPP_ERP_DATA);
+      this.bindTabSwitching();
+      this.updateCounts();
+      this.initArchiveTable();
+      this.initAuditTable();
+      this.bindPreviewModal();
+    },
+
+    updateCounts: function () {
+      var db = window.NPP_ERP_DATA;
+      var archives = db.archives || [];
+      var auditLogs = db.auditLogs || [];
+
+      var elA = document.getElementById('countTabArchives');
+      var elL = document.getElementById('countTabAuditLogs');
+      if (elA) elA.textContent = archives.length;
+      if (elL) elL.textContent = auditLogs.length;
+
+      var kpiTotal = document.getElementById('kpiTotalArchives');
+      var kpiPo = document.getElementById('kpiPoArchives');
+      var kpiBast = document.getElementById('kpiBastArchives');
+      var kpiLogs = document.getElementById('kpiTotalAuditLogs');
+
+      if (kpiTotal) kpiTotal.textContent = archives.length + ' Dokumen';
+      if (kpiPo) {
+        var poCount = archives.filter(function (a) {
+          return (a.docType || '').indexOf('PO') !== -1;
+        }).length;
+        kpiPo.textContent = poCount + ' Berkas';
+      }
+      if (kpiBast) {
+        var bastCount = archives.filter(function (a) {
+          return (a.docType || '').indexOf('Surat Jalan') !== -1 || (a.docType || '').indexOf('BAST') !== -1;
+        }).length;
+        kpiBast.textContent = bastCount + ' Berkas';
+      }
+      if (kpiLogs) kpiLogs.textContent = auditLogs.length + ' Catatan';
+    },
+
+    bindTabSwitching: function () {
+      var self = this;
+      var tabBtns = document.querySelectorAll('[data-archive-tab]');
+      var tabPanes = document.querySelectorAll('[data-archive-pane]');
+
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-archive-tab');
+          tabBtns.forEach(function (b) {
+            b.classList.toggle('erp-tab-btn-active', b.getAttribute('data-archive-tab') === target);
+          });
+          tabPanes.forEach(function (pane) {
+            pane.classList.toggle('tab-pane-active', pane.getAttribute('data-archive-pane') === target);
+          });
+        });
+      });
+    },
+
+    initArchiveTable: function () {
+      this.archiveTable = new TableEngine({
+        tbodyId: 'archiveTableBody',
+        paginationId: 'archivePagination',
+        searchInputId: 'archiveSearchInput',
+        pageSizeSelectId: 'archivePageSizeSelect',
+        defaultPageSize: 5,
+        colSpan: 7,
+        filters: [
+          {
+            selectId: 'archiveFilterDocType',
+            match: function (item, val) {
+              return !val || item.docType === val;
+            }
+          }
+        ],
+        searchFn: function (d, q) {
+          var text = [
+            d.id,
+            d.docType,
+            d.docNumber,
+            d.refId,
+            d.partner,
+            d.fileName,
+            d.uploadedBy,
+            d.date
+          ].join(' ').toLowerCase();
+          return text.indexOf(q.toLowerCase()) !== -1;
+        },
+        getData: function () {
+          return window.NPP_ERP_DATA.archives || [];
+        },
+        renderRow: function (d) {
+          var badgeClass = 'badge-neutral';
+          if ((d.docType || '').indexOf('PO') !== -1) badgeClass = 'badge-info';
+          else if ((d.docType || '').indexOf('Surat Jalan') !== -1 || (d.docType || '').indexOf('BAST') !== -1) badgeClass = 'badge-primary';
+          else if ((d.docType || '').indexOf('Invoice') !== -1) badgeClass = 'badge-warning';
+
+          return (
+            '<tr>' +
+            '<td>' + escapeHtml(d.date || '-') + '</td>' +
+            '<td><span class="badge-status ' + badgeClass + '">' + escapeHtml(d.docType || 'Dokumen') + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(d.docNumber || d.id) + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(d.refId || '-') + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(d.partner || '-') + '</span></td>' +
+            '<td><span class="cell-subtext">' + escapeHtml(d.fileName || '-') + '</span></td>' +
+            '<td>' +
+            '<div class="erp-action-btns">' +
+            '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" onclick="NPP_ERP.ArchiveController.openDocModal(\'' + d.id + '\')">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>' +
+            '<span>Lihat / Unduh</span>' +
+            '</button>' +
+            '</div>' +
+            '</td>' +
+            '</tr>'
+          );
+        }
+      });
+      this.archiveTable.render();
+    },
+
+    initAuditTable: function () {
+      this.auditTable = new TableEngine({
+        tbodyId: 'auditTableBody',
+        paginationId: 'auditPagination',
+        searchInputId: 'auditSearchInput',
+        pageSizeSelectId: 'auditPageSizeSelect',
+        defaultPageSize: 5,
+        colSpan: 6,
+        filters: [
+          {
+            selectId: 'auditFilterRole',
+            match: function (item, val) {
+              return !val || item.role === val;
+            }
+          }
+        ],
+        searchFn: function (log, q) {
+          var text = [
+            log.id,
+            log.timestamp,
+            log.user,
+            log.role,
+            log.action,
+            log.target,
+            log.detail
+          ].join(' ').toLowerCase();
+          return text.indexOf(q.toLowerCase()) !== -1;
+        },
+        getData: function () {
+          return window.NPP_ERP_DATA.auditLogs || [];
+        },
+        renderRow: function (log) {
+          var actionBadge = 'badge-info';
+          if ((log.action || '').indexOf('REJECT') !== -1) actionBadge = 'badge-danger';
+          else if ((log.action || '').indexOf('APPROVE') !== -1) actionBadge = 'badge-success';
+          else if ((log.action || '').indexOf('CREATE') !== -1 || (log.action || '').indexOf('INPUT') !== -1) actionBadge = 'badge-info';
+          else if ((log.action || '').indexOf('INVOICE') !== -1 || (log.action || '').indexOf('PAYMENT') !== -1) actionBadge = 'badge-warning';
+
+          return (
+            '<tr>' +
+            '<td><span class="cell-code" style="font-size:0.75rem;">' + escapeHtml(log.timestamp || '-') + '</span></td>' +
+            '<td><strong>' + escapeHtml(log.user || 'Sistem NPP') + '</strong></td>' +
+            '<td><span class="badge-status badge-neutral">' + escapeHtml(log.role || 'Sistem') + '</span></td>' +
+            '<td><span class="badge-status ' + actionBadge + '">' + escapeHtml(log.action || 'LOG') + '</span></td>' +
+            '<td><span class="cell-code">' + escapeHtml(log.target || '-') + '</span></td>' +
+            '<td><span>' + escapeHtml(log.detail || '-') + '</span></td>' +
+            '</tr>'
+          );
+        }
+      });
+      this.auditTable.render();
+    },
+
+    bindPreviewModal: function () {
+      var modal = document.getElementById('archiveDocModal');
+      var closeBtn = document.getElementById('btnCloseArchiveModal');
+      var dismissBtn = document.getElementById('btnDismissArchiveModal');
+      var downloadBtn = document.getElementById('btnDownloadArchiveFile');
+
+      if (!modal) return;
+
+      var closeModal = function () {
+        modal.classList.remove('modal-open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', function () {
+          var fname = downloadBtn.getAttribute('data-filename') || 'Dokumen-NPP.pdf';
+          showToast('Mengunduh berkas arsip resmi: ' + fname);
+        });
+      }
+    },
+
+    openDocModal: function (id) {
+      var db = window.NPP_ERP_DATA;
+      var doc = (db.archives || []).find(function (a) { return a.id === id; });
+      if (!doc) return;
+
+      var modal = document.getElementById('archiveDocModal');
+      var titleEl = document.getElementById('archiveModalTitle');
+      var subtitleEl = document.getElementById('archiveModalSubtitle');
+      var metaGrid = document.getElementById('archiveModalMetaGrid');
+      var viewer = document.getElementById('archiveModalViewer');
+      var directLink = document.getElementById('btnArchiveDirectLink');
+      var downloadBtn = document.getElementById('btnDownloadArchiveFile');
+
+      if (!modal) return;
+
+      if (titleEl) titleEl.textContent = 'Pratinjau Dokumen: ' + (doc.docNumber || doc.id);
+      if (subtitleEl) subtitleEl.textContent = doc.docType + ' • Diunggah oleh: ' + (doc.uploadedBy || 'Petugas');
+
+      if (metaGrid) {
+        metaGrid.innerHTML =
+          '<div class="erp-detail-item"><span class="erp-detail-label">Kategori Dokumen</span><span class="erp-detail-val">' + escapeHtml(doc.docType) + '</span></div>' +
+          '<div class="erp-detail-item"><span class="erp-detail-label">Nomor Dokumen</span><span class="erp-detail-val cell-code">' + escapeHtml(doc.docNumber || '-') + '</span></div>' +
+          '<div class="erp-detail-item"><span class="erp-detail-label">Referensi Pesanan</span><span class="erp-detail-val cell-code">' + escapeHtml(doc.refId || '-') + '</span></div>' +
+          '<div class="erp-detail-item"><span class="erp-detail-label">Partner / Mitra B2B</span><span class="erp-detail-val">' + escapeHtml(doc.partner || '-') + '</span></div>' +
+          '<div class="erp-detail-item"><span class="erp-detail-label">Tanggal Terbit</span><span class="erp-detail-val">' + escapeHtml(doc.date || '-') + '</span></div>' +
+          '<div class="erp-detail-item"><span class="erp-detail-label">Nama Berkas Digital</span><span class="erp-detail-val cell-code">' + escapeHtml(doc.fileName || '-') + '</span></div>';
+      }
+
+      if (viewer) {
+        viewer.innerHTML =
+          '<div style="text-align:center; padding:32px 20px; display:flex; flex-direction:column; align-items:center; gap:12px;">' +
+          '  <div class="erp-file-icon-box" style="width:56px; height:56px; border-radius:14px;">' +
+          '    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' +
+          '  </div>' +
+          '  <div>' +
+          '    <strong style="font-size:0.95rem; color:var(--erp-heading);">' + escapeHtml(doc.fileName) + '</strong>' +
+          '    <div class="cell-subtext" style="margin-top:4px;">Dokumen Resmi PT Nusantara Puncak Perkasa • Terverifikasi Enkripsi Digital</div>' +
+          '  </div>' +
+          '</div>';
+      }
+
+      if (directLink) {
+        var href = '#';
+        var label = 'Buka Dokumen Resmi';
+        if ((doc.docType || '').indexOf('Surat Jalan') !== -1) {
+          href = 'delivery-print.html?id=' + encodeURIComponent(doc.docNumber);
+          label = 'Cetak Surat Jalan';
+        } else if ((doc.docType || '').indexOf('Invoice') !== -1) {
+          href = 'billing-print.html?id=' + encodeURIComponent(doc.docNumber);
+          label = 'Cetak Faktur Penjualan';
+        } else if ((doc.refId || '').indexOf('SO-') !== -1) {
+          href = 'orders-detail.html?id=' + encodeURIComponent(doc.refId);
+          label = 'Buka Detail PO Pelanggan';
+        }
+
+        if (href !== '#') {
+          directLink.href = href;
+          directLink.style.display = 'inline-flex';
+          var spanEl = directLink.querySelector('span');
+          if (spanEl) spanEl.textContent = label;
+        } else {
+          directLink.style.display = 'none';
+        }
+      }
+
+      if (downloadBtn) {
+        downloadBtn.setAttribute('data-filename', doc.fileName || 'dokumen.pdf');
+      }
+
+      modal.classList.add('modal-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+  };
+
+  /* ==========================================================================
      15. EKSPOR API GLOBAL & AUTO-INIT SAAT DOM READY
      ========================================================================== */
   window.NPP_ERP = {
@@ -7918,6 +8196,7 @@ var OrderCreatePageController = {
     ProcurementController: ProcurementController,
     DeliveryController: DeliveryController,
     BillingController: BillingController,
+    ArchiveController: ArchiveController,
     OrderCreatePageController: OrderCreatePageController,
     OrderDetailPageController: OrderDetailPageController,
     MasterCustomerCreatePageController: MasterCustomerCreatePageController,
@@ -7956,6 +8235,7 @@ var OrderCreatePageController = {
     ProcurementController.init();
     DeliveryController.init();
     BillingController.init();
+    ArchiveController.init();
     OrderCreatePageController.init();
     OrderDetailPageController.init();
     MasterCustomerCreatePageController.init();
