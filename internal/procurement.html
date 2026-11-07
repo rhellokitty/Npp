@@ -162,12 +162,9 @@
           <div class="erp-role-switcher-wrap">
             <span class="erp-role-switcher-label">Simulasi Peran:</span>
             <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
-              <option value="Administrator">Administrator</option>
-              <option value="Sales / Operasional">Sales & PO</option>
-              <option value="Purchasing">Purchasing</option>
-              <option value="Gudang">Stok Gudang</option>
-              <option value="Finance">Finance & Invoice</option>
-              <option value="Pimpinan / Approver">Approver</option>
+              <option value="Super Admin">Super Admin</option>
+              <option value="Operasional">Operasional &amp; Gudang</option>
+              <option value="Finance">Finance &amp; Invoice</option>
             </select>
           </div>
 
@@ -363,8 +360,8 @@
             </div>
 
             <div class="erp-Filter-group">
-              <select id="procFilterApproval" class="erp-filter-select" aria-label="Filter Status Approval Pimpinan">
-                <option value="ALL">Semua Approval Pimpinan</option>
+              <select id="procFilterApproval" class="erp-filter-select" aria-label="Filter Status Approval Super Admin">
+                <option value="ALL">Semua Approval Super Admin</option>
                 <option value="Draft">Draft</option>
                 <option value="Diajukan">Diajukan</option>
                 <option value="Disetujui">Disetujui</option>
@@ -395,7 +392,7 @@
                   <th>Referensi SO Pelanggan</th>
                   <th>Tgl Terbit & Estimasi Tiba</th>
                   <th class="col-financial">Total Nilai Pembelian</th>
-                  <th>Status Approval Pimpinan</th>
+                  <th>Status Approval Super Admin</th>
                   <th>Status Penerimaan Gudang</th>
                   <th>Aksi</th>
                 </tr>

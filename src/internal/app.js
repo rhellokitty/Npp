@@ -27,94 +27,62 @@
   } catch (e) {}
 
   /* ==========================================================================
-     1. DEFINISI 6 PERAN PENGGUNA (RBAC — HLD BAGIAN 3)
+     1. DEFINISI 3 PERAN PENGGUNA (RBAC TERSTRUKTUR & CLEAN)
      ========================================================================== */
   var ROLE_CONFIG = {
-    'Administrator': {
-      code: 'Administrator',
-      display: 'Administrator',
-      shortLabel: 'Administrator',
+    'Super Admin': {
+      code: 'Super Admin',
+      display: 'Super Admin',
+      shortLabel: 'Super Admin',
       email: 'admin@nusantarapuncakperkasa.co.id',
       userName: 'Raja Daffa',
       canViewPrice: true,
       canViewHPP: true,
       canApprove: true,
       canAccessBilling: true,
-      bannerTitle: 'Akses Penuh Sistem Operasional (Superuser Administrator)',
-      bannerDesc: 'Anda memiliki otorisasi penuh ke seluruh 8 modul operasional, konfigurasi Master Data, persetujuan dokumen (Approval), keuangan, dan Audit Trail.',
-      restrictionText: 'Full Access • 8 Modul Aktif'
+      canManageRoles: true,
+      bannerTitle: 'Akses Penuh Sistem Operasional (Super Admin)',
+      bannerDesc: 'Otoritas tertinggi: Otorisasi approval transaksi besar, konfigurasi master data, akses finansial & HPP, serta pengawasan audit trail.',
+      restrictionText: 'Otoritas Tertinggi • Full Access'
     },
-    'Sales / Operasional': {
-      code: 'Sales / Operasional',
-      display: 'Sales & PO',
-      shortLabel: 'Sales & PO',
-      email: 'sales@nusantarapuncakperkasa.co.id',
-      userName: 'Nadia Pramesti',
-      canViewPrice: true,
-      canViewHPP: false,
-      canApprove: false,
-      canAccessBilling: true,
-      bannerTitle: 'Peran Aktif: Sales & Administrasi PO Pelanggan',
-      bannerDesc: 'Fokus kerja: Pencatatan PO Pelanggan (SO), unggah berkas PO asli klien, pengecekan Stok Tersedia (Available to Promise), dan koordinasi jadwal pengiriman.',
-      restrictionText: 'HPP Supplier Disembunyikan • Butuh Otorisasi Approver'
-    },
-    'Purchasing': {
-      code: 'Purchasing',
-      display: 'Purchasing',
-      shortLabel: 'Purchasing',
-      email: 'purchasing@nusantarapuncakperkasa.co.id',
-      userName: 'Hendra Gunawan',
+    'Operasional': {
+      code: 'Operasional',
+      display: 'Operasional & Gudang',
+      shortLabel: 'Operasional',
+      email: 'operasional@nusantarapuncakperkasa.co.id',
+      userName: 'Tim Operasional & Logistik',
       canViewPrice: true,
       canViewHPP: true,
       canApprove: false,
       canAccessBilling: false,
-      bannerTitle: 'Peran Aktif: Purchasing & Pengadaan Prinsipal',
-      bannerDesc: 'Fokus kerja: Memantau antrean kekurangan stok (Backorder/Shortage), menerbitkan PO ke Prinsipal (RITAR, BSB, Ablerex), dan memonitor lead-time kedatangan.',
-      restrictionText: 'Fokus PO Supplier & HPP • Otorisasi PO oleh Pimpinan'
-    },
-    'Gudang': {
-      code: 'Gudang',
-      display: 'Stok Gudang',
-      shortLabel: 'Stok Gudang',
-      email: 'gudang@nusantarapuncakperkasa.co.id',
-      userName: 'Budi Santoso',
-      canViewPrice: false,
-      canViewHPP: false,
-      canApprove: false,
-      canAccessBilling: false,
-      bannerTitle: 'Peran Aktif: Kontrol Stok Gudang, QC & Logistik Pengiriman',
-      bannerDesc: 'Fokus kerja: Mengelola 5 Saldo Stok (Fisik, Tertahan, Layak, Reservasi, Tersedia), inspeksi penerimaan barang (GR & QC), serta pencetakan Surat Jalan.',
-      restrictionText: 'PROTEKSI AKTIF: Seluruh Harga, HPP, Omset & Invoice Disembunyikan'
+      canManageRoles: false,
+      bannerTitle: 'Peran Aktif: Operasional, Pengadaan & Logistik',
+      bannerDesc: 'Fokus alur barang: Pencatatan PO pelanggan, penerbitan PO pengadaan supplier, kontrol 5 saldo stok gudang, uji QC, dan pengiriman armada logistik.',
+      restrictionText: 'Alur Barang & Pengadaan • Otorisasi Transaksi oleh Super Admin'
     },
     'Finance': {
       code: 'Finance',
       display: 'Finance & Invoice',
-      shortLabel: 'Finance & Invoice',
+      shortLabel: 'Finance',
       email: 'finance@nusantarapuncakperkasa.co.id',
       userName: 'Siti Rahmawati',
       canViewPrice: true,
       canViewHPP: true,
       canApprove: false,
       canAccessBilling: true,
-      bannerTitle: 'Peran Aktif: Finance, Penagihan (Invoicing) & Kontrol Piutang',
-      bannerDesc: 'Fokus kerja: Penerbitan Invoice Resmi (DP, Termin, Pelunasan + PPN 11%), rekonsiliasi BAST/Surat Jalan, dan pencatatan bukti pelunasan rekening BCA/Mandiri.',
-      restrictionText: 'Akses Keuangan & Piutang • Tanpa Hak Ubah Stok Fisik'
-    },
-    'Pimpinan / Approver': {
-      code: 'Pimpinan / Approver',
-      display: 'Approver',
-      shortLabel: 'Approver',
-      email: 'pimpinan@nusantarapuncakperkasa.co.id',
-      userName: 'Ir. Darmawan Putra',
-      canViewPrice: true,
-      canViewHPP: true,
-      canApprove: true,
-      canAccessBilling: true,
-      bannerTitle: 'Peran Aktif: Pimpinan & Otorisasi Eksekutif (Approver)',
-      bannerDesc: 'Fokus kerja: Meninjau KPI strategis perusahaan, menyetujui atau menolak PO Pelanggan bernilai besar & PO Pengadaan Supplier, serta mengawasi piutang jatuh tempo.',
-      restrictionText: 'Hak Otorisasi (Approve / Reject) Aktif'
+      canManageRoles: false,
+      bannerTitle: 'Peran Aktif: Keuangan, Penagihan & Arus Kas',
+      bannerDesc: 'Fokus alur kas: Penerbitan faktur penjualan resmi (DP, Termin, Pelunasan + PPN 11%), rekonsiliasi transfer bank BCA/Mandiri, dan monitoring piutang.',
+      restrictionText: 'Akses Finansial & Penagihan • Alur Kas Perusahaan'
     }
   };
+
+  // Alias kompatibilitas mundur untuk sesi lama
+  ROLE_CONFIG['Administrator'] = ROLE_CONFIG['Super Admin'];
+  ROLE_CONFIG['Pimpinan / Approver'] = ROLE_CONFIG['Super Admin'];
+  ROLE_CONFIG['Sales / Operasional'] = ROLE_CONFIG['Operasional'];
+  ROLE_CONFIG['Purchasing'] = ROLE_CONFIG['Operasional'];
+  ROLE_CONFIG['Gudang'] = ROLE_CONFIG['Operasional'];
 
   /* ==========================================================================
      2. DATABASE DUMMY B2B AWAL (REALISTIS & KONSISTEN DENGAN PDF HLD 001)
@@ -994,11 +962,11 @@
 
       /* --- LOG AUDIT TRAIL SISTEM --- */
       auditLogs: [
-        { id: 'LOG-1008', timestamp: '2026-11-06 10:15:22', user: 'Nadia Pramesti', role: 'Sales / Operasional', action: 'INPUT_PO_PELANGGAN', target: 'SO-202611-0012', detail: 'Membuat pesanan baru PT. Jasnita Telekomindo Tbk senilai Rp 169.608.000 (Menunggu Approval)' },
+        { id: 'LOG-1008', timestamp: '2026-11-06 10:15:22', user: 'Tim Operasional & Logistik', role: 'Operasional', action: 'INPUT_PO_PELANGGAN', target: 'SO-202611-0012', detail: 'Membuat pesanan baru PT. Jasnita Telekomindo Tbk senilai Rp 169.608.000 (Menunggu Approval)' },
         { id: 'LOG-1007', timestamp: '2026-11-05 16:40:10', user: 'Siti Rahmawati', role: 'Finance', action: 'TERBIT_INVOICE_DP', target: 'INV-202611-0006', detail: 'Menerbitkan Tagihan DP 30% untuk PT. The Master Steel Mfc (SO-202611-0011)' },
-        { id: 'LOG-1006', timestamp: '2026-11-05 14:12:05', user: 'Budi Santoso', role: 'Gudang', action: 'CETAK_SURAT_JALAN', target: 'SJ-202611-0008', detail: 'Menerbitkan Surat Jalan pengiriman parsial Tahap 1 ke PT. Daya Pustaka Indonesia' },
-        { id: 'LOG-1005', timestamp: '2026-11-04 11:30:49', user: 'Ir. Darmawan Putra', role: 'Pimpinan / Approver', action: 'APPROVE_SO', target: 'SO-202611-0010', detail: 'Menyetujui PO Pelanggan PT. Daya Pustaka Indonesia & mengaktifkan kuota pengiriman' },
-        { id: 'LOG-1004', timestamp: '2026-11-02 16:28:00', user: 'Budi Santoso', role: 'Gudang', action: 'QC_GOODS_RECEIPT', target: 'GR-202611-0004', detail: 'Menerima 6 unit UPS Ablerex 10 kVA dari PO-202610-0003 (100% Lolos QC -> RAK-B01)' }
+        { id: 'LOG-1006', timestamp: '2026-11-05 14:12:05', user: 'Tim Operasional & Logistik', role: 'Operasional', action: 'CETAK_SURAT_JALAN', target: 'SJ-202611-0008', detail: 'Menerbitkan Surat Jalan pengiriman parsial Tahap 1 ke PT. Daya Pustaka Indonesia' },
+        { id: 'LOG-1005', timestamp: '2026-11-04 11:30:49', user: 'Raja Daffa', role: 'Super Admin', action: 'APPROVE_SO', target: 'SO-202611-0010', detail: 'Menyetujui PO Pelanggan PT. Daya Pustaka Indonesia & mengaktifkan kuota pengiriman' },
+        { id: 'LOG-1004', timestamp: '2026-11-02 16:28:00', user: 'Tim Operasional & Logistik', role: 'Operasional', action: 'QC_GOODS_RECEIPT', target: 'GR-202611-0004', detail: 'Menerima 6 unit UPS Ablerex 10 kVA dari PO-202610-0003 (100% Lolos QC -> RAK-B01)' }
       ]
     };
   }
@@ -1069,10 +1037,10 @@
   function formatMoneyRBAC(amount, isHpp) {
     var role = RoleManager.getCurrentRoleConfig();
     if (!role.canViewPrice) {
-      return '<span class="badge-status badge-neutral" title="Disembunyikan untuk peran Gudang">Terproteksi</span>';
+      return '<span class="badge-status badge-neutral" title="Disembunyikan oleh proteksi peran">Terproteksi</span>';
     }
     if (isHpp && !role.canViewHPP) {
-      return '<span class="badge-status badge-neutral" title="HPP hanya untuk Purchasing, Finance, Approver & Admin">HPP Terproteksi</span>';
+      return '<span class="badge-status badge-neutral" title="HPP Terproteksi">HPP Terproteksi</span>';
     }
     return formatRupiah(amount);
   }
@@ -1369,14 +1337,14 @@
   };
 
   /* ==========================================================================
-     5. ROLE MANAGER (RBAC 6 PERAN & SINKRONISASI UI REAL-TIME)
+     5. ROLE MANAGER (RBAC 3 PERAN & SINKRONISASI UI REAL-TIME)
      ========================================================================== */
   var RoleManager = {
     listeners: [],
 
     getCurrentSession: function () {
       if (isPageReload()) {
-        var def = ROLE_CONFIG['Administrator'];
+        var def = ROLE_CONFIG['Super Admin'];
         var resetSession = {
           role: def.code,
           email: def.email,
@@ -1401,7 +1369,7 @@
       } catch (e) {
         /* ignore */
       }
-      var def = ROLE_CONFIG['Administrator'];
+      var def = ROLE_CONFIG['Super Admin'];
       return {
         role: def.code,
         email: def.email,
@@ -1412,11 +1380,11 @@
 
     getCurrentRoleConfig: function () {
       var session = this.getCurrentSession();
-      return ROLE_CONFIG[session.role] || ROLE_CONFIG['Administrator'];
+      return ROLE_CONFIG[session.role] || ROLE_CONFIG['Super Admin'];
     },
 
     setRole: function (roleCode) {
-      var cfg = ROLE_CONFIG[roleCode] || ROLE_CONFIG['Administrator'];
+      var cfg = ROLE_CONFIG[roleCode] || ROLE_CONFIG['Super Admin'];
       var session = {
         role: cfg.code,
         email: cfg.email,
@@ -1444,8 +1412,8 @@
     applyRoleToDOM: function () {
       var cfg = this.getCurrentRoleConfig();
 
-      // 1. Toggle class proteksi harga pada body jika role adalah Gudang
-      if (cfg.code === 'Gudang') {
+      // 1. Toggle class proteksi harga pada body jika role tidak berhak melihat harga
+      if (!cfg.canViewPrice) {
         document.body.classList.add('role-gudang-active');
       } else {
         document.body.classList.remove('role-gudang-active');
@@ -1475,13 +1443,13 @@
       if (bannerDesc) bannerDesc.textContent = cfg.bannerDesc;
       if (bannerChip) bannerChip.textContent = cfg.restrictionText;
 
-      // 5. Sembunyikan menu Penagihan & Invoice pada Sidebar jika role adalah Gudang
+      // 5. Sembunyikan menu Penagihan & Invoice pada Sidebar jika role tidak memiliki hak akses keuangan
       var billingNavItems = document.querySelectorAll('[data-nav-module="billing"]');
       billingNavItems.forEach(function (el) {
-        el.classList.toggle('erp-hidden', cfg.code === 'Gudang');
+        el.classList.toggle('erp-hidden', !cfg.canAccessBilling);
       });
 
-      // 6. Toggle elemen dengan atribut data-rbac-ApproveOnly
+      // 6. Toggle elemen dengan atribut data-rbac-approver-only
       var approveOnlyEls = document.querySelectorAll('[data-rbac-approver-only="true"]');
       approveOnlyEls.forEach(function (el) {
         el.classList.toggle('erp-hidden', !cfg.canApprove);
@@ -1768,10 +1736,10 @@
       var kpiOmsetVal = document.getElementById('kpiOmsetVal');
       var kpiOmsetSub = document.getElementById('kpiOmsetSub');
 
-      if (roleCfg.code === 'Gudang') {
+      if (!roleCfg.canViewPrice) {
         if (kpiOmsetLabel) kpiOmsetLabel.textContent = 'Realisasi Surat Jalan';
         if (kpiOmsetVal) kpiOmsetVal.textContent = totalDeliveredReady + ' Pengiriman';
-        if (kpiOmsetSub) kpiOmsetSub.textContent = 'Mode Gudang: Nilai Rupiah disembunyikan';
+        if (kpiOmsetSub) kpiOmsetSub.textContent = 'Mode Operasional: Nilai Rupiah disembunyikan';
       } else {
         if (kpiOmsetLabel) kpiOmsetLabel.textContent = 'Omset Bulan Berjalan';
         if (kpiOmsetVal) kpiOmsetVal.textContent = formatRupiah(totalOmsetNov);
@@ -1799,7 +1767,7 @@
       if (kpiCriticalVal) kpiCriticalVal.textContent = criticalSkus.length + ' SKU Kritis';
       if (kpiCriticalSub) kpiCriticalSub.textContent = 'Stok Tersedia di bawah batas minimum';
 
-      // 5. Piutang Jatuh Tempo (Atau Total Kuota Reservasi bila role = Gudang)
+      // 5. Piutang Jatuh Tempo (Atau Total Kuota Reservasi bila role tidak berhak melihat finansial)
       var overdueInvs = db.invoices.filter(function (inv) { return inv.status === 'Jatuh Tempo'; });
       var overdueSum = overdueInvs.reduce(function (acc, inv) { return acc + (inv.total - inv.paidAmount); }, 0);
       var totalReservedUnits = db.inventory.reduce(function (acc, i) { return acc + i.reservasi; }, 0);
@@ -1808,7 +1776,7 @@
       var kpiReceivableVal = document.getElementById('kpiReceivableVal');
       var kpiReceivableSub = document.getElementById('kpiReceivableSub');
 
-      if (roleCfg.code === 'Gudang') {
+      if (!roleCfg.canViewPrice) {
         if (kpiReceivableLabel) kpiReceivableLabel.textContent = 'Total Unit Direservasi';
         if (kpiReceivableVal) kpiReceivableVal.textContent = totalReservedUnits + ' Unit/Cell';
         if (kpiReceivableSub) kpiReceivableSub.textContent = 'Terkunci untuk pesanan aktif pelanggan';
@@ -1851,7 +1819,7 @@
             '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-detail-so="' + o.id + '">Detail</button>' +
             '</div>'
           : '<div class="approval-item-actions">' +
-            '<span class="badge-status badge-warning">Menunggu Otorisasi Pimpinan</span>' +
+            '<span class="badge-status badge-warning">Menunggu Otorisasi Super Admin</span>' +
             '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" data-detail-so="' + o.id + '">Lihat Rincian</button>' +
             '</div>';
 
@@ -1896,7 +1864,7 @@
     handleOrderApproval: function (soId, newStatus) {
       var roleCfg = RoleManager.getCurrentRoleConfig();
       if (!roleCfg.canApprove) {
-        showToast('Akses ditolak: Hanya Approver atau Administrator yang dapat mengotorisasi PO.');
+        showToast('Akses ditolak: Hanya Super Admin yang dapat mengotorisasi PO.');
         return;
       }
 
@@ -2432,13 +2400,13 @@
     syncCreateButtonRBAC: function () {
       var roleCfg = RoleManager.getCurrentRoleConfig();
       var btnCreate = document.getElementById('btnOpenCreateOrderModal');
-      var canCreateSO = roleCfg.code === 'Sales / Operasional' || roleCfg.code === 'Administrator';
+      var canCreateSO = roleCfg.code === 'Operasional' || roleCfg.code === 'Super Admin' || roleCfg.code === 'Sales / Operasional' || roleCfg.code === 'Administrator';
 
       if (btnCreate) {
         btnCreate.disabled = !canCreateSO;
         btnCreate.title = canCreateSO
           ? 'Buat PO Pelanggan B2B Baru'
-          : 'Hanya peran Sales & PO atau Administrator yang dapat menginput PO Pelanggan baru';
+          : 'Hanya peran Operasional atau Super Admin yang dapat menginput PO Pelanggan baru';
       }
     },
 
@@ -2475,7 +2443,7 @@
       var elTotalVal = document.getElementById('ordersKpiTotalVal');
       var elTotalSub = document.getElementById('ordersKpiTotalSub');
 
-      if (roleCfg.code === 'Gudang') {
+      if (!roleCfg.canViewPrice) {
         if (elTotalLabel) elTotalLabel.textContent = 'Total Volume Pesanan';
         if (elTotalVal) elTotalVal.textContent = totalUnitsOrdered + ' Unit / Cell';
         if (elTotalSub) elTotalSub.textContent = 'Dari ' + totalOrders + ' dokumen PO Pelanggan (Harga Terproteksi)';
@@ -2488,7 +2456,7 @@
       var elAppVal = document.getElementById('ordersKpiApprovalVal');
       var elAppSub = document.getElementById('ordersKpiApprovalSub');
       if (elAppVal) elAppVal.textContent = pendingApprovalCount + ' PO Pending';
-      if (elAppSub) elAppSub.textContent = 'Menunggu otorisasi Pimpinan / Approver';
+      if (elAppSub) elAppSub.textContent = 'Menunggu otorisasi Super Admin';
 
       var elFulVal = document.getElementById('ordersKpiFulfillmentVal');
       if (elFulVal) {
@@ -2618,7 +2586,7 @@
     updateOrderApproval: function (soId, decision) {
       var roleCfg = RoleManager.getCurrentRoleConfig();
       if (!roleCfg.canApprove) {
-        showToast('Akses ditolak: Otorisasi PO hanya untuk peran Approver atau Administrator.');
+        showToast('Akses ditolak: Otorisasi PO hanya untuk peran Super Admin.');
         return;
       }
 
@@ -2685,8 +2653,8 @@
       if (openBtn) {
         openBtn.addEventListener('click', function () {
           var roleCfg = RoleManager.getCurrentRoleConfig();
-          if (roleCfg.code !== 'Sales / Operasional' && roleCfg.code !== 'Administrator') {
-            showToast('Hanya peran Sales & PO atau Administrator yang diizinkan menginput PO Pelanggan baru.');
+          if (roleCfg.code !== 'Operasional' && roleCfg.code !== 'Super Admin' && roleCfg.code !== 'Sales / Operasional' && roleCfg.code !== 'Administrator') {
+            showToast('Hanya peran Operasional atau Super Admin yang diizinkan menginput PO Pelanggan baru.');
             return;
           }
           self.prepareCreateOrderForm();
@@ -3650,14 +3618,14 @@
 
     syncGrButtonRBAC: function () {
       var roleCfg = RoleManager.getCurrentRoleConfig();
-      var canReceiveGr = roleCfg.code === 'Gudang' || roleCfg.code === 'Administrator';
+      var canReceiveGr = roleCfg.code === 'Operasional' || roleCfg.code === 'Super Admin' || roleCfg.code === 'Gudang' || roleCfg.code === 'Administrator';
       var btnGr = document.getElementById('btnOpenCreateGrModal');
 
       if (btnGr) {
         btnGr.disabled = !canReceiveGr;
         btnGr.title = canReceiveGr
-          ? 'Catat Penerimaan Barang Fisik & Inspeksi QC Gudang'
-          : 'Hanya peran Stok Gudang atau Administrator yang dapat mencatat Penerimaan Barang & QC';
+          ? 'Catat Penerimaan Barang Fisik & Inspeksi QC'
+          : 'Hanya peran Operasional atau Super Admin yang dapat mencatat Penerimaan Barang & QC';
       }
     },
 
@@ -3845,8 +3813,8 @@
       if (openBtn) {
         openBtn.addEventListener('click', function () {
           var roleCfg = RoleManager.getCurrentRoleConfig();
-          if (roleCfg.code !== 'Gudang' && roleCfg.code !== 'Administrator') {
-            showToast('Akses ditolak: Hanya peran Stok Gudang atau Administrator yang dapat mencatat Penerimaan Barang & QC.');
+          if (roleCfg.code !== 'Operasional' && roleCfg.code !== 'Super Admin' && roleCfg.code !== 'Gudang' && roleCfg.code !== 'Administrator') {
+            showToast('Akses ditolak: Hanya peran Operasional atau Super Admin yang dapat mencatat Penerimaan Barang & QC.');
             return;
           }
           self.prepareCreateGrForm();
@@ -4229,13 +4197,13 @@
       var elAppVal = document.getElementById('procKpiPendingVal');
       var elAppSub = document.getElementById('procKpiPendingSub');
       if (elAppVal) elAppVal.textContent = pendingApprovePos + ' Menunggu Otorisasi';
-      if (elAppSub) elAppSub.textContent = 'Perlu persetujuan Direktur / Approver';
+      if (elAppSub) elAppSub.textContent = 'Perlu persetujuan Super Admin';
 
       var elValLabel = document.getElementById('procKpiValueLabel');
       var elValAmount = document.getElementById('procKpiValueAmount');
       var elValSub = document.getElementById('procKpiValueSub');
 
-      if (roleCfg.code === 'Gudang' || !roleCfg.canViewHPP) {
+      if (!roleCfg.canViewHPP) {
         if (elValLabel) elValLabel.textContent = 'Total Kuantitas Pengadaan';
         if (elValAmount) elValAmount.textContent = totalPoUnits + ' Unit / Cell';
         if (elValSub) elValSub.textContent = 'Mode RBAC: Nilai HPP Pembelian disembunyikan';
@@ -4253,14 +4221,14 @@
 
     syncProcurementRBAC: function () {
       var roleCfg = RoleManager.getCurrentRoleConfig();
-      var canCreatePo = roleCfg.code === 'Purchasing' || roleCfg.code === 'Administrator';
+      var canCreatePo = roleCfg.code === 'Operasional' || roleCfg.code === 'Super Admin' || roleCfg.code === 'Purchasing' || roleCfg.code === 'Administrator';
       var btnCreate = document.getElementById('btnOpenCreatePoModal');
 
       if (btnCreate) {
         btnCreate.disabled = !canCreatePo;
         btnCreate.title = canCreatePo
           ? 'Terbitkan PO Baru ke Prinsipal / Pabrikan'
-          : 'Hanya peran Purchasing atau Administrator yang dapat menerbitkan PO Supplier baru';
+          : 'Hanya peran Operasional atau Super Admin yang dapat menerbitkan PO Supplier baru';
       }
     },
 
@@ -4309,7 +4277,7 @@
         ],
         renderRow: function (item) {
           var roleCfg = RoleManager.getCurrentRoleConfig();
-          var canCreatePo = roleCfg.code === 'Purchasing' || roleCfg.code === 'Administrator';
+          var canCreatePo = roleCfg.code === 'Operasional' || roleCfg.code === 'Super Admin' || roleCfg.code === 'Purchasing' || roleCfg.code === 'Administrator';
 
           return (
             '<tr>' +
@@ -4327,7 +4295,7 @@
             '<td>' + renderStatusBadge(item.priority) + '</td>' +
             '<td>' +
             '<button type="button" class="btn-erp btn-erp-primary btn-erp-sm" data-quick-po-sku="' + escapeHtml(item.sku) + '" ' +
-            (canCreatePo ? '' : 'disabled title="Khusus Purchasing & Administrator"') + '>' +
+            (canCreatePo ? '' : 'disabled title="Khusus Operasional & Super Admin"') + '>' +
             'Buat PO Supplier' +
             '</button>' +
             '</td>' +
@@ -4439,7 +4407,7 @@
     handlePoApproval: function (poId, decision) {
       var roleCfg = RoleManager.getCurrentRoleConfig();
       if (!roleCfg.canApprove) {
-        showToast('Akses ditolak: Hanya Approver atau Administrator yang dapat mengotorisasi PO Supplier.');
+        showToast('Akses ditolak: Hanya Super Admin yang dapat mengotorisasi PO Supplier.');
         return;
       }
 
@@ -4489,8 +4457,8 @@
       if (openBtn) {
         openBtn.addEventListener('click', function () {
           var roleCfg = RoleManager.getCurrentRoleConfig();
-          if (roleCfg.code !== 'Purchasing' && roleCfg.code !== 'Administrator') {
-            showToast('Akses ditolak: Hanya peran Purchasing atau Administrator yang dapat menerbitkan PO Supplier.');
+          if (roleCfg.code !== 'Operasional' && roleCfg.code !== 'Super Admin' && roleCfg.code !== 'Purchasing' && roleCfg.code !== 'Administrator') {
+            showToast('Akses ditolak: Hanya peran Operasional atau Super Admin yang dapat menerbitkan PO Supplier.');
             return;
           }
           self.openCreatePoModalWithPreselect(null);
@@ -4955,12 +4923,12 @@
       var createBtn = document.getElementById('btnOpenCreateDelivery');
       var rbacNotice = document.getElementById('deliveryRbacNotice');
 
-      var canCreate = roleCfg.code === 'Gudang' || roleCfg.code === 'Administrator';
+      var canCreate = roleCfg.code === 'Operasional' || roleCfg.code === 'Super Admin' || roleCfg.code === 'Gudang' || roleCfg.code === 'Administrator';
       if (createBtn) {
         createBtn.disabled = !canCreate;
         createBtn.title = canCreate
           ? 'Terbitkan Surat Jalan Pengiriman Baru'
-          : 'Hanya dapat dilakukan oleh divisi Gudang atau Administrator';
+          : 'Hanya dapat dilakukan oleh divisi Operasional atau Super Admin';
         if (!canCreate) {
           createBtn.classList.add('btn-disabled');
         } else {
@@ -4974,7 +4942,7 @@
           rbacNotice.innerHTML =
             '<div class="erp-notice-box">' +
             '<strong>Mode Peninjauan (RBAC):</strong> Akun aktif (' + escapeHtml(roleCfg.display) +
-            ') hanya berhak memantau status pengiriman & mencetak dokumen BAST. Penerbitan Surat Jalan baru dan pengurangan stok fisik di gudang dibatasi untuk Petugas Gudang & Administrator.' +
+            ') hanya berhak memantau status pengiriman & mencetak dokumen BAST. Penerbitan Surat Jalan baru dan pengurangan stok fisik dibatasi untuk Operasional & Super Admin.' +
             '</div>';
         } else {
           rbacNotice.classList.add('erp-hidden');
@@ -5073,8 +5041,8 @@
       if (openBtn && modal) {
         openBtn.addEventListener('click', function () {
           var roleCfg = RoleManager.getCurrentRoleConfig();
-          if (roleCfg.code !== 'Gudang' && roleCfg.code !== 'Administrator') {
-            showToast('Penerbitan Surat Jalan hanya diizinkan untuk Petugas Gudang & Administrator.');
+          if (roleCfg.code !== 'Operasional' && roleCfg.code !== 'Super Admin' && roleCfg.code !== 'Gudang' && roleCfg.code !== 'Administrator') {
+            showToast('Penerbitan Surat Jalan hanya diizinkan untuk Operasional & Super Admin.');
             return;
           }
           self.populateOrderDropdown();
@@ -5620,18 +5588,18 @@
       var lockCard = document.getElementById('billingRbacLockCard');
       var createBtn = document.getElementById('btnOpenCreateInvoice');
 
-      var isGudang = roleCfg.code === 'Gudang';
+      var isRestricted = !roleCfg.canAccessBilling;
 
-      if (mainContent) mainContent.classList.toggle('erp-hidden', isGudang);
-      if (lockCard) lockCard.classList.toggle('erp-hidden', !isGudang);
+      if (mainContent) mainContent.classList.toggle('erp-hidden', isRestricted);
+      if (lockCard) lockCard.classList.toggle('erp-hidden', !isRestricted);
 
-      // Hak membuat invoice: Finance & Administrator
-      var canCreate = roleCfg.code === 'Finance' || roleCfg.code === 'Administrator';
+      // Hak membuat invoice: Finance & Super Admin
+      var canCreate = roleCfg.code === 'Finance' || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator';
       if (createBtn) {
         createBtn.disabled = !canCreate;
         createBtn.title = canCreate
           ? 'Terbitkan Invoice Resmi Baru'
-          : 'Hanya dapat dilakukan oleh divisi Finance atau Administrator';
+          : 'Hanya dapat dilakukan oleh divisi Finance atau Super Admin';
         if (!canCreate) {
           createBtn.classList.add('btn-disabled');
         } else {
@@ -5748,8 +5716,8 @@
       if (openBtn && modal) {
         openBtn.addEventListener('click', function () {
           var roleCfg = RoleManager.getCurrentRoleConfig();
-          if (roleCfg.code !== 'Finance' && roleCfg.code !== 'Administrator') {
-            showToast('Penerbitan Invoice resmi hanya diizinkan untuk Finance & Administrator.');
+          if (roleCfg.code !== 'Finance' && roleCfg.code !== 'Super Admin' && roleCfg.code !== 'Administrator') {
+            showToast('Penerbitan Invoice resmi hanya diizinkan untuk Finance & Super Admin.');
             return;
           }
           self.populateOrderDropdown();
