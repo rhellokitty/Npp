@@ -967,6 +967,40 @@
         { id: 'LOG-1006', timestamp: '2026-11-05 14:12:05', user: 'Tim Operasional & Logistik', role: 'Operasional', action: 'CETAK_SURAT_JALAN', target: 'SJ-202611-0008', detail: 'Menerbitkan Surat Jalan pengiriman parsial Tahap 1 ke PT. Daya Pustaka Indonesia' },
         { id: 'LOG-1005', timestamp: '2026-11-04 11:30:49', user: 'Raja Daffa', role: 'Super Admin', action: 'APPROVE_SO', target: 'SO-202611-0010', detail: 'Menyetujui PO Pelanggan PT. Daya Pustaka Indonesia & mengaktifkan kuota pengiriman' },
         { id: 'LOG-1004', timestamp: '2026-11-02 16:28:00', user: 'Tim Operasional & Logistik', role: 'Operasional', action: 'QC_GOODS_RECEIPT', target: 'GR-202611-0004', detail: 'Menerima 6 unit UPS Ablerex 10 kVA dari PO-202610-0003 (100% Lolos QC -> RAK-B01)' }
+      ],
+
+      /* --- MASTER PENGGUNA & RBAC (KELOLA USER) --- */
+      users: [
+        {
+          id: 'USR-001',
+          name: 'Raja Daffa',
+          email: 'admin@nusantarapuncakperkasa.co.id',
+          role: 'Super Admin',
+          phone: '+62 811-9234-881',
+          status: 'Aktif',
+          lastLogin: '2026-11-07 14:30:15',
+          notes: 'Direktur Utama & Penanggung Jawab Otorisasi Tertinggi'
+        },
+        {
+          id: 'USR-002',
+          name: 'Tim Operasional & Logistik',
+          email: 'operasional@nusantarapuncakperkasa.co.id',
+          role: 'Operasional',
+          phone: '+62 812-8877-3321',
+          status: 'Aktif',
+          lastLogin: '2026-11-07 11:15:40',
+          notes: 'Pengendali PO Pelanggan, PO Supplier, Gudang & QC, serta Armada Pengiriman'
+        },
+        {
+          id: 'USR-003',
+          name: 'Siti Rahmawati',
+          email: 'finance@nusantarapuncakperkasa.co.id',
+          role: 'Finance',
+          phone: '+62 813-7722-1109',
+          status: 'Aktif',
+          lastLogin: '2026-11-07 13:45:00',
+          notes: 'Penanggung Jawab Penagihan, Faktur Komersial & Rekonsiliasi Bank BCA/Mandiri'
+        }
       ]
     };
   }
@@ -998,6 +1032,10 @@
       if (raw) {
         var parsed = JSON.parse(raw);
         if (parsed && parsed.meta && parsed.meta.version === '1.0.0-HLD001' && Array.isArray(parsed.orders)) {
+          if (!parsed.users || !Array.isArray(parsed.users)) {
+            parsed.users = createInitialDatabase().users;
+            saveDatabase(parsed);
+          }
           return parsed;
         }
       }
@@ -8151,6 +8189,284 @@ var OrderCreatePageController = {
   };
 
   /* ==========================================================================
+     14B. USERS CONTROLLER (MANAJEMEN PENGGUNA & RBAC)
+     ========================================================================== */
+  var UsersController = {
+    table: null,
+
+    init: function () {
+      if (!document.getElementById('usersTableBody')) return;
+      this.syncUsersRBAC();
+      this.renderUsersKPIs();
+      this.initUsersTable();
+      this.bindUserModal();
+
+      var self = this;
+      RoleManager.onChange(function () {
+        self.syncUsersRBAC();
+        self.renderUsersKPIs();
+        if (self.table) self.table.render();
+      });
+    },
+
+    syncUsersRBAC: function () {
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      var btnAdd = document.getElementById('btnOpenAddUserModal');
+      var rbacNotice = document.getElementById('usersRbacNotice');
+      var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
+
+      if (btnAdd) {
+        btnAdd.disabled = !canManage;
+        btnAdd.title = canManage ? 'Tambah Akun Pengguna Baru' : 'Khusus Super Admin';
+        if (!canManage) {
+          btnAdd.classList.add('btn-disabled');
+        } else {
+          btnAdd.classList.remove('btn-disabled');
+        }
+      }
+
+      if (rbacNotice) {
+        if (!canManage) {
+          rbacNotice.classList.remove('erp-hidden');
+          rbacNotice.innerHTML =
+            '<div class="erp-notice-box">' +
+            '<strong>Mode Terproteksi RBAC:</strong> Peran aktif Anda (' + escapeHtml(roleCfg.display) +
+            ') berstatus Read-Only. Penambahan pengguna, modifikasi peran (Super Admin, Operasional, Finance), serta penonaktifan akun hanya dapat dilakukan oleh <strong>Super Admin</strong>.' +
+            '</div>';
+        } else {
+          rbacNotice.classList.add('erp-hidden');
+        }
+      }
+    },
+
+    renderUsersKPIs: function () {
+      var db = window.NPP_ERP_DATA;
+      var users = db.users || [];
+      var activeUsers = users.filter(function (u) { return u.status === 'Aktif'; }).length;
+      var superAdmins = users.filter(function (u) { return u.role === 'Super Admin'; }).length;
+
+      var kpiTotal = document.getElementById('kpiTotalUsers');
+      var kpiActive = document.getElementById('kpiActiveUsers');
+      var kpiAdmins = document.getElementById('kpiSuperAdminCount');
+
+      if (kpiTotal) kpiTotal.textContent = users.length + ' Akun';
+      if (kpiActive) kpiActive.textContent = activeUsers + ' Aktif';
+      if (kpiAdmins) kpiAdmins.textContent = superAdmins + ' Super Admin';
+    },
+
+    initUsersTable: function () {
+      var self = this;
+      this.table = new TableEngine({
+        tbodyId: 'usersTableBody',
+        paginationId: 'usersPagination',
+        searchInputId: 'usersSearchInput',
+        pageSizeSelectId: 'usersPageSizeSelect',
+        defaultPageSize: 10,
+        colSpan: 7,
+        filters: [
+          {
+            selectId: 'usersFilterRole',
+            match: function (item, val) {
+              return !val || item.role === val;
+            }
+          },
+          {
+            selectId: 'usersFilterStatus',
+            match: function (item, val) {
+              return !val || item.status === val;
+            }
+          }
+        ],
+        searchFn: function (user, q) {
+          var text = [
+            user.id,
+            user.name,
+            user.email,
+            user.role,
+            user.phone,
+            user.status,
+            user.notes
+          ].join(' ').toLowerCase();
+          return text.indexOf(q.toLowerCase()) !== -1;
+        },
+        getData: function () {
+          return window.NPP_ERP_DATA.users || [];
+        },
+        renderRow: function (u) {
+          var roleCfg = RoleManager.getCurrentRoleConfig();
+          var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
+
+          var roleBadgeClass = 'badge-neutral';
+          if (u.role === 'Super Admin') roleBadgeClass = 'badge-info';
+          else if (u.role === 'Finance') roleBadgeClass = 'badge-warning';
+
+          var statusBadgeClass = u.status === 'Aktif' ? 'badge-success' : 'badge-danger';
+
+          var actionHtml = canManage
+            ? '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" onclick="NPP_ERP.UsersController.openEditModal(\'' + u.id + '\')">' +
+              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' +
+              '<span>Kelola</span>' +
+              '</button>'
+            : '<span class="cell-subtext-sm">Read-Only</span>';
+
+          return (
+            '<tr>' +
+            '<td><span class="cell-code">' + escapeHtml(u.id) + '</span></td>' +
+            '<td><strong>' + escapeHtml(u.name) + '</strong><br><span class="cell-subtext-sm">' + escapeHtml(u.notes || '-') + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(u.email) + '</span><br><span class="cell-subtext-sm">' + escapeHtml(u.phone || '-') + '</span></td>' +
+            '<td><span class="badge-status ' + roleBadgeClass + '">' + escapeHtml(u.role) + '</span></td>' +
+            '<td><span class="badge-status ' + statusBadgeClass + '">' + escapeHtml(u.status) + '</span></td>' +
+            '<td><span class="cell-subtext" style="font-size:0.75rem;">' + escapeHtml(u.lastLogin || '-') + '</span></td>' +
+            '<td>' + actionHtml + '</td>' +
+            '</tr>'
+          );
+        }
+      });
+      this.table.render();
+    },
+
+    bindUserModal: function () {
+      var self = this;
+      var modal = document.getElementById('userFormModal');
+      var openAddBtn = document.getElementById('btnOpenAddUserModal');
+      var closeBtn = document.getElementById('btnCloseUserModal');
+      var cancelBtn = document.getElementById('btnCancelUserModal');
+      var form = document.getElementById('userEditForm');
+
+      if (!modal) return;
+
+      var closeModal = function () {
+        modal.classList.remove('modal-open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+
+      if (openAddBtn) {
+        openAddBtn.addEventListener('click', function () {
+          var roleCfg = RoleManager.getCurrentRoleConfig();
+          var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
+          if (!canManage) {
+            showToast('Akses ditolak: Hanya Super Admin yang berhak menambahkan pengguna baru.');
+            return;
+          }
+          self.openAddModal();
+        });
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          self.saveUserData();
+        });
+      }
+    },
+
+    openAddModal: function () {
+      var modal = document.getElementById('userFormModal');
+      var title = document.getElementById('userModalTitle');
+      var form = document.getElementById('userEditForm');
+      if (!modal || !form) return;
+
+      form.reset();
+      document.getElementById('userFormId').value = '';
+      if (title) title.textContent = 'Tambah Akun Pengguna Baru';
+
+      modal.classList.add('modal-open');
+      modal.setAttribute('aria-hidden', 'false');
+    },
+
+    openEditModal: function (userId) {
+      var db = window.NPP_ERP_DATA;
+      var user = (db.users || []).find(function (u) { return u.id === userId; });
+      if (!user) return;
+
+      var modal = document.getElementById('userFormModal');
+      var title = document.getElementById('userModalTitle');
+      if (!modal) return;
+
+      document.getElementById('userFormId').value = user.id;
+      document.getElementById('userFormName').value = user.name || '';
+      document.getElementById('userFormEmail').value = user.email || '';
+      document.getElementById('userFormPhone').value = user.phone || '';
+      document.getElementById('userFormRole').value = user.role || 'Operasional';
+      document.getElementById('userFormStatus').value = user.status || 'Aktif';
+      document.getElementById('userFormNotes').value = user.notes || '';
+
+      if (title) title.textContent = 'Kelola Akun Pengguna — ' + user.name;
+
+      modal.classList.add('modal-open');
+      modal.setAttribute('aria-hidden', 'false');
+    },
+
+    saveUserData: function () {
+      var db = window.NPP_ERP_DATA;
+      var id = document.getElementById('userFormId').value;
+      var name = (document.getElementById('userFormName').value || '').trim();
+      var email = (document.getElementById('userFormEmail').value || '').trim();
+      var phone = (document.getElementById('userFormPhone').value || '').trim();
+      var role = document.getElementById('userFormRole').value;
+      var status = document.getElementById('userFormStatus').value;
+      var notes = (document.getElementById('userFormNotes').value || '').trim();
+
+      if (!name || !email) {
+        showToast('Nama lengkap dan email perusahaan wajib diisi!');
+        return;
+      }
+
+      if (!db.users) db.users = [];
+
+      var modal = document.getElementById('userFormModal');
+      var isNew = !id;
+
+      if (isNew) {
+        var newId = 'USR-00' + (db.users.length + 1);
+        var newUser = {
+          id: newId,
+          name: name,
+          email: email,
+          phone: phone,
+          role: role,
+          status: status,
+          lastLogin: '-',
+          notes: notes
+        };
+        db.users.push(newUser);
+        addAuditLog('CREATE_USER', newId, 'Menambahkan akun pengguna baru: ' + name + ' (' + role + ')');
+        showToast('Pengguna ' + name + ' (' + role + ') berhasil ditambahkan!', 'success');
+      } else {
+        var user = db.users.find(function (u) { return u.id === id; });
+        if (user) {
+          var oldRole = user.role;
+          var oldStatus = user.status;
+          user.name = name;
+          user.email = email;
+          user.phone = phone;
+          user.role = role;
+          user.status = status;
+          user.notes = notes;
+
+          addAuditLog('UPDATE_USER_ROLE', user.id, 'Memperbarui pengguna ' + user.name + ' (Peran: ' + oldRole + ' -> ' + role + ', Status: ' + oldStatus + ' -> ' + status + ')');
+          showToast('Data pengguna ' + user.name + ' berhasil diperbarui!', 'success');
+        }
+      }
+
+      saveDatabase(db);
+      this.renderUsersKPIs();
+      if (this.table) this.table.render();
+
+      if (modal) {
+        modal.classList.remove('modal-open');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    }
+  };
+
+  /* ==========================================================================
      15. EKSPOR API GLOBAL & AUTO-INIT SAAT DOM READY
      ========================================================================== */
   window.NPP_ERP = {
@@ -8165,6 +8481,7 @@ var OrderCreatePageController = {
     DeliveryController: DeliveryController,
     BillingController: BillingController,
     ArchiveController: ArchiveController,
+    UsersController: UsersController,
     OrderCreatePageController: OrderCreatePageController,
     OrderDetailPageController: OrderDetailPageController,
     MasterCustomerCreatePageController: MasterCustomerCreatePageController,
@@ -8204,6 +8521,7 @@ var OrderCreatePageController = {
     DeliveryController.init();
     BillingController.init();
     ArchiveController.init();
+    UsersController.init();
     OrderCreatePageController.init();
     OrderDetailPageController.init();
     MasterCustomerCreatePageController.init();
