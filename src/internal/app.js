@@ -1200,6 +1200,86 @@
     }, 3400);
   }
 
+  function showConfirmAlert(options) {
+    var modal = document.getElementById('erpGlobalConfirmModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'erpGlobalConfirmModal';
+      modal.className = 'erp-modal-overlay';
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(modal);
+    }
+
+    var type = options.type || 'warning';
+    var title = options.title || 'Konfirmasi Tindakan';
+    var message = options.message || 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+    var confirmText = options.confirmText || 'Konfirmasi';
+    var cancelText = options.cancelText || 'Batal';
+    var confirmBtnClass = options.confirmClass || (type === 'success' ? 'btn-erp-success' : (type === 'danger' ? 'btn-erp-danger' : 'btn-erp-primary'));
+
+    var iconSvg = '';
+    if (type === 'success') {
+      iconSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>';
+    } else if (type === 'danger') {
+      iconSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+    } else {
+      iconSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+    }
+
+    modal.innerHTML =
+      '<div class="erp-confirm-card" role="dialog" aria-modal="true">' +
+      '  <div class="erp-confirm-header">' +
+      '    <div class="erp-confirm-icon erp-confirm-icon-' + type + '">' + iconSvg + '</div>' +
+      '    <div class="erp-confirm-text">' +
+      '      <h3 class="erp-confirm-title">' + escapeHtml(title) + '</h3>' +
+      '      <p class="erp-confirm-desc">' + escapeHtml(message) + '</p>' +
+      '    </div>' +
+      '  </div>' +
+      '  <div class="erp-confirm-actions">' +
+      '    <button type="button" class="btn-erp btn-erp-secondary btn-confirm-cancel">' + escapeHtml(cancelText) + '</button>' +
+      '    <button type="button" class="btn-erp ' + confirmBtnClass + ' btn-confirm-ok">' + escapeHtml(confirmText) + '</button>' +
+      '  </div>' +
+      '</div>';
+
+    modal.classList.add('modal-open');
+
+    var onKeydown = function (e) {
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        closeModal();
+      }
+    };
+
+    var closeModal = function () {
+      modal.classList.remove('modal-open');
+      document.removeEventListener('keydown', onKeydown);
+    };
+
+    document.addEventListener('keydown', onKeydown);
+
+    var cancelBtn = modal.querySelector('.btn-confirm-cancel');
+    var okBtn = modal.querySelector('.btn-confirm-ok');
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', closeModal);
+    }
+
+    if (okBtn) {
+      okBtn.addEventListener('click', function () {
+        closeModal();
+        if (typeof options.onConfirm === 'function') {
+          options.onConfirm();
+        }
+      });
+      setTimeout(function () {
+        try { okBtn.focus(); } catch (e) {}
+      }, 50);
+    }
+
+    modal.onclick = function (e) {
+      if (e.target === modal) closeModal();
+    };
+  }
+
   /* ==========================================================================
      4B. THEME MANAGER (DARK / LIGHT MODE DENGAN PERSISTENCE & SOFT EYE-CARE)
      ========================================================================== */
@@ -1832,28 +1912,41 @@
       var order = db.orders.find(function (o) { return o.id === soId; });
       if (!order) return;
 
-      order.statusApproval = newStatus;
-      if (newStatus === 'Disetujui') {
-        order.statusOrder = 'Diproses';
-        if (order.statusPemenuhan === 'Stok Direservasi') {
-          order.statusPengiriman = 'Siap Kirim Gudang';
+      var self = this;
+      var isApprove = newStatus === 'Disetujui';
+      showConfirmAlert({
+        type: isApprove ? 'success' : 'danger',
+        title: isApprove ? 'Setujui Pesanan ' + order.id : 'Tolak Pesanan ' + order.id,
+        message: isApprove
+          ? 'Otorisasi pesanan ' + order.customerName + ' dengan nilai ' + formatMoneyRBAC(order.total, false) + '? Pesanan akan dilanjutkan ke pemrosesan gudang.'
+          : 'Tolak pengajuan pesanan ' + order.customerName + '? Status pesanan akan ditangguhkan dan memerlukan evaluasi ulang.',
+        confirmText: isApprove ? 'Setujui' : 'Tolak',
+        confirmClass: isApprove ? 'btn-erp-success' : 'btn-erp-danger',
+        onConfirm: function () {
+          order.statusApproval = newStatus;
+          if (newStatus === 'Disetujui') {
+            order.statusOrder = 'Diproses';
+            if (order.statusPemenuhan === 'Stok Direservasi') {
+              order.statusPengiriman = 'Siap Kirim Gudang';
+            }
+          } else if (newStatus === 'Ditolak') {
+            order.statusOrder = 'Ditangguhkan';
+          }
+
+          saveDatabase(db);
+          addAuditLog(
+            newStatus === 'Disetujui' ? 'APPROVE_SO' : 'REJECT_SO',
+            order.id,
+            'Mengubah status persetujuan ' + order.id + ' (' + order.customerName + ') menjadi: ' + newStatus
+          );
+
+          RoleManager.updateSidebarCounters();
+          self.renderKPIs();
+          self.renderQuickApprovalPanel();
+          if (self.ordersTable) self.ordersTable.render();
+          showToast('Dokumen ' + order.id + ' berhasil ' + (isApprove ? 'disetujui.' : 'ditolak.'), isApprove ? 'success' : 'info');
         }
-      } else if (newStatus === 'Ditolak') {
-        order.statusOrder = 'Ditangguhkan';
-      }
-
-      saveDatabase(db);
-      addAuditLog(
-        newStatus === 'Disetujui' ? 'APPROVE_SO' : 'REJECT_SO',
-        order.id,
-        'Mengubah status persetujuan ' + order.id + ' (' + order.customerName + ') menjadi: ' + newStatus
-      );
-
-      RoleManager.updateSidebarCounters();
-      this.renderKPIs();
-      this.renderQuickApprovalPanel();
-      if (this.ordersTable) this.ordersTable.render();
-      showToast('Dokumen ' + order.id + ' berhasil diperbarui menjadi: ' + newStatus);
+      });
     },
 
     renderStockSummaryStrip: function () {
@@ -2535,27 +2628,40 @@
       var order = db.orders.find(function (o) { return o.id === soId; });
       if (!order) return;
 
-      order.statusApproval = decision;
-      if (decision === 'Disetujui') {
-        order.statusOrder = 'Diproses';
-        if (order.statusPemenuhan === 'Stok Direservasi') {
-          order.statusPengiriman = 'Siap Kirim Gudang';
+      var self = this;
+      var isApprove = decision === 'Disetujui';
+      showConfirmAlert({
+        type: isApprove ? 'success' : 'danger',
+        title: isApprove ? 'Setujui PO ' + order.id : 'Tolak PO ' + order.id,
+        message: isApprove
+          ? 'Otorisasi pesanan ' + order.customerName + ' senilai ' + formatMoneyRBAC(order.total, false) + '? Status pesanan akan dilanjutkan ke pemrosesan gudang.'
+          : 'Tolak pengajuan pesanan ' + order.customerName + '? Status pesanan akan ditangguhkan.',
+        confirmText: isApprove ? 'Setujui PO' : 'Tolak PO',
+        confirmClass: isApprove ? 'btn-erp-success' : 'btn-erp-danger',
+        onConfirm: function () {
+          order.statusApproval = decision;
+          if (decision === 'Disetujui') {
+            order.statusOrder = 'Diproses';
+            if (order.statusPemenuhan === 'Stok Direservasi') {
+              order.statusPengiriman = 'Siap Kirim Gudang';
+            }
+          } else if (decision === 'Ditolak') {
+            order.statusOrder = 'Ditangguhkan';
+          }
+
+          saveDatabase(db);
+          addAuditLog(
+            decision === 'Disetujui' ? 'APPROVE_SO' : 'REJECT_SO',
+            order.id,
+            'Mengubah status persetujuan ' + order.id + ' (' + order.customerName + ') menjadi: ' + decision
+          );
+
+          RoleManager.updateSidebarCounters();
+          self.renderOrdersKPIs();
+          if (self.table) self.table.render();
+          showToast('Status persetujuan ' + order.id + ' diperbarui menjadi: ' + decision, isApprove ? 'success' : 'info');
         }
-      } else if (decision === 'Ditolak') {
-        order.statusOrder = 'Ditangguhkan';
-      }
-
-      saveDatabase(db);
-      addAuditLog(
-        decision === 'Disetujui' ? 'APPROVE_SO' : 'REJECT_SO',
-        order.id,
-        'Mengubah status persetujuan ' + order.id + ' (' + order.customerName + ') menjadi: ' + decision
-      );
-
-      RoleManager.updateSidebarCounters();
-      this.renderOrdersKPIs();
-      if (this.table) this.table.render();
-      showToast('Status persetujuan ' + order.id + ' diperbarui menjadi: ' + decision);
+      });
     },
 
     bindCreateOrderModal: function () {
@@ -2755,8 +2861,18 @@
           showToast('Minimal harus terdapat 1 baris barang dalam PO Pelanggan.');
           return;
         }
-        rowEl.remove();
-        self.recalculateOrderFormTotals();
+        showConfirmAlert({
+          type: 'warning',
+          title: 'Hapus Baris Barang',
+          message: 'Apakah Anda yakin ingin menghapus baris barang ini dari formulir PO?',
+          confirmText: 'Hapus Baris',
+          confirmClass: 'btn-erp-danger',
+          onConfirm: function () {
+            rowEl.remove();
+            self.recalculateOrderFormTotals();
+            showToast('Baris barang telah dihapus.');
+          }
+        });
       });
 
       this.recalculateOrderFormTotals();
@@ -4345,17 +4461,30 @@
       var po = db.procurements.find(function (p) { return p.id === poId; });
       if (!po) return;
 
-      po.statusApproval = decision;
-      saveDatabase(db);
-      addAuditLog(
-        decision === 'Disetujui' ? 'APPROVE_PO_SUPPLIER' : 'REJECT_PO_SUPPLIER',
-        po.id,
-        'Mengubah status otorisasi PO Supplier ' + po.id + ' (' + po.supplierName + ') menjadi: ' + decision
-      );
+      var self = this;
+      var isApprove = decision === 'Disetujui';
+      showConfirmAlert({
+        type: isApprove ? 'success' : 'danger',
+        title: isApprove ? 'Setujui PO Supplier ' + po.id : 'Tolak PO Supplier ' + po.id,
+        message: isApprove
+          ? 'Otorisasi PO Supplier ' + po.supplierName + ' senilai ' + formatMoneyRBAC(po.total || po.totalHpp, true) + '? Pesanan pembelian akan diteruskan ke pemasok.'
+          : 'Tolak pengajuan PO Supplier ' + po.supplierName + '? Status pengadaan akan ditangguhkan.',
+        confirmText: isApprove ? 'Setujui PO' : 'Tolak PO',
+        confirmClass: isApprove ? 'btn-erp-success' : 'btn-erp-danger',
+        onConfirm: function () {
+          po.statusApproval = decision;
+          saveDatabase(db);
+          addAuditLog(
+            decision === 'Disetujui' ? 'APPROVE_PO_SUPPLIER' : 'REJECT_PO_SUPPLIER',
+            po.id,
+            'Mengubah status otorisasi PO Supplier ' + po.id + ' (' + po.supplierName + ') menjadi: ' + decision
+          );
 
-      this.renderProcurementKPIs();
-      if (this.poTable) this.poTable.render();
-      showToast('Status PO Supplier ' + po.id + ' berhasil diperbarui menjadi: ' + decision);
+          self.renderProcurementKPIs();
+          if (self.poTable) self.poTable.render();
+          showToast('Status PO Supplier ' + po.id + ' berhasil diperbarui menjadi: ' + decision, isApprove ? 'success' : 'info');
+        }
+      });
     },
 
     bindCreatePoModal: function () {
@@ -4551,8 +4680,18 @@
           showToast('Minimal harus terdapat 1 baris SKU dalam PO Supplier.');
           return;
         }
-        rowEl.remove();
-        self.recalculatePoTotals();
+        showConfirmAlert({
+          type: 'warning',
+          title: 'Hapus Baris SKU',
+          message: 'Apakah Anda yakin ingin menghapus baris SKU ini dari PO Supplier?',
+          confirmText: 'Hapus Baris',
+          confirmClass: 'btn-erp-danger',
+          onConfirm: function () {
+            rowEl.remove();
+            self.recalculatePoTotals();
+            showToast('Baris SKU telah dihapus.');
+          }
+        });
       });
 
       this.recalculatePoTotals();
@@ -6160,16 +6299,25 @@ var OrderCreatePageController = {
 
       if (btnRemoveFile) {
         btnRemoveFile.addEventListener('click', function () {
-          if (fileInput) fileInput.value = '';
-          currentFile = null;
-          if (currentFileUrl) {
-            try { URL.revokeObjectURL(currentFileUrl); } catch (e) {}
-            currentFileUrl = null;
-          }
-          if (fileCard) fileCard.style.display = 'none';
-          if (fileInput) fileInput.style.display = 'block';
-          closePreviewModal();
-          showToast('Berkas scan PO telah dihapus.');
+          showConfirmAlert({
+            type: 'danger',
+            title: 'Hapus Berkas Scan PO',
+            message: 'Apakah Anda yakin ingin menghapus berkas dokumen scan PO yang telah diunggah?',
+            confirmText: 'Hapus Berkas',
+            confirmClass: 'btn-erp-danger',
+            onConfirm: function () {
+              if (fileInput) fileInput.value = '';
+              currentFile = null;
+              if (currentFileUrl) {
+                try { URL.revokeObjectURL(currentFileUrl); } catch (e) {}
+                currentFileUrl = null;
+              }
+              if (fileCard) fileCard.style.display = 'none';
+              if (fileInput) fileInput.style.display = 'block';
+              closePreviewModal();
+              showToast('Berkas scan PO telah dihapus.');
+            }
+          });
         });
       }
 
@@ -6265,8 +6413,23 @@ var OrderCreatePageController = {
         qtyInp.addEventListener('input', calcTotals);
         priceInp.addEventListener('input', calcTotals);
         delBtn.addEventListener('click', function () {
-          tr.remove();
-          calcTotals();
+          var allRows = tbody.querySelectorAll('tr');
+          if (allRows.length <= 1) {
+            showToast('Minimal harus terdapat 1 baris barang dalam pengadaan.');
+            return;
+          }
+          showConfirmAlert({
+            type: 'warning',
+            title: 'Hapus Baris Barang',
+            message: 'Apakah Anda yakin ingin menghapus baris barang ini dari pengadaan?',
+            confirmText: 'Hapus Baris',
+            confirmClass: 'btn-erp-danger',
+            onConfirm: function () {
+              tr.remove();
+              calcTotals();
+              showToast('Baris barang telah dihapus.');
+            }
+          });
         });
 
         tbody.appendChild(tr);
@@ -6475,20 +6638,45 @@ var OrderCreatePageController = {
       var btnReject = document.getElementById('btnPageRejectOrder');
       if (btnApprove) {
         btnApprove.addEventListener('click', function () {
-          order.statusApproval = 'Disetujui';
-          addAuditLog('SO-APPROVE', order.id, 'Menyetujui PO ' + order.id + ' (' + order.customerName + ')');
-          saveDatabase(db);
-          showToast('PO ' + order.id + ' berhasil disetujui!');
-          OrderDetailPageController.init();
+          showConfirmAlert({
+            type: 'success',
+            title: 'Setujui PO Pelanggan ' + order.id,
+            message: 'Otorisasi pesanan ' + order.customerName + ' dengan nilai ' + formatMoneyRBAC(order.total, false) + '? Pesanan akan dilanjutkan ke pemrosesan gudang.',
+            confirmText: 'Setujui PO',
+            confirmClass: 'btn-erp-success',
+            onConfirm: function () {
+              order.statusApproval = 'Disetujui';
+              order.statusOrder = 'Diproses';
+              if (order.statusPemenuhan === 'Stok Direservasi') {
+                order.statusPengiriman = 'Siap Kirim Gudang';
+              }
+              addAuditLog('SO-APPROVE', order.id, 'Menyetujui PO ' + order.id + ' (' + order.customerName + ')');
+              saveDatabase(db);
+              RoleManager.updateSidebarCounters();
+              showToast('PO ' + order.id + ' berhasil disetujui!');
+              OrderDetailPageController.init();
+            }
+          });
         });
       }
       if (btnReject) {
         btnReject.addEventListener('click', function () {
-          order.statusApproval = 'Ditolak';
-          addAuditLog('SO-REJECT', order.id, 'Menolak PO ' + order.id + ' (' + order.customerName + ')');
-          saveDatabase(db);
-          showToast('PO ' + order.id + ' telah ditolak.');
-          OrderDetailPageController.init();
+          showConfirmAlert({
+            type: 'danger',
+            title: 'Tolak PO Pelanggan ' + order.id,
+            message: 'Apakah Anda yakin ingin menolak pengajuan pesanan ' + order.customerName + '? Status pesanan akan ditangguhkan.',
+            confirmText: 'Tolak PO',
+            confirmClass: 'btn-erp-danger',
+            onConfirm: function () {
+              order.statusApproval = 'Ditolak';
+              order.statusOrder = 'Ditangguhkan';
+              addAuditLog('SO-REJECT', order.id, 'Menolak PO ' + order.id + ' (' + order.customerName + ')');
+              saveDatabase(db);
+              RoleManager.updateSidebarCounters();
+              showToast('PO ' + order.id + ' telah ditolak.');
+              OrderDetailPageController.init();
+            }
+          });
         });
       }
     }
@@ -6737,8 +6925,23 @@ var OrderCreatePageController = {
         qtyInp.addEventListener('input', calcTotals);
         costInp.addEventListener('input', calcTotals);
         delBtn.addEventListener('click', function () {
-          tr.remove();
-          calcTotals();
+          var allRows = tbody.querySelectorAll('tr');
+          if (allRows.length <= 1) {
+            showToast('Minimal harus terdapat 1 baris barang dalam pengadaan.');
+            return;
+          }
+          showConfirmAlert({
+            type: 'warning',
+            title: 'Hapus Baris Barang',
+            message: 'Apakah Anda yakin ingin menghapus baris barang ini dari pengadaan?',
+            confirmText: 'Hapus Baris',
+            confirmClass: 'btn-erp-danger',
+            onConfirm: function () {
+              tr.remove();
+              calcTotals();
+              showToast('Baris barang telah dihapus.');
+            }
+          });
         });
 
         tbody.appendChild(tr);
@@ -6917,22 +7120,40 @@ var OrderCreatePageController = {
       var btnReject = document.getElementById('btnPageRejectPo');
       if (btnApprove) {
         btnApprove.addEventListener('click', function () {
-          po.statusApproval = 'Disetujui';
-          po.status = 'Disetujui';
-          addAuditLog('PO-SUPPLIER-APPROVE', po.id, 'Menyetujui PO Supplier ' + po.id + ' (' + po.supplierName + ')');
-          saveDatabase(db);
-          showToast('PO Supplier ' + po.id + ' berhasil disetujui!');
-          ProcurementDetailPageController.init();
+          showConfirmAlert({
+            type: 'success',
+            title: 'Setujui PO Supplier ' + po.id,
+            message: 'Otorisasi PO Supplier ' + po.supplierName + ' senilai ' + (roleCfg.canViewHPP ? formatRupiah(po.total) : 'HPP') + '? Pengadaan akan disetujui untuk pemenuhan pemasok.',
+            confirmText: 'Setujui PO',
+            confirmClass: 'btn-erp-success',
+            onConfirm: function () {
+              po.statusApproval = 'Disetujui';
+              po.status = 'Disetujui';
+              addAuditLog('PO-SUPPLIER-APPROVE', po.id, 'Menyetujui PO Supplier ' + po.id + ' (' + po.supplierName + ')');
+              saveDatabase(db);
+              showToast('PO Supplier ' + po.id + ' berhasil disetujui!');
+              ProcurementDetailPageController.init();
+            }
+          });
         });
       }
       if (btnReject) {
         btnReject.addEventListener('click', function () {
-          po.statusApproval = 'Ditolak';
-          po.status = 'Ditolak';
-          addAuditLog('PO-SUPPLIER-REJECT', po.id, 'Menolak PO Supplier ' + po.id + ' (' + po.supplierName + ')');
-          saveDatabase(db);
-          showToast('PO Supplier ' + po.id + ' telah ditolak.');
-          ProcurementDetailPageController.init();
+          showConfirmAlert({
+            type: 'danger',
+            title: 'Tolak PO Supplier ' + po.id,
+            message: 'Apakah Anda yakin ingin menolak PO Supplier ' + po.id + ' (' + po.supplierName + ')? Status pengadaan akan ditangguhkan.',
+            confirmText: 'Tolak PO',
+            confirmClass: 'btn-erp-danger',
+            onConfirm: function () {
+              po.statusApproval = 'Ditolak';
+              po.status = 'Ditolak';
+              addAuditLog('PO-SUPPLIER-REJECT', po.id, 'Menolak PO Supplier ' + po.id + ' (' + po.supplierName + ')');
+              saveDatabase(db);
+              showToast('PO Supplier ' + po.id + ' telah ditolak.');
+              ProcurementDetailPageController.init();
+            }
+          });
         });
       }
     }
@@ -7680,6 +7901,7 @@ var OrderCreatePageController = {
     escapeHtml: escapeHtml,
     addAuditLog: addAuditLog,
     showToast: showToast,
+    showConfirmAlert: showConfirmAlert,
     ThemeManager: ThemeManager
   };
 
