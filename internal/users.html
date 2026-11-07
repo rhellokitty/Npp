@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Kelola Pengguna &amp; Hak Akses RBAC — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
+  <title>Kelola Pengguna — Sistem Operasional Pengadaan PT Nusantara Puncak Perkasa</title>
   <link rel="icon" type="image/png" href="../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     <div class="erp-sidebar-backdrop" id="erpSidebarBackdrop"></div>
 
     <!-- ====================================================================
-         1. SIDEBAR NAVIGASI (MODUL OPERASIONAL NPP HLD 001)
+         1. SIDEBAR NAVIGASI (8 MODUL OPERASIONAL NPP HLD 001)
          ==================================================================== -->
     <aside class="erp-sidebar" id="erpSidebar" aria-label="Navigasi Modul Operasional">
       <div class="erp-sidebar-brand">
@@ -35,7 +35,7 @@
 
       <nav class="erp-sidebar-nav">
         <div class="erp-nav-group">
-          <span class="erp-nav-group-label">Utama &amp; Eksekutif</span>
+          <span class="erp-nav-group-label">Utama & Eksekutif</span>
           <a href="index.html" class="erp-nav-link">
             <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="3" width="7" height="9" rx="1.5" />
@@ -48,7 +48,7 @@
         </div>
 
         <div class="erp-nav-group">
-          <span class="erp-nav-group-label">Siklus Pengadaan &amp; Stok</span>
+          <span class="erp-nav-group-label">Siklus Pengadaan & Stok</span>
           <a href="orders.html" class="erp-nav-link">
             <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -83,7 +83,7 @@
 
           <a href="delivery.html" class="erp-nav-link">
             <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="1" y="3" width="15" height="13" rx="2" />
+              <rect x="1" y="3" width="15" height="13" />
               <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
               <circle cx="5.5" cy="18.5" r="2.5" />
               <circle cx="18.5" cy="18.5" r="2.5" />
@@ -96,20 +96,20 @@
               <rect x="2" y="5" width="20" height="14" rx="2" />
               <line x1="2" y1="10" x2="22" y2="10" />
             </svg>
-            <span>Penagihan &amp; Invoice</span>
+            <span>Penagihan & Invoice</span>
             <span class="erp-nav-badge" id="navBadgeBilling">2 Overdue</span>
           </a>
         </div>
 
         <div class="erp-nav-group">
-          <span class="erp-nav-group-label">Tata Kelola &amp; Referensi</span>
+          <span class="erp-nav-group-label">Tata Kelola & Referensi</span>
           <a href="archive.html" class="erp-nav-link">
             <svg class="erp-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="21 8 21 21 3 21 3 8" />
               <rect x="1" y="3" width="22" height="5" />
               <line x1="10" y1="12" x2="14" y2="12" />
             </svg>
-            <span>Arsip &amp; Audit</span>
+            <span>Arsip & Audit</span>
           </a>
 
           <a href="users.html" class="erp-nav-link erp-nav-link-active">
@@ -149,30 +149,26 @@
     </aside>
 
     <!-- ====================================================================
-         2. AREA KERJA UTAMA & TOPBAR
+         2. MAIN WORKSPACE (TOPBAR + KELOLA PENGGUNA)
          ==================================================================== -->
-    <div class="erp-main-area">
+    <div class="erp-main">
 
-      <!-- TOPBAR RESMI NPP -->
+      <!-- TOPBAR DENGAN INTERACTIVE ROLE SWITCHER -->
       <header class="erp-topbar">
-        <button type="button" class="erp-sidebar-toggle" id="erpSidebarToggle" aria-label="Buka Menu Navigasi">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
-
-        <div class="erp-breadcrumb">
-          <span>PT NPP ERP</span>
-          <span class="erp-breadcrumb-sep">/</span>
-          <span>Tata Kelola &amp; Referensi</span>
-          <span class="erp-breadcrumb-sep">/</span>
-          <span class="erp-breadcrumb-current">Kelola Pengguna</span>
+        <div class="erp-topbar-left">
+          <button type="button" class="erp-mobile-toggle" id="erpMobileMenuBtn" aria-label="Buka Navigasi Modul">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <div class="erp-breadcrumb">
+            <span class="erp-breadcrumb-title">Kelola Pengguna</span>
+          </div>
         </div>
 
-        <div class="erp-topbar-actions">
-          <!-- Simulasi Peran RBAC -->
+        <div class="erp-topbar-right">
           <div class="erp-role-switcher-wrap">
             <span class="erp-role-switcher-label">Simulasi Peran:</span>
             <select id="erpRoleSwitcher" class="erp-role-select" aria-label="Pilih Simulasi Peran RBAC">
@@ -202,72 +198,82 @@
         </div>
       </header>
 
-      <!-- KONTEN UTAMA KELOLA PENGGUNA -->
+      <!-- KONTEN UTAMA MASTER DATA -->
       <main class="erp-content">
 
-        <!-- RBAC PROTEKSI NOTICE UNTUK NON-SUPER ADMIN -->
-        <div id="usersRbacNotice"></div>
-
-        <!-- 3 KPI CARDS PENGGUNA SISTEM -->
-        <section class="erp-kpi-grid erp-kpi-grid-3" aria-label="Ringkasan KPI Pengguna & Hak Akses">
+        <!-- 4 KARTU RINGKASAN PENGGUNA -->
+        <section class="erp-kpi-grid erp-kpi-grid-4" aria-label="Ringkasan Pengguna Sistem">
           <article class="erp-kpi-card">
             <div class="erp-kpi-top">
-              <span class="erp-kpi-label">Total Pengguna Terdaftar</span>
+              <span class="erp-kpi-label">Total Pengguna</span>
               <div class="erp-kpi-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                   <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
               </div>
             </div>
-            <div class="erp-kpi-value" id="kpiTotalUsers">3 Akun</div>
+            <div class="erp-kpi-value" id="kpiTotalUsers">0 Akun</div>
           </article>
 
           <article class="erp-kpi-card">
             <div class="erp-kpi-top">
-              <span class="erp-kpi-label">Pengguna Aktif</span>
+              <span class="erp-kpi-label">Super Admin</span>
               <div class="erp-kpi-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-            </div>
-            <div class="erp-kpi-value" id="kpiActiveUsers">3 Aktif</div>
-          </article>
-
-          <article class="erp-kpi-card">
-            <div class="erp-kpi-top">
-              <span class="erp-kpi-label">Otoritas Super Admin</span>
-              <div class="erp-kpi-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
               </div>
             </div>
-            <div class="erp-kpi-value" id="kpiSuperAdminCount">1 Super Admin</div>
+            <div class="erp-kpi-value" id="kpiSuperAdminCount">0 Akun</div>
+          </article>
+
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Operasional</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="m7.5 4.27 9 5.15" />
+                  <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiOperasionalCount">0 Akun</div>
+          </article>
+
+          <article class="erp-kpi-card">
+            <div class="erp-kpi-top">
+              <span class="erp-kpi-label">Finance</span>
+              <div class="erp-kpi-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <rect x="2" y="5" width="20" height="14" rx="2" />
+                  <line x1="2" y1="10" x2="22" y2="10" />
+                </svg>
+              </div>
+            </div>
+            <div class="erp-kpi-value" id="kpiFinanceCount">0 Akun</div>
           </article>
         </section>
 
-        <!-- PANEL TABEL MANAJEMEN PENGGUNA -->
-        <section class="erp-section-panel" aria-label="Daftar Pengguna Sistem & Hak Akses RBAC">
+        <!-- DAFTAR PENGGUNA SISTEM -->
+        <section class="erp-section-panel" aria-label="Daftar Pengguna Sistem">
           <div class="erp-section-header">
             <div class="erp-section-title-group">
-              <h1 class="section-heading">Daftar Pengguna Sistem &amp; Hak Akses RBAC</h1>
+              <h1 class="section-heading">Daftar Pengguna Sistem</h1>
             </div>
-            <button type="button" class="btn-erp btn-erp-primary" id="btnOpenAddUserModal">
+            <a href="users-create.html" class="btn-erp btn-erp-primary" id="btnOpenAddUser">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              <span>Tambah Pengguna Baru</span>
-            </button>
+              <span>Tambah Pengguna</span>
+            </a>
           </div>
 
-          <!-- ACTION BAR: SEARCH, FILTER PERAN & STATUS -->
-          <div class="erp-action-bar">
-            <div class="erp-search-wrap">
+          <div class="erp-toolbar">
+            <div class="erp-search-box">
               <svg class="erp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -276,128 +282,57 @@
                 type="search"
                 id="usersSearchInput"
                 class="erp-search-input"
-                placeholder="Cari ID, Nama, Email, Peran, atau Catatan Pengguna..." />
+                placeholder="Cari Nama, Email, Jabatan, atau ID Pengguna..." />
             </div>
 
             <div class="erp-Filter-group">
               <select id="usersFilterRole" class="erp-filter-select" aria-label="Filter Peran Pengguna">
-                <option value="">Semua Peran RBAC</option>
+                <option value="ALL">Semua Peran</option>
                 <option value="Super Admin">Super Admin</option>
                 <option value="Operasional">Operasional</option>
                 <option value="Finance">Finance</option>
               </select>
 
               <select id="usersFilterStatus" class="erp-filter-select" aria-label="Filter Status Akun">
-                <option value="">Semua Status</option>
+                <option value="ALL">Semua Status</option>
                 <option value="Aktif">Aktif</option>
                 <option value="Nonaktif">Nonaktif</option>
               </select>
 
-              <select id="usersPageSizeSelect" class="erp-filter-select" aria-label="Jumlah Baris Pengguna">
+              <select id="usersPageSize" class="erp-filter-select" aria-label="Jumlah Baris Pengguna">
                 <option value="5">5 baris</option>
-                <option value="10" selected>10 baris</option>
+                <option value="10">10 baris</option>
                 <option value="20">20 baris</option>
               </select>
             </div>
           </div>
 
-          <!-- TABEL PENGGUNA SISTEM -->
           <div class="erp-table-wrap">
             <table class="erp-table">
               <thead>
                 <tr>
-                  <th>ID Akun</th>
-                  <th>Nama Pengguna</th>
-                  <th>Email &amp; Kontak</th>
-                  <th>Peran RBAC</th>
-                  <th>Status Akun</th>
+                  <th>ID</th>
+                  <th>Nama &amp; Jabatan</th>
+                  <th>Email &amp; Telepon</th>
+                  <th>Peran</th>
+                  <th>Status</th>
                   <th>Terakhir Masuk</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody id="usersTableBody">
-                <!-- Baris tabel dirender otomatis oleh TableEngine -->
-              </tbody>
+              <tbody id="usersTableBody"></tbody>
             </table>
           </div>
-
-          <!-- PAGINATION -->
-          <div class="erp-pagination" id="usersPagination"></div>
         </section>
+
+        <div class="erp-pagination" id="usersPagination"></div>
 
       </main>
     </div>
+
   </div>
 
-  <!-- MODAL FORM TAMBAH / KELOLA PENGGUNA -->
-  <div class="erp-modal-overlay" id="userFormModal" aria-hidden="true">
-    <div class="erp-modal-card" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
-      <div class="erp-modal-header">
-        <h2 class="erp-modal-title" id="userModalTitle">Kelola Akun Pengguna</h2>
-        <button type="button" class="erp-modal-close" id="btnCloseUserModal" aria-label="Tutup Formulir">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <form id="userEditForm">
-        <input type="hidden" id="userFormId" value="" />
-
-        <div class="erp-modal-body">
-          <div class="erp-form-group">
-            <label class="erp-form-label" for="userFormName">Nama Lengkap Pegawai <span class="required">*</span></label>
-            <input type="text" id="userFormName" class="erp-input" placeholder="contoh: Ir. Darmawan Putra" required />
-          </div>
-
-          <div class="erp-form-group">
-            <label class="erp-form-label" for="userFormEmail">Email Perusahaan NPP <span class="required">*</span></label>
-            <input type="email" id="userFormEmail" class="erp-input" placeholder="contoh: nama@nusantarapuncakperkasa.co.id" required />
-          </div>
-
-          <div class="erp-form-group">
-            <label class="erp-form-label" for="userFormPhone">Nomor Telepon / WhatsApp</label>
-            <input type="text" id="userFormPhone" class="erp-input" placeholder="contoh: +62 811-XXXX-XXXX" />
-          </div>
-
-          <div class="erp-form-row">
-            <div class="erp-form-group">
-              <label class="erp-form-label" for="userFormRole">Penugasan Peran RBAC <span class="required">*</span></label>
-              <select id="userFormRole" class="erp-select" required>
-                <option value="Super Admin">Super Admin (Otoritas Tertinggi)</option>
-                <option value="Operasional">Operasional (Sales, Pengadaan &amp; Gudang)</option>
-                <option value="Finance">Finance (Keuangan &amp; Penagihan)</option>
-              </select>
-            </div>
-
-            <div class="erp-form-group">
-              <label class="erp-form-label" for="userFormStatus">Status Akun <span class="required">*</span></label>
-              <select id="userFormStatus" class="erp-select" required>
-                <option value="Aktif">Aktif</option>
-                <option value="Nonaktif">Nonaktif (Suspended)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="erp-form-group">
-            <label class="erp-form-label" for="userFormNotes">Jabatan &amp; Catatan Operasional</label>
-            <textarea id="userFormNotes" class="erp-input" rows="2" placeholder="contoh: Penanggung jawab inspeksi QC gudang dan pemenuhan PO"></textarea>
-          </div>
-        </div>
-
-        <div class="erp-modal-footer">
-          <button type="button" class="btn-erp btn-erp-secondary" id="btnCancelUserModal">Batal</button>
-          <button type="submit" class="btn-erp btn-erp-primary" id="btnSaveUserModal">Simpan Perubahan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- TOAST NOTIFIKASI GLOBAL -->
-  <div id="erpGlobalToast" class="erp-toast"></div>
-
-  <!-- Script Core ERP Terpusat -->
+  <!-- Core ERP Engine -->
   <script src="../src/internal/app.js"></script>
 </body>
 

@@ -971,36 +971,14 @@
 
       /* --- MASTER PENGGUNA & RBAC (KELOLA USER) --- */
       users: [
-        {
-          id: 'USR-001',
-          name: 'Raja Daffa',
-          email: 'admin@nusantarapuncakperkasa.co.id',
-          role: 'Super Admin',
-          phone: '+62 811-9234-881',
-          status: 'Aktif',
-          lastLogin: '2026-11-07 14:30:15',
-          notes: 'Direktur Utama & Penanggung Jawab Otorisasi Tertinggi'
-        },
-        {
-          id: 'USR-002',
-          name: 'Tim Operasional & Logistik',
-          email: 'operasional@nusantarapuncakperkasa.co.id',
-          role: 'Operasional',
-          phone: '+62 812-8877-3321',
-          status: 'Aktif',
-          lastLogin: '2026-11-07 11:15:40',
-          notes: 'Pengendali PO Pelanggan, PO Supplier, Gudang & QC, serta Armada Pengiriman'
-        },
-        {
-          id: 'USR-003',
-          name: 'Siti Rahmawati',
-          email: 'finance@nusantarapuncakperkasa.co.id',
-          role: 'Finance',
-          phone: '+62 813-7722-1109',
-          status: 'Aktif',
-          lastLogin: '2026-11-07 13:45:00',
-          notes: 'Penanggung Jawab Penagihan, Faktur Komersial & Rekonsiliasi Bank BCA/Mandiri'
-        }
+        { id: 'USR-001', name: 'Raja Daffa', title: 'Direktur Utama', email: 'admin@nusantarapuncakperkasa.co.id', phone: '0811-9234-881', role: 'Super Admin', status: 'Aktif', lastLogin: '2026-11-07 14:30' },
+        { id: 'USR-002', name: 'Ir. Darmawan Putra', title: 'Direktur Operasional', email: 'darmawan@nusantarapuncakperkasa.co.id', phone: '0812-1100-4521', role: 'Super Admin', status: 'Aktif', lastLogin: '2026-11-06 17:05' },
+        { id: 'USR-003', name: 'Nadia Pramesti', title: 'Staff Sales & Administrasi PO', email: 'operasional@nusantarapuncakperkasa.co.id', phone: '0812-8877-3321', role: 'Operasional', status: 'Aktif', lastLogin: '2026-11-07 11:15' },
+        { id: 'USR-004', name: 'Hendra Gunawan', title: 'Staff Pengadaan Supplier', email: 'hendra@nusantarapuncakperkasa.co.id', phone: '0813-5521-7710', role: 'Operasional', status: 'Aktif', lastLogin: '2026-11-07 09:42' },
+        { id: 'USR-005', name: 'Budi Santoso', title: 'Kepala Gudang & QC', email: 'budi@nusantarapuncakperkasa.co.id', phone: '0815-9012-3344', role: 'Operasional', status: 'Aktif', lastLogin: '2026-11-07 08:20' },
+        { id: 'USR-006', name: 'Agus Riyanto', title: 'Koordinator Armada Pengiriman', email: 'agus@nusantarapuncakperkasa.co.id', phone: '0817-2233-9081', role: 'Operasional', status: 'Nonaktif', lastLogin: '2026-10-21 16:10' },
+        { id: 'USR-007', name: 'Siti Rahmawati', title: 'Kepala Keuangan & Penagihan', email: 'finance@nusantarapuncakperkasa.co.id', phone: '0813-7722-1109', role: 'Finance', status: 'Aktif', lastLogin: '2026-11-07 13:45' },
+        { id: 'USR-008', name: 'Dewi Lestari', title: 'Staff Rekonsiliasi Bank', email: 'dewi@nusantarapuncakperkasa.co.id', phone: '0819-4455-6612', role: 'Finance', status: 'Aktif', lastLogin: '2026-11-06 15:30' }
       ]
     };
   }
@@ -1032,7 +1010,7 @@
       if (raw) {
         var parsed = JSON.parse(raw);
         if (parsed && parsed.meta && parsed.meta.version === '1.0.0-HLD001' && Array.isArray(parsed.orders)) {
-          if (!parsed.users || !Array.isArray(parsed.users)) {
+          if (!Array.isArray(parsed.users) || !parsed.users.length || !parsed.users[0].title) {
             parsed.users = createInitialDatabase().users;
             saveDatabase(parsed);
           }
@@ -8199,7 +8177,6 @@ var OrderCreatePageController = {
       this.syncUsersRBAC();
       this.renderUsersKPIs();
       this.initUsersTable();
-      this.bindUserModal();
 
       var self = this;
       RoleManager.onChange(function () {
@@ -8211,47 +8188,30 @@ var OrderCreatePageController = {
 
     syncUsersRBAC: function () {
       var roleCfg = RoleManager.getCurrentRoleConfig();
-      var btnAdd = document.getElementById('btnOpenAddUserModal');
-      var rbacNotice = document.getElementById('usersRbacNotice');
+      var btnAdd = document.getElementById('btnOpenAddUser');
       var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
 
       if (btnAdd) {
-        btnAdd.disabled = !canManage;
-        btnAdd.title = canManage ? 'Tambah Akun Pengguna Baru' : 'Khusus Super Admin';
-        if (!canManage) {
-          btnAdd.classList.add('btn-disabled');
-        } else {
-          btnAdd.classList.remove('btn-disabled');
-        }
-      }
-
-      if (rbacNotice) {
-        if (!canManage) {
-          rbacNotice.classList.remove('erp-hidden');
-          rbacNotice.innerHTML =
-            '<div class="erp-notice-box">' +
-            '<strong>Mode Terproteksi RBAC:</strong> Peran aktif Anda (' + escapeHtml(roleCfg.display) +
-            ') berstatus Read-Only. Penambahan pengguna, modifikasi peran (Super Admin, Operasional, Finance), serta penonaktifan akun hanya dapat dilakukan oleh <strong>Super Admin</strong>.' +
-            '</div>';
-        } else {
-          rbacNotice.classList.add('erp-hidden');
-        }
+        btnAdd.classList.toggle('erp-hidden', !canManage);
       }
     },
 
     renderUsersKPIs: function () {
       var db = window.NPP_ERP_DATA;
       var users = db.users || [];
-      var activeUsers = users.filter(function (u) { return u.status === 'Aktif'; }).length;
       var superAdmins = users.filter(function (u) { return u.role === 'Super Admin'; }).length;
+      var operasionals = users.filter(function (u) { return u.role === 'Operasional'; }).length;
+      var finances = users.filter(function (u) { return u.role === 'Finance'; }).length;
 
       var kpiTotal = document.getElementById('kpiTotalUsers');
-      var kpiActive = document.getElementById('kpiActiveUsers');
       var kpiAdmins = document.getElementById('kpiSuperAdminCount');
+      var kpiOps = document.getElementById('kpiOperasionalCount');
+      var kpiFin = document.getElementById('kpiFinanceCount');
 
       if (kpiTotal) kpiTotal.textContent = users.length + ' Akun';
-      if (kpiActive) kpiActive.textContent = activeUsers + ' Aktif';
-      if (kpiAdmins) kpiAdmins.textContent = superAdmins + ' Super Admin';
+      if (kpiAdmins) kpiAdmins.textContent = superAdmins + ' Akun';
+      if (kpiOps) kpiOps.textContent = operasionals + ' Akun';
+      if (kpiFin) kpiFin.textContent = finances + ' Akun';
     },
 
     initUsersTable: function () {
@@ -8260,20 +8220,20 @@ var OrderCreatePageController = {
         tbodyId: 'usersTableBody',
         paginationId: 'usersPagination',
         searchInputId: 'usersSearchInput',
-        pageSizeSelectId: 'usersPageSizeSelect',
+        pageSizeSelectId: 'usersPageSize',
         defaultPageSize: 10,
         colSpan: 7,
         filters: [
           {
             selectId: 'usersFilterRole',
             match: function (item, val) {
-              return !val || item.role === val;
+              return !val || val === 'ALL' || item.role === val;
             }
           },
           {
             selectId: 'usersFilterStatus',
             match: function (item, val) {
-              return !val || item.status === val;
+              return !val || val === 'ALL' || item.status === val;
             }
           }
         ],
@@ -8281,11 +8241,11 @@ var OrderCreatePageController = {
           var text = [
             user.id,
             user.name,
+            user.title,
             user.email,
             user.role,
             user.phone,
-            user.status,
-            user.notes
+            user.status
           ].join(' ').toLowerCase();
           return text.indexOf(q.toLowerCase()) !== -1;
         },
@@ -8300,169 +8260,204 @@ var OrderCreatePageController = {
           if (u.role === 'Super Admin') roleBadgeClass = 'badge-info';
           else if (u.role === 'Finance') roleBadgeClass = 'badge-warning';
 
-          var statusBadgeClass = u.status === 'Aktif' ? 'badge-success' : 'badge-danger';
-
           var actionHtml = canManage
-            ? '<button type="button" class="btn-erp btn-erp-secondary btn-erp-sm" onclick="NPP_ERP.UsersController.openEditModal(\'' + u.id + '\')">' +
-              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' +
-              '<span>Kelola</span>' +
-              '</button>'
-            : '<span class="cell-subtext-sm">Read-Only</span>';
+            ? '<div class="erp-action-btns">' +
+                '<a href="users-create.html?id=' + encodeURIComponent(u.id) + '" class="btn-erp btn-erp-secondary btn-erp-sm">' +
+                  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' +
+                  '<span>Kelola</span>' +
+                '</a>' +
+                '<button type="button" class="btn-erp btn-erp-danger btn-erp-sm" data-delete-user="' + escapeHtml(u.id) + '">' +
+                  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>' +
+                  '<span>Hapus</span>' +
+                '</button>' +
+              '</div>'
+            : '<span class="cell-subtext">Read-Only</span>';
 
           return (
             '<tr>' +
             '<td><span class="cell-code">' + escapeHtml(u.id) + '</span></td>' +
-            '<td><strong>' + escapeHtml(u.name) + '</strong><br><span class="cell-subtext-sm">' + escapeHtml(u.notes || '-') + '</span></td>' +
-            '<td><span class="cell-client">' + escapeHtml(u.email) + '</span><br><span class="cell-subtext-sm">' + escapeHtml(u.phone || '-') + '</span></td>' +
+            '<td><span class="cell-client">' + escapeHtml(u.name) + '</span><span class="cell-subtext">' + escapeHtml(u.title || u.notes || '-') + '</span></td>' +
+            '<td><div>' + escapeHtml(u.email) + '</div><span class="cell-subtext">' + escapeHtml(u.phone || '-') + '</span></td>' +
             '<td><span class="badge-status ' + roleBadgeClass + '">' + escapeHtml(u.role) + '</span></td>' +
-            '<td><span class="badge-status ' + statusBadgeClass + '">' + escapeHtml(u.status) + '</span></td>' +
-            '<td><span class="cell-subtext" style="font-size:0.75rem;">' + escapeHtml(u.lastLogin || '-') + '</span></td>' +
+            '<td>' + renderStatusBadge(u.status) + '</td>' +
+            '<td><span class="cell-subtext">' + escapeHtml(u.lastLogin || '-') + '</span></td>' +
             '<td>' + actionHtml + '</td>' +
             '</tr>'
           );
+        },
+        onAfterRender: function () {
+          var tbody = document.getElementById('usersTableBody');
+          if (!tbody) return;
+          tbody.querySelectorAll('[data-delete-user]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              var uid = btn.getAttribute('data-delete-user');
+              self.deleteUser(uid);
+            });
+          });
         }
       });
       this.table.render();
     },
 
-    bindUserModal: function () {
-      var self = this;
-      var modal = document.getElementById('userFormModal');
-      var openAddBtn = document.getElementById('btnOpenAddUserModal');
-      var closeBtn = document.getElementById('btnCloseUserModal');
-      var cancelBtn = document.getElementById('btnCancelUserModal');
-      var form = document.getElementById('userEditForm');
-
-      if (!modal) return;
-
-      var closeModal = function () {
-        modal.classList.remove('modal-open');
-        modal.setAttribute('aria-hidden', 'true');
-      };
-
-      if (openAddBtn) {
-        openAddBtn.addEventListener('click', function () {
-          var roleCfg = RoleManager.getCurrentRoleConfig();
-          var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
-          if (!canManage) {
-            showToast('Akses ditolak: Hanya Super Admin yang berhak menambahkan pengguna baru.');
-            return;
-          }
-          self.openAddModal();
-        });
-      }
-
-      if (closeBtn) closeBtn.addEventListener('click', closeModal);
-      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
-      modal.addEventListener('click', function (e) {
-        if (e.target === modal) closeModal();
-      });
-
-      if (form) {
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          self.saveUserData();
-        });
-      }
-    },
-
-    openAddModal: function () {
-      var modal = document.getElementById('userFormModal');
-      var title = document.getElementById('userModalTitle');
-      var form = document.getElementById('userEditForm');
-      if (!modal || !form) return;
-
-      form.reset();
-      document.getElementById('userFormId').value = '';
-      if (title) title.textContent = 'Tambah Akun Pengguna Baru';
-
-      modal.classList.add('modal-open');
-      modal.setAttribute('aria-hidden', 'false');
-    },
-
-    openEditModal: function (userId) {
-      var db = window.NPP_ERP_DATA;
-      var user = (db.users || []).find(function (u) { return u.id === userId; });
-      if (!user) return;
-
-      var modal = document.getElementById('userFormModal');
-      var title = document.getElementById('userModalTitle');
-      if (!modal) return;
-
-      document.getElementById('userFormId').value = user.id;
-      document.getElementById('userFormName').value = user.name || '';
-      document.getElementById('userFormEmail').value = user.email || '';
-      document.getElementById('userFormPhone').value = user.phone || '';
-      document.getElementById('userFormRole').value = user.role || 'Operasional';
-      document.getElementById('userFormStatus').value = user.status || 'Aktif';
-      document.getElementById('userFormNotes').value = user.notes || '';
-
-      if (title) title.textContent = 'Kelola Akun Pengguna — ' + user.name;
-
-      modal.classList.add('modal-open');
-      modal.setAttribute('aria-hidden', 'false');
-    },
-
-    saveUserData: function () {
-      var db = window.NPP_ERP_DATA;
-      var id = document.getElementById('userFormId').value;
-      var name = (document.getElementById('userFormName').value || '').trim();
-      var email = (document.getElementById('userFormEmail').value || '').trim();
-      var phone = (document.getElementById('userFormPhone').value || '').trim();
-      var role = document.getElementById('userFormRole').value;
-      var status = document.getElementById('userFormStatus').value;
-      var notes = (document.getElementById('userFormNotes').value || '').trim();
-
-      if (!name || !email) {
-        showToast('Nama lengkap dan email perusahaan wajib diisi!');
+    deleteUser: function (userId) {
+      var roleCfg = RoleManager.getCurrentRoleConfig();
+      var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
+      if (!canManage) {
+        showToast('Akses ditolak: Hanya Super Admin yang berhak menghapus pengguna.');
         return;
       }
 
-      if (!db.users) db.users = [];
+      var db = window.NPP_ERP_DATA;
+      var users = db.users || [];
+      var target = users.find(function (u) { return u.id === userId; });
+      if (!target) return;
 
-      var modal = document.getElementById('userFormModal');
-      var isNew = !id;
+      var self = this;
+      showConfirmAlert({
+        type: 'danger',
+        title: 'Hapus Pengguna ' + target.name,
+        message: 'Apakah Anda yakin ingin menghapus akun ' + target.name + ' (' + target.id + ' • ' + target.role + ') dari sistem?',
+        confirmText: 'Hapus Pengguna',
+        confirmClass: 'btn-erp-danger',
+        onConfirm: function () {
+          db.users = (db.users || []).filter(function (u) { return u.id !== userId; });
+          saveDatabase(db);
+          addAuditLog('DELETE_USER', target.id, 'Menghapus akun pengguna: ' + target.name + ' (' + target.role + ')');
+          self.renderUsersKPIs();
+          if (self.table) self.table.render();
+          showToast('Pengguna ' + target.name + ' berhasil dihapus.');
+        }
+      });
+    }
+  };
 
-      if (isNew) {
-        var newId = 'USR-00' + (db.users.length + 1);
-        var newUser = {
-          id: newId,
-          name: name,
-          email: email,
-          phone: phone,
-          role: role,
-          status: status,
-          lastLogin: '-',
-          notes: notes
-        };
-        db.users.push(newUser);
-        addAuditLog('CREATE_USER', newId, 'Menambahkan akun pengguna baru: ' + name + ' (' + role + ')');
-        showToast('Pengguna ' + name + ' (' + role + ') berhasil ditambahkan!', 'success');
-      } else {
-        var user = db.users.find(function (u) { return u.id === id; });
-        if (user) {
-          var oldRole = user.role;
-          var oldStatus = user.status;
-          user.name = name;
-          user.email = email;
-          user.phone = phone;
-          user.role = role;
-          user.status = status;
-          user.notes = notes;
+  var UsersCreatePageController = {
+    init: function () {
+      var form = document.getElementById('formUserPage');
+      if (!form) return;
 
-          addAuditLog('UPDATE_USER_ROLE', user.id, 'Memperbarui pengguna ' + user.name + ' (Peran: ' + oldRole + ' -> ' + role + ', Status: ' + oldStatus + ' -> ' + status + ')');
-          showToast('Data pengguna ' + user.name + ' berhasil diperbarui!', 'success');
+      var db = window.NPP_ERP_DATA;
+      db.users = db.users || [];
+
+      var params = new URLSearchParams(window.location.search);
+      var editId = params.get('id');
+      var headingEl = document.getElementById('userFormHeading');
+      var saveBtn = document.getElementById('btnSaveUser');
+      var deleteBtn = document.getElementById('btnDeleteUserPage');
+
+      var existingUser = null;
+      if (editId) {
+        existingUser = db.users.find(function (u) { return u.id === editId; });
+      }
+
+      if (existingUser) {
+        document.getElementById('inpUserId').value = existingUser.id;
+        document.getElementById('inpUserName').value = existingUser.name || '';
+        document.getElementById('inpUserTitle').value = existingUser.title || existingUser.notes || '';
+        document.getElementById('inpUserEmail').value = existingUser.email || '';
+        document.getElementById('inpUserPhone').value = existingUser.phone || '';
+        document.getElementById('inpUserRole').value = existingUser.role || 'Operasional';
+        document.getElementById('inpUserStatus').value = existingUser.status || 'Aktif';
+
+        if (headingEl) headingEl.textContent = 'Kelola Pengguna — ' + existingUser.name;
+        if (saveBtn) saveBtn.textContent = 'Simpan Perubahan';
+
+        if (deleteBtn) {
+          deleteBtn.classList.remove('erp-hidden');
+          deleteBtn.addEventListener('click', function () {
+            var roleCfg = RoleManager.getCurrentRoleConfig();
+            var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
+            if (!canManage) {
+              showToast('Akses ditolak: Hanya Super Admin yang berhak menghapus pengguna.');
+              return;
+            }
+            showConfirmAlert({
+              type: 'danger',
+              title: 'Hapus Pengguna ' + existingUser.name,
+              message: 'Apakah Anda yakin ingin menghapus akun ' + existingUser.name + ' (' + existingUser.id + ' • ' + existingUser.role + ') dari sistem?',
+              confirmText: 'Hapus Pengguna',
+              confirmClass: 'btn-erp-danger',
+              onConfirm: function () {
+                db.users = (db.users || []).filter(function (u) { return u.id !== existingUser.id; });
+                saveDatabase(db);
+                addAuditLog('DELETE_USER', existingUser.id, 'Menghapus akun pengguna: ' + existingUser.name + ' (' + existingUser.role + ')');
+                showToast('Pengguna ' + existingUser.name + ' berhasil dihapus.');
+                setTimeout(function () {
+                  window.location.href = 'users.html';
+                }, 200);
+              }
+            });
+          });
         }
       }
 
-      saveDatabase(db);
-      this.renderUsersKPIs();
-      if (this.table) this.table.render();
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var roleCfg = RoleManager.getCurrentRoleConfig();
+        var canManage = Boolean(roleCfg.canManageRoles || roleCfg.code === 'Super Admin' || roleCfg.code === 'Administrator');
+        if (!canManage) {
+          showToast('Akses ditolak: Hanya Super Admin yang berhak mengelola data pengguna.');
+          return;
+        }
 
-      if (modal) {
-        modal.classList.remove('modal-open');
-        modal.setAttribute('aria-hidden', 'true');
-      }
+        var idVal = document.getElementById('inpUserId').value.trim();
+        var nameVal = document.getElementById('inpUserName').value.trim();
+        var titleVal = document.getElementById('inpUserTitle').value.trim();
+        var emailVal = document.getElementById('inpUserEmail').value.trim();
+        var phoneVal = document.getElementById('inpUserPhone').value.trim();
+        var roleVal = document.getElementById('inpUserRole').value;
+        var statusVal = document.getElementById('inpUserStatus').value;
+
+        if (!nameVal || !emailVal) {
+          showToast('Nama lengkap dan email perusahaan wajib diisi.');
+          return;
+        }
+
+        if (idVal) {
+          var target = db.users.find(function (u) { return u.id === idVal; });
+          if (target) {
+            var oldRole = target.role;
+            var oldStatus = target.status;
+            target.name = nameVal;
+            target.title = titleVal;
+            target.email = emailVal;
+            target.phone = phoneVal;
+            target.role = roleVal;
+            target.status = statusVal;
+
+            saveDatabase(db);
+            addAuditLog('UPDATE_USER_ROLE', target.id, 'Memperbarui pengguna ' + target.name + ' (Peran: ' + oldRole + ' -> ' + roleVal + ', Status: ' + oldStatus + ' -> ' + statusVal + ')');
+            showToast('Data pengguna ' + target.name + ' berhasil diperbarui!');
+          }
+        } else {
+          var maxNum = db.users.reduce(function (max, u) {
+            var m = String(u.id || '').match(/(\d+)$/);
+            var n = m ? parseInt(m[1], 10) : 0;
+            return n > max ? n : max;
+          }, 0);
+          var nextNum = maxNum + 1;
+          var newId = 'USR-' + (nextNum < 10 ? '00' + nextNum : (nextNum < 100 ? '0' + nextNum : nextNum));
+
+          var newUser = {
+            id: newId,
+            name: nameVal,
+            title: titleVal,
+            email: emailVal,
+            phone: phoneVal || '-',
+            role: roleVal,
+            status: statusVal,
+            lastLogin: 'Belum pernah masuk'
+          };
+          db.users.unshift(newUser);
+          saveDatabase(db);
+          addAuditLog('CREATE_USER', newId, 'Menambahkan akun pengguna baru: ' + nameVal + ' (' + roleVal + ')');
+          showToast('Pengguna ' + nameVal + ' berhasil ditambahkan!');
+        }
+
+        setTimeout(function () {
+          window.location.href = 'users.html';
+        }, 200);
+      });
     }
   };
 
@@ -8482,6 +8477,7 @@ var OrderCreatePageController = {
     BillingController: BillingController,
     ArchiveController: ArchiveController,
     UsersController: UsersController,
+    UsersCreatePageController: UsersCreatePageController,
     OrderCreatePageController: OrderCreatePageController,
     OrderDetailPageController: OrderDetailPageController,
     MasterCustomerCreatePageController: MasterCustomerCreatePageController,
@@ -8522,6 +8518,7 @@ var OrderCreatePageController = {
     BillingController.init();
     ArchiveController.init();
     UsersController.init();
+    UsersCreatePageController.init();
     OrderCreatePageController.init();
     OrderDetailPageController.init();
     MasterCustomerCreatePageController.init();
