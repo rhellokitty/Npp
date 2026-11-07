@@ -2491,14 +2491,26 @@
       if (elAppSub) elAppSub.textContent = 'Menunggu otorisasi Pimpinan / Approver';
 
       var elFulVal = document.getElementById('ordersKpiFulfillmentVal');
-      var elFulSub = document.getElementById('ordersKpiFulfillmentSub');
-      if (elFulVal) elFulVal.textContent = reservedCount + ' Terkunci • ' + shortageCount + ' Backorder';
-      if (elFulSub) elFulSub.textContent = 'Status ketersediaan & reservasi stok gudang';
+      if (elFulVal) {
+        var fulHtml = '<div class="erp-kpi-dual-row">' +
+          '<span class="erp-kpi-dual-item"><strong class="erp-kpi-dual-num">' + reservedCount + '</strong><span class="erp-kpi-dual-label">Direservasi</span></span>';
+        if (shortageCount > 0) {
+          fulHtml += '<span class="erp-kpi-dual-item"><strong class="erp-kpi-dual-num text-warning">' + shortageCount + '</strong><span class="erp-kpi-dual-label">Backorder</span></span>';
+        }
+        fulHtml += '</div>';
+        elFulVal.innerHTML = fulHtml;
+      }
 
       var elPayVal = document.getElementById('ordersKpiPaymentVal');
-      var elPaySub = document.getElementById('ordersKpiPaymentSub');
-      if (elPayVal) elPayVal.textContent = paidCount + ' Lunas • ' + overdueCount + ' Overdue';
-      if (elPaySub) elPaySub.textContent = 'Monitoring penyelesaian tagihan & pembayaran';
+      if (elPayVal) {
+        var payHtml = '<div class="erp-kpi-dual-row">' +
+          '<span class="erp-kpi-dual-item"><strong class="erp-kpi-dual-num">' + paidCount + '</strong><span class="erp-kpi-dual-label">Lunas</span></span>';
+        if (overdueCount > 0) {
+          payHtml += '<span class="erp-kpi-dual-item"><strong class="erp-kpi-dual-num text-danger">' + overdueCount + '</strong><span class="erp-kpi-dual-label">Overdue</span></span>';
+        }
+        payHtml += '</div>';
+        elPayVal.innerHTML = payHtml;
+      }
     },
 
     initOrdersMainTable: function () {

@@ -800,6 +800,32 @@ img {
   line-height: 1.2;
 }
 
+.erp-kpi-dual-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.erp-kpi-dual-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.erp-kpi-dual-num {
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--erp-heading);
+  line-height: 1.2;
+}
+
+.erp-kpi-dual-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--erp-text-muted);
+}
+
 .erp-kpi-sub,
 .erp-kpi-meta {
   display: none !important;
