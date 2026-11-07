@@ -303,11 +303,12 @@ img {
 }
 
 .erp-sidebar-footer {
-  padding: 12px 14px;
+  padding: 10px 12px;
   background-color: var(--erp-bg-page);
-  border-radius: 16px;
+  border-radius: 14px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
 
@@ -315,38 +316,44 @@ img {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
+  flex: 1;
 }
 
 .erp-sidebar-user-name {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--erp-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .erp-sidebar-user-email {
   font-size: 0.68rem;
   color: var(--erp-text-muted);
-  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .erp-sidebar-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
 .erp-sidebar-btn {
-  flex: 1;
+  width: 32px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 7px 10px;
-  border-radius: 10px;
-  font-size: 0.74rem;
-  font-weight: 600;
+  border-radius: 9px;
   background-color: var(--erp-bg-surface);
-  color: var(--erp-heading);
-  transition: background-color 0.18s ease;
+  color: var(--erp-text-muted);
+  flex-shrink: 0;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
 .erp-sidebar-btn:hover {
