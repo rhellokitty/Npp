@@ -1842,7 +1842,6 @@
           '<div class="approval-item">' +
           '<div class="approval-item-top">' +
           '<span class="approval-item-id">Semua Dokumen Terotorisasi</span>' +
-          '<span class="badge-status badge-success">Zero Backlog</span>' +
           '</div>' +
           '<div class="approval-item-meta">Tidak ada antrean PO Pelanggan yang menunggu persetujuan saat ini.</div>' +
           '</div>';
