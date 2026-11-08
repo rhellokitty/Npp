@@ -423,41 +423,6 @@ img {
   flex-wrap: wrap;
 }
 
-/* --- INTERACTIVE ROLE SWITCHER (RBAC) --- */
-.erp-role-switcher-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: var(--erp-bg-page);
-  padding: 6px 8px 6px 14px;
-  border-radius: var(--radius-pill);
-}
-
-.erp-role-switcher-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--erp-text);
-  white-space: nowrap;
-}
-
-.erp-role-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: var(--erp-navy);
-  color: #ffffff;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 7px 32px 7px 14px;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 12px 12px;
-}
-
-.erp-role-select option,
 .erp-filter-select option,
 .erp-select option {
   background-color: var(--erp-bg-surface);
@@ -2021,8 +1986,8 @@ html[data-theme="dark"] .erp-file-icon-box {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
-  background-color: var(--erp-bg-page);
-  padding: 16px;
+  /* background-color: var(--erp-bg-page); */
+  /* padding: 16px; */
   border-radius: 14px;
   margin-bottom: 20px;
 }
@@ -2738,26 +2703,6 @@ html[data-theme="dark"] .erp-file-icon-box {
     flex-wrap: nowrap;
   }
 
-  .erp-role-switcher-wrap {
-    flex: 0 1 auto;
-    min-width: 0;
-    padding: 0;
-    background: transparent;
-  }
-
-  .erp-role-switcher-label {
-    display: none;
-  }
-
-  .erp-role-select {
-    font-size: 0.75rem;
-    padding: 7px 28px 7px 12px;
-    max-width: 205px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   .erp-theme-toggle {
     width: 36px;
     height: 36px;
@@ -3100,15 +3045,14 @@ html[data-theme="dark"] .erp-file-icon-box {
 
 @media (max-width: 560px) {
   .erp-topbar {
-    flex-wrap: wrap;
     padding: 8px 12px;
     gap: 8px;
     min-height: auto;
   }
 
   .erp-topbar-left {
-    width: 100%;
-    flex: 1 1 100%;
+    flex: 1;
+    min-width: 0;
     gap: 10px;
   }
 
@@ -3117,40 +3061,15 @@ html[data-theme="dark"] .erp-file-icon-box {
   }
 
   .erp-topbar-right {
-    width: 100%;
-    flex: 1 1 100%;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .erp-role-switcher-wrap {
-    flex: 1;
-    min-width: 0;
+    width: auto;
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 8px;
-    background-color: var(--erp-bg-page);
-    padding: 4px 5px 4px 12px;
-    border-radius: var(--radius-pill);
-  }
-
-  .erp-role-switcher-label {
-    display: inline;
-    font-size: 0.69rem;
-  }
-
-  .erp-role-select {
-    flex: 1;
-    min-width: 0;
-    max-width: none;
-    width: 100%;
-    font-size: 0.74rem;
-    padding: 6px 28px 6px 12px;
   }
 
   .erp-toast {
-    top: 96px;
+    top: calc(var(--topbar-height) + 10px);
     left: 12px;
     right: 12px;
     width: fit-content;
@@ -3293,15 +3212,6 @@ html[data-theme="dark"] .erp-file-icon-box {
   .erp-section-panel,
   .erp-form-card {
     padding: 14px 12px;
-  }
-
-  .erp-role-switcher-wrap {
-    padding: 0;
-    background: transparent;
-  }
-
-  .erp-role-switcher-label {
-    display: none;
   }
 
   .erp-tabs-nav {
