@@ -2044,6 +2044,7 @@
             order.id.toLowerCase().indexOf(q) !== -1 ||
             order.clientPoNumber.toLowerCase().indexOf(q) !== -1 ||
             order.customerName.toLowerCase().indexOf(q) !== -1 ||
+            (order.orderDate && order.orderDate.toLowerCase().indexOf(q) !== -1) ||
             order.statusOrder.toLowerCase().indexOf(q) !== -1 ||
             order.statusApproval.toLowerCase().indexOf(q) !== -1
           );
@@ -2082,7 +2083,7 @@
 
           return (
             '<tr>' +
-            '<td><span class="cell-code">' + escapeHtml(order.id) + '</span></td>' +
+            '<td>' + escapeHtml(order.orderDate || '-') + '</td>' +
             '<td><span class="cell-client">' + escapeHtml(order.customerName) + '</span></td>' +
             '<td class="col-financial"><span class="cell-money">' + formatMoneyRBAC(order.total, false) + '</span></td>' +
             '<td>' + renderStatusBadge(order.statusOrder) + '</td>' +
